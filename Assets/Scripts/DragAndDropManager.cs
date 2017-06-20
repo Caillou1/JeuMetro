@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class DragAndDropManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
 	public GameObject ObjectToDrop;
 
 	private Transform InstantiatedObject;
+	private int Rotations = 0;
+	private bool isRotating = false;
 
 
 	void IBeginDragHandler.OnBeginDrag(PointerEventData data) {
@@ -45,5 +48,28 @@ public class DragAndDropManager : MonoBehaviour, IBeginDragHandler, IDragHandler
 		}
 
 		InstantiatedObject = null;
+	}
+
+	void Update() {
+		if (Input.GetButtonDown ("Rotate")) {
+			RotateObject ();
+		}
+	}
+
+	void RotateObject() {
+		if (isRotating) {
+			Rotations++;
+		} else {
+			isRotating = true;
+			InstantiatedObject.DORotate (new Vector3 (0, InstantiatedObject.rotation.eulerAngles.y + 90, 0), .3f, RotateMode.FastBeyond360).OnComplete(() => {
+				if(Rotations > 0) {
+					Rotations--;
+					isRotating = false;
+					RotateObject();
+				} else {
+					isRotating = false;
+				}
+			});
+		}
 	}
 }
