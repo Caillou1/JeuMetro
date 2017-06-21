@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
 	void Start ()
     {
         
-        G.Sys.tilemap.ConnectAll();
 	}
 	
 	void Update ()
