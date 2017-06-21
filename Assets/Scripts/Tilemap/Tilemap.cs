@@ -27,7 +27,6 @@ public class Tilemap
 
 	private Dictionary<Vector3i, List<TileInfos>> tiles = new Dictionary<Vector3i, List<TileInfos>> ();
 
-
 	public void addTile(Vector3 pos, ATile tile, int priority = 0)
 	{
 		addTile (new Vector3i (pos), tile, priority);
