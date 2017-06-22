@@ -157,6 +157,33 @@ public class Tilemap
 	}
 
 	/// <summary>
+	/// Retourne toutes les tiles d'un certain type à la position demandé
+	/// </summary>
+	/// <returns>The <see cref="System.Collections.Generic.List`1[[ATile]]"/>.</returns>
+	/// <param name="pos">Position.</param>
+	/// <param name="id">Identifier.</param>
+	public List<ATile> tilesOfTypeAt(Vector3 pos, TileID id)
+	{
+		return tilesOfTypeAt (new Vector3i (pos), id);
+	}
+
+	/// <summary>
+	/// Retourne toutes les tiles d'un certain type à la position demandé
+	/// </summary>
+	/// <returns>The <see cref="System.Collections.Generic.List`1[[ATile]]"/>.</returns>
+	/// <param name="pos">Position.</param>
+	/// <param name="id">Identifier.</param>
+	public List<ATile> tilesOfTypeAt(Vector3i pos, TileID id)
+	{
+		var list = at (pos);
+		List<ATile> returnlist = new List<ATile> ();
+		foreach (var t in list)
+			if (t.type == id)
+				returnlist.Add (t);
+		return returnlist;
+	}
+
+	/// <summary>
 	/// Retourne vrais si une tile à cette position est connectable.
 	/// </summary>
 	/// <param name="pos">Position.</param>
