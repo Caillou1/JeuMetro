@@ -17,6 +17,8 @@ public static class Orienter
     public static Orientation angleToOrientation(float angle)
     {
         angle %= 360.0f;
+		if (angle < 0)
+			angle += 360;
         if (angle < 45.0f || angle > 315.0f)
             return Orientation.RIGHT;
         if (angle < 135.0f)
