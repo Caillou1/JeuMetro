@@ -80,7 +80,7 @@ public static class PathFinder
 
 	private static List<Vector3i> createPath(List<Pair<ATile, ATile>> visited)
 	{
-
+		return null;
 	}
 }
 

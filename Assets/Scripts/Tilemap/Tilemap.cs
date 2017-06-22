@@ -27,15 +27,12 @@ public class Tilemap
 
 	private Dictionary<Vector3i, List<TileInfos>> tiles = new Dictionary<Vector3i, List<TileInfos>> ();
 
-<<<<<<< HEAD
-=======
 	/// <summary>
 	/// Ajoute une tile connectable à la position demandé.
 	/// </summary>
 	/// <param name="pos">Position.</param>
 	/// <param name="tile">Tile.</param>
 	/// <param name="priority">Priority.</param>
->>>>>>> Nico
 	public void addTile(Vector3 pos, ATile tile, int priority = 0)
 	{
 		addTile (new Vector3i (pos), tile, priority);

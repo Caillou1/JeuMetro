@@ -61,7 +61,7 @@ public class DragAndDropManager : MonoBehaviour, IBeginDragHandler, IDragHandler
 			Rotations++;
 		} else {
 			isRotating = true;
-			InstantiatedObject.DORotate (new Vector3 (0, InstantiatedObject.rotation.eulerAngles.y + 90, 0), .3f, RotateMode.FastBeyond360).OnComplete(() => {
+			if(InstantiatedObject != null) InstantiatedObject.DORotate (new Vector3 (0, InstantiatedObject.rotation.eulerAngles.y + 90, 0), .3f, RotateMode.FastBeyond360).OnComplete(() => {
 				if(Rotations > 0) {
 					Rotations--;
 					isRotating = false;
