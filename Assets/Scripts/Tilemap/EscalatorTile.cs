@@ -46,6 +46,8 @@ public class EscalatorTile : ATile
 
     void Awake()
     {
+		type = TileID.ESCALATOR;
+
         var dir = Orienter.orientationToDir(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
 		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.ESCALATOR_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + new Vector3 (-dir.x, 0, -dir.y), this, false, true, Tilemap.ESCALATOR_PRIORITY);

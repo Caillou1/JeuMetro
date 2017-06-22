@@ -3,6 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TileID
+{
+	GROUND,
+	ESCALATOR
+}
+
 public abstract class ATile : MonoBehaviour
 {
     public ATile()
@@ -50,4 +56,5 @@ public abstract class ATile : MonoBehaviour
 
     public List<ATile> connectedTiles { get; protected set; }
 	public List<ATile> targetOf = new List<ATile> (); 
+	public TileID type { get; protected set; }
 }

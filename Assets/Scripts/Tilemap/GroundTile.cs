@@ -25,6 +25,8 @@ class GroundTile : ATile
 
     void Awake()
     {
+		type = TileID.GROUND;
+
 		G.Sys.tilemap.addTile (transform.position, this, true, false, Tilemap.GROUND_PRIORITY);
 		Connect ();
     }
