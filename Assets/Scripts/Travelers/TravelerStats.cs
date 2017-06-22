@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TravelerStats : MonoBehaviour {
+[System.Serializable]
+public class TravelerStats {
 	[Range(0f,100f)]
 	public float ElevatorAttraction;
 	[Range(0f,100f)]
@@ -22,4 +23,17 @@ public class TravelerStats : MonoBehaviour {
 	[Range(0f,100f)]
 	public float FaintnessPercentage;
 	public float MovementSpeed;
+
+	public void SetStats(TravelerStats stats) {
+		ElevatorAttraction = stats.ElevatorAttraction;
+		EscalatorAttraction = stats.EscalatorAttraction;
+		StairsAttraction = stats.StairsAttraction;
+		RestPlaceAttraction = stats.RestPlaceAttraction;
+		Cleanliness = stats.Cleanliness;
+		VisualComprehension = stats.VisualComprehension;
+		AudioComprehension = stats.AudioComprehension;
+		TouchComprehension = stats.TouchComprehension;
+		FaintnessPercentage = stats.FaintnessPercentage;
+		MovementSpeed = stats.MovementSpeed;
+	}
 }
