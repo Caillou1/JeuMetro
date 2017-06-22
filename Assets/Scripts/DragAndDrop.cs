@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class DragAndDropManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
+public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
 	public GameObject ObjectToDrop;
 
 	private Transform InstantiatedObject;
@@ -25,7 +25,9 @@ public class DragAndDropManager : MonoBehaviour, IBeginDragHandler, IDragHandler
 
 		if (Physics.Raycast (ray, out hit)) {
 			if (hit.transform.CompareTag ("Ground")) {
-				InstantiatedObject.position = new Vector3 (Mathf.RoundToInt (hit.point.x), Mathf.RoundToInt (hit.point.y), Mathf.RoundToInt (hit.point.z)) + Vector3.up;
+				Vector3 objPos = hit.transform.position;
+				Debug.Log (objPos);
+				InstantiatedObject.position = new Vector3 (Mathf.RoundToInt (objPos.x), Mathf.RoundToInt (objPos.y), Mathf.RoundToInt (objPos.z));
 			}
 		} else {
 			Vector3 pos = ray.origin + (ray.direction * 1000);
@@ -44,7 +46,12 @@ public class DragAndDropManager : MonoBehaviour, IBeginDragHandler, IDragHandler
 		if (results.Count > 0 && results [0].gameObject == gameObject) {
 			Destroy (InstantiatedObject.gameObject);
 		} else {
-			InstantiatedObject.GetComponent<Collider> ().enabled = true;
+			var col = InstantiatedObject.GetComponent<Collider> ();
+			if(col!=null)
+				col.enabled = true;
+			foreach (var c in transform.GetComponentsInChildren<Collider>()) {
+				c.enabled = true;
+			}
 		}
 
 		InstantiatedObject = null;
