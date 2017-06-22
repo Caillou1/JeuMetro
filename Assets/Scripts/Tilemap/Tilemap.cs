@@ -20,12 +20,24 @@ public class TileInfos
 	public ATile tile;
 }
 
+public class TilemapInfo
+{
+	public TilemapInfo(Vector3i _pos)
+	{
+		pos = _pos;
+	}
+
+	public readonly Vector3i pos;
+	public List<TileInfos> tiles = new List<TileInfos> ();
+}
+
 public class Tilemap
 {
 	public const int GROUND_PRIORITY = 0;
 	public const int ESCALATOR_PRIORITY = 10;
 
-	private Dictionary<Vector3i, List<TileInfos>> tiles = new Dictionary<Vector3i, List<TileInfos>> ();
+	private List<TilemapInfo> tiles = new List<TilemapInfo> ();
+	//private Dictionary<Vector3i, List<TileInfos>> tiles = new Dictionary<Vector3i, List<TileInfos>> ();
 
 	/// <summary>
 	/// Ajoute une tile connectable à la position demandé.
@@ -96,10 +108,9 @@ public class Tilemap
 	/// <param name="priority">Priority.</param>
 	public void addTile(Vector3i pos, ATile tile, bool canBeConnected, bool preventConnexions, int priority = 0)
 	{
-		if (!tiles.ContainsKey (pos))
-			tiles.Add (pos, new List<TileInfos> ());
-		if(!tiles[pos].Exists (it => it.tile == tile))
-			tiles [pos].Add (new TileInfos(tile, canBeConnected, preventConnexions, priority));
+		var t = map (pos);
+		if(!t.tiles.Exists(it => it.tile == tile))
+			t.tiles.Add(new TileInfos(tile, canBeConnected, preventConnexions, priority));
 	}
 
 	/// <summary>
@@ -121,9 +132,7 @@ public class Tilemap
 	/// <param name="tile">Tile.</param>
 	public bool delTile(Vector3i pos, ATile tile)
 	{
-		if (!tiles.ContainsKey (pos))
-			return false;
-		return tiles [pos].RemoveAll (it => it.tile == tile) > 0;
+		return map (pos).tiles.RemoveAll (it => it.tile == tile) > 0;
 	}
 
 	/// <summary>
@@ -141,10 +150,8 @@ public class Tilemap
 	/// <param name="pos">Position.</param>
 	public List<ATile> at(Vector3i pos)
 	{
-		if (!tiles.ContainsKey (pos))
-			return new List<ATile> ();
-		List<ATile> list = new List<ATile>();
-		foreach (var t in tiles[pos])
+		List<ATile> list = new List<ATile> ();
+		foreach (var t in map(pos).tiles)
 			list.Add (t.tile);
 		return list;
 	}
@@ -164,10 +171,8 @@ public class Tilemap
 	/// <param name="pos">Position.</param>
 	public bool connectable(Vector3i pos)
 	{
-		if (!tiles.ContainsKey (pos))
-			return false;
 		bool isConnectable = false;
-		foreach (var tile in tiles[pos]) {
+		foreach (var tile in map(pos).tiles) {
 			if (tile.preventConnexions)
 				return false;
 			if (tile.canBeConnected)
@@ -194,9 +199,7 @@ public class Tilemap
 	public List<ATile> connectableTiles(Vector3i pos)
 	{
 		List<ATile> list = new List<ATile> ();
-		if (!tiles.ContainsKey (pos))
-			return list;
-		foreach (var tile in tiles[pos]) {
+		foreach (var tile in map(pos).tiles) {
 			if (tile.preventConnexions)
 				return new List<ATile> ();
 			if (tile.canBeConnected)
@@ -227,9 +230,7 @@ public class Tilemap
 		int bestValue = int.MinValue;
 		bool bestCanBeConnected = false;
 		ATile bestTile = null;
-		if (!tiles.ContainsKey (pos))
-			return null;
-		foreach (var tile in tiles[pos]) {
+		foreach (var tile in map(pos).tiles) {
 			if (tile.preventConnexions)
 				return null;
 			if (tile.priority > bestValue) {
@@ -260,8 +261,16 @@ public class Tilemap
 	/// <param name="pos">Position.</param>
 	public TileInfos tileInfosOf(ATile tile, Vector3i pos)
 	{
-		if (!tiles.ContainsKey (pos))
-			return null;
-		return tiles [pos].Find (it => it.tile == tile);
+		return map (pos).tiles.Find (it => it.tile == tile);
+	}
+
+	private TilemapInfo map(Vector3i pos)
+	{
+		foreach (var t in tiles) {
+			if (t.pos.x == pos.x && t.pos.y == pos.y && t.pos.z == pos.z)
+				return t;
+		}
+		tiles.Add(new TilemapInfo(pos));
+		return tiles [tiles.Count - 1];
 	}
 }

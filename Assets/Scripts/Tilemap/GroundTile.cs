@@ -15,6 +15,10 @@ class GroundTile : ATile
 		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(0, 0, -1)), list);
 		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(1, 0, 0)), list);
 		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(-1, 0, 0)), list);
+		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(1, 0, 1)), list);
+		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(1, 0, -1)), list);
+		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(-1, 0, 1)), list);
+		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(-1, 0, -1)), list);
 
 		applyConnexions (list);
     }
@@ -28,7 +32,7 @@ class GroundTile : ATile
 	void OnDestroy()
 	{
 		G.Sys.tilemap.delTile (transform.position, this);
-		foreach (var t in targetOf)
+		foreach (var t in targetOf.ToList())
 			t.Connect ();
 	}
 }

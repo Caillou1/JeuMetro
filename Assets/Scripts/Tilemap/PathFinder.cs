@@ -7,6 +7,11 @@ public static class PathFinder
 {
 	private const float verticalDistanceMultiplier = 5;
 
+	/// <summary>
+	/// Retourne le chemin optimal entre les 2 positions
+	/// </summary>
+	/// <param name="start">Start.</param>
+	/// <param name="end">End.</param>
 	public static List<Vector3> Path (Vector3 start, Vector3 end)
 	{
 		var p = Path (new Vector3i (start), new Vector3i (end));
@@ -16,6 +21,11 @@ public static class PathFinder
 		return endPath;
 	}
 
+	/// <summary>
+	/// Retourne le chemin optimal entre les 2 positions
+	/// </summary>
+	/// <param name="start">Start.</param>
+	/// <param name="end">End.</param>
 	public static List<Vector3i> Path(Vector3i start, Vector3i end)
 	{
 		if(start == end)
@@ -80,7 +90,20 @@ public static class PathFinder
 
 	private static List<Vector3i> createPath(List<Pair<ATile, ATile>> visited)
 	{
+		List<ATile> thepath = new List<ATile> ();
+		thepath.Add (visited [visited.Count - 1].Second);
 
+		for (int i = visited.Count - 1; i >= 0; i--) {
+			if (visited [i].Second == thepath [thepath.Count - 1])
+				thepath.Add (visited [i].First);
+		}
+
+		thepath.Reverse ();
+		List<Vector3i> poss = new List<Vector3i> ();
+		foreach (var p in thepath)
+			poss.Add (new Vector3i (p.transform.position));
+
+		return poss;
 	}
 }
 
