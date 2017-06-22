@@ -298,6 +298,19 @@ public class Tilemap
 				return t;
 		}
 		tiles.Add(new TilemapInfo(pos));
+		sort (tiles [tiles.Count - 1].tiles);
 		return tiles [tiles.Count - 1];
+	}
+
+	private static void sort(List<TileInfos> list)
+	{
+		list.Sort (delegate(TileInfos a, TileInfos b) {
+			if(a.priority > b.priority)
+				return 1;
+			else if (a.priority < b.priority)
+				return -1;
+			else return 0;
+		});
+		list.Reverse ();
 	}
 }
