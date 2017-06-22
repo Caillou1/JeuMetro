@@ -6,9 +6,6 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler, IEndDragHandler {
-	private Transform InstantiatedObject;
-	private int Rotations = 0;
-	private bool isRotating = false;
 
 
 	void IBeginDragHandler.OnBeginDrag(PointerEventData data) {
@@ -21,10 +18,33 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit hit;
 
+		List<Orientation> PossibleOrientations = new List<Orientation> ();
+
+		var v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 1, 2));
+		if (v.Count > 0 && v [0].type == TileID.GROUND)
+			PossibleOrientations.Add (Orientation.DOWN);
+		
+		v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 1, -2));
+		if (v.Count > 0 && v [0].type == TileID.GROUND)
+			PossibleOrientations.Add (Orientation.UP);
+		
+		v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(-2, 1, 0));
+		if (v.Count > 0 && v [0].type == TileID.GROUND)
+			PossibleOrientations.Add (Orientation.RIGHT);
+		
+		v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(2, 1, 0));
+		if (v.Count > 0 && v [0].type == TileID.GROUND)
+			PossibleOrientations.Add (Orientation.LEFT);
+			
+		if(PossibleOrientations.Count > 0) {
+			float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0]);
+			if(InstantiatedObject.rotation.eulerAngles.y != desiredAngle)
+				RotateObject (desiredAngle);
+		}
+
 		if (Physics.Raycast (ray, out hit)) {
 			if (hit.transform.CompareTag ("Ground")) {
 				Vector3 objPos = hit.transform.position;
-				Debug.Log (objPos);
 				InstantiatedObject.position = new Vector3 (Mathf.RoundToInt (objPos.x), Mathf.RoundToInt (objPos.y), Mathf.RoundToInt (objPos.z));
 			}
 		} else {
@@ -34,22 +54,67 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 
 	}
 
+	//Le sens de l'escalator est définit par le bas de celui-ci
 	void IEndDragHandler.OnEndDrag(PointerEventData data) {
 		Orientation or = Orienter.angleToOrientation (InstantiatedObject.rotation.eulerAngles.y);
+		Debug.Log (or);
+		bool canPlace = true;
+
+		var v = G.Sys.tilemap.at (InstantiatedObject.position);
+		if (v.Count == 0 || v [0].type != TileID.GROUND)
+			canPlace = false;
 
 		if (or == Orientation.UP || or == Orientation.DOWN) {
-			G.Sys.tilemap.
+			v = G.Sys.tilemap.at (InstantiatedObject.position + Vector3.forward);
+			if (v.Count == 0 || v [0].type != TileID.GROUND)
+				canPlace = false;
+
+			v = G.Sys.tilemap.at (InstantiatedObject.position + Vector3.back);
+			if (v.Count == 0 || v [0].type != TileID.GROUND)
+				canPlace = false;
+
 			if (or == Orientation.UP) {
+				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 0, 2));
+				if (v.Count == 0 || v [0].type != TileID.GROUND)
+					canPlace = false;
 
+				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 1, -2));
+				if (v.Count == 0 || v [0].type != TileID.GROUND)
+					canPlace = false;
 			} else {
+				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 1, 2));
+				if (v.Count == 0 || v [0].type != TileID.GROUND)
+					canPlace = false;
 
+				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 0, -2));
+				if (v.Count == 0 || v [0].type != TileID.GROUND)
+					canPlace = false;
 			}
 		} else if (or == Orientation.LEFT || or == Orientation.RIGHT) {
+			v = G.Sys.tilemap.at (InstantiatedObject.position + Vector3.left);
+			if (v.Count == 0 || v [0].type != TileID.GROUND)
+				canPlace = false;
+
+			v = G.Sys.tilemap.at (InstantiatedObject.position + Vector3.right);
+			if (v.Count == 0 || v [0].type != TileID.GROUND)
+				canPlace = false;
 
 			if (or == Orientation.LEFT) {
+				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(-2, 0, 0));
+				if (v.Count == 0 || v [0].type != TileID.GROUND)
+					canPlace = false;
 
-			} else (
-				
+				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(2, 1, 0));
+				if (v.Count == 0 || v [0].type != TileID.GROUND)
+					canPlace = false;
+			} else {
+				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(-2, 1, 0));
+				if (v.Count == 0 || v [0].type != TileID.GROUND)
+					canPlace = false;
+
+				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(2, 0, 0));
+				if (v.Count == 0 || v [0].type != TileID.GROUND)
+					canPlace = false;
 			}
 		}
 
@@ -63,7 +128,7 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 		pointerData.position = Input.mousePosition;
 		EventSystem.current.RaycastAll(pointerData, results);
 
-		if (results.Count > 0 && results [0].gameObject == gameObject) {
+		if ((results.Count > 0 && results [0].gameObject == gameObject) || !canPlace) {
 			Destroy (InstantiatedObject.gameObject);
 		} else {
 			var col = InstantiatedObject.GetComponent<Collider> ();
@@ -77,26 +142,7 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 		InstantiatedObject = null;
 	}
 
-	void Update() {
-		if (Input.GetButtonDown ("Rotate")) {
-			RotateObject ();
-		}
-	}
-
-	void RotateObject() {
-		if (isRotating) {
-			Rotations++;
-		} else {
-			isRotating = true;
-			if(InstantiatedObject != null) InstantiatedObject.DORotate (new Vector3 (0, InstantiatedObject.rotation.eulerAngles.y + 90, 0), .3f, RotateMode.FastBeyond360).OnComplete(() => {
-				if(Rotations > 0) {
-					Rotations--;
-					isRotating = false;
-					RotateObject();
-				} else {
-					isRotating = false;
-				}
-			});
-		}
+	void RotateObject(float desiredAngle) {
+		InstantiatedObject.DORotate (new Vector3 (0, desiredAngle, 0), .3f, RotateMode.FastBeyond360);
 	}
 }

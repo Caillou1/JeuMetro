@@ -8,9 +8,9 @@ using DG.Tweening;
 public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
 	public GameObject ObjectToDrop;
 
-	private Transform InstantiatedObject;
-	private int Rotations = 0;
-	private bool isRotating = false;
+	protected Transform InstantiatedObject;
+	protected int Rotations = 0;
+	protected bool isRotating = false;
 
 
 	void IBeginDragHandler.OnBeginDrag(PointerEventData data) {
@@ -26,7 +26,6 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 		if (Physics.Raycast (ray, out hit)) {
 			if (hit.transform.CompareTag ("Ground")) {
 				Vector3 objPos = hit.transform.position;
-				Debug.Log (objPos);
 				InstantiatedObject.position = new Vector3 (Mathf.RoundToInt (objPos.x), Mathf.RoundToInt (objPos.y), Mathf.RoundToInt (objPos.z));
 			}
 		} else {
