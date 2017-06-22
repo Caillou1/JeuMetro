@@ -298,10 +298,11 @@ public class Tilemap
 				return t;
 		}
 		tiles.Add(new TilemapInfo(pos));
-		return sort (tiles [tiles.Count - 1]);
+		sort (tiles [tiles.Count - 1].tiles);
+		return tiles [tiles.Count - 1];
 	}
 
-	private static List<TileInfos> sort(List<TileInfos> list)
+	private static void sort(List<TileInfos> list)
 	{
 		list.Sort (delegate(TileInfos a, TileInfos b) {
 			if(a.priority > b.priority)
@@ -310,6 +311,6 @@ public class Tilemap
 				return -1;
 			else return 0;
 		});
-		return list.Reverse ();
+		list.Reverse ();
 	}
 }
