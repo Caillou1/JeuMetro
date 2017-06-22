@@ -12,7 +12,7 @@ public static class PathFinder
 	/// </summary>
 	/// <param name="start">Start.</param>
 	/// <param name="end">End.</param>
-	public static List<Vector3> Path (Vector3 start, Vector3 end)
+	public static List<Vector3> Path (Vector3 start, Vector3 end, Dictionary<TileID, float> weights = default(Dictionary<TileID, float>))
 	{
 		var p = Path (new Vector3i (start), new Vector3i (end));
 		List<Vector3> endPath = new List<Vector3> ();
@@ -26,8 +26,11 @@ public static class PathFinder
 	/// </summary>
 	/// <param name="start">Start.</param>
 	/// <param name="end">End.</param>
-	public static List<Vector3i> Path(Vector3i start, Vector3i end)
+	public static List<Vector3i> Path(Vector3i start, Vector3i end, Dictionary<TileID, float> weights = default(Dictionary<TileID, float>))
 	{
+		if (weights == null)
+			weights = new Dictionary<TileID, float> ();
+		
 		if(start == end)
 			return new List<Vector3i>(new Vector3i[]{start});
 		var startTile = G.Sys.tilemap.connectableTile (start);
@@ -42,7 +45,7 @@ public static class PathFinder
 		nexts.Add (new Pair<ATile, float> (startTile, 0));
 
 		while (nexts.Count > 0) {
-			var current = Min (nexts, end);
+			var current = Min (nexts, end, weights);
 			nexts.Remove (current);
 
 			foreach (var tile in current.First.connectedTiles) {
@@ -62,16 +65,19 @@ public static class PathFinder
 
 	private static float distance(Vector3i start, Vector3i end)
 	{
-		return Mathf.Abs (start.y - end.y) + new Vector2 (start.x - end.x, start.z - end.z).magnitude;
+		return Mathf.Abs (start.y - end.y) * verticalDistanceMultiplier + new Vector2 (start.x - end.x, start.z - end.z).magnitude;
 	}
 
-	private static Pair<ATile, float> Min(List<Pair<ATile, float>> list, Vector3i end)
+	private static Pair<ATile, float> Min(List<Pair<ATile, float>> list, Vector3i end, Dictionary<TileID, float> weights)
 	{
 		float minValue = float.MaxValue;
 		Pair<ATile, float> minElement = null;
 		foreach(var it in list)
 		{
-			float value = it.Second + distance (new Vector3i (it.First.transform.position), end);
+			float weight = 1;
+			if (weights.ContainsKey (it.First.type))
+				weight = weights [it.First.type];
+			float value = it.Second + distance (new Vector3i (it.First.transform.position), end) * weight;
 			if (value < minValue) {
 				minValue = value;
 				minElement = it;
