@@ -27,31 +27,76 @@ public class Tilemap
 
 	private Dictionary<Vector3i, List<TileInfos>> tiles = new Dictionary<Vector3i, List<TileInfos>> ();
 
+<<<<<<< HEAD
+=======
+	/// <summary>
+	/// Ajoute une tile connectable à la position demandé.
+	/// </summary>
+	/// <param name="pos">Position.</param>
+	/// <param name="tile">Tile.</param>
+	/// <param name="priority">Priority.</param>
+>>>>>>> Nico
 	public void addTile(Vector3 pos, ATile tile, int priority = 0)
 	{
 		addTile (new Vector3i (pos), tile, priority);
 	}
 
+	/// <summary>
+	/// Ajoute une tile connectable à la position demandé.
+	/// </summary>
+	/// <param name="pos">Position.</param>
+	/// <param name="tile">Tile.</param>
+	/// <param name="priority">Priority.</param>
 	public void addTile(Vector3i pos, ATile tile, int priority = 0)
 	{
 		addTile (pos, tile, true, false, priority);
 	}
 
+	/// <summary>
+	/// Ajoute une tile qui n'est pas connectable si canBConnected est faux.
+	/// </summary>
+	/// <param name="pos">Position.</param>
+	/// <param name="tile">Tile.</param>
+	/// <param name="canBeConnected">If set to <c>true</c> can be connected.</param>
+	/// <param name="priority">Priority.</param>
 	public void addTile(Vector3 pos, ATile tile, bool canBeConnected, int priority = 0)
 	{
 		addTile (new Vector3i (pos), tile, canBeConnected, priority);
 	}
 
+	/// <summary>
+	/// Ajoute une tile qui n'est pas connectable si canBConnected est faux.
+	/// </summary>
+	/// <param name="pos">Position.</param>
+	/// <param name="tile">Tile.</param>
+	/// <param name="canBeConnected">If set to <c>true</c> can be connected.</param>
+	/// <param name="priority">Priority.</param>
 	public void addTile(Vector3i pos, ATile tile, bool canBeConnected, int priority = 0)
 	{
 		addTile (pos, tile, canBeConnected, false, priority);
 	}
 
+	/// <summary>
+	/// Si preventConnexion est a vrais, toutes les tiles connectable à cette position ne pourrons pas etre connecté.
+	/// </summary>
+	/// <param name="pos">Position.</param>
+	/// <param name="tile">Tile.</param>
+	/// <param name="canBeConnected">If set to <c>true</c> can be connected.</param>
+	/// <param name="preventConnexions">If set to <c>true</c> prevent connexions.</param>
+	/// <param name="priority">Priority.</param>
 	public void addTile(Vector3 pos, ATile tile, bool canBeConnected, bool preventConnexions, int priority = 0)
 	{
 		addTile (new Vector3i (pos), tile, canBeConnected, preventConnexions, priority);
 	}
 
+	/// <summary>
+	/// Si preventConnexion est a vrais, toutes les tiles connectable à cette position ne pourrons pas etre connecté.
+	/// </summary>
+	/// <param name="pos">Position.</param>
+	/// <param name="tile">Tile.</param>
+	/// <param name="canBeConnected">If set to <c>true</c> can be connected.</param>
+	/// <param name="preventConnexions">If set to <c>true</c> prevent connexions.</param>
+	/// <param name="priority">Priority.</param>
 	public void addTile(Vector3i pos, ATile tile, bool canBeConnected, bool preventConnexions, int priority = 0)
 	{
 		if (!tiles.ContainsKey (pos))
@@ -60,11 +105,23 @@ public class Tilemap
 			tiles [pos].Add (new TileInfos(tile, canBeConnected, preventConnexions, priority));
 	}
 
+	/// <summary>
+	/// Suprime la tile spécifiée.
+	/// </summary>
+	/// <returns><c>true</c>, if tile was deleted, <c>false</c> otherwise.</returns>
+	/// <param name="pos">Position.</param>
+	/// <param name="tile">Tile.</param>
 	public bool delTile(Vector3 pos, ATile tile)
 	{
 		return delTile (new Vector3i (pos), tile);
 	}
 
+	/// <summary>
+	/// Suprime la tile spécifiée.
+	/// </summary>
+	/// <returns><c>true</c>, if tile was deleted, <c>false</c> otherwise.</returns>
+	/// <param name="pos">Position.</param>
+	/// <param name="tile">Tile.</param>
 	public bool delTile(Vector3i pos, ATile tile)
 	{
 		if (!tiles.ContainsKey (pos))
@@ -72,11 +129,19 @@ public class Tilemap
 		return tiles [pos].RemoveAll (it => it.tile == tile) > 0;
 	}
 
+	/// <summary>
+	/// Retourne toutes les tiles à la position spécifiée.
+	/// </summary>
+	/// <param name="pos">Position.</param>
 	public List<ATile> at(Vector3 pos)
 	{
 		return at (new Vector3i (pos));
 	}
 
+	/// <summary>
+	/// Retourne toutes les tiles à la position spécifiée.
+	/// </summary>
+	/// <param name="pos">Position.</param>
 	public List<ATile> at(Vector3i pos)
 	{
 		if (!tiles.ContainsKey (pos))
@@ -87,11 +152,19 @@ public class Tilemap
 		return list;
 	}
 
+	/// <summary>
+	/// Retourne vrais si une tile à cette position est connectable.
+	/// </summary>
+	/// <param name="pos">Position.</param>
 	public bool connectable(Vector3 pos)
 	{
 		return connectable (new Vector3i (pos));
 	}
 
+	/// <summary>
+	/// Retourne vrais si une tile à cette position est connectable.
+	/// </summary>
+	/// <param name="pos">Position.</param>
 	public bool connectable(Vector3i pos)
 	{
 		if (!tiles.ContainsKey (pos))
@@ -106,11 +179,21 @@ public class Tilemap
 		return isConnectable;
 	}
 
+	/// <summary>
+	/// Retourne toutes les tiles connectables à la position spécifiée.
+	/// </summary>
+	/// <returns>The tiles.</returns>
+	/// <param name="pos">Position.</param>
 	public List<ATile> connectableTiles(Vector3 pos)
 	{
 		return connectableTiles (new Vector3i (pos));
 	}
 
+	/// <summary>
+	/// Retourne toutes les tiles connectables à la position spécifiée.
+	/// </summary>
+	/// <returns>The tiles.</returns>
+	/// <param name="pos">Position.</param>
 	public List<ATile> connectableTiles(Vector3i pos)
 	{
 		List<ATile> list = new List<ATile> ();
@@ -125,11 +208,23 @@ public class Tilemap
 		return list;
 	}
 
+	/// <summary>
+	/// Retourne la tile connectable avec la priorité la plus elevé.
+	/// Retourne null si aucune tile n'est trouvable
+	/// </summary>
+	/// <returns>The tile.</returns>
+	/// <param name="pos">Position.</param>
 	public ATile connectableTile(Vector3 pos)
 	{
 		return connectableTile (new Vector3i (pos));
 	}
 
+	/// <summary>
+	/// Retourne la tile connectable avec la priorité la plus elevé.
+	/// Retourne null si aucune tile n'est trouvable
+	/// </summary>
+	/// <returns>The tile.</returns>
+	/// <param name="pos">Position.</param>
 	public ATile connectableTile(Vector3i pos)
 	{
 		int bestValue = int.MinValue;
@@ -149,11 +244,23 @@ public class Tilemap
 		return bestCanBeConnected ? bestTile : null;
 	}
 
+	/// <summary>
+	/// Retourne le tileinfo associé à la tile et à la position spécifiée.
+	/// </summary>
+	/// <returns>The infos of.</returns>
+	/// <param name="tile">Tile.</param>
+	/// <param name="pos">Position.</param>
 	public TileInfos tileInfosOf(ATile tile, Vector3 pos)
 	{
 		return tileInfosOf (tile, new Vector3i (pos));
 	}
 
+	/// <summary>
+	/// Retourne le tileinfo associé à la tile et à la position spécifiée.
+	/// </summary>
+	/// <returns>The infos of.</returns>
+	/// <param name="tile">Tile.</param>
+	/// <param name="pos">Position.</param>
 	public TileInfos tileInfosOf(ATile tile, Vector3i pos)
 	{
 		if (!tiles.ContainsKey (pos))
