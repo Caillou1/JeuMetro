@@ -36,7 +36,7 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 		if (v.Count > 0 && v [0].type == TileID.GROUND)
 			PossibleOrientations.Add (Orientation.LEFT);
 			
-		if(PossibleOrientations.Count > 0) {
+		if(PossibleOrientations.Count > 0 && !PossibleOrientations.Contains(Orienter.angleToOrientation(InstantiatedObject.rotation.eulerAngles.y))) {
 			float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0]);
 			if(InstantiatedObject.rotation.eulerAngles.y != desiredAngle)
 				RotateObject (desiredAngle);
