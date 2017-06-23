@@ -7,6 +7,7 @@ using DG.Tweening;
 
 public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
 	public GameObject ObjectToDrop;
+	public GameObject VirtualObjectToDrop;
 
 	protected Transform InstantiatedObject;
 	protected int Rotations = 0;
@@ -16,7 +17,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 	void IBeginDragHandler.OnBeginDrag(PointerEventData data) {
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		Vector3 pos = ray.origin + (ray.direction * 1000);
-		InstantiatedObject = Instantiate (ObjectToDrop, pos, Quaternion.identity).transform;
+		InstantiatedObject = Instantiate (VirtualObjectToDrop, pos, Quaternion.identity).transform;
 	}
 
 	void IDragHandler.OnDrag(PointerEventData data) {

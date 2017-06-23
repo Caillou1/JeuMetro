@@ -11,7 +11,7 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 	void IBeginDragHandler.OnBeginDrag(PointerEventData data) {
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		Vector3 pos = ray.origin + (ray.direction * 1000);
-		InstantiatedObject = Instantiate (ObjectToDrop, pos, Quaternion.identity).transform;
+		InstantiatedObject = Instantiate (VirtualObjectToDrop, pos, Quaternion.identity).transform;
 	}
 
 	void IDragHandler.OnDrag(PointerEventData data) {
@@ -134,12 +134,8 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 		if ((results.Count > 0 && results [0].gameObject == gameObject) || !canPlace) {
 			Destroy (InstantiatedObject.gameObject);
 		} else {
-			var col = InstantiatedObject.GetComponent<Collider> ();
-			if(col!=null)
-				col.enabled = true;
-			foreach (var c in transform.GetComponentsInChildren<Collider>()) {
-				c.enabled = true;
-			}
+			Instantiate (ObjectToDrop, InstantiatedObject.position, InstantiatedObject.rotation);
+			Destroy (InstantiatedObject.gameObject);
 		}
 
 		InstantiatedObject = null;
