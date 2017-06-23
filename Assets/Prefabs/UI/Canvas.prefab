@@ -53,9 +53,9 @@ GameObject:
   - component: {fileID: 224686044992874318}
   - component: {fileID: 222227570871493712}
   - component: {fileID: 114414296137936346}
-  - component: {fileID: 114898853727826948}
+  - component: {fileID: 114632947966370422}
   m_Layer: 5
-  m_Name: DragObject (2)
+  m_Name: Bench
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,9 +226,9 @@ GameObject:
   - component: {fileID: 224043629460291984}
   - component: {fileID: 222474004609508358}
   - component: {fileID: 114915458084991394}
-  - component: {fileID: 114954246228663756}
+  - component: {fileID: 114048417401994514}
   m_Layer: 5
-  m_Name: DragObject
+  m_Name: EscalatorUP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -946,9 +946,9 @@ GameObject:
   - component: {fileID: 224333438901492278}
   - component: {fileID: 222314122900752798}
   - component: {fileID: 114182457936506154}
-  - component: {fileID: 114800403826396848}
+  - component: {fileID: 114057192710217464}
   m_Layer: 5
-  m_Name: DragObject (1)
+  m_Name: EscalatorDOWN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1092,6 +1092,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114048417401994514
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1150200493867078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 756d1fa99a17548a2a52f706a3e2adce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectToDrop: {fileID: 1459166863589356, guid: abd3ff3a976074c9581a00bc57236890,
+    type: 2}
+  VirtualObjectToDrop: {fileID: 1459166863589356, guid: b86a685df226d4aa2b8423bf3b59a17e,
+    type: 2}
 --- !u!114 &114049374689262912
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1125,6 +1140,21 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Scores
+--- !u!114 &114057192710217464
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1908153368489172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 756d1fa99a17548a2a52f706a3e2adce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectToDrop: {fileID: 1459166863589356, guid: 7a7cba202fe254d47b4b6c0c5501df0e,
+    type: 2}
+  VirtualObjectToDrop: {fileID: 1459166863589356, guid: b86a685df226d4aa2b8423bf3b59a17e,
+    type: 2}
 --- !u!114 &114074826155005396
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1832,7 +1862,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3754c474569814c66b28eba4cd68b137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentMenu: 0
+  CurrentMenu: 5
 --- !u!114 &114447453740051830
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2163,6 +2193,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114632947966370422
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1038834018988870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c059e9b1bdf4ae1bfb929f9d6d7115, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectToDrop: {fileID: 1157032559819030, guid: 853a1de9cad4e4e87a911d09f3d40b25,
+    type: 2}
+  VirtualObjectToDrop: {fileID: 1157032559819030, guid: 263a786f847134533aadeab5a0e586a4,
+    type: 2}
 --- !u!114 &114644593574884144
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2412,20 +2457,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Musiques : '
---- !u!114 &114800403826396848
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1908153368489172}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5860e818347344098badf2da8c1d1b38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectToDrop: {fileID: 1815706731008470, guid: f61711c488bbe4b9b8dab52b8f69b19b,
-    type: 2}
-  VirtualObjectToDrop: {fileID: 0}
 --- !u!114 &114816738617684162
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2709,20 +2740,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114898853727826948
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1038834018988870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5860e818347344098badf2da8c1d1b38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectToDrop: {fileID: 1815706731008470, guid: f61711c488bbe4b9b8dab52b8f69b19b,
-    type: 2}
-  VirtualObjectToDrop: {fileID: 0}
 --- !u!114 &114910436686016870
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2991,20 +3008,6 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &114954246228663756
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1150200493867078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5860e818347344098badf2da8c1d1b38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObjectToDrop: {fileID: 1815706731008470, guid: f61711c488bbe4b9b8dab52b8f69b19b,
-    type: 2}
-  VirtualObjectToDrop: {fileID: 0}
 --- !u!114 &114954298418579734
 MonoBehaviour:
   m_ObjectHideFlags: 1

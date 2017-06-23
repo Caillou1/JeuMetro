@@ -102,8 +102,4 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 
 		InstantiatedObject = null;
 	}
-
-	void RotateObject(float desiredAngle) {
-		InstantiatedObject.DORotate (new Vector3 (0, desiredAngle, 0), .3f, RotateMode.FastBeyond360);
-	}
 }

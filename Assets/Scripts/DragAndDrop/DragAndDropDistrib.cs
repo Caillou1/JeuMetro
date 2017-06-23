@@ -5,13 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
-	public GameObject ObjectToDrop;
-	public GameObject VirtualObjectToDrop;
-
-	protected Transform InstantiatedObject;
-	protected int Rotations = 0;
-	protected bool isRotating = false;
+public class DragAndDropDistrib : DragAndDrop, IBeginDragHandler, IDragHandler, IEndDragHandler {
 
 
 	void IBeginDragHandler.OnBeginDrag(PointerEventData data) {
@@ -36,22 +30,34 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
 	}
 
+	//Le sens de l'escalator est définit par le bas de celui-ci
 	void IEndDragHandler.OnEndDrag(PointerEventData data) {
+		Orientation or = Orienter.angleToOrientation (InstantiatedObject.rotation.eulerAngles.y);
+
+		bool canPlace = true;
+		Vector3 dir = Orienter.orientationToDir3 (or);
+
+		//Case centrale
+		var v = G.Sys.tilemap.at (InstantiatedObject.position);
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(InstantiatedObject.position, TileID.ESCALATOR).Count > 0)
+			canPlace = false;
+
+		//Case côté
+		v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(dir.x, 0, dir.z));
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(InstantiatedObject.position + new Vector3(dir.x, 0, dir.z), TileID.ESCALATOR).Count > 0)
+			canPlace = false;
+
 		PointerEventData pointerData = new PointerEventData(EventSystem.current);
 		List<RaycastResult> results = new List<RaycastResult>();
 		
 		pointerData.position = Input.mousePosition;
 		EventSystem.current.RaycastAll(pointerData, results);
 
-		if (results.Count > 0 && results [0].gameObject == gameObject) {
+		if ((results.Count > 0 && results [0].gameObject == gameObject) || !canPlace) {
 			Destroy (InstantiatedObject.gameObject);
 		} else {
-			var col = InstantiatedObject.GetComponent<Collider> ();
-			if(col!=null)
-				col.enabled = true;
-			foreach (var c in transform.GetComponentsInChildren<Collider>()) {
-				c.enabled = true;
-			}
+			Instantiate (ObjectToDrop, InstantiatedObject.position, InstantiatedObject.rotation);
+			Destroy (InstantiatedObject.gameObject);
 		}
 
 		InstantiatedObject = null;
@@ -61,26 +67,5 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 		if (Input.GetButtonDown ("Rotate")) {
 			RotateObject ();
 		}
-	}
-		
-	protected void RotateObject() {
-		if (isRotating) {
-			Rotations++;
-		} else {
-			isRotating = true;
-			if(InstantiatedObject != null) InstantiatedObject.DORotate (new Vector3 (0, InstantiatedObject.rotation.eulerAngles.y + 90, 0), .3f, RotateMode.FastBeyond360).OnComplete(() => {
-				if(Rotations > 0) {
-					Rotations--;
-					isRotating = false;
-					RotateObject();
-				} else {
-					isRotating = false;
-				}
-			});
-		}
-	}
-
-	protected void RotateObject(float desiredAngle) {
-		InstantiatedObject.DORotate (new Vector3 (0, desiredAngle, 0), .3f, RotateMode.FastBeyond360);
 	}
 }
