@@ -57,8 +57,11 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 	//Le sens de l'escalator est définit par le bas de celui-ci
 	void IEndDragHandler.OnEndDrag(PointerEventData data) {
 		Orientation or = Orienter.angleToOrientation (InstantiatedObject.rotation.eulerAngles.y);
-		Debug.Log (or);
+
 		bool canPlace = true;
+
+		foreach(var a in G.Sys.tilemap.at (InstantiatedObject.position))
+			Debug.Log (a);
 
 		var v = G.Sys.tilemap.at (InstantiatedObject.position);
 		if (v.Count == 0 || v [0].type != TileID.GROUND)
