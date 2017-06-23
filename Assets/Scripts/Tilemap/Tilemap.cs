@@ -294,11 +294,13 @@ public class Tilemap
 	private TilemapInfo map(Vector3i pos)
 	{
 		foreach (var t in tiles) {
-			if (t.pos.x == pos.x && t.pos.y == pos.y && t.pos.z == pos.z)
+			if (t.pos.x == pos.x && t.pos.y == pos.y && t.pos.z == pos.z) {
+				sort (t.tiles);
+				t.tiles.Reverse ();
 				return t;
+			}
 		}
 		tiles.Add(new TilemapInfo(pos));
-		sort (tiles [tiles.Count - 1].tiles);
 		return tiles [tiles.Count - 1];
 	}
 
@@ -311,6 +313,5 @@ public class Tilemap
 				return -1;
 			else return 0;
 		});
-
 	}
 }
