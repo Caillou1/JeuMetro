@@ -64,11 +64,6 @@ public static class Orienter
 		Vector2 v = orientationToDir (o);
 		return new Vector3 (v.x, 0, v.y);
 	}
-
-	public static Vector3 getSideVector3(Vector3 v)
-	{
-		return new Vector3 (v.z, 0, v.x);
-	}
 }
 
 

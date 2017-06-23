@@ -60,7 +60,6 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 
 		bool canPlace = true;
 		Vector3 dir = Orienter.orientationToDir3 (or);
-		Vector3 side = Orienter.getSideVector3 (dir);
 
 		//Case centrale
 		var v = G.Sys.tilemap.at (InstantiatedObject.position);

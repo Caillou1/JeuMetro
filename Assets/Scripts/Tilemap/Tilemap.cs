@@ -35,6 +35,9 @@ public class Tilemap
 {
 	public const int LOW_PRIORITY = -10;
 	public const int GROUND_PRIORITY = 0;
+	public const int INFOPANEL_PRIORITY = 10;
+	public const int BENCH_PRIORITY = 10;
+	public const int DISTRIBUTEUR_PRIORITY = 10;
 	public const int ESCALATOR_PRIORITY = 10;
 
 	private List<TilemapInfo> tiles = new List<TilemapInfo> ();
