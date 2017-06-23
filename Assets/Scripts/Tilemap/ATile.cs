@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum TileID
@@ -48,7 +49,7 @@ public abstract class ATile : MonoBehaviour
 	protected void applyConnexions(List<ATile> list)
 	{
 		if (!validConnexions (list, connectedTiles)) {
-			var oldList = connectedTiles;
+			var oldList = connectedTiles.ToList();
 			connectedTiles = list;
 			foreach (var t in oldList) {
 				t.targetOf.Remove (this);

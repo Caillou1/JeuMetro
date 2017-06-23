@@ -8,7 +8,10 @@ class GroundTile : ATile
 {
     public override void Connect()
     {
-        Vector3i pos = new Vector3i(transform.position);
+		if (this == null)
+			Debug.Log ("null");
+		Vector3i pos = new Vector3i(transform.position);
+		
 
 		List<ATile> list = new List<ATile> ();
 		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(0, 0, 1)), list);
@@ -28,12 +31,17 @@ class GroundTile : ATile
 		type = TileID.GROUND;
 
 		G.Sys.tilemap.addTile (transform.position, this, true, false, Tilemap.GROUND_PRIORITY);
-		Connect ();
+		foreach (var t in G.Sys.tilemap.at(transform.position))
+			t.Connect ();
     }
 
 	void OnDestroy()
 	{
 		G.Sys.tilemap.delTile (transform.position, this);
+		foreach (var t in G.Sys.tilemap.at(transform.position))
+			t.Connect ();
+		foreach (var t in connectedTiles)
+			t.targetOf.Remove (this);
 		foreach (var t in targetOf.ToList())
 			t.Connect ();
 	}
