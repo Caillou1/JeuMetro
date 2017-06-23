@@ -7,7 +7,12 @@ using UnityEngine;
 public enum TileID
 {
 	GROUND,
-	ESCALATOR
+	ESCALATOR,
+	BENCH,
+	FOODDISTRIBUTEUR,
+	PODOTACTILE,
+	INFOPANEL,
+	TICKETDISTRIBUTEUR
 }
 
 public abstract class ATile : MonoBehaviour
