@@ -33,6 +33,7 @@ public class TilemapInfo
 
 public class Tilemap
 {
+	public const int LOW_PRIORITY = -10;
 	public const int GROUND_PRIORITY = 0;
 	public const int ESCALATOR_PRIORITY = 10;
 
