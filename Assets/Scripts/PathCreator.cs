@@ -11,8 +11,6 @@ public class PathCreator : MonoBehaviour
 	void Start () 
 	{
 		var path = PathFinder.Path (startPos, endPos);
-		if (path.Count == 0)
-			Debug.Log ("The path can't be find");
 		
 		foreach (var p in path) {
 			Instantiate (pathObj, p, new Quaternion());
