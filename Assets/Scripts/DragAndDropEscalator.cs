@@ -59,70 +59,32 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 		Orientation or = Orienter.angleToOrientation (InstantiatedObject.rotation.eulerAngles.y);
 
 		bool canPlace = true;
+		Vector3 dir = Orienter.orientationToDir3 (or);
 
-		foreach(var a in G.Sys.tilemap.at (InstantiatedObject.position))
-			Debug.Log (a);
-
+		//Case centrale
 		var v = G.Sys.tilemap.at (InstantiatedObject.position);
-		if (v.Count == 0 || v [0].type != TileID.GROUND)
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.at (InstantiatedObject.position + Vector3.up).Count > 0)
 			canPlace = false;
 
-		if (or == Orientation.UP || or == Orientation.DOWN) {
-			v = G.Sys.tilemap.at (InstantiatedObject.position + Vector3.forward);
-			if (v.Count == 0 || v [0].type != TileID.GROUND)
-				canPlace = false;
+		//Case  plus basse
+		v = G.Sys.tilemap.at (InstantiatedObject.position + dir);
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.at (InstantiatedObject.position + dir + Vector3.up).Count > 0)
+			canPlace = false;
 
-			v = G.Sys.tilemap.at (InstantiatedObject.position + Vector3.back);
-			if (v.Count == 0 || v [0].type != TileID.GROUND)
-				canPlace = false;
+		//Case plus haute
+		v = G.Sys.tilemap.at (InstantiatedObject.position - dir);
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.at (InstantiatedObject.position - dir + Vector3.up).Count > 0)
+			canPlace = false;
 
-			if (or == Orientation.UP) {
-				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 0, 2));
-				if (v.Count == 0 || v [0].type != TileID.GROUND)
-					canPlace = false;
+		//Case en bas de l'escalator
+		v = G.Sys.tilemap.at (InstantiatedObject.position + 2 * dir);
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.at (InstantiatedObject.position + 2 * dir + Vector3.up).Count > 0)
+			canPlace = false;
 
-				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 1, -2));
-				if (v.Count == 0 || v [0].type != TileID.GROUND)
-					canPlace = false;
-			} else {
-				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 1, 2));
-				if (v.Count == 0 || v [0].type != TileID.GROUND)
-					canPlace = false;
-
-				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 0, -2));
-				if (v.Count == 0 || v [0].type != TileID.GROUND)
-					canPlace = false;
-			}
-		} else if (or == Orientation.LEFT || or == Orientation.RIGHT) {
-			v = G.Sys.tilemap.at (InstantiatedObject.position + Vector3.left);
-			if (v.Count == 0 || v [0].type != TileID.GROUND)
-				canPlace = false;
-
-			v = G.Sys.tilemap.at (InstantiatedObject.position + Vector3.right);
-			if (v.Count == 0 || v [0].type != TileID.GROUND)
-				canPlace = false;
-
-			if (or == Orientation.LEFT) {
-				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(-2, 0, 0));
-				if (v.Count == 0 || v [0].type != TileID.GROUND)
-					canPlace = false;
-
-				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(2, 1, 0));
-				if (v.Count == 0 || v [0].type != TileID.GROUND)
-					canPlace = false;
-			} else {
-				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(-2, 1, 0));
-				if (v.Count == 0 || v [0].type != TileID.GROUND)
-					canPlace = false;
-
-				v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(2, 0, 0));
-				if (v.Count == 0 || v [0].type != TileID.GROUND)
-					canPlace = false;
-			}
-		}
-
-
-
+		//Case en haut de l'escalator
+		v = G.Sys.tilemap.at (InstantiatedObject.position - 2 * dir + Vector3.up);
+		if (v.Count == 0 || v [0].type != TileID.GROUND)
+			canPlace = false;
 
 
 		PointerEventData pointerData = new PointerEventData(EventSystem.current);

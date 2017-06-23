@@ -58,6 +58,12 @@ public static class Orienter
                 return new Vector2(0, 1);
         }
     }
+
+	public static Vector3 orientationToDir3(Orientation o)
+	{
+		Vector2 v = orientationToDir (o);
+		return new Vector3 (v.x, 0, v.y);
+	}
 }
 
 
