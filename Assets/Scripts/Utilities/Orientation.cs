@@ -19,7 +19,10 @@ public static class Orienter
         angle %= 360.0f;
 		if (angle < 0)
 			angle += 360.0f;
+<<<<<<< HEAD
 
+=======
+>>>>>>> Nico
         if (angle < 45.0f || angle > 315.0f)
             return Orientation.RIGHT;
         if (angle < 135.0f)
