@@ -20,19 +20,19 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 
 		List<Orientation> PossibleOrientations = new List<Orientation> ();
 
-		var v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 1, 2));
+		var v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 2, 2));
 		if (v.Count > 0 && v [0].type == TileID.GROUND)
 			PossibleOrientations.Add (Orientation.DOWN);
 		
-		v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 1, -2));
+		v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(0, 2, -2));
 		if (v.Count > 0 && v [0].type == TileID.GROUND)
 			PossibleOrientations.Add (Orientation.UP);
 		
-		v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(-2, 1, 0));
+		v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(-2, 2, 0));
 		if (v.Count > 0 && v [0].type == TileID.GROUND)
 			PossibleOrientations.Add (Orientation.RIGHT);
 		
-		v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(2, 1, 0));
+		v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(2, 2, 0));
 		if (v.Count > 0 && v [0].type == TileID.GROUND)
 			PossibleOrientations.Add (Orientation.LEFT);
 			
@@ -63,26 +63,26 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 
 		//Case centrale
 		var v = G.Sys.tilemap.at (InstantiatedObject.position);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(InstantiatedObject.position, TileID.ESCALATOR).Count > 0 || G.Sys.tilemap.at (InstantiatedObject.position + Vector3.up).Count > 0)
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(InstantiatedObject.position, TileID.ESCALATOR).Count > 0 || G.Sys.tilemap.at (InstantiatedObject.position + Vector3.up * 2).Count > 0)
 			canPlace = false;
 
 		//Case  plus basse
 		v = G.Sys.tilemap.at (InstantiatedObject.position + dir);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(InstantiatedObject.position + dir, TileID.ESCALATOR).Count > 0 || G.Sys.tilemap.at (InstantiatedObject.position + dir + Vector3.up).Count > 0)
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(InstantiatedObject.position + dir, TileID.ESCALATOR).Count > 0 || G.Sys.tilemap.at (InstantiatedObject.position + dir + Vector3.up * 2).Count > 0)
 			canPlace = false;
 
 		//Case plus haute
 		v = G.Sys.tilemap.at (InstantiatedObject.position - dir);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(InstantiatedObject.position - dir, TileID.ESCALATOR).Count > 0 || G.Sys.tilemap.at (InstantiatedObject.position - dir + Vector3.up).Count > 0)
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(InstantiatedObject.position - dir, TileID.ESCALATOR).Count > 0 || G.Sys.tilemap.at (InstantiatedObject.position - dir + Vector3.up * 2).Count > 0)
 			canPlace = false;
 
 		//Case en bas de l'escalator
 		v = G.Sys.tilemap.at (InstantiatedObject.position + 2 * dir);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.at (InstantiatedObject.position + 2 * dir + Vector3.up).Count > 0)
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.at (InstantiatedObject.position + 2 * dir + Vector3.up * 2).Count > 0)
 			canPlace = false;
 
 		//Case en haut de l'escalator
-		v = G.Sys.tilemap.at (InstantiatedObject.position - 2 * dir + Vector3.up);
+		v = G.Sys.tilemap.at (InstantiatedObject.position - 2 * dir + Vector3.up * 2);
 		if (v.Count == 0 || v [0].type != TileID.GROUND)
 			canPlace = false;
 
