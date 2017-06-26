@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class DragAndDropBench : DragAndDrop, IBeginDragHandler, IDragHandler, IEndDragHandler {
+public class DragAndDropDistrib : DragAndDrop, IBeginDragHandler, IDragHandler, IEndDragHandler {
 
 
 	void IBeginDragHandler.OnBeginDrag(PointerEventData data) {
@@ -13,7 +13,7 @@ public class DragAndDropBench : DragAndDrop, IBeginDragHandler, IDragHandler, IE
 		Vector3 pos = ray.origin + (ray.direction * 1000);
 		InstantiatedObject = Instantiate (VirtualObjectToDrop, pos, Quaternion.identity).transform;
 	}
-	
+
 	void IDragHandler.OnDrag(PointerEventData data) {
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit hit;
@@ -35,7 +35,7 @@ public class DragAndDropBench : DragAndDrop, IBeginDragHandler, IDragHandler, IE
 			if(InstantiatedObject.rotation.eulerAngles.y != desiredAngle)
 				RotateObject (desiredAngle);
 		}
-		
+
 		if (Physics.Raycast (ray, out hit)) {
 			if (hit.transform.CompareTag ("Ground")) {
 				Vector3 objPos = hit.transform.position;
@@ -59,14 +59,9 @@ public class DragAndDropBench : DragAndDrop, IBeginDragHandler, IDragHandler, IE
 		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(InstantiatedObject.position, TileID.ESCALATOR).Count > 0)
 			canPlace = false;
 
-		//Case côté
-		v = G.Sys.tilemap.at (InstantiatedObject.position + new Vector3(dir.x, 0, dir.z));
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(InstantiatedObject.position + new Vector3(dir.x, 0, dir.z), TileID.ESCALATOR).Count > 0)
-			canPlace = false;
-
 		PointerEventData pointerData = new PointerEventData(EventSystem.current);
 		List<RaycastResult> results = new List<RaycastResult>();
-		
+
 		pointerData.position = Input.mousePosition;
 		EventSystem.current.RaycastAll(pointerData, results);
 

@@ -7,6 +7,8 @@ using UnityEngine;
 public enum TileID
 {
 	GROUND,
+	WALL,
+	BIN,
 	ESCALATOR,
 	BENCH,
 	FOODDISTRIBUTEUR,

@@ -62,8 +62,8 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 			RotateObject ();
 		}
 	}
-
-	void RotateObject() {
+		
+	protected void RotateObject() {
 		if (isRotating) {
 			Rotations++;
 		} else {
@@ -78,5 +78,9 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 				}
 			});
 		}
+	}
+
+	protected void RotateObject(float desiredAngle) {
+		InstantiatedObject.DORotate (new Vector3 (0, desiredAngle, 0), .3f, RotateMode.FastBeyond360);
 	}
 }
