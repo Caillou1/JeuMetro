@@ -39,6 +39,7 @@ public class Tilemap
 	public const int BENCH_PRIORITY = 10;
 	public const int DISTRIBUTEUR_PRIORITY = 10;
 	public const int ESCALATOR_PRIORITY = 10;
+    public const int BIN_PRIORITY = 10;
 
 	private List<TilemapInfo> tiles = new List<TilemapInfo> ();
 	//private Dictionary<Vector3i, List<TileInfos>> tiles = new Dictionary<Vector3i, List<TileInfos>> ();
