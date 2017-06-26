@@ -15,7 +15,10 @@ public enum TileID
 	PODOTACTILE,
 	INFOPANEL,
 	TICKETDISTRIBUTEUR,
-	STAIRS
+	STAIRS,
+	IN,
+	OUT,
+	METRO
 }
 
 public abstract class ATile : MonoBehaviour
@@ -64,6 +67,7 @@ public abstract class ATile : MonoBehaviour
 	}
 
     public List<ATile> connectedTiles { get; protected set; }
+	[HideInInspector]
 	public List<ATile> targetOf = new List<ATile> (); 
 	public TileID type { get; protected set; }
 }

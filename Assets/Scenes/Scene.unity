@@ -11370,6 +11370,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 114733534541175732, guid: 53ada6cb3ba434f2595c1a8a9e79c864,
+        type: 2}
+      propertyPath: _side
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 53ada6cb3ba434f2595c1a8a9e79c864, type: 2}
   m_IsPrefabParent: 0
@@ -11508,6 +11513,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78e4c870caefe17449fa163cc16ea173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entities: []
+  minDelay: 0
+  maxDelay: 0
 --- !u!1 &1821224235
 GameObject:
   m_ObjectHideFlags: 0
@@ -11820,8 +11828,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 999cf69695818400bbeb59a7ce38c88c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {x: -5, y: 1, z: -5}
-  endPos: {x: 6, y: 0, z: -3}
+  startPos: {x: 6, y: 0, z: -3}
+  endPos: {x: -5, y: 2, z: -3}
   pathObj: {fileID: 1645866799953600, guid: 4f7cfcc99504a42c3a793ae0bfdd2811, type: 2}
 --- !u!4 &1866549894
 Transform:

@@ -35,6 +35,7 @@ public class Tilemap
 {
 	public const int LOW_PRIORITY = -10;
 	public const int GROUND_PRIORITY = 0;
+	public const int EXITS_PRIORITY = 5;
 	public const int INFOPANEL_PRIORITY = 10;
 	public const int BENCH_PRIORITY = 10;
 	public const int DISTRIBUTEUR_PRIORITY = 10;
@@ -327,6 +328,7 @@ public class Tilemap
 	public void clear()
 	{
 		tiles.Clear ();
+		specialTiles.Clear ();
 	}
 
 	/// <summary>
@@ -334,7 +336,7 @@ public class Tilemap
 	/// </summary>
 	/// <param name="id">Identifier.</param>
 	/// <param name="pos">Position.</param>
-	void addSpecialTile(TileID id, Vector3 pos)
+	public void addSpecialTile(TileID id, Vector3 pos)
 	{
 		addSpecialTile (id, new Vector3i (pos));
 	}
@@ -344,7 +346,7 @@ public class Tilemap
 	/// </summary>
 	/// <param name="id">Identifier.</param>
 	/// <param name="pos">Position.</param>
-	void addSpecialTile(TileID id, Vector3i pos)
+	public void addSpecialTile(TileID id, Vector3i pos)
 	{
 		if (!specialTiles.ContainsKey (id))
 			specialTiles.Add (id, new List<Vector3i> ());
@@ -361,7 +363,7 @@ public class Tilemap
 	/// <returns><c>true</c>, if special tile was deled, <c>false</c> otherwise.</returns>
 	/// <param name="id">Identifier.</param>
 	/// <param name="pos">Position.</param>
-	bool delSpecialTile(TileID id, Vector3 pos)
+	public bool delSpecialTile(TileID id, Vector3 pos)
 	{
 		return delSpecialTile (id, new Vector3i (pos));
 	}
@@ -372,7 +374,7 @@ public class Tilemap
 	/// <returns><c>true</c>, if special tile was deled, <c>false</c> otherwise.</returns>
 	/// <param name="id">Identifier.</param>
 	/// <param name="pos">Position.</param>
-	bool delSpecialTile(TileID id, Vector3i pos)
+	public bool delSpecialTile(TileID id, Vector3i pos)
 	{
 		if (!specialTiles.ContainsKey (id))
 			return false;
@@ -384,7 +386,7 @@ public class Tilemap
 	/// </summary>
 	/// <returns>The special tiles.</returns>
 	/// <param name="id">Identifier.</param>
-	List<Vector3> getSpecialTiles(TileID id)
+	public List<Vector3> getSpecialTiles(TileID id)
 	{
 		List<Vector3> poss = new List<Vector3> ();
 		foreach (var p in getSpecialTilesI(id)) {
@@ -398,7 +400,7 @@ public class Tilemap
 	/// </summary>
 	/// <returns>The special tiles.</returns>
 	/// <param name="id">Identifier.</param>
-	List<Vector3i> getSpecialTilesI(TileID id)
+	public List<Vector3i> getSpecialTilesI(TileID id)
 	{
 		if(!specialTiles.ContainsKey(id))
 			return new List<Vector3i>();
@@ -411,7 +413,7 @@ public class Tilemap
 	/// <returns>The <see cref="System.Boolean"/>.</returns>
 	/// <param name="id">Identifier.</param>
 	/// <param name="pos">Position.</param>
-	bool haveSpecialTileAt(TileID id, Vector3 pos)
+	public bool haveSpecialTileAt(TileID id, Vector3 pos)
 	{
 		return haveSpecialTileAt (id, new Vector3i (pos));
 	}
@@ -422,7 +424,7 @@ public class Tilemap
 	/// <returns>The <see cref="System.Boolean"/>.</returns>
 	/// <param name="id">Identifier.</param>
 	/// <param name="pos">Position.</param>
-	bool haveSpecialTileAt(TileID id, Vector3i pos)
+	public bool haveSpecialTileAt(TileID id, Vector3i pos)
 	{
 		if (!specialTiles.ContainsKey (id))
 			return false;

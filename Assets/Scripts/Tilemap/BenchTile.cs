@@ -18,6 +18,9 @@ public class BenchTile : ATile
 			t.Connect ();
 		foreach (var t in G.Sys.tilemap.at(transform.position + new Vector3(dir.x, 0, dir.y)))
 			t.Connect ();
+
+		G.Sys.tilemap.addSpecialTile (type, transform.position);
+		G.Sys.tilemap.addSpecialTile (type, transform.position + new Vector3 (dir.x, 0, dir.y));
     }
 
 	public override void Connect (){}
@@ -33,5 +36,8 @@ public class BenchTile : ATile
 			t.Connect ();
 		foreach (var t in G.Sys.tilemap.at(transform.position + new Vector3(dir.x, 0, dir.y)))
 			t.Connect ();
+
+		G.Sys.tilemap.delSpecialTile (type, transform.position);
+		G.Sys.tilemap.delSpecialTile (type, transform.position + new Vector3 (dir.x, 0, dir.y));
 	}
 }
