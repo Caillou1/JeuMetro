@@ -14,7 +14,8 @@ public enum TileID
 	FOODDISTRIBUTEUR,
 	PODOTACTILE,
 	INFOPANEL,
-	TICKETDISTRIBUTEUR
+	TICKETDISTRIBUTEUR,
+	STAIRS
 }
 
 public abstract class ATile : MonoBehaviour

@@ -39,9 +39,10 @@ public class Tilemap
 	public const int BENCH_PRIORITY = 10;
 	public const int DISTRIBUTEUR_PRIORITY = 10;
 	public const int ESCALATOR_PRIORITY = 10;
+	public const int STAIRS_PRIORITY = 10;
 
 	private List<TilemapInfo> tiles = new List<TilemapInfo> ();
-	//private Dictionary<Vector3i, List<TileInfos>> tiles = new Dictionary<Vector3i, List<TileInfos>> ();
+	private Dictionary<TileID, List<Vector3i>> specialTiles = new Dictionary<TileID, List<Vector3i>> ();
 
 	/// <summary>
 	/// Ajoute une tile connectable à la position demandé.
@@ -317,5 +318,116 @@ public class Tilemap
 				return -1;
 			else return 0;
 		});
+	}
+
+	/// <summary>
+	/// Clear the tilemap
+	/// </summary>
+	public void clear()
+	{
+		tiles.Clear ();
+	}
+
+	/// <summary>
+	/// Ajoute une tile speciale à une position pour l'identifier plus facilement.
+	/// </summary>
+	/// <param name="id">Identifier.</param>
+	/// <param name="pos">Position.</param>
+	void addSpecialTile(TileID id, Vector3 pos)
+	{
+		addSpecialTile (id, new Vector3i (pos));
+	}
+
+	/// <summary>
+	/// Ajoute une tile speciale à une position pour l'identifier plus facilement.
+	/// </summary>
+	/// <param name="id">Identifier.</param>
+	/// <param name="pos">Position.</param>
+	void addSpecialTile(TileID id, Vector3i pos)
+	{
+		if (!specialTiles.ContainsKey (id))
+			specialTiles.Add (id, new List<Vector3i> ());
+		foreach (var t in specialTiles[id]) 
+		{
+			if (t.x == pos.x && t.y == pos.y && t.z == pos.z) 
+				return;
+		}
+	}
+
+	/// <summary>
+	/// Suprimme la tile speciale,
+	/// </summary>
+	/// <returns><c>true</c>, if special tile was deled, <c>false</c> otherwise.</returns>
+	/// <param name="id">Identifier.</param>
+	/// <param name="pos">Position.</param>
+	bool delSpecialTile(TileID id, Vector3 pos)
+	{
+		return delSpecialTile (id, new Vector3i (pos));
+	}
+
+	/// <summary>
+	/// Suprimme la tile speciale,
+	/// </summary>
+	/// <returns><c>true</c>, if special tile was deled, <c>false</c> otherwise.</returns>
+	/// <param name="id">Identifier.</param>
+	/// <param name="pos">Position.</param>
+	bool delSpecialTile(TileID id, Vector3i pos)
+	{
+		if (!specialTiles.ContainsKey (id))
+			return false;
+		return specialTiles [id].RemoveAll (p => p.x == pos.x && p.y == pos.y && p.z == pos.z) > 0; 
+	}
+
+	/// <summary>
+	/// Récupere toutes les tiles spéciales d'un certain type.
+	/// </summary>
+	/// <returns>The special tiles.</returns>
+	/// <param name="id">Identifier.</param>
+	List<Vector3> getSpecialTiles(TileID id)
+	{
+		List<Vector3> poss = new List<Vector3> ();
+		foreach (var p in getSpecialTilesI(id)) {
+			poss.Add (p.toVector3 ());
+		}
+		return poss;
+	}
+
+	/// <summary>
+	/// Récupere toutes les tiles spéciales d'un certain type en Vector3i.
+	/// </summary>
+	/// <returns>The special tiles.</returns>
+	/// <param name="id">Identifier.</param>
+	List<Vector3i> getSpecialTilesI(TileID id)
+	{
+		if(!specialTiles.ContainsKey(id))
+			return new List<Vector3i>();
+		return specialTiles [id];
+	}
+
+	/// <summary>
+	/// Test si une tile spéciale existe à cette position
+	/// </summary>
+	/// <returns>The <see cref="System.Boolean"/>.</returns>
+	/// <param name="id">Identifier.</param>
+	/// <param name="pos">Position.</param>
+	bool haveSpecialTileAt(TileID id, Vector3 pos)
+	{
+		return haveSpecialTileAt (id, new Vector3i (pos));
+	}
+
+	/// <summary>
+	/// Test si une tile spéciale existe à cette position
+	/// </summary>
+	/// <returns>The <see cref="System.Boolean"/>.</returns>
+	/// <param name="id">Identifier.</param>
+	/// <param name="pos">Position.</param>
+	bool haveSpecialTileAt(TileID id, Vector3i pos)
+	{
+		if (!specialTiles.ContainsKey (id))
+			return false;
+		foreach (var p in specialTiles[id])
+			if (p.x == pos.x && p.y == pos.y && p.z == pos.z)
+				return true;
+		return false;
 	}
 }

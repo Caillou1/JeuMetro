@@ -8,8 +8,6 @@ class GroundTile : ATile
 {
     public override void Connect()
     {
-		if (this == null)
-			Debug.Log ("null");
 		Vector3i pos = new Vector3i(transform.position);
 		
 
