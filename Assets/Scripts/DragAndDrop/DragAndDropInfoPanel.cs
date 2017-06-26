@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class DragAndDropBin : DragAndDrop, IBeginDragHandler, IDragHandler, IEndDragHandler {
+public class DragAndDropInfoPanel : DragAndDrop, IBeginDragHandler, IDragHandler, IEndDragHandler {
     public GameObject VirtualWalledObjectToDrop;
     public GameObject WalledObjectToDrop;
 
@@ -27,11 +27,11 @@ public class DragAndDropBin : DragAndDrop, IBeginDragHandler, IDragHandler, IEnd
 
 		if (G.Sys.tilemap.at (InstantiatedObject.position + Vector3.forward).Count == 0)
 			PossibleOrientations.Add (Orientation.LEFT);
-		if (G.Sys.tilemap.at (InstantiatedObject.position + Vector3.back).Count == 0)
-			PossibleOrientations.Add (Orientation.RIGHT);
+        if (G.Sys.tilemap.at(InstantiatedObject.position + Vector3.back).Count == 0)
+            PossibleOrientations.Add(Orientation.RIGHT);
 		if (G.Sys.tilemap.at (InstantiatedObject.position + Vector3.right).Count == 0)
 			PossibleOrientations.Add (Orientation.UP);
-		if (G.Sys.tilemap.at (InstantiatedObject.position + Vector3.left).Count == 0)
+        if (G.Sys.tilemap.at(InstantiatedObject.position + Vector3.left).Count == 0)
 			PossibleOrientations.Add (Orientation.DOWN);
 
         if (PossibleOrientations.Count > 0 && (!PossibleOrientations.Contains(or) || !IsWalled))
