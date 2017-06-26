@@ -4,11 +4,12 @@ using System.Collections.Generic;
 
 public class Path
 {
-	public Path(Dictionary<TileID, float> _weights, float _smoothAngles)
+	public Path(Dictionary<TileID, float> _weights)
 	{
 		points = new List<Vector3> ();
 		startPos = new Vector3 ();
 		endPos = new Vector3 ();
+		weights = _weights;
 	}
 
 	public void create(Vector3 start, Vector3 end)
@@ -25,6 +26,7 @@ public class Path
 
 	public Vector3 next(Vector3 current)
 	{
+		debugPath (current);
 		if (points.Count == 0)
 			return endPos;
 		var currentPos = new Vector3i (current);
@@ -33,13 +35,20 @@ public class Path
 			points.RemoveAt (0);
 		if (points.Count == 0)
 			return endPos;
-		return points [0];
+		return points[0];
+	}
+
+	void debugPath(Vector3 current)
+	{
+		for (int i = 0; i < points.Count; i++) {
+			var last = i > 0 ? points [i - 1] : current;
+			Debug.DrawLine (last, points [i], Color.red);
+		}
 	}
 
 	List<Vector3> points;
 	Vector3 startPos;
 	Vector3 endPos;
 	Dictionary<TileID, float> weights;
-	float smoothAngles;
 }
 

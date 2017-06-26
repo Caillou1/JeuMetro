@@ -74,9 +74,19 @@ public static class PathFinder
 		Pair<ATile, float> minElement = null;
 		foreach(var it in list)
 		{
-			float weight = 1;
-			if (weights.ContainsKey (it.First.type))
-				weight = weights [it.First.type];
+			float weight = 0;
+			int count = 0;
+			var tiles = G.Sys.tilemap.at (it.First.transform.position);
+			foreach (var tile in tiles)
+				if (weights.ContainsKey (it.First.type)) {
+					weight = weights [it.First.type];
+					count++;
+				}
+			if (count == 0)
+				weight = 1;
+			else
+				weight /= count;
+
 			float value = it.Second + distance (new Vector3i (it.First.transform.position), end) * weight;
 			if (value < minValue) {
 				minValue = value;
