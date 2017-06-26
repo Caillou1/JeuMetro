@@ -36,24 +36,27 @@ public class DragAndDropBin : DragAndDrop, IBeginDragHandler, IDragHandler, IEnd
 
         if (PossibleOrientations.Count > 0 && !PossibleOrientations.Contains(or))
         {
-            if (IsWalled)
+            float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0]);
+
+            if (!IsWalled)
             {
                 IsWalled = true;
-                var tf = Instantiate(VirtualWalledObjectToDrop, InstantiatedObject.position, InstantiatedObject.rotation).transform;
-                Destroy(InstantiatedObject);
+                var tf = Instantiate(VirtualWalledObjectToDrop, InstantiatedObject.position, Quaternion.Euler(0, desiredAngle, 0)).transform;
+                Destroy(InstantiatedObject.gameObject);
                 InstantiatedObject = tf;
             }
-
-            float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0]);
             if (InstantiatedObject.rotation.eulerAngles.y != desiredAngle)
-                RotateObject(desiredAngle);
+                    RotateObject(desiredAngle);
         }
         else if (PossibleOrientations.Count == 0)
         {
-            IsWalled = false;
-            var tf = Instantiate(VirtualObjectToDrop, InstantiatedObject.position, InstantiatedObject.rotation).transform;
-            Destroy(InstantiatedObject.gameObject);
-            InstantiatedObject = tf;
+            if (IsWalled)
+            {
+                IsWalled = false;
+                var tf = Instantiate(VirtualObjectToDrop, InstantiatedObject.position, Quaternion.identity).transform;
+                Destroy(InstantiatedObject.gameObject);
+                InstantiatedObject = tf;
+            }
         }
 
 		if (Physics.Raycast (ray, out hit)) {
