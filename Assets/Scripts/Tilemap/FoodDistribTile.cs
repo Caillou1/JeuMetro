@@ -14,6 +14,8 @@ public class FoodDistribTile : ATile
 
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
+
+		G.Sys.tilemap.addSpecialTile (type, transform.position);
     }
 
 	public override void Connect (){}
@@ -24,5 +26,7 @@ public class FoodDistribTile : ATile
 
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
+
+		G.Sys.tilemap.delSpecialTile (type, transform.position);
 	}
 }

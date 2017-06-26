@@ -25,13 +25,16 @@ public class BaseEntity : MonoBehaviour
 			CreatePath ();
 
 		var target = path.next (transform.position);
+		if ((transform.position - target).magnitude > 1.5f)
+			RecreatePath ();
+		target += avoidDir;
 		var dir = Vector3.Slerp (transform.forward, target - transform.position, Time.deltaTime * rotationSpeed).normalized;
 		transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (dir, Vector3.up).eulerAngles.y, 0);
-		//todo add avoid dir to direction
-
+		
 		Debug.DrawRay (transform.position, transform.forward, Color.blue);
 
 		rigidbody.velocity = transform.forward.normalized * moveSpeed;
+		avoidDir = new Vector3 ();
 	}
 
 	void CreatePath()
@@ -57,7 +60,7 @@ public class BaseEntity : MonoBehaviour
 		if (Vector3.Dot (transform.forward, dir) < 0)
 			return;
 
-		float isleft = Mathf.Atan2 (dir.z, dir.x) - Mathf.Atan2 (transform.forward.z, transform.forward.x) > 0 ? 1 : -1;
+		float isleft = Mathf.Atan2 (dir.z, dir.x) - Mathf.Atan2 (transform.forward.z, transform.forward.x) > 0 ? -1 : 1;
 		var direction = new Vector3 (-dir.z, 0, dir.x).normalized;
 
 		avoidDir += direction * (2 - dist) / 2 * avoidPower;
