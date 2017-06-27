@@ -55,10 +55,4 @@ public class DragAndDropPodotactile : DragAndDrop, IBeginDragHandler, IDragHandl
 
 		InstantiatedObject = null;
 	}
-
-	void Update() {
-		if (Input.GetButtonDown ("Rotate")) {
-			RotateObject ();
-		}
-	}
 }
