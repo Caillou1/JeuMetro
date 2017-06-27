@@ -75,7 +75,6 @@ public class DragAndDropEscalator : DragAndDrop, IBeginDragHandler, IDragHandler
 		v = G.Sys.tilemap.at (InstantiatedObject.position + 2 * dir);
 		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.at (InstantiatedObject.position + 2 * dir + Vector3.up * 2).Count > 0) {
 			canPlace = false;
-			Debug.Log (v [0].type != TileID.GROUND);
 		}
 
 		//Haut escalator

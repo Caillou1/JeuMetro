@@ -35,7 +35,7 @@ public class DragAndDropPodotactile : DragAndDrop, IBeginDragHandler, IDragHandl
 
 		//Case centrale
 		var v = G.Sys.tilemap.at (InstantiatedObject.position);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || v[v.Count-1].type == TileID.PODOTACTILE)
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && v[0].type != TileID.ESCALATOR) || v[v.Count-1].type == TileID.PODOTACTILE)
 			canPlace = false;
 
 		PointerEventData pointerData = new PointerEventData(EventSystem.current);
