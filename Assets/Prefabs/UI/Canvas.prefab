@@ -70,6 +70,7 @@ GameObject:
   - component: {fileID: 224686044992874318}
   - component: {fileID: 222227570871493712}
   - component: {fileID: 114414296137936346}
+  - component: {fileID: 114619664705159908}
   m_Layer: 5
   m_Name: Podotactile
   m_TagString: Untagged
@@ -731,6 +732,7 @@ GameObject:
   - component: {fileID: 224137639354543480}
   - component: {fileID: 222527202789471042}
   - component: {fileID: 114359202202552752}
+  - component: {fileID: 114053048457122600}
   m_Layer: 5
   m_Name: Infos
   m_TagString: Untagged
@@ -754,7 +756,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1582450748656212
 GameObject:
   m_ObjectHideFlags: 0
@@ -1397,6 +1399,25 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Scores
+--- !u!114 &114053048457122600
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1550269109695386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9db1e215b4e2e44987f3a4a901c788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectToDrop: {fileID: 1233673740986676, guid: db468c739ad28ce4598fa8c2a08d8636,
+    type: 2}
+  VirtualObjectToDrop: {fileID: 1440806193811658, guid: 8a6aa70c5859fea46b88d989652508ed,
+    type: 2}
+  VirtualWalledObjectToDrop: {fileID: 1776075817357124, guid: 39f3446111a357649b1357b7d928bd87,
+    type: 2}
+  WalledObjectToDrop: {fileID: 1842355659254188, guid: 890031450b1b3ec48a20547712a693ca,
+    type: 2}
 --- !u!114 &114055195665478770
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2739,6 +2760,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114619664705159908
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1038834018988870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c28b8d9ee90b4d2b867ab89d80bf9ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObjectToDrop: {fileID: 1198475174211010, guid: fc32fae10450748fd9a1e38f08124e22,
+    type: 2}
+  VirtualObjectToDrop: {fileID: 1448703138241014, guid: 121f214cd2f6f438b8b3858963a54a39,
+    type: 2}
 --- !u!114 &114632947966370422
 MonoBehaviour:
   m_ObjectHideFlags: 1
