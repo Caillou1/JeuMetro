@@ -38,27 +38,63 @@ public class PodotactileTile : ATile
 		List<Orientation> neighbors = new List<Orientation> ();
 
 		var l = G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.PODOTACTILE);
+		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.STAIRS)).Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.ESCALATOR)).ToList();
 		if (l.Count > 0) {
-			Add (l [0], list);
-			neighbors.Add (Orientation.UP);
+			if (l [0].type == TileID.PODOTACTILE) {
+				Add (l [0], list);
+				if(!neighbors.Contains(Orientation.UP))
+					neighbors.Add (Orientation.UP);
+			} else {
+				if(!neighbors.Contains(Orientation.LEFT))
+					neighbors.Add (Orientation.LEFT);
+				if(!neighbors.Contains(Orientation.RIGHT))
+					neighbors.Add (Orientation.RIGHT);
+			}
 		}
 
 		l = G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.PODOTACTILE);
+		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.STAIRS)).Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.ESCALATOR)).ToList();
 		if (l.Count > 0) {
-			Add (l [0], list);
-			neighbors.Add (Orientation.DOWN);
+			if (l [0].type == TileID.PODOTACTILE) {
+				Add (l [0], list);
+				if(!neighbors.Contains(Orientation.DOWN))
+					neighbors.Add (Orientation.DOWN);
+			} else {
+				if(!neighbors.Contains(Orientation.LEFT))
+					neighbors.Add (Orientation.LEFT);
+				if(!neighbors.Contains(Orientation.RIGHT))
+					neighbors.Add (Orientation.RIGHT);
+			}
 		}
 
 		l = G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.PODOTACTILE);
+		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.STAIRS)).Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.ESCALATOR)).ToList();
 		if (l.Count > 0) {
-			Add (l [0], list);
-			neighbors.Add (Orientation.RIGHT);
+			if (l [0].type == TileID.PODOTACTILE) {
+				Add (l [0], list);
+				if(!neighbors.Contains(Orientation.RIGHT))
+					neighbors.Add (Orientation.RIGHT);
+			} else {
+				if(!neighbors.Contains(Orientation.DOWN))
+					neighbors.Add (Orientation.DOWN);
+				if(!neighbors.Contains(Orientation.UP))
+					neighbors.Add (Orientation.UP);
+			}
 		}
 
 		l = G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.PODOTACTILE);
+		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.STAIRS)).Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.ESCALATOR)).ToList();
 		if (l.Count > 0) {
-			Add (l [0], list);
-			neighbors.Add (Orientation.LEFT);
+			if (l [0].type == TileID.PODOTACTILE) {
+				Add (l [0], list);
+				if(!neighbors.Contains(Orientation.LEFT))
+					neighbors.Add (Orientation.LEFT);
+			} else {
+				if(!neighbors.Contains(Orientation.DOWN))
+					neighbors.Add (Orientation.DOWN);
+				if(!neighbors.Contains(Orientation.UP))
+					neighbors.Add (Orientation.UP);
+			}
 		}
 
 		switch (neighbors.Count) {
@@ -132,6 +168,7 @@ public class PodotactileTile : ATile
 	void OnDestroy()
 	{
 		G.Sys.tilemap.delTile (tf.position, this);
+		G.Sys.tilemap.delSpecialTile (TileID.PODOTACTILE, tf.position);
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
 		foreach (var t in connectedTiles)

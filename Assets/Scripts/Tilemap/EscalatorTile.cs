@@ -65,6 +65,15 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up, this, false, true, Tilemap.STAIRS_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up - dir, this, side == EscalatorSide.UP, side != EscalatorSide.UP, Tilemap.STAIRS_PRIORITY);
 
+
+		//Supprime les bandes podotactiles en dessous des escalators
+		var podo = G.Sys.tilemap.tilesOfTypeAt (transform.position, TileID.PODOTACTILE);
+		podo = podo.Concat (G.Sys.tilemap.tilesOfTypeAt (transform.position + dir, TileID.PODOTACTILE)).ToList ();
+
+		foreach (var p in podo) {
+			Destroy (p.gameObject);
+		}
+
 		foreach(var t in G.Sys.tilemap.at(transform.position))
 			t.Connect();
 		foreach(var t in G.Sys.tilemap.at(transform.position + dir))
