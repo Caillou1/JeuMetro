@@ -7,7 +7,6 @@ public class Path
 	public Path(Dictionary<TileID, float> _weights)
 	{
 		points = new List<Vector3> ();
-		startPos = new Vector3 ();
 		endPos = new Vector3 ();
 		weights = _weights;
 	}
@@ -15,7 +14,6 @@ public class Path
 	public void create(Vector3 start, Vector3 end)
 	{
 		points = PathFinder.Path (start, end, weights);
-		startPos = start;
 		endPos = end;
 	}
 
@@ -46,8 +44,12 @@ public class Path
 		}
 	}
 
+	public Vector3 target()
+	{
+		return endPos;
+	}
+
 	List<Vector3> points;
-	Vector3 startPos;
 	Vector3 endPos;
 	Dictionary<TileID, float> weights;
 }

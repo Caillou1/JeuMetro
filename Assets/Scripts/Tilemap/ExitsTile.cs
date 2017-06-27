@@ -16,7 +16,7 @@ public class ExitsTile : ATile
 		
 		type = id;
 
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.EXITS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position, this, true, false, Tilemap.EXITS_PRIORITY);
 
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
@@ -28,15 +28,11 @@ public class ExitsTile : ATile
 	{
 		Vector3i pos = new Vector3i(transform.position);
 
-		List<ATile> list = new List<ATile> ();
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(0, 0, 1)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(0, 0, -1)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(1, 0, 0)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(-1, 0, 0)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(1, 0, 1)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(1, 0, -1)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(-1, 0, 1)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(-1, 0, -1)), list);
+		List<Pair<ATile, Vector3i>> list = new List<Pair<ATile, Vector3i>>();
+		Add(pos + new Vector3i(0, 0, 1), list);
+		Add(pos + new Vector3i(0, 0, -1), list);
+		Add(pos + new Vector3i(1, 0, 0), list);
+		Add(pos + new Vector3i(-1, 0, 0), list);
 
 		applyConnexions (list);
 	}
@@ -47,7 +43,7 @@ public class ExitsTile : ATile
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
 		foreach (var t in connectedTiles)
-			t.targetOf.Remove (this);
+			t.First.targetOf.Remove (this);
 		foreach (var t in targetOf.ToList())
 			t.Connect ();
 

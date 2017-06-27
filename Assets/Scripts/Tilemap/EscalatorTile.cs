@@ -34,18 +34,18 @@ public class EscalatorTile : ATile
 
     public override void Connect()
     {
-		List<ATile> connexions = new List<ATile>();
+		List<Pair<ATile, Vector3i>> connexions = new List<Pair<ATile, Vector3i>>();
 
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
 		var perpendicularDir = new Vector3 (-dir.z, dir.y, dir.x);
 		if (side == EscalatorSide.DOWN) {
-			Add (G.Sys.tilemap.connectableTile (transform.position + 3 * dir), connexions);
-			Add (G.Sys.tilemap.connectableTile (transform.position + 2 * dir + perpendicularDir), connexions);
-			Add (G.Sys.tilemap.connectableTile (transform.position + 2 * dir - perpendicularDir), connexions);
+			Add (transform.position + 3 * dir, connexions);
+			Add (transform.position + 2 * dir + perpendicularDir, connexions);
+			Add (transform.position + 2 * dir - perpendicularDir, connexions);
 		} else {
-			Add (G.Sys.tilemap.connectableTile (transform.position + 2 * Vector3.up - 2 * dir), connexions);
-			Add (G.Sys.tilemap.connectableTile (transform.position + 2 * Vector3.up - dir + perpendicularDir), connexions);
-			Add (G.Sys.tilemap.connectableTile (transform.position + 2 * Vector3.up - dir - perpendicularDir), connexions);
+			Add (transform.position + 2 * Vector3.up - 2 * dir, connexions);
+			Add (transform.position + 2 * Vector3.up - dir + perpendicularDir, connexions);
+			Add (transform.position + 2 * Vector3.up - dir - perpendicularDir, connexions);
 		}
 
 		applyConnexions (connexions);
@@ -59,11 +59,11 @@ public class EscalatorTile : ATile
 
 		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.STAIRS_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + dir, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + 2 * dir, this, side == EscalatorSide.DOWN, side != EscalatorSide.DOWN, Tilemap.STAIRS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position + 2 * dir, this, side == EscalatorSide.UP, side != EscalatorSide.UP, Tilemap.STAIRS_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + Vector3.up, this, false, true, Tilemap.STAIRS_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + Vector3.up + dir, this, false, true, Tilemap.STAIRS_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up - dir, this, side == EscalatorSide.UP, side != EscalatorSide.UP, Tilemap.STAIRS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up - dir, this, side == EscalatorSide.DOWN, side != EscalatorSide.DOWN, Tilemap.STAIRS_PRIORITY);
 
 		foreach(var t in G.Sys.tilemap.at(transform.position))
 			t.Connect();
@@ -109,7 +109,7 @@ public class EscalatorTile : ATile
 			t.Connect();
 
 		foreach (var t in connectedTiles)
-			t.targetOf.Remove (this);
+			t.First.targetOf.Remove (this);
 		foreach (var t in targetOf.ToList())
 			t.Connect ();
 	}

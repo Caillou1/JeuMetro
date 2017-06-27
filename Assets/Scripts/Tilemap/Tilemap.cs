@@ -355,6 +355,7 @@ public class Tilemap
 			if (t.x == pos.x && t.y == pos.y && t.z == pos.z) 
 				return;
 		}
+		specialTiles [id].Add (pos);
 	}
 
 	/// <summary>

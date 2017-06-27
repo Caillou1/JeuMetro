@@ -37,18 +37,18 @@ public class StairsTile : ATile
 
 	public override void Connect ()
 	{
-		List<ATile> connexions = new List<ATile>();
+		List<Pair<ATile, Vector3i>> connexions = new List<Pair<ATile, Vector3i>>();
 
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
 		var perpendicularDir = new Vector3 (-dir.z, dir.y, dir.x);
 
-		Add(G.Sys.tilemap.connectableTile(transform.position + 3 * dir), connexions);
-		Add(G.Sys.tilemap.connectableTile(transform.position + 2 * dir + perpendicularDir), connexions);
-		Add(G.Sys.tilemap.connectableTile(transform.position + 2 * dir - perpendicularDir), connexions);
+		Add(transform.position + 3 * dir, connexions);
+		Add(transform.position + 2 * dir + perpendicularDir, connexions);
+		Add(transform.position + 2 * dir - perpendicularDir, connexions);
 
-		Add(G.Sys.tilemap.connectableTile(transform.position + 2 * Vector3.up - 2 * dir), connexions);
-		Add(G.Sys.tilemap.connectableTile(transform.position + 2 * Vector3.up - dir + perpendicularDir), connexions);
-		Add(G.Sys.tilemap.connectableTile(transform.position + 2 * Vector3.up - dir - perpendicularDir), connexions);
+		Add(transform.position + 2 * Vector3.up - 2 * dir, connexions);
+		Add(transform.position + 2 * Vector3.up - dir + perpendicularDir, connexions);
+		Add(transform.position + 2 * Vector3.up - dir - perpendicularDir, connexions);
 
 		applyConnexions (connexions);
 	}
@@ -81,7 +81,7 @@ public class StairsTile : ATile
 			t.Connect();
 
 		foreach (var t in connectedTiles)
-			t.targetOf.Remove (this);
+			t.First.targetOf.Remove (this);
 		foreach (var t in targetOf.ToList())
 			t.Connect ();
 	}

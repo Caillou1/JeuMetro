@@ -10,15 +10,21 @@ class GroundTile : ATile
     {
 		Vector3i pos = new Vector3i(transform.position);
 
-		List<ATile> list = new List<ATile> ();
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(0, 0, 1)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(0, 0, -1)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(1, 0, 0)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(-1, 0, 0)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(1, 0, 1)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(1, 0, -1)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(-1, 0, 1)), list);
-		Add(G.Sys.tilemap.connectableTile(pos + new Vector3i(-1, 0, -1)), list);
+		List<Pair<ATile, Vector3i>> list = new List<Pair<ATile, Vector3i>> ();
+		Add (pos + new Vector3i (0, 0, 1), list, true);
+		Add(pos + new Vector3i(0, 0, -1), list, true);
+		Add(pos + new Vector3i(1, 0, 0), list, true);
+		Add(pos + new Vector3i(-1, 0, 0), list, true);
+
+		if(list[0].First != null && list[2].First != null)
+			Add(pos + new Vector3i(1, 0, 1), list);
+		if(list[2].First != null && list[1].First != null)
+			Add(pos + new Vector3i(1, 0, -1), list);
+		if(list[3].First != null && list[0].First != null)
+			Add(pos + new Vector3i(-1, 0, 1), list);
+		if(list[3].First != null && list[1].First != null)
+			Add(pos + new Vector3i(-1, 0, -1), list);
+		list.RemoveAll (t => t.First == null);
 
 		applyConnexions (list);
     }
@@ -38,7 +44,7 @@ class GroundTile : ATile
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
 		foreach (var t in connectedTiles)
-			t.targetOf.Remove (this);
+			t.First.targetOf.Remove (this);
 		foreach (var t in targetOf.ToList())
 			t.Connect ();
 	}

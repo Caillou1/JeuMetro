@@ -2,29 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TravelerType
+{
+	CLASSIC,
+	WITH_BAG,
+	WHEELCHAIR,
+	BLIND
+}
+
 [System.Serializable]
 public class TravelerStats {
-	[Range(0f,100f)]
+	public TravelerType Type;
+	[Range(-100f,100f)]
 	public float ElevatorAttraction;
-	[Range(0f,100f)]
+	[Range(-100f,100f)]
 	public float EscalatorAttraction;
-	[Range(0f,100f)]
+	[Range(-100f,100f)]
 	public float StairsAttraction;
-	[Range(0f,100f)]
+	[Range(-100f,100f)]
 	public float RestPlaceAttraction;
-	[Range(0f,100f)]
+	[Range(-100f,100f)]
 	public float Cleanliness;
-	[Range(0f,100f)]
+	[Range(-100f,100f)]
 	public float VisualComprehension;
-	[Range(0f,100f)]
+	[Range(-100f,100f)]
 	public float AudioComprehension;
-	[Range(0f,100f)]
+	[Range(-100f,100f)]
 	public float TouchComprehension;
-	[Range(0f,100f)]
+	[Range(-100f,100f)]
 	public float FaintnessPercentage;
 	public float MovementSpeed;
+	public float RotationSpeed;
 
 	public void SetStats(TravelerStats stats) {
+		Type = stats.Type;
 		ElevatorAttraction = stats.ElevatorAttraction;
 		EscalatorAttraction = stats.EscalatorAttraction;
 		StairsAttraction = stats.StairsAttraction;
@@ -35,5 +46,6 @@ public class TravelerStats {
 		TouchComprehension = stats.TouchComprehension;
 		FaintnessPercentage = stats.FaintnessPercentage;
 		MovementSpeed = stats.MovementSpeed;
+		RotationSpeed = stats.RotationSpeed;
 	}
 }

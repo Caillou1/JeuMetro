@@ -40,7 +40,7 @@ public static class PathFinder
 			return new List<Vector3i> ();
 
 		List<Pair<ATile, float>> nexts = new List<Pair<ATile, float>> ();
-		List<Pair<ATile, ATile>> visiteds = new List<Pair<ATile, ATile>>();
+		List<Pair<ATile, Pair<ATile, Vector3i>>> visiteds = new List<Pair<ATile, Pair<ATile, Vector3i>>>();
 
 		nexts.Add (new Pair<ATile, float> (startTile, 0));
 
@@ -49,13 +49,13 @@ public static class PathFinder
 			nexts.Remove (current);
 
 			foreach (var tile in current.First.connectedTiles) {
-				if (isVisited (tile, visiteds))
+				if (isVisited (tile.First, visiteds))
 					continue;
 
-				visiteds.Add(new Pair<ATile, ATile>(current.First, tile));
-				nexts.Add (new Pair<ATile, float> (tile, current.Second + distance (new Vector3i (current.First.transform.position), new Vector3i (tile.transform.position))));
+				visiteds.Add(new Pair<ATile, Pair<ATile, Vector3i>>(current.First, tile));
+				nexts.Add (new Pair<ATile, float> (tile.First, current.Second + distance (new Vector3i (current.First.transform.position), tile.Second)));
 
-				if (tile == endTile)
+				if (tile.First == endTile)
 					return createPath (visiteds);
 			}
 		}
@@ -96,29 +96,29 @@ public static class PathFinder
 		return minElement;
 	}
 
-	private static bool isVisited(ATile tile, List<Pair<ATile, ATile>> visited)
+	private static bool isVisited(ATile tile, List<Pair<ATile, Pair<ATile, Vector3i>>> visited)
 	{
 		foreach (var t in visited)
-			if (t.Second == tile)
+			if (t.Second.First == tile)
 				return true;
 		return false;
 	}
 
-	private static List<Vector3i> createPath(List<Pair<ATile, ATile>> visited)
+	private static List<Vector3i> createPath(List<Pair<ATile, Pair<ATile, Vector3i>>> visited)
 	{
-		List<ATile> thepath = new List<ATile> ();
-		thepath.Add (visited [visited.Count - 1].Second);
-
-		for (int i = visited.Count - 1; i >= 0; i--) {
-			if (visited [i].Second == thepath [thepath.Count - 1])
-				thepath.Add (visited [i].First);
-		}
-
-		thepath.Reverse ();
+		if (visited.Count == 0)
+			return new List<Vector3i> ();
+		
+		ATile current = visited [visited.Count - 1].Second.First;
 		List<Vector3i> poss = new List<Vector3i> ();
-		foreach (var p in thepath)
-			poss.Add (new Vector3i (p.transform.position));
-
+		for (int i = visited.Count - 1; i >= 0; i--) {
+			if (visited [i].Second.First == current) {
+				poss.Add (visited [i].Second.Second);
+				current = visited [i].First;
+			}
+		}
+		poss.Add (new Vector3i (current.transform.position));
+		poss.Reverse ();
 		return poss;
 	}
 }

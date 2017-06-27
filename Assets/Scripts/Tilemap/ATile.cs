@@ -18,25 +18,32 @@ public enum TileID
 	STAIRS,
 	IN,
 	OUT,
-	METRO
+	METRO,
+	ELEVATOR,
 }
 
 public abstract class ATile : MonoBehaviour
 {
     public ATile()
     {
-        connectedTiles = new List<ATile>();
+		connectedTiles = new List<Pair<ATile, Vector3i>> ();
     }
 
     public abstract void Connect();
 
-	static protected void Add(ATile tile, List<ATile> list)
+	static protected void Add(Vector3 pos, List<Pair<ATile, Vector3i>> list, bool addNull = false)
+	{
+		Add (new Vector3i (pos), list, addNull);
+	}
+
+	static protected void Add(Vector3i pos, List<Pair<ATile, Vector3i>> list, bool addNull = false)
     {
-        if (tile != null)
-            list.Add(tile);
+		var tile = G.Sys.tilemap.connectableTile (pos);
+		if (tile != null || addNull)
+			list.Add(new Pair<ATile, Vector3i>(tile, pos));
     }
 
-	protected static bool validConnexions(List<ATile> first, List<ATile> second)
+	protected static bool validConnexions(List<Pair<ATile, Vector3i>> first, List<Pair<ATile, Vector3i>> second)
 	{
 		if (first == null || second == null)
 			return false;
@@ -45,28 +52,28 @@ public abstract class ATile : MonoBehaviour
 			return false;
 
 		for (int i = 0; i < first.Count; i++)
-			if (first [i] != second [i])
+			if (first [i].First != second [i].First)
 				return false;
 		return true;
 	}
 
-	protected void applyConnexions(List<ATile> list)
+	protected void applyConnexions(List<Pair<ATile, Vector3i>> list)
 	{
 		if (!validConnexions (list, connectedTiles)) {
 			var oldList = connectedTiles.ToList();
 			connectedTiles = list;
 			foreach (var t in oldList) {
-				t.targetOf.Remove (this);
-				t.Connect ();
+				t.First.targetOf.Remove (this);
+				t.First.Connect ();
 			}
 			foreach (var t in list) {
-				t.targetOf.Add (this);
-				t.Connect ();
+				t.First.targetOf.Add (this);
+				t.First.Connect ();
 			}
 		}
 	}
 
-    public List<ATile> connectedTiles { get; protected set; }
+	public List<Pair<ATile, Vector3i>> connectedTiles { get; protected set; }
 	[HideInInspector]
 	public List<ATile> targetOf = new List<ATile> (); 
 	public TileID type { get; protected set; }
