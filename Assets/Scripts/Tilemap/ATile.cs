@@ -18,7 +18,8 @@ public enum TileID
 	STAIRS,
 	IN,
 	OUT,
-	METRO
+	METRO,
+	ELEVATOR
 }
 
 public abstract class ATile : MonoBehaviour
