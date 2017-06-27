@@ -72,10 +72,8 @@ public class DragAndDropBin : DragAndDrop, IBeginDragHandler, IDragHandler, IEnd
 
 	//Le sens de l'escalator est définit par le bas de celui-ci
 	void IEndDragHandler.OnEndDrag(PointerEventData data) {
-		Orientation or = Orienter.angleToOrientation (InstantiatedObject.rotation.eulerAngles.y);
 
 		bool canPlace = true;
-		Vector3 dir = Orienter.orientationToDir3 (or);
 
 		//Case centrale
 		var v = G.Sys.tilemap.at (InstantiatedObject.position);
