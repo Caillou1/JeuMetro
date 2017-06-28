@@ -29,7 +29,10 @@ public abstract class ATile : MonoBehaviour
 		connectedTiles = new List<Pair<ATile, Vector3i>> ();
     }
 
-    public abstract void Connect();
+	public virtual void Connect()
+	{
+		G.Sys.tilemap.at (transform.position);
+	}
 
 	static protected void Add(Vector3 pos, List<Pair<ATile, Vector3i>> list, bool addNull = false)
 	{
@@ -76,5 +79,7 @@ public abstract class ATile : MonoBehaviour
 	public List<Pair<ATile, Vector3i>> connectedTiles { get; protected set; }
 	[HideInInspector]
 	public List<ATile> targetOf = new List<ATile> (); 
+	[HideInInspector]
+	public List<ATile> tilesHere = new List<ATile> ();
 	public TileID type { get; protected set; }
 }

@@ -29,8 +29,10 @@ public class TravelerStats {
 	public float AudioComprehension;
 	[Range(-100f,100f)]
 	public float TouchComprehension;
-	[Range(-100f,100f)]
+	[Range(0f,100f)]
 	public float FaintnessPercentage;
+	[Range(0f,100f)]
+	public float LostAbility;
 	public float MovementSpeed;
 	public float RotationSpeed;
 
@@ -45,6 +47,7 @@ public class TravelerStats {
 		AudioComprehension = stats.AudioComprehension;
 		TouchComprehension = stats.TouchComprehension;
 		FaintnessPercentage = stats.FaintnessPercentage;
+		LostAbility = stats.LostAbility;
 		MovementSpeed = stats.MovementSpeed;
 		RotationSpeed = stats.RotationSpeed;
 	}

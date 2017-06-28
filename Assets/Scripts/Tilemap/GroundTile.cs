@@ -8,6 +8,8 @@ class GroundTile : ATile
 {
     public override void Connect()
     {
+		base.Connect ();
+
 		Vector3i pos = new Vector3i(transform.position);
 
 		List<Pair<ATile, Vector3i>> list = new List<Pair<ATile, Vector3i>> ();

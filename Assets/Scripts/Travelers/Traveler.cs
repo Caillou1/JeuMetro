@@ -20,6 +20,8 @@ public class Traveler : MonoBehaviour
 	public Path path;
 	[HideInInspector]
 	public Vector3 destination;
+	[HideInInspector]
+	public TravelerDatas datas = new TravelerDatas ();
 
 	void Awake()
 	{
@@ -31,6 +33,7 @@ public class Traveler : MonoBehaviour
 		states.Add (new EscalatorState (this));
 
 		configurePathfinder ();
+		configureDatasFromStats ();
 	}
 
 	void Start()
@@ -42,6 +45,8 @@ public class Traveler : MonoBehaviour
 
 	void Update() 
 	{
+		updateDatas ();
+
 		checkNextState ();
 
 		states [stateIndex].update ();
@@ -115,7 +120,7 @@ public class Traveler : MonoBehaviour
 		if (Vector3.Dot (transform.forward, dir) < 0)
 			return;
 
-		float isleft = Mathf.Atan2 (dir.z, dir.x) - Mathf.Atan2 (transform.forward.z, transform.forward.x) > 0 ? -1 : 1;
+		//float isleft = Mathf.Atan2 (dir.z, dir.x) - Mathf.Atan2 (transform.forward.z, transform.forward.x) > 0 ? -1 : 1;
 		var direction = new Vector3 (-dir.z, 0, dir.x).normalized;
 
 		avoidDir += direction * (2 - dist) / 2 * avoidPower;
@@ -151,6 +156,28 @@ public class Traveler : MonoBehaviour
 		path = new Path (dico);
 	}
 
+	void configureDatasFromStats()
+	{
+		datas.Speed = Stats.MovementSpeed / (Stats.FaintnessPercentage / 100f + 1);
+		datas.Dirtiness =  0.5f - Stats.Cleanliness / 200f;
+		datas.Lostness = Stats.LostAbility / 100f;
+		datas.Waste = 0;
+		datas.Tiredness = Stats.FaintnessPercentage / 100f;
+	}
+
+	void updateDatas()
+	{
+		if (datas.Waste == 0)
+			datas.Dirtiness = 0.5f - Stats.Cleanliness / 200f;
+		else
+			datas.Dirtiness += 0.5f - Stats.Cleanliness / 200f * datas.Waste * Time.deltaTime;
+
+		datas.Lostness += Stats.LostAbility / 100f * Stats.LostAbility / 100f * Time.deltaTime;
+
+		datas.Speed = Stats.MovementSpeed / (datas.Tiredness + 1);
+		datas.Tiredness += Stats.FaintnessPercentage / 100f * Stats.FaintnessPercentage / 100f * Time.deltaTime;
+	}
+
 	float statValueToPathWeight(float value)
 	{
 		return Mathf.Pow (2, -value / 30);
@@ -158,7 +185,7 @@ public class Traveler : MonoBehaviour
 
 	void OnPathFinished()
 	{
-		path.create (transform.position, destination);
+		Updatepath ();
 	}
 
 	void InitialiseTarget()
@@ -174,5 +201,10 @@ public class Traveler : MonoBehaviour
 	{
 		if (G.Sys.tilemap.haveSpecialTileAt (TileID.OUT, transform.position))
 			Destroy (gameObject);
+	}
+
+	public void Updatepath()
+	{
+		path.create (transform.position, destination, datas.Lostness);
 	}
 }

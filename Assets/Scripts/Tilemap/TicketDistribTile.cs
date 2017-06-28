@@ -18,8 +18,6 @@ public class TicketDistribTile : ATile
 		G.Sys.tilemap.addSpecialTile (type, transform.position);
     }
 
-	public override void Connect (){}
-
 	void OnDestroy()
 	{
 		G.Sys.tilemap.delTile (transform.position, this);

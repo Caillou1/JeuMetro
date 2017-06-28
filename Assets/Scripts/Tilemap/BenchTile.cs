@@ -23,8 +23,6 @@ public class BenchTile : ATile
 		G.Sys.tilemap.addSpecialTile (type, transform.position + new Vector3 (dir.x, 0, dir.y));
     }
 
-	public override void Connect (){}
-
 	void OnDestroy()
 	{
 		var dir = Orienter.orientationToDir(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));

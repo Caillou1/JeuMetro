@@ -78,7 +78,7 @@ public class StairsState : AState
 		case 1:
 			{
 				var dest = stair.transform.position - stairsDir + 2 * Vector3.up;
-				traveler.rigidbody.velocity = (dest - traveler.transform.position).normalized * traveler.Stats.MovementSpeed * stairsSpeedMultiplier;
+				traveler.rigidbody.velocity = (dest - traveler.transform.position).normalized * traveler.datas.Speed * stairsSpeedMultiplier;
 				traveler.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (traveler.rigidbody.velocity.x, 0, traveler.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
 				if (new Vector3i (dest).equal (new Vector3i (traveler.transform.position)))
@@ -87,7 +87,7 @@ public class StairsState : AState
 			break;
 		case 2:
 			{
-				traveler.path.create (traveler.transform.position, traveler.destination);
+				traveler.Updatepath ();
 				traveler.BackToMoveState ();
 			}
 			break;
@@ -112,7 +112,7 @@ public class StairsState : AState
 		case 1:
 			{
 				var dest = stair.transform.position + 2 * stairsDir ;
-				traveler.rigidbody.velocity = (dest - traveler.transform.position).normalized * traveler.Stats.MovementSpeed * stairsSpeedMultiplier;
+				traveler.rigidbody.velocity = (dest - traveler.transform.position).normalized * traveler.datas.Speed * stairsSpeedMultiplier;
 				traveler.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (traveler.rigidbody.velocity.x, 0, traveler.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
 				if (new Vector3i (dest).equal (new Vector3i (traveler.transform.position)))
@@ -121,7 +121,7 @@ public class StairsState : AState
 			break;
 		case 2:
 			{
-				traveler.path.create (traveler.transform.position, traveler.destination);
+				traveler.Updatepath ();
 				traveler.BackToMoveState ();
 			}
 			break;

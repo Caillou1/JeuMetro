@@ -60,7 +60,7 @@ public class BaseEntity : MonoBehaviour
 		if (Vector3.Dot (transform.forward, dir) < 0)
 			return;
 
-		float isleft = Mathf.Atan2 (dir.z, dir.x) - Mathf.Atan2 (transform.forward.z, transform.forward.x) > 0 ? -1 : 1;
+		//float isleft = Mathf.Atan2 (dir.z, dir.x) - Mathf.Atan2 (transform.forward.z, transform.forward.x) > 0 ? -1 : 1;
 		var direction = new Vector3 (-dir.z, 0, dir.x).normalized;
 
 		avoidDir += direction * (2 - dist) / 2 * avoidPower;

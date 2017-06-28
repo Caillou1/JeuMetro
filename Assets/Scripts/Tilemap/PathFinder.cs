@@ -12,9 +12,9 @@ public static class PathFinder
 	/// </summary>
 	/// <param name="start">Start.</param>
 	/// <param name="end">End.</param>
-	public static List<Vector3> Path (Vector3 start, Vector3 end, Dictionary<TileID, float> weights = default(Dictionary<TileID, float>))
+	public static List<Vector3> Path (Vector3 start, Vector3 end, Dictionary<TileID, float> weights = default(Dictionary<TileID, float>), int maxIteration = int.MaxValue)
 	{
-		var p = Path (new Vector3i (start), new Vector3i (end));
+		var p = Path (new Vector3i (start), new Vector3i (end), weights, maxIteration);
 		List<Vector3> endPath = new List<Vector3> ();
 		foreach (var item in p)
 			endPath.Add (item.toVector3 ());
@@ -26,7 +26,7 @@ public static class PathFinder
 	/// </summary>
 	/// <param name="start">Start.</param>
 	/// <param name="end">End.</param>
-	public static List<Vector3i> Path(Vector3i start, Vector3i end, Dictionary<TileID, float> weights = default(Dictionary<TileID, float>))
+	public static List<Vector3i> Path(Vector3i start, Vector3i end, Dictionary<TileID, float> weights = default(Dictionary<TileID, float>), int maxIteration = int.MaxValue)
 	{
 		if (weights == null)
 			weights = new Dictionary<TileID, float> ();
@@ -44,8 +44,10 @@ public static class PathFinder
 
 		nexts.Add (new Pair<ATile, float> (startTile, 0));
 
-		while (nexts.Count > 0) {
-			var current = Min (nexts, end, weights);
+		int iteration = 0;
+
+		while (nexts.Count > 0 && iteration ++ < maxIteration) {
+			var current = Min (nexts, start, end, weights);
 			nexts.Remove (current);
 
 			foreach (var tile in current.First.connectedTiles) {
@@ -68,10 +70,14 @@ public static class PathFinder
 
 	private static float distance(Vector3i start, Vector3i end)
 	{
-		return Mathf.Abs (start.y - end.y) * verticalDistanceMultiplier + new Vector2 (start.x - end.x, start.z - end.z).magnitude;
+		int x = Mathf.Abs (start.x - end.x);
+		int y = Mathf.Abs (start.z - end.z);
+		int diagonal = Mathf.Min (x, y);
+
+		return Mathf.Abs (start.y - end.y) * verticalDistanceMultiplier + diagonal * 1.5f + (x + y - 2 * diagonal);
 	}
 
-	private static Pair<ATile, float> Min(List<Pair<ATile, float>> list, Vector3i end, Dictionary<TileID, float> weights)
+	private static Pair<ATile, float> Min(List<Pair<ATile, float>> list, Vector3i start, Vector3i end, Dictionary<TileID, float> weights)
 	{
 		float minValue = float.MaxValue;
 		Pair<ATile, float> minElement = null;
@@ -79,10 +85,9 @@ public static class PathFinder
 		{
 			float weight = 0;
 			int count = 0;
-			var tiles = G.Sys.tilemap.at (it.First.transform.position);
-			foreach (var tile in tiles)
+			foreach (var tile in it.First.tilesHere)
 				if (weights.ContainsKey (it.First.type)) {
-					weight = weights [it.First.type];
+					weight += weights [it.First.type];
 					count++;
 				}
 			if (count == 0)
