@@ -33,4 +33,9 @@ public class Vector3i
     {
         return new Vector3i(a.x + b.x, a.y + b.y, a.z + b.z);
     }
+
+	public bool equal(Vector3i other)
+	{
+		return x == other.x && y == other.y && z == other.z;
+	}
 }

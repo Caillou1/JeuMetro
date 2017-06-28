@@ -55,8 +55,11 @@ public static class PathFinder
 				visiteds.Add(new Pair<ATile, Pair<ATile, Vector3i>>(current.First, tile));
 				nexts.Add (new Pair<ATile, float> (tile.First, current.Second + distance (new Vector3i (current.First.transform.position), tile.Second)));
 
-				if (tile.First == endTile)
-					return createPath (visiteds);
+				if (tile.First == endTile) {
+					var p = createPath (visiteds);
+					p.Insert (0, start);
+					return p;
+				}
 			}
 		}
 
@@ -117,7 +120,6 @@ public static class PathFinder
 				current = visited [i].First;
 			}
 		}
-		poss.Add (new Vector3i (current.transform.position));
 		poss.Reverse ();
 		return poss;
 	}

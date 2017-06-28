@@ -11,7 +11,7 @@ public class Traveler : MonoBehaviour
 	int stateIndex = 0;
 
 	[HideInInspector]
-	public Rigidbody rigidbody;
+	public new Rigidbody rigidbody;
 
 	public float avoidPower = 1.0f;
 	[HideInInspector]
@@ -26,7 +26,10 @@ public class Traveler : MonoBehaviour
 		G.Sys.registerTraveler (this);
 		rigidbody = GetComponent<Rigidbody> ();
 
-		states.Add(new MoveState(this));
+		states.Add (new MoveState (this));
+		states.Add (new StairsState (this));
+		states.Add (new EscalatorState (this));
+
 		configurePathfinder ();
 	}
 
@@ -45,11 +48,18 @@ public class Traveler : MonoBehaviour
 
 		if (path.finished ())
 			OnPathFinished ();
+
+		DestroyOnExit ();
 	}
 
 	void OnDestroy()
 	{
 		G.Sys.removeTraveler (this);
+	}
+
+	public void BackToMoveState()
+	{
+		SetNextState (StateType.MOVE);
 	}
 
 	public void SetNextState(StateType type)
@@ -77,15 +87,15 @@ public class Traveler : MonoBehaviour
 
 	void checkNextState()
 	{
+		if (!states [stateIndex].canBeStopped())
+			return;
 		int bestWeight = int.MinValue;
 		int bestIndex = -1;
 		for (int i = 0; i < states.Count; i++) {
-			if (!states [i].canBeStopped())
-				return;
 			int v = states [i].check ();
 			if (v > bestWeight) {
 				bestIndex = i;
-					bestWeight = v;
+				bestWeight = v;
 			}
 		}
 
@@ -154,10 +164,15 @@ public class Traveler : MonoBehaviour
 	void InitialiseTarget()
 	{
 		var tiles = G.Sys.tilemap.getSpecialTiles (TileID.OUT);
-		Debug.Log (tiles.Count);
 		if (tiles.Count == 0)
 			return;
 
 		destination = tiles[new UniformIntDistribution (tiles.Count-1).Next(new StaticRandomGenerator<DefaultRandomGenerator> ())];
+	}
+
+	void DestroyOnExit()
+	{
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.OUT, transform.position))
+			Destroy (gameObject);
 	}
 }
