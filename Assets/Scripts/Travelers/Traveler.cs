@@ -23,6 +23,8 @@ public class Traveler : MonoBehaviour
 	[HideInInspector]
 	public TravelerDatas datas = new TravelerDatas ();
 
+	float lostNessOnLastPath = 0;
+
 	void Awake()
 	{
 		G.Sys.registerTraveler (this);
@@ -172,7 +174,21 @@ public class Traveler : MonoBehaviour
 		else
 			datas.Dirtiness += 0.5f - Stats.Cleanliness / 200f * datas.Waste * Time.deltaTime;
 
-		datas.Lostness += Stats.LostAbility / 100f * Stats.LostAbility / 100f * Time.deltaTime;
+		var infoPannels = G.Sys.tilemap.getSpecialTiles (TileID.INFOPANEL);
+		float infoPannelsPower = 0;
+		foreach (var i in infoPannels) {
+			var dist = (i - transform.position);
+			var d = new Vector2 (dist.x, dist.z).magnitude + 5 * dist.y;
+			if (d > 6)
+				continue;
+			infoPannelsPower += 1 - (d / 6);
+		}
+		infoPannelsPower = Mathf.Max(infoPannelsPower < 1 ? infoPannelsPower : 1.5f - 0.5f * infoPannelsPower, 0);
+		var lostness = infoPannelsPower < 0.5f ? Stats.LostAbility / 100f * Stats.LostAbility / 100f * (0.5f - infoPannelsPower) : -infoPannelsPower + 0.5f;
+		datas.Lostness += lostness * Time.deltaTime;
+		datas.Lostness = Mathf.Clamp (datas.Lostness, 0, 1);
+		if (Mathf.Abs (datas.Lostness - lostNessOnLastPath) > 0.2f)
+			Updatepath ();
 
 		datas.Speed = Stats.MovementSpeed / (datas.Tiredness + 1);
 		datas.Tiredness += Stats.FaintnessPercentage / 100f * Stats.FaintnessPercentage / 100f * Time.deltaTime;
@@ -206,5 +222,6 @@ public class Traveler : MonoBehaviour
 	public void Updatepath()
 	{
 		path.create (transform.position, destination, datas.Lostness);
+		lostNessOnLastPath = datas.Lostness;
 	}
 }

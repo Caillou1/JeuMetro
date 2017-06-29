@@ -14,6 +14,8 @@ public class InfoPanelTile : ATile
 
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
+
+		G.Sys.tilemap.addSpecialTile (type, transform.position);
     }
 
 	protected override void OnDestroy()
@@ -22,5 +24,7 @@ public class InfoPanelTile : ATile
 
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
+
+		G.Sys.tilemap.delSpecialTile (type, transform.position);
 	}
 }
