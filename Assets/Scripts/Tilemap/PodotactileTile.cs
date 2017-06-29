@@ -45,12 +45,11 @@ public class PodotactileTile : ATile
 			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.METRO))
 			.ToList();
 		if (l.Count > 0) {
-			foreach(var c in l)
 			if (l [0].type == TileID.PODOTACTILE) {
 				list.Add (l [0]);
 				if (!neighbors.Contains (Orientation.UP))
 					neighbors.Add (Orientation.UP);
-				} else if (l [0].type == TileID.ESCALATOR || l[0].type == TileID.STAIRS) {
+			} else if ((l [0].type == TileID.ESCALATOR && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward * 2), TileID.ESCALATOR).Count > 0 ) || (l[0].type == TileID.STAIRS && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward * 2), TileID.STAIRS).Count > 0)) {
 				if (!neighbors.Contains (Orientation.LEFT))
 					neighbors.Add (Orientation.LEFT);
 				if (!neighbors.Contains (Orientation.RIGHT))
@@ -73,7 +72,7 @@ public class PodotactileTile : ATile
 				list.Add(l[0]);
 				if(!neighbors.Contains(Orientation.DOWN))
 					neighbors.Add (Orientation.DOWN);
-			} else if (l[0].type == TileID.ESCALATOR || l[0].type == TileID.STAIRS) {
+			} else if ((l[0].type == TileID.ESCALATOR && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back * 2), TileID.ESCALATOR).Count > 0 ) || (l[0].type == TileID.STAIRS && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back * 2), TileID.STAIRS).Count > 0)) {
 				if(!neighbors.Contains(Orientation.LEFT))
 					neighbors.Add (Orientation.LEFT);
 				if(!neighbors.Contains(Orientation.RIGHT))
@@ -96,7 +95,7 @@ public class PodotactileTile : ATile
 				list.Add(l[0]);
 				if(!neighbors.Contains(Orientation.RIGHT))
 					neighbors.Add (Orientation.RIGHT);
-			} else if (l[0].type == TileID.ESCALATOR || l[0].type == TileID.STAIRS) {
+			} else if ((l[0].type == TileID.ESCALATOR && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right * 2), TileID.ESCALATOR).Count > 0 ) || (l[0].type == TileID.STAIRS && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right * 2), TileID.STAIRS).Count > 0)) {
 				if(!neighbors.Contains(Orientation.DOWN))
 					neighbors.Add (Orientation.DOWN);
 				if(!neighbors.Contains(Orientation.UP))
@@ -119,7 +118,7 @@ public class PodotactileTile : ATile
 				list.Add(l[0]);
 				if(!neighbors.Contains(Orientation.LEFT))
 					neighbors.Add (Orientation.LEFT);
-			} else if (l[0].type == TileID.ESCALATOR || l[0].type == TileID.STAIRS) {
+			} else if ((l[0].type == TileID.ESCALATOR && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left * 2), TileID.ESCALATOR).Count > 0 ) || (l[0].type == TileID.STAIRS && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left * 2), TileID.STAIRS).Count > 0)) {
 				if(!neighbors.Contains(Orientation.DOWN))
 					neighbors.Add (Orientation.DOWN);
 				if(!neighbors.Contains(Orientation.UP))

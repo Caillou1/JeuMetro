@@ -38,6 +38,7 @@ public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
 			if (raycastResults.Count > 0) {
 				spawnedObject.GetComponent<DragAndDrop> ().DeleteObject ();
+				G.Sys.cameraController.IsSelecting = false;
 			} else {
 				spawnedObject.GetComponent<DragAndDrop> ().OnMouseUp ();
 			}

@@ -31,6 +31,10 @@ public class EscalatorTile : ATile
         }
         get { return _side; }
     }
+
+	public void SetSide(EscalatorSide s) {
+		_side = s;
+	}
 		
     public override void Connect()
     {

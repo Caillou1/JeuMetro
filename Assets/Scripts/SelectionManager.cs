@@ -49,9 +49,9 @@ public class SelectionManager : MonoBehaviour {
 		} else {
 			var e = obj.GetComponent<EscalatorTile> ();
 			if (e.side == EscalatorSide.DOWN)
-				e.side = EscalatorSide.UP;
+				e.SetSide (EscalatorSide.UP);
 			else
-				e.side = EscalatorSide.DOWN;
+				e.SetSide (EscalatorSide.DOWN);
 		}
 	}
 
