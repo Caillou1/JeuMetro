@@ -18,10 +18,10 @@ public class EscalatorTile : ATile
         {
             _side = value;
 
-			var dir = Orienter.orientationToDir(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+			var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
 
-			var up = G.Sys.tilemap.tileInfosOf(this, transform.position + new Vector3(-dir.x, 1, -dir.y));
-			var down = G.Sys.tilemap.tileInfosOf (this, transform.position + new Vector3 (dir.x, 0, dir.y));
+			var up = G.Sys.tilemap.tileInfosOf(this, transform.position + 2 * Vector3.up - dir);
+			var down = G.Sys.tilemap.tileInfosOf (this, transform.position + 2 * dir);
 			up.canBeConnected = side == EscalatorSide.DOWN;
 			up.preventConnexions = side != EscalatorSide.DOWN;
 			down.canBeConnected = side == EscalatorSide.UP;
