@@ -42,6 +42,7 @@ public class Tilemap
 	public const int ESCALATOR_PRIORITY = 10;
     public const int BIN_PRIORITY = 10;
 	public const int STAIRS_PRIORITY = 10;
+	public const int ELEVATOR_PRIORITY = 10;
 
 	private List<TilemapInfo> tiles = new List<TilemapInfo> ();
 	private Dictionary<TileID, List<Vector3i>> specialTiles = new Dictionary<TileID, List<Vector3i>> ();

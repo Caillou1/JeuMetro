@@ -5,70 +5,107 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
-	public GameObject ObjectToDrop;
-	public GameObject VirtualObjectToDrop;
-
-	protected Transform InstantiatedObject;
+public class DragAndDrop : MonoBehaviour{
+	protected Transform tf;
 	protected int Rotations = 0;
 	protected bool isRotating = false;
+	protected bool canPlace;
+	[HideInInspector]
+	public bool CanDrag = false;
+	protected bool Dragging = false;
 
-
-	void IBeginDragHandler.OnBeginDrag(PointerEventData data) {
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		Vector3 pos = ray.origin + (ray.direction * 1000);
-		InstantiatedObject = Instantiate (VirtualObjectToDrop, pos, Quaternion.identity).transform;
+	void Awake() {
+		tf = transform;
+		isRotating = false;
+		CheckCanPlace ();
+		CheckRotation ();
 	}
 
-	void IDragHandler.OnDrag(PointerEventData data) {
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		RaycastHit hit;
+	protected virtual void CheckCanPlace() {
+		canPlace = true; 
 
-		if (Physics.Raycast (ray, out hit)) {
-			if (hit.transform.CompareTag ("Ground")) {
-				Vector3 objPos = hit.transform.position;
-				InstantiatedObject.position = new Vector3 (Mathf.RoundToInt (objPos.x), Mathf.RoundToInt (objPos.y), Mathf.RoundToInt (objPos.z));
-			}
-		} else {
-			Vector3 pos = ray.origin + (ray.direction * 1000);
-			InstantiatedObject.position = new Vector3 (Mathf.RoundToInt (pos.x), Mathf.RoundToInt (pos.y), Mathf.RoundToInt (pos.z));
-		}
-
+		var v = G.Sys.tilemap.at (tf.position);
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position, TileID.ESCALATOR).Count > 0)
+			canPlace = false;
 	}
 
-	void IEndDragHandler.OnEndDrag(PointerEventData data) {
-		PointerEventData pointerData = new PointerEventData(EventSystem.current);
-		List<RaycastResult> results = new List<RaycastResult>();
-		
-		pointerData.position = Input.mousePosition;
-		EventSystem.current.RaycastAll(pointerData, results);
+	protected virtual void CheckRotation() {}
 
-		if (results.Count > 0 && results [0].gameObject == gameObject) {
-			Destroy (InstantiatedObject.gameObject);
-		} else {
-			var col = InstantiatedObject.GetComponent<Collider> ();
-			if(col!=null)
-				col.enabled = true;
-			foreach (var c in transform.GetComponentsInChildren<Collider>()) {
-				c.enabled = true;
-			}
+	protected void OnMouseDown() {
+		List<RaycastResult> raycastResults = new List<RaycastResult> ();
+		PointerEventData ped = new PointerEventData (EventSystem.current);
+		ped.position = Input.mousePosition;
+		EventSystem.current.RaycastAll (ped, raycastResults);
+
+		if (CanDrag && raycastResults.Count == 0) {
+			StartDrag ();
 		}
+	}
 
-		InstantiatedObject = null;
+	public void StartDrag() {
+		G.Sys.selectionManager.Hide (false);
+		G.Sys.cameraController.CanDrag = false;
+		Dragging = true;
+
+		foreach (var c in tf.GetComponentsInChildren<Collider>()) {
+			c.enabled = false;
+		}
 	}
 
 	void Update() {
-		if (Input.GetButtonDown ("Rotate")) {
-			RotateObject ();
+		if (Dragging && CanDrag) {
+			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			RaycastHit[] hit;
+			hit = Physics.RaycastAll (ray);
+
+			if (hit.Length>0) {
+				if (hit[0].transform.CompareTag ("Ground")) {
+					Vector3 objPos = hit[0].transform.position;
+					tf.position = new Vector3 (Mathf.RoundToInt (objPos.x), Mathf.RoundToInt (objPos.y), Mathf.RoundToInt (objPos.z));
+				} else if (hit[0].transform.gameObject == gameObject && hit.Length > 1 && hit[1].transform.CompareTag ("Ground")) {
+					Vector3 objPos = hit[1].transform.position;
+					tf.position = new Vector3 (Mathf.RoundToInt (objPos.x), Mathf.RoundToInt (objPos.y), Mathf.RoundToInt (objPos.z));
+				}
+			} else {
+				Vector3 pos = ray.origin + (ray.direction * 1000);
+				tf.position = new Vector3 (Mathf.RoundToInt (pos.x), Mathf.RoundToInt (pos.y), Mathf.RoundToInt (pos.z));
+			}
+
+			CheckCanPlace ();
+			CheckRotation ();
+		}
+	}
+
+	public void OnMouseUp() {
+		if (CanDrag) {
+			G.Sys.selectionManager.Show (this);
+			G.Sys.cameraController.CanDrag = true;
+
+			foreach (var c in tf.GetComponentsInChildren<Collider>()) {
+				c.enabled = true;
+			}
+
+			Dragging = false;
+		}
+	}
+
+	public void DeleteObject() {
+		Destroy (gameObject);
+	}
+
+	public void ValidateObject() {
+		if (canPlace) {
+			G.Sys.selectionManager.Hide (true);
+			CanDrag = false;
 		}
 	}
 		
-	protected void RotateObject() {
+	public void RotateObject() {
 		if (isRotating) {
 			Rotations++;
 		} else {
 			isRotating = true;
-			if(InstantiatedObject != null) InstantiatedObject.DORotate (new Vector3 (0, InstantiatedObject.rotation.eulerAngles.y + 90, 0), .3f, RotateMode.FastBeyond360).OnComplete(() => {
+			if(tf != null) tf.DORotate (new Vector3 (0, tf.rotation.eulerAngles.y + 90, 0), .3f, RotateMode.FastBeyond360).OnComplete(() => {
 				if(Rotations > 0) {
 					Rotations--;
 					isRotating = false;
@@ -81,6 +118,6 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 	}
 
 	protected void RotateObject(float desiredAngle) {
-		InstantiatedObject.DORotate (new Vector3 (0, desiredAngle, 0), .3f, RotateMode.FastBeyond360);
+		tf.DORotate (new Vector3 (0, desiredAngle, 0), .3f, RotateMode.FastBeyond360);
 	}
 }

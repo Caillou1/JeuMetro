@@ -5,109 +5,40 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class DragAndDropBin : DragAndDrop, IBeginDragHandler, IDragHandler, IEndDragHandler {
-    public GameObject VirtualWalledObjectToDrop;
-    public GameObject WalledObjectToDrop;
+public class DragAndDropBin : DragAndDrop {
 
-    private bool IsWalled;
+	private bool IsWalled;
 
-	void IBeginDragHandler.OnBeginDrag(PointerEventData data) {
-        IsWalled = false;
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		Vector3 pos = ray.origin + (ray.direction * 1000);
-		InstantiatedObject = Instantiate (VirtualObjectToDrop, pos, Quaternion.identity).transform;
-	}
-
-	void IDragHandler.OnDrag(PointerEventData data) {
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		RaycastHit hit;
-
-		Orientation or = Orienter.angleToOrientation (InstantiatedObject.rotation.eulerAngles.y);
+	protected override void CheckRotation() {
+		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
 		List<Orientation> PossibleOrientations = new List<Orientation> ();
 
-		if (G.Sys.tilemap.at (InstantiatedObject.position + Vector3.forward).Count == 0)
+		if (G.Sys.tilemap.at (tf.position + Vector3.forward).Count == 0)
 			PossibleOrientations.Add (Orientation.LEFT);
-		if (G.Sys.tilemap.at (InstantiatedObject.position + Vector3.back).Count == 0)
+		if (G.Sys.tilemap.at (tf.position + Vector3.back).Count == 0)
 			PossibleOrientations.Add (Orientation.RIGHT);
-		if (G.Sys.tilemap.at (InstantiatedObject.position + Vector3.right).Count == 0)
+		if (G.Sys.tilemap.at (tf.position + Vector3.right).Count == 0)
 			PossibleOrientations.Add (Orientation.UP);
-		if (G.Sys.tilemap.at (InstantiatedObject.position + Vector3.left).Count == 0)
+		if (G.Sys.tilemap.at (tf.position + Vector3.left).Count == 0)
 			PossibleOrientations.Add (Orientation.DOWN);
 
-        if (PossibleOrientations.Count > 0 && !PossibleOrientations.Contains(or))
-        {
-            float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0]);
+		if (PossibleOrientations.Count > 0 && (!PossibleOrientations.Contains(or) || !IsWalled))
+		{
+			float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0]);
 
-            if (!IsWalled)
-            {
-                IsWalled = true;
-                var tf = Instantiate(VirtualWalledObjectToDrop, InstantiatedObject.position, Quaternion.Euler(0, desiredAngle, 0)).transform;
-                Destroy(InstantiatedObject.gameObject);
-                InstantiatedObject = tf;
-            }
-            if (InstantiatedObject.rotation.eulerAngles.y != desiredAngle)
-                    RotateObject(desiredAngle);
-        }
-        else if (PossibleOrientations.Count == 0)
-        {
-            if (IsWalled)
-            {
-                IsWalled = false;
-                var tf = Instantiate(VirtualObjectToDrop, InstantiatedObject.position, Quaternion.identity).transform;
-                Destroy(InstantiatedObject.gameObject);
-                InstantiatedObject = tf;
-            }
-        }
-
-		if (Physics.Raycast (ray, out hit)) {
-			if (hit.transform.CompareTag ("Ground")) {
-				Vector3 objPos = hit.transform.position;
-				InstantiatedObject.position = new Vector3 (Mathf.RoundToInt (objPos.x), Mathf.RoundToInt (objPos.y), Mathf.RoundToInt (objPos.z));
+			if (!IsWalled)
+			{
+				IsWalled = true;
 			}
-		} else {
-			Vector3 pos = ray.origin + (ray.direction * 1000);
-			InstantiatedObject.position = new Vector3 (Mathf.RoundToInt (pos.x), Mathf.RoundToInt (pos.y), Mathf.RoundToInt (pos.z));
+			if (tf.rotation.eulerAngles.y != desiredAngle)
+				RotateObject(desiredAngle);
 		}
-	}
-
-	//Le sens de l'escalator est définit par le bas de celui-ci
-	void IEndDragHandler.OnEndDrag(PointerEventData data) {
-		Orientation or = Orienter.angleToOrientation (InstantiatedObject.rotation.eulerAngles.y);
-
-		bool canPlace = true;
-		Vector3 dir = Orienter.orientationToDir3 (or);
-
-		//Case centrale
-		var v = G.Sys.tilemap.at (InstantiatedObject.position);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(InstantiatedObject.position, TileID.ESCALATOR).Count > 0)
-			canPlace = false;
-
-		PointerEventData pointerData = new PointerEventData(EventSystem.current);
-		List<RaycastResult> results = new List<RaycastResult>();
-
-		pointerData.position = Input.mousePosition;
-		EventSystem.current.RaycastAll(pointerData, results);
-
-		if ((results.Count > 0 && results [0].gameObject == gameObject) || !canPlace) {
-			Destroy (InstantiatedObject.gameObject);
-		} else {
-            if (IsWalled)
-            {
-                Instantiate(WalledObjectToDrop, InstantiatedObject.position, InstantiatedObject.rotation);
-            }
-            else
-            {
-                Instantiate(ObjectToDrop, InstantiatedObject.position, InstantiatedObject.rotation);
-            }
-			Destroy (InstantiatedObject.gameObject);
-		}
-
-		InstantiatedObject = null;
-	}
-
-	void Update() {
-		if (Input.GetButtonDown ("Rotate")) {
-			RotateObject ();
+		else if (PossibleOrientations.Count == 0)
+		{
+			if (IsWalled)
+			{
+				IsWalled = false;
+			}
 		}
 	}
 }

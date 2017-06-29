@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public enum Menu {
 	Main,
@@ -12,11 +13,24 @@ public enum Menu {
 	Score,
 	Game,
 	SGP,
+	Shop,
 	NONE
 }
 
 public class MenuManager : MonoBehaviour {
 	public Menu CurrentMenu = Menu.NONE;
+
+	public float[] ZoomLevels;
+
+	public GameObject Escalator;
+	public GameObject Bench;
+	public GameObject TicketDistrib;
+	public GameObject FoodDistrib;
+	public GameObject Bin;
+	public GameObject InfoPanel;
+	public GameObject Podotactile;
+
+	private int CurrentZoomLevel;
 
 	private Menu LastMenu = Menu.NONE;
 
@@ -26,6 +40,7 @@ public class MenuManager : MonoBehaviour {
 	private GameObject PauseUI;
 	private GameObject ScoreUI;
 	private GameObject GameUI;
+	private GameObject ShopUI;
 	private GameObject SGPUI;
 	private GameObject BlackScreen;
 
@@ -39,8 +54,14 @@ public class MenuManager : MonoBehaviour {
 		PauseUI = tf.Find ("PauseUI").gameObject;
 		ScoreUI = tf.Find ("ScoresUI").gameObject;
 		GameUI = tf.Find ("GameUI").gameObject;
+		ShopUI = GameUI.transform.Find ("ShopUI").gameObject;
 		SGPUI = tf.Find ("SGPUI").gameObject;
 		BlackScreen = tf.Find ("BlackScreen").gameObject;
+
+		ParametersUI.transform.Find ("FullscreenToggle").GetComponent<Toggle> ().isOn = Screen.fullScreen;
+
+		CurrentZoomLevel = 0;
+		Camera.main.fieldOfView = ZoomLevels [0];
 
 		MainUI.SetActive (false);
 		ParametersUI.SetActive (false);
@@ -48,6 +69,7 @@ public class MenuManager : MonoBehaviour {
 		PauseUI.SetActive (false);
 		ScoreUI.SetActive (false);
 		GameUI.SetActive (false);
+		ShopUI.SetActive (false);
 		SGPUI.SetActive (false);
 		var obj = GetCorrespondantUI (CurrentMenu);
 		if(obj != null)
@@ -71,17 +93,27 @@ public class MenuManager : MonoBehaviour {
 			return GameUI;
 		case Menu.SGP:
 			return SGPUI;
+		case Menu.Shop:
+			return ShopUI;
 		default:
 			return null;
 		}
 	}
 
+	public void Zoom() {
+		CurrentZoomLevel = (CurrentZoomLevel + 1) % ZoomLevels.Length;
+		Camera.main.fieldOfView = ZoomLevels [CurrentZoomLevel];
+	}
+
 	public void Play() {
-		Debug.Log ("Jeu");
+		Debug.Log ("Play");
+	}
+
+	public void MainMenu() {
+		SceneManager.LoadScene("MainMenu");
 	}
 
 	public void Score() {
-		Debug.Log ("Score");
 		ScoreUI.SetActive (true);
 		GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
@@ -89,7 +121,6 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Options() {
-		Debug.Log ("Options");
 		ParametersUI.SetActive (true);
 		GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
@@ -97,20 +128,21 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Credits() {
-		Debug.Log ("Credits");
 		CreditsUI.SetActive (true);
 		GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.Credits;
 	}
 
+	public void ToggleShopUI() {
+		ShopUI.SetActive (!ShopUI.activeInHierarchy);
+	}
+
 	public void Quit() {
-		Debug.Log ("Quit");
 		Application.Quit ();
 	}
 
 	public void SGP() {
-		Debug.Log ("SGP");
 		SGPUI.SetActive (true);
 		GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
@@ -118,7 +150,6 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Pause () {
-		Debug.Log ("Pause");
 		PauseUI.SetActive (true);
 		GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
@@ -127,7 +158,6 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Resume() {
-		Debug.Log ("Resume");
 		PauseUI.SetActive (false);
 		GetCorrespondantUI(LastMenu).SetActive (true);
 		LastMenu = CurrentMenu;
@@ -136,12 +166,10 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Replay() {
-		Debug.Log ("Replay");
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
 
 	public void Back() {
-		Debug.Log ("Back");
 		var tmp = LastMenu;
 		GetCorrespondantUI (LastMenu).SetActive (true);
 		GetCorrespondantUI (CurrentMenu).SetActive (false);
@@ -150,15 +178,14 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void SetSoundVolume(float v) {
-		Debug.Log ("Sound volume set to : " + v);
+		G.Sys.audioManager.SetSoundVolume (v);
 	}
 
 	public void SetMusicVolume(float v) {
-		Debug.Log ("Music volume set to : " + v);
+		G.Sys.audioManager.SetMusicVolume (v);
 	}
 
 	public void SetFullscreen(bool b) {
 		Screen.fullScreen = b;
-		Debug.Log ("Fullscreen : " + b);
 	}
 }

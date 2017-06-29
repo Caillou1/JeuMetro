@@ -64,6 +64,10 @@ public static class Orienter
 		Vector2 v = orientationToDir (o);
 		return new Vector3 (v.x, 0, v.y);
 	}
+
+	public static bool IsOppositeTo(Orientation o1, Orientation o2) {
+		return orientationToAngle (o1) == (orientationToAngle (o2) + 180.0f)%360.0f;
+	}
 }
 
 

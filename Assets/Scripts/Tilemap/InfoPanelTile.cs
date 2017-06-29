@@ -4,28 +4,24 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class BinTile : ATile
+public class InfoPanelTile : ATile
 {
 	void Awake()
-    {
-		type = TileID.BIN;
+	{
+		type = TileID.INFOPANEL;
 
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.BIN_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.INFOPANEL_PRIORITY);
 
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
-
-		G.Sys.tilemap.addSpecialTile (type, transform.position);
     }
 
 	public override void Register ()
 	{
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.BIN_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.INFOPANEL_PRIORITY);
 
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
-
-		G.Sys.tilemap.addSpecialTile (type, transform.position);
 	}
 
 	public override void Unregister ()
@@ -34,9 +30,9 @@ public class BinTile : ATile
 
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
-
-		G.Sys.tilemap.delSpecialTile (type, transform.position);
 	}
+
+	public override void Connect (){}
 
 	void OnDestroy()
 	{
@@ -44,7 +40,5 @@ public class BinTile : ATile
 
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
-
-		G.Sys.tilemap.delSpecialTile (type, transform.position);
 	}
 }
