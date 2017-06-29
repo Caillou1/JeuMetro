@@ -25,7 +25,7 @@ public class DragAndDrop : MonoBehaviour{
 		canPlace = true; 
 
 		var v = G.Sys.tilemap.at (tf.position);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position, TileID.ESCALATOR).Count > 0)
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && v.Count == 1))
 			canPlace = false;
 	}
 
@@ -94,6 +94,8 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void ValidateObject() {
+		CheckCanPlace ();
+		CheckRotation ();
 		if (canPlace) {
 			G.Sys.selectionManager.Hide (true);
 			CanDrag = false;
