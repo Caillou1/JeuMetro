@@ -102,7 +102,7 @@ public class MenuManager : MonoBehaviour {
 
 	public void Zoom() {
 		CurrentZoomLevel = (CurrentZoomLevel + 1) % ZoomLevels.Length;
-		Camera.main.fieldOfView = ZoomLevels [CurrentZoomLevel];
+		DOVirtual.Float (Camera.main.fieldOfView, ZoomLevels [CurrentZoomLevel], .3f, (float f) => Camera.main.fieldOfView = f);
 	}
 
 	public void Play() {

@@ -38,62 +38,94 @@ public class PodotactileTile : ATile
 		List<Orientation> neighbors = new List<Orientation> ();
 
 		var l = G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.PODOTACTILE);
-		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.STAIRS)).Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.ESCALATOR)).ToList();
+		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.STAIRS))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.ESCALATOR))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.IN))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.OUT))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.METRO))
+			.ToList();
 		if (l.Count > 0) {
 			if (l [0].type == TileID.PODOTACTILE) {
-				list.Add(l[0]);
-				if(!neighbors.Contains(Orientation.UP))
+				list.Add (l [0]);
+				if (!neighbors.Contains (Orientation.UP))
 					neighbors.Add (Orientation.UP);
-			} else {
-				if(!neighbors.Contains(Orientation.LEFT))
+			} else if ((l [0].type == TileID.ESCALATOR && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward * 2), TileID.ESCALATOR).Count > 0 ) || (l[0].type == TileID.STAIRS && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward * 2), TileID.STAIRS).Count > 0)) {
+				if (!neighbors.Contains (Orientation.LEFT))
 					neighbors.Add (Orientation.LEFT);
-				if(!neighbors.Contains(Orientation.RIGHT))
+				if (!neighbors.Contains (Orientation.RIGHT))
 					neighbors.Add (Orientation.RIGHT);
+			} else {
+				if (!neighbors.Contains (Orientation.UP))
+					neighbors.Add (Orientation.UP);
 			}
 		}
 
 		l = G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.PODOTACTILE);
-		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.STAIRS)).Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.ESCALATOR)).ToList();
+		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.STAIRS))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.ESCALATOR))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.IN))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.OUT))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.METRO))
+			.ToList();
 		if (l.Count > 0) {
 			if (l [0].type == TileID.PODOTACTILE) {
 				list.Add(l[0]);
 				if(!neighbors.Contains(Orientation.DOWN))
 					neighbors.Add (Orientation.DOWN);
-			} else {
+			} else if ((l[0].type == TileID.ESCALATOR && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back * 2), TileID.ESCALATOR).Count > 0 ) || (l[0].type == TileID.STAIRS && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back * 2), TileID.STAIRS).Count > 0)) {
 				if(!neighbors.Contains(Orientation.LEFT))
 					neighbors.Add (Orientation.LEFT);
 				if(!neighbors.Contains(Orientation.RIGHT))
 					neighbors.Add (Orientation.RIGHT);
+			} else {
+				if (!neighbors.Contains (Orientation.DOWN))
+					neighbors.Add (Orientation.DOWN);
 			}
 		}
 
 		l = G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.PODOTACTILE);
-		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.STAIRS)).Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.ESCALATOR)).ToList();
+		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.STAIRS))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.ESCALATOR))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.IN))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.OUT))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.METRO))
+			.ToList();
 		if (l.Count > 0) {
 			if (l [0].type == TileID.PODOTACTILE) {
 				list.Add(l[0]);
 				if(!neighbors.Contains(Orientation.RIGHT))
 					neighbors.Add (Orientation.RIGHT);
-			} else {
+			} else if ((l[0].type == TileID.ESCALATOR && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right * 2), TileID.ESCALATOR).Count > 0 ) || (l[0].type == TileID.STAIRS && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right * 2), TileID.STAIRS).Count > 0)) {
 				if(!neighbors.Contains(Orientation.DOWN))
 					neighbors.Add (Orientation.DOWN);
 				if(!neighbors.Contains(Orientation.UP))
 					neighbors.Add (Orientation.UP);
+			} else {
+				if (!neighbors.Contains (Orientation.RIGHT))
+					neighbors.Add (Orientation.RIGHT);
 			}
 		}
 
 		l = G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.PODOTACTILE);
-		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.STAIRS)).Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.ESCALATOR)).ToList();
+		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.STAIRS))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.ESCALATOR))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.IN))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.OUT))
+			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.METRO))
+			.ToList();
 		if (l.Count > 0) {
 			if (l [0].type == TileID.PODOTACTILE) {
 				list.Add(l[0]);
 				if(!neighbors.Contains(Orientation.LEFT))
 					neighbors.Add (Orientation.LEFT);
-			} else {
+			} else if ((l[0].type == TileID.ESCALATOR && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left * 2), TileID.ESCALATOR).Count > 0 ) || (l[0].type == TileID.STAIRS && G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left * 2), TileID.STAIRS).Count > 0)) {
 				if(!neighbors.Contains(Orientation.DOWN))
 					neighbors.Add (Orientation.DOWN);
 				if(!neighbors.Contains(Orientation.UP))
 					neighbors.Add (Orientation.UP);
+			} else {
+				if (!neighbors.Contains (Orientation.LEFT))
+					neighbors.Add (Orientation.LEFT);
 			}
 		}
 
