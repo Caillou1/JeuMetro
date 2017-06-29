@@ -9,7 +9,7 @@ public class ExitsTile : ATile
 	[Tooltip("Must be IN OUT or METRO")]
 	public TileID id = TileID.IN;
 
-	void Awake()
+	protected override void Awake()
 	{
 		if (id != TileID.IN && id != TileID.OUT && id != TileID.METRO)
 			throw new ArgumentOutOfRangeException ("The tile must be IN, OUT or METRO !");
@@ -39,7 +39,7 @@ public class ExitsTile : ATile
 		applyConnexions (list);
 	}
 
-	void OnDestroy()
+	protected override void OnDestroy()
 	{
 		G.Sys.tilemap.delTile (transform.position, this);
 		foreach (var t in G.Sys.tilemap.at(transform.position))

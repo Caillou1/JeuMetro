@@ -34,9 +34,12 @@ public abstract class ATile : MonoBehaviour
 		G.Sys.tilemap.at (transform.position);
 	}
 
-	public virtual void Unregister() {}
+	protected abstract void Awake();
+	protected abstract void OnDestroy (); 
 
-	public virtual void Register() {}
+	public void Unregister() { OnDestroy (); }
+
+	public void Register() { Awake (); }
 
 	static protected void Add(Vector3 pos, List<Pair<ATile, Vector3i>> list, bool addNull = false)
 	{

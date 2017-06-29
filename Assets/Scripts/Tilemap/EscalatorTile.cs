@@ -53,7 +53,7 @@ public class EscalatorTile : ATile
 		applyConnexions (connexions);
     }
 
-    void Awake()
+	protected override void Awake()
 	{
 		type = TileID.ESCALATOR;
 
@@ -92,77 +92,7 @@ public class EscalatorTile : ATile
 			t.Connect();
     }
 
-	public override void Register ()
-	{
-		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
-
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + dir, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + 2 * dir, this, side == EscalatorSide.DOWN, side != EscalatorSide.DOWN, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + Vector3.up, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + Vector3.up + dir, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up - dir, this, side == EscalatorSide.UP, side != EscalatorSide.UP, Tilemap.STAIRS_PRIORITY);
-
-
-		//Supprime les bandes podotactiles en dessous des escalators
-		var podo = G.Sys.tilemap.tilesOfTypeAt (transform.position, TileID.PODOTACTILE);
-		podo = podo.Concat (G.Sys.tilemap.tilesOfTypeAt (transform.position + dir, TileID.PODOTACTILE)).ToList ();
-
-		foreach (var p in podo) {
-			Destroy (p.gameObject);
-		}
-
-		foreach(var t in G.Sys.tilemap.at(transform.position))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + dir))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * dir))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + Vector3.up))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + Vector3.up + dir))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * Vector3.up))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * Vector3.up - dir))
-			t.Connect();
-	}
-
-	public override void Unregister ()
-	{
-		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
-
-		G.Sys.tilemap.delTile (transform.position, this);
-		G.Sys.tilemap.delTile (transform.position + dir, this);
-		G.Sys.tilemap.delTile (transform.position + 2 * dir, this);
-		G.Sys.tilemap.delTile (transform.position + Vector3.up, this);
-		G.Sys.tilemap.delTile (transform.position + Vector3.up + dir, this);
-		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up, this);
-		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up - dir, this);
-
-		foreach(var t in G.Sys.tilemap.at(transform.position))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + dir))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * dir))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + Vector3.up))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + Vector3.up + dir))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * Vector3.up))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * Vector3.up - dir))
-			t.Connect();
-
-		foreach (var t in connectedTiles)
-			t.targetOf.Remove (this);
-		foreach (var t in targetOf.ToList())
-			t.Connect ();
-	}
-
-	void OnDestroy()
+	protected override void OnDestroy()
 	{
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
 

@@ -12,7 +12,7 @@ public class PodotactileTile : ATile
 	private GameObject ThreeBranches;
 	private GameObject FourBranches;
 
-	void Awake()
+	protected override void Awake()
 	{
 		tf = transform;
 
@@ -31,28 +31,6 @@ public class PodotactileTile : ATile
 		G.Sys.tilemap.addSpecialTile (type, tf.position);
     }
 
-	public override void Register ()
-	{
-		G.Sys.tilemap.addTile (tf.position, this, true, false, Tilemap.LOW_PRIORITY);
-
-		foreach (var t in G.Sys.tilemap.at(tf.position))
-			t.Connect ();
-
-		G.Sys.tilemap.addSpecialTile (type, tf.position);
-	}
-
-	public override void Unregister ()
-	{
-		G.Sys.tilemap.delTile (tf.position, this);
-		G.Sys.tilemap.delSpecialTile (TileID.PODOTACTILE, tf.position);
-		foreach (var t in G.Sys.tilemap.at(transform.position))
-			t.Connect ();
-		foreach (var t in connectedTiles)
-			t.targetOf.Remove (this);
-		foreach (var t in targetOf.ToList())
-			t.Connect ();
-	}
-
 	public override void Connect ()
 	{
 		Vector3i pos = new Vector3i (transform.position);
@@ -63,7 +41,7 @@ public class PodotactileTile : ATile
 		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.STAIRS)).Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.ESCALATOR)).ToList();
 		if (l.Count > 0) {
 			if (l [0].type == TileID.PODOTACTILE) {
-				Add (l [0], list);
+				list.Add(l[0]);
 				if(!neighbors.Contains(Orientation.UP))
 					neighbors.Add (Orientation.UP);
 			} else {
@@ -78,7 +56,7 @@ public class PodotactileTile : ATile
 		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.STAIRS)).Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.back), TileID.ESCALATOR)).ToList();
 		if (l.Count > 0) {
 			if (l [0].type == TileID.PODOTACTILE) {
-				Add (l [0], list);
+				list.Add(l[0]);
 				if(!neighbors.Contains(Orientation.DOWN))
 					neighbors.Add (Orientation.DOWN);
 			} else {
@@ -93,7 +71,7 @@ public class PodotactileTile : ATile
 		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.STAIRS)).Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.right), TileID.ESCALATOR)).ToList();
 		if (l.Count > 0) {
 			if (l [0].type == TileID.PODOTACTILE) {
-				Add (l [0], list);
+				list.Add(l[0]);
 				if(!neighbors.Contains(Orientation.RIGHT))
 					neighbors.Add (Orientation.RIGHT);
 			} else {
@@ -108,7 +86,7 @@ public class PodotactileTile : ATile
 		l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.STAIRS)).Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.left), TileID.ESCALATOR)).ToList();
 		if (l.Count > 0) {
 			if (l [0].type == TileID.PODOTACTILE) {
-				Add (l [0], list);
+				list.Add(l[0]);
 				if(!neighbors.Contains(Orientation.LEFT))
 					neighbors.Add (Orientation.LEFT);
 			} else {
@@ -184,17 +162,20 @@ public class PodotactileTile : ATile
 			break;
 		}
 
-		applyConnexions (list);
+		List<Pair<ATile,Vector3i>> list2 = new List<Pair<ATile, Vector3i>> ();
+		foreach (var it in list)
+			list2.Add (new Pair<ATile, Vector3i> (it, new Vector3i (it.transform.position)));
+		applyConnexions (list2);
 	}
 
-	void OnDestroy()
+	protected override void OnDestroy()
 	{
 		G.Sys.tilemap.delTile (tf.position, this);
 		G.Sys.tilemap.delSpecialTile (TileID.PODOTACTILE, tf.position);
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
 		foreach (var t in connectedTiles)
-			t.targetOf.Remove (this);
+			t.First.targetOf.Remove (this);
 		foreach (var t in targetOf.ToList())
 			t.Connect ();
 	}

@@ -31,7 +31,7 @@ class GroundTile : ATile
 		applyConnexions (list);
     }
 
-    void Awake()
+	protected override void Awake()
     {
 		type = TileID.GROUND;
 
@@ -40,7 +40,7 @@ class GroundTile : ATile
 			t.Connect ();
     }
 
-	void OnDestroy()
+	protected override void OnDestroy()
 	{
 		G.Sys.tilemap.delTile (transform.position, this);
 		foreach (var t in G.Sys.tilemap.at(transform.position))

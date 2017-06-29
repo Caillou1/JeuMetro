@@ -5,7 +5,7 @@ using System.Linq;
 
 public class StairsTile : ATile
 {
-	void Awake()
+	protected override void Awake()
 	{
 		type = TileID.STAIRS;
 
@@ -55,7 +55,7 @@ public class StairsTile : ATile
 		applyConnexions (connexions);
 	}
 
-	void OnDestroy()
+	protected override void OnDestroy()
 	{
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
 

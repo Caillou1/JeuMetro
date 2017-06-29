@@ -16,7 +16,7 @@ public class ElevatorTile : ATile
 	private float OriginFloor;
 	private int CurrentFloor;
 
-	void Awake()
+	protected override void Awake()
     {
 		FloorsToVisit = new List<int> ();
 		tf = transform;
@@ -39,24 +39,27 @@ public class ElevatorTile : ATile
 
 	public override void Connect (){
 		if (this != null) {
-			List<ATile> connexions = new List<ATile>();
+			List<Pair<ATile, Vector3i>> connexions = new List<Pair<ATile, Vector3i>>();
 			var dir = Orienter.orientationToDir3 (Orienter.angleToOrientation (transform.rotation.eulerAngles.y));
 
 			for (int i = 0; i < Floors; i++) {
-				Add (G.Sys.tilemap.connectableTile (transform.position + 2 * i * Vector3.up + dir), connexions);
+				Add (transform.position + 2 * i * Vector3.up + dir, connexions);
 			}
 
 			applyConnexions (connexions);
 		}
 	}
 
-	void OnDestroy()
+	protected override void OnDestroy()
 	{
 		Vector3 pos = transform.position;
 
 		for (int i = 0; i < Floors; i++) {
 			G.Sys.tilemap.delTile (pos, this);
-
+			foreach (var t in connectedTiles)
+				t.First.targetOf.Remove (this);
+			foreach (var t in targetOf.ToList())
+				t.Connect ();
 			foreach (var t in G.Sys.tilemap.at(pos))
 				t.Connect ();
 
