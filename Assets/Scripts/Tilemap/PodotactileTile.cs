@@ -31,6 +31,28 @@ public class PodotactileTile : ATile
 		G.Sys.tilemap.addSpecialTile (type, tf.position);
     }
 
+	public override void Register ()
+	{
+		G.Sys.tilemap.addTile (tf.position, this, true, false, Tilemap.LOW_PRIORITY);
+
+		foreach (var t in G.Sys.tilemap.at(tf.position))
+			t.Connect ();
+
+		G.Sys.tilemap.addSpecialTile (type, tf.position);
+	}
+
+	public override void Unregister ()
+	{
+		G.Sys.tilemap.delTile (tf.position, this);
+		G.Sys.tilemap.delSpecialTile (TileID.PODOTACTILE, tf.position);
+		foreach (var t in G.Sys.tilemap.at(transform.position))
+			t.Connect ();
+		foreach (var t in connectedTiles)
+			t.targetOf.Remove (this);
+		foreach (var t in targetOf.ToList())
+			t.Connect ();
+	}
+
 	public override void Connect ()
 	{
 		Vector3i pos = new Vector3i (transform.position);

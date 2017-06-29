@@ -38,9 +38,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4554779466684164}
   - component: {fileID: 114061236293866730}
+  - component: {fileID: 114558452296472534}
+  - component: {fileID: 65786066941317638}
   m_Layer: 0
-  m_Name: EscalatorUP
-  m_TagString: Untagged
+  m_Name: Escalator
+  m_TagString: Disposable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,7 +108,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1579386877539220}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.9180329, y: 0.049999997, z: -2.8687806}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4660353962771770}
@@ -348,6 +350,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &65786066941317638
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1579386877539220}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2, z: 1}
+  m_Center: {x: 0.5, y: 1, z: 0}
 --- !u!65 &65825676821341398
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -385,3 +399,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetOf: []
   _side: 0
+--- !u!114 &114558452296472534
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1579386877539220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 756d1fa99a17548a2a52f706a3e2adce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CanDrag: 0

@@ -29,6 +29,10 @@ public abstract class ATile : MonoBehaviour
         connectedTiles = new List<ATile>();
     }
 
+	public virtual void Register() {}
+
+	public virtual void Unregister() {}
+
     public abstract void Connect();
 
 	static protected void Add(ATile tile, List<ATile> list)

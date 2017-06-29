@@ -35,21 +35,19 @@ public class ElevatorTile : ATile
 
 			G.Sys.tilemap.addSpecialTile (type, pos);
 		}
-
-		CallElevator (1);
-		CallElevator (2);
-		CallElevator (0);
     }
 
 	public override void Connect (){
-		List<ATile> connexions = new List<ATile>();
-		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+		if (this != null) {
+			List<ATile> connexions = new List<ATile>();
+			var dir = Orienter.orientationToDir3 (Orienter.angleToOrientation (transform.rotation.eulerAngles.y));
 
-		for (int i = 0; i < Floors; i++) {
-			Add (G.Sys.tilemap.connectableTile (transform.position + 2 *  i * Vector3.up + dir), connexions);
+			for (int i = 0; i < Floors; i++) {
+				Add (G.Sys.tilemap.connectableTile (transform.position + 2 * i * Vector3.up + dir), connexions);
+			}
+
+			applyConnexions (connexions);
 		}
-
-		applyConnexions (connexions);
 	}
 
 	void OnDestroy()
