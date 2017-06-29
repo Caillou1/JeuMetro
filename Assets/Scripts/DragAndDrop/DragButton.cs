@@ -11,10 +11,7 @@ public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
 	void Spawn() {
 		if (!G.Sys.cameraController.IsSelecting) {
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit hitInfo;
-			Physics.Raycast (ray, out hitInfo);
-			spawnedObject = Instantiate (ObjectToSpawn, new Vector3i (hitInfo.transform.position).toVector3 (), Quaternion.identity);
+			spawnedObject = Instantiate (ObjectToSpawn, new Vector3i (Camera.main.ScreenToWorldPoint(Input.mousePosition)).toVector3 (), Quaternion.identity);
 			spawnedObject.GetComponent<ATile> ().Unregister ();
 			G.Sys.selectionManager.Show (spawnedObject.GetComponent<DragAndDrop> ());;
 		}
