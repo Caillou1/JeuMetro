@@ -25,6 +25,8 @@ public class Traveler : MonoBehaviour
 
 	float lostNessOnLastPath = 0;
 
+	SubscriberList subscriberList = new SubscriberList();
+
 	void Awake()
 	{
 		G.Sys.registerTraveler (this);
@@ -36,6 +38,9 @@ public class Traveler : MonoBehaviour
 
 		configurePathfinder ();
 		configureDatasFromStats ();
+
+		subscriberList.Add(new Event<ObjectPlacedEvent>.Subscriber(onPlaceObject));
+		subscriberList.Subscribe ();
 	}
 
 	void Start()
@@ -61,6 +66,7 @@ public class Traveler : MonoBehaviour
 
 	void OnDestroy()
 	{
+		subscriberList.Unsubscribe ();
 		G.Sys.removeTraveler (this);
 	}
 
@@ -223,5 +229,10 @@ public class Traveler : MonoBehaviour
 	{
 		path.create (transform.position, destination, datas.Lostness);
 		lostNessOnLastPath = datas.Lostness;
+	}
+
+	void onPlaceObject(ObjectPlacedEvent e)
+	{
+
 	}
 }

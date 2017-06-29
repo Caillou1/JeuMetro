@@ -13,10 +13,15 @@ class GroundTile : ATile
 		Vector3i pos = new Vector3i(transform.position);
 
 		List<Pair<ATile, Vector3i>> list = new List<Pair<ATile, Vector3i>> ();
+		if (!G.Sys.tilemap.connectable (transform.position)) {
+			applyConnexions (list);
+			return;
+		}
+
 		Add (pos + new Vector3i (0, 0, 1), list, true);
-		Add(pos + new Vector3i(0, 0, -1), list, true);
-		Add(pos + new Vector3i(1, 0, 0), list, true);
-		Add(pos + new Vector3i(-1, 0, 0), list, true);
+		Add (pos + new Vector3i(0, 0, -1), list, true);
+		Add (pos + new Vector3i(1, 0, 0), list, true);
+		Add (pos + new Vector3i(-1, 0, 0), list, true);
 
 		if(list[0].First != null && list[2].First != null)
 			Add(pos + new Vector3i(1, 0, 1), list);
