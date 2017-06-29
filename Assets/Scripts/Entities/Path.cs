@@ -88,6 +88,22 @@ public class Path
 		points.AddRange (PathFinder.Path (pos, endPos, weights));
 	}
 
+	public bool isOnPath(Vector3i pos)
+	{
+		return isOnPath (pos.toVector3 ());
+	}
+
+	public bool isOnPath(Vector3 pos)
+	{
+		var posI = new Vector3i (pos);
+		foreach (var p in points) {
+			if (new Vector3i (p).equal (posI))
+				return true;
+		}
+
+		return false;
+	}
+
 	List<Vector3> points;
 	Vector3 endPos;
 	Dictionary<TileID, float> weights;

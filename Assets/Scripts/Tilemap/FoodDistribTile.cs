@@ -8,7 +8,6 @@ public class FoodDistribTile : ATile
 {
 	protected override void Awake()
 	{
-		Debug.Log ("Poop");
 		type = TileID.FOODDISTRIBUTEUR;
 
 		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.DISTRIBUTEUR_PRIORITY);
@@ -21,7 +20,6 @@ public class FoodDistribTile : ATile
 
 	protected override void OnDestroy()
 	{
-		Debug.Log ("unpoop");
 		G.Sys.tilemap.delTile (transform.position, this);
 
 		foreach (var t in G.Sys.tilemap.at(transform.position))
