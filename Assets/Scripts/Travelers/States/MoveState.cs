@@ -47,7 +47,7 @@ public class MoveState : AState
 		traveler.rigidbody.velocity = traveler.transform.forward.normalized * traveler.datas.Speed * speedMultiplier;
 		traveler.avoidDir = new Vector3 ();
 
-		if (traveler.datas.Lostness > 0.5 && delayToNextWait < timeFromLastWait && !waiting)
+		if (traveler.datas.Lostness > 0.5 && delayToNextWait < timeFromLastWait && !waiting && traveler.altWait)
 			traveler.StartCoroutine (waitCoroutine ((traveler.datas.Lostness * waitMultiplier)));
 	}
 
