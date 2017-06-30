@@ -10,6 +10,7 @@ public class CameraController : MonoBehaviour {
 	[HideInInspector]
 	public bool IsSelecting;
 
+	private float CurrentDragSpeed;
 	private Vector3 dragOrigin;
 	private Transform cameraTransform;
 	private bool canSelect;
@@ -29,6 +30,33 @@ public class CameraController : MonoBehaviour {
 	}
 
 	void LateUpdate() {
+		if (Input.touchCount == 0) {
+			float scroll = Input.GetAxisRaw ("Mouse ScrollWheel");
+			if (scroll > 0) {
+				G.Sys.menuManager.ZoomIn ();
+			} else if (scroll < 0) {
+				G.Sys.menuManager.ZoomOut ();
+			}
+		} if (Input.touchCount == 2) {
+			Touch touchZero = Input.GetTouch(0);
+			Touch touchOne = Input.GetTouch(1);
+
+			Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+			Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
+
+			float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+			float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+			float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
+
+			if (deltaMagnitudeDiff < 0) {
+				G.Sys.menuManager.ZoomOut ();
+			} else if (deltaMagnitudeDiff > 0) {
+				G.Sys.menuManager.ZoomIn ();
+			}
+		}
+
+
 		if (CanDrag) {
 			List<RaycastResult> raycastResults = new List<RaycastResult> ();
 			if (Input.GetMouseButtonDown (0)) {

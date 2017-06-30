@@ -93,12 +93,21 @@ public class DragAndDrop : MonoBehaviour{
 		Destroy (gameObject);
 	}
 
+	protected virtual void SendEvent() {
+		var list = new List<Vector3> ();
+
+		list.Add (tf.position);
+
+		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+	}
+
 	public void ValidateObject() {
 		CheckCanPlace ();
 		CheckRotation ();
 		if (canPlace) {
 			G.Sys.selectionManager.Hide (true);
 			CanDrag = false;
+			SendEvent ();
 		}
 	}
 		

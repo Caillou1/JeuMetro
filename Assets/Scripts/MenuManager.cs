@@ -20,6 +20,7 @@ public enum Menu {
 public class MenuManager : MonoBehaviour {
 	public Menu CurrentMenu = Menu.NONE;
 
+	public float ZoomPower = 10f;
 	public float[] ZoomLevels;
 
 	public GameObject Escalator;
@@ -45,6 +46,10 @@ public class MenuManager : MonoBehaviour {
 	private GameObject BlackScreen;
 
 	private Transform tf;
+
+	void Awake() {
+		G.Sys.menuManager = this;
+	}
 
 	void Start() {
 		tf = transform;
@@ -103,6 +108,14 @@ public class MenuManager : MonoBehaviour {
 	public void Zoom() {
 		CurrentZoomLevel = (CurrentZoomLevel + 1) % ZoomLevels.Length;
 		DOVirtual.Float (Camera.main.fieldOfView, ZoomLevels [CurrentZoomLevel], .3f, (float f) => Camera.main.fieldOfView = f);
+	}
+
+	public void ZoomIn() {
+		DOVirtual.Float (Camera.main.fieldOfView, Mathf.Max(ZoomLevels[0], Camera.main.fieldOfView - ZoomPower), .15f, (float f) => Camera.main.fieldOfView = f);
+	}
+
+	public void ZoomOut() {
+		DOVirtual.Float (Camera.main.fieldOfView, Mathf.Min(ZoomLevels[ZoomLevels.Length-1], Camera.main.fieldOfView + ZoomPower), .15f, (float f) => Camera.main.fieldOfView = f);
 	}
 
 	public void Play() {
