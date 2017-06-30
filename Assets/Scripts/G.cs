@@ -14,6 +14,7 @@ public sealed class G
 	private AudioManager _audioManager;
 	private CameraController _cameraController;
 	private SelectionManager _selectionManager;
+	private MenuManager _menuManager;
 
     public static G Sys
     {
@@ -90,6 +91,15 @@ public sealed class G
 			if (_selectionManager != null)
 				Debug.Log ("2 selectionManager instantiated !");
 			_selectionManager = value;
+		}
+	}
+
+	public MenuManager menuManager {
+		get { return _menuManager; }
+		set {
+			if (_menuManager != null)
+				Debug.Log ("2 menuManager instantiated !");
+			_menuManager = value;
 		}
 	}
 }

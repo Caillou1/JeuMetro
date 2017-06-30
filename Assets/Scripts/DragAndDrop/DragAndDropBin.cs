@@ -41,4 +41,12 @@ public class DragAndDropBin : DragAndDrop {
 			}
 		}
 	}
+
+	protected override void SendEvent() {
+		var list = new List<Vector3> ();
+
+		list.Add (tf.position);
+
+		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+	}
 }

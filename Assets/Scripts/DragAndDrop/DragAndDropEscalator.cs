@@ -60,4 +60,17 @@ public class DragAndDropEscalator : DragAndDrop {
 				RotateObject (desiredAngle);
 		}
 	}
+
+	protected override void SendEvent() {
+		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
+		Vector3 dir = Orienter.orientationToDir3 (or);
+		var list = new List<Vector3> ();
+
+		list.Add (tf.position);
+		list.Add (tf.position + dir);
+		list.Add (tf.position + 2 * dir);
+		list.Add (tf.position - dir + Vector3.up * 2);
+
+		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+	}
 }

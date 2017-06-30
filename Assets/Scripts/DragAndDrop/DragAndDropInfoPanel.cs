@@ -54,4 +54,12 @@ public class DragAndDropInfoPanel : DragAndDrop {
 			tf.position = new Vector3 (Mathf.RoundToInt (pos.x), Mathf.RoundToInt (pos.y), Mathf.RoundToInt (pos.z));
 		}
 	}
+
+	protected override void SendEvent() {
+		var list = new List<Vector3> ();
+
+		list.Add (tf.position);
+
+		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+	}
 }

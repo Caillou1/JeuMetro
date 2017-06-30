@@ -42,4 +42,15 @@ public class DragAndDropBench : DragAndDrop {
 				RotateObject (desiredAngle);
 		}
 	}
+
+	protected override void SendEvent() {
+		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
+		Vector3 dir = Orienter.orientationToDir3 (or);
+		var list = new List<Vector3> ();
+
+		list.Add (tf.position);
+		list.Add (tf.position + dir);
+
+		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+	}
 }

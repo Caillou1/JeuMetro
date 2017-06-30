@@ -8,7 +8,7 @@ public class ObjectPlacedEvent : EventArgs
 	{
 		points = new List<Vector3i> ();
 		foreach(var p in _points)
-			points.Add(new Vector3i(p);
+			points.Add(new Vector3i(p));
 	}
 
 	public ObjectPlacedEvent (List<Vector3i> _points)
