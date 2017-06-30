@@ -25,8 +25,18 @@ public class DragAndDrop : MonoBehaviour{
 		canPlace = true; 
 
 		var v = G.Sys.tilemap.at (tf.position);
-		if (v.Count == 0 || (v [0].type != TileID.GROUND && v.Count == 1))
+		var p = GetComponent<PodotactileTile> ();
+		if (v.Count == 0 || (p!=null && v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.ESCALATOR) && !HasTileOfType(v, TileID.STAIRS)) || (p==null && v[0].type != TileID.GROUND))
 			canPlace = false;
+	}
+
+	protected bool HasTileOfType(List<ATile> list, TileID type) {
+		foreach (var l in list) {
+			if (l.type == type) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected virtual void CheckRotation() {}

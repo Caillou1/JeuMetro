@@ -18,6 +18,8 @@ public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 	}
 
 	void IBeginDragHandler.OnBeginDrag(PointerEventData eventData) {
+		G.Sys.selectionManager.Validate ();
+
 		if (!G.Sys.cameraController.IsSelecting) {	
 			Spawn ();
 			spawnedObject.GetComponent<DragAndDrop> ().StartDrag ();

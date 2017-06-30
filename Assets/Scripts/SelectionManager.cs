@@ -56,7 +56,9 @@ public class SelectionManager : MonoBehaviour {
 	}
 
 	public void Validate() {
-		obj.ValidateObject ();
+		if (obj != null) {
+			obj.ValidateObject ();
+		}
 	}
 
 	public void Delete() {
