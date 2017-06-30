@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class DragAndDropInfoPanel : DragAndDrop {
+public class DragAndDropSpeaker : DragAndDrop {
 
 	private bool IsWalled;
 
