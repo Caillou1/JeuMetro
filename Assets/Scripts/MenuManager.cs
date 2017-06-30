@@ -23,14 +23,6 @@ public class MenuManager : MonoBehaviour {
 	public float ZoomPower = 10f;
 	public float[] ZoomLevels;
 
-	public GameObject Escalator;
-	public GameObject Bench;
-	public GameObject TicketDistrib;
-	public GameObject FoodDistrib;
-	public GameObject Bin;
-	public GameObject InfoPanel;
-	public GameObject Podotactile;
-
 	private int CurrentZoomLevel;
 
 	private Menu LastMenu = Menu.NONE;

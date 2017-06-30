@@ -15,13 +15,15 @@ public class DragAndDropEscalator : DragAndDrop {
 
 		//Pivot
 		var v = G.Sys.tilemap.at (tf.position);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position, TileID.ESCALATOR).Count > 0 || G.Sys.tilemap.at (tf.position + Vector3.up * 2).Count > 0)
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt (tf.position, TileID.ESCALATOR).Count > 0 || G.Sys.tilemap.at (tf.position + Vector3.up * 2).Count > 0) {
 			canPlace = false;
+		}
 
 		//Case  plus basse
 		v = G.Sys.tilemap.at (tf.position + dir);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position + dir, TileID.ESCALATOR).Count > 0 || G.Sys.tilemap.at (tf.position + dir + Vector3.up * 2).Count > 0)
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt (tf.position + dir, TileID.ESCALATOR).Count > 0 || G.Sys.tilemap.at (tf.position + dir + Vector3.up * 2).Count > 0) {
 			canPlace = false;
+		}
 
 		//Pied escalator
 		v = G.Sys.tilemap.at (tf.position + 2 * dir);
@@ -31,8 +33,9 @@ public class DragAndDropEscalator : DragAndDrop {
 
 		//Haut escalator
 		v = G.Sys.tilemap.at (tf.position - dir + Vector3.up * 2);
-		if (v.Count == 0 || v [0].type != TileID.GROUND)
+		if (v.Count == 0 || v [0].type != TileID.GROUND) {
 			canPlace = false;
+		}
 	}
 
 	protected override void CheckRotation() {

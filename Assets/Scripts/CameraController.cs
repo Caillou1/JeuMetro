@@ -97,8 +97,11 @@ public class CameraController : MonoBehaviour {
 
 			if (info.transform != null && info.transform.CompareTag ("Disposable") && !IsSelecting) {
 				var dad = info.transform.GetComponent<DragAndDrop> ();
+				var tile = dad.GetComponent<ATile> ();
 				G.Sys.selectionManager.Show (dad);
 				IsSelecting = true;
+				tile.Unregister ();
+				dad.DesactivateCollisions ();
 			} else if (IsSelecting && info.transform != null) {
 				G.Sys.selectionManager.Move (info.transform.position);
 			}
