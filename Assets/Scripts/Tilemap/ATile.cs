@@ -20,6 +20,7 @@ public enum TileID
 	OUT,
 	METRO,
 	ELEVATOR,
+	SPEAKER,
 }
 
 public abstract class ATile : MonoBehaviour

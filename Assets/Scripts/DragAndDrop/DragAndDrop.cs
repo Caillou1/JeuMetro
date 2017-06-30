@@ -105,6 +105,7 @@ public class DragAndDrop : MonoBehaviour{
 		CheckCanPlace ();
 		CheckRotation ();
 		if (canPlace) {
+			G.Sys.cameraController.IsSelecting = false;
 			G.Sys.selectionManager.Hide (true);
 			CanDrag = false;
 			SendEvent ();
