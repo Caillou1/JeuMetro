@@ -10,9 +10,6 @@ public class DragAndDropInfoPanel : DragAndDrop {
 	private bool IsWalled;
 
 	protected override void CheckRotation() {
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		RaycastHit hit;
-
 		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
 		List<Orientation> PossibleOrientations = new List<Orientation> ();
 

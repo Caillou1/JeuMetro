@@ -23,14 +23,6 @@ public class MenuManager : MonoBehaviour {
 	public float ZoomPower = 10f;
 	public float[] ZoomLevels;
 
-	public GameObject Escalator;
-	public GameObject Bench;
-	public GameObject TicketDistrib;
-	public GameObject FoodDistrib;
-	public GameObject Bin;
-	public GameObject InfoPanel;
-	public GameObject Podotactile;
-
 	private int CurrentZoomLevel;
 
 	private Menu LastMenu = Menu.NONE;
@@ -43,7 +35,6 @@ public class MenuManager : MonoBehaviour {
 	private GameObject GameUI;
 	private GameObject ShopUI;
 	private GameObject SGPUI;
-	private GameObject BlackScreen;
 
 	private Transform tf;
 
@@ -61,7 +52,6 @@ public class MenuManager : MonoBehaviour {
 		GameUI = tf.Find ("GameUI").gameObject;
 		ShopUI = GameUI.transform.Find ("ShopUI").gameObject;
 		SGPUI = tf.Find ("SGPUI").gameObject;
-		BlackScreen = tf.Find ("BlackScreen").gameObject;
 
 		ParametersUI.transform.Find ("FullscreenToggle").GetComponent<Toggle> ().isOn = Screen.fullScreen;
 
@@ -79,7 +69,6 @@ public class MenuManager : MonoBehaviour {
 		var obj = GetCorrespondantUI (CurrentMenu);
 		if(obj != null)
 			obj.SetActive (true);
-		BlackScreen.SetActive (false);
 	}
 
 	GameObject GetCorrespondantUI(Menu menu) {

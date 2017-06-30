@@ -25,8 +25,18 @@ public class DragAndDrop : MonoBehaviour{
 		canPlace = true; 
 
 		var v = G.Sys.tilemap.at (tf.position);
-		if (v.Count == 0 || (v [0].type != TileID.GROUND && v.Count == 1))
+		var p = GetComponent<PodotactileTile> ();
+		if (v.Count == 0 || (p!=null && v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.ESCALATOR) && !HasTileOfType(v, TileID.STAIRS)) || (p==null && v[0].type != TileID.GROUND))
 			canPlace = false;
+	}
+
+	protected bool HasTileOfType(List<ATile> list, TileID type) {
+		foreach (var l in list) {
+			if (l.type == type) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected virtual void CheckRotation() {}
@@ -46,10 +56,6 @@ public class DragAndDrop : MonoBehaviour{
 		G.Sys.selectionManager.Hide (false);
 		G.Sys.cameraController.CanDrag = false;
 		Dragging = true;
-
-		foreach (var c in tf.GetComponentsInChildren<Collider>()) {
-			c.enabled = false;
-		}
 	}
 
 	void Update() {
@@ -81,10 +87,6 @@ public class DragAndDrop : MonoBehaviour{
 			G.Sys.selectionManager.Show (this);
 			G.Sys.cameraController.CanDrag = true;
 
-			foreach (var c in tf.GetComponentsInChildren<Collider>()) {
-				c.enabled = true;
-			}
-
 			Dragging = false;
 		}
 	}
@@ -107,8 +109,10 @@ public class DragAndDrop : MonoBehaviour{
 		if (canPlace) {
 			G.Sys.cameraController.IsSelecting = false;
 			G.Sys.selectionManager.Hide (true);
+			GetComponent<ATile> ().Register ();
 			CanDrag = false;
 			SendEvent ();
+			ActivateCollisions ();
 		}
 	}
 		
@@ -127,6 +131,18 @@ public class DragAndDrop : MonoBehaviour{
 				}
 			});
 		}
+	}
+
+	public void DesactivateCollisions() {
+		foreach (var c in GetComponentsInChildren<Collider>())
+			if(c.transform.parent == tf)
+				c.enabled = false;
+	}
+
+	public void ActivateCollisions() {
+		foreach (var c in GetComponentsInChildren<Collider>())
+			if(c.transform.parent == tf)
+				c.enabled = true;
 	}
 
 	protected void RotateObject(float desiredAngle) {
