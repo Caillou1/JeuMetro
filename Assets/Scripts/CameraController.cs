@@ -74,10 +74,11 @@ public class CameraController : MonoBehaviour {
 				}
 			}
 
-			if (Input.GetMouseButton (0) && Vector3.Distance (Input.mousePosition, dragOrigin) > 1f && !isOnUI) {
+			if ((Input.GetMouseButton (0) || Input.GetMouseButton(2)) && Vector3.Distance (Input.mousePosition, dragOrigin) > 1f && !isOnUI) {
 				if (canSelect) {
 					canSelect = false;
-					StopCoroutine (SelectCoroutine);
+					if(SelectCoroutine != null)
+						StopCoroutine (SelectCoroutine);
 				}
 				cameraTransform.Translate (new Vector3 (-Input.GetAxis ("Mouse X") * Time.deltaTime * DragSpeed, 0, -Input.GetAxis ("Mouse Y") * Time.deltaTime * DragSpeed));
 			}

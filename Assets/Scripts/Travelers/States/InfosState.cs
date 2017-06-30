@@ -7,6 +7,7 @@ using NRand;
 public class InfosState : AState
 {
 	Vector3 dest = new Vector3();
+	Vector3 infoPos = new Vector3 ();
 
 	public InfosState (Traveler t) : base(t, StateType.INFOS)
 	{
@@ -47,6 +48,8 @@ public class InfosState : AState
 		poss.Add (bestSign + Vector3.forward);
 		poss.Add (bestSign + Vector3.back);
 
+		infoPos = bestSign;
+
 		var pos = poss[new UniformIntDistribution(poss.Count-1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())];
 
 		traveler.altAction = Traveler.ActionType.INFOS;
@@ -60,6 +63,10 @@ public class InfosState : AState
 
 	public override void start ()
 	{
+		if (!G.Sys.tilemap.haveSpecialTileAt (TileID.INFOPANEL, infoPos)) {
+			traveler.BackToMoveState ();
+			return;
+		}
 		traveler.StartCoroutine (waitCoroutine());
 		traveler.rigidbody.velocity = new Vector3 ();
 	}
