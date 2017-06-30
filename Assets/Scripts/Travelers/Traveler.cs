@@ -233,6 +233,14 @@ public class Traveler : MonoBehaviour
 
 	void onPlaceObject(ObjectPlacedEvent e)
 	{
-
+		bool onPath = false;
+		foreach (var p in e.points) {
+			if (path.isOnPath (p)) {
+				onPath = true;
+				break;
+			}
+		}
+		if (onPath)
+			Updatepath ();
 	}
 }
