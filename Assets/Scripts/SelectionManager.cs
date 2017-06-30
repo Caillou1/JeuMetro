@@ -56,7 +56,6 @@ public class SelectionManager : MonoBehaviour {
 	}
 
 	public void Validate() {
-		G.Sys.cameraController.IsSelecting = false;
 		obj.ValidateObject ();
 	}
 
