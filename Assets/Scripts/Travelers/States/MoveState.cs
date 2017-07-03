@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using NRand;
 
-public class MoveState : AState
+public class MoveState : ATravelerState
 {
 	const float delayMultiplier = 30;
 	const float waitMultiplier = 1;
@@ -14,7 +14,7 @@ public class MoveState : AState
 	float delayToNextWait = 0;
 	bool waiting = false;
 
-	public MoveState (Traveler t) : base(t, StateType.MOVE)
+	public MoveState (Traveler t) : base(t, StateType.TRAVELER_MOVE)
 	{
 		
 	}

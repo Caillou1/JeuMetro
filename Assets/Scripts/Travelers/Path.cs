@@ -104,6 +104,14 @@ public class Path
 		return false;
 	}
 
+	public bool haveTileOnPath(TileID tile)
+	{
+		foreach(var p in points)
+			if(G.Sys.tilemap.tilesOfTypeAt(p, tile).Count != 0)
+				return true;
+		return false;
+	}
+
 	List<Vector3> points;
 	Vector3 endPos;
 	Dictionary<TileID, float> weights;

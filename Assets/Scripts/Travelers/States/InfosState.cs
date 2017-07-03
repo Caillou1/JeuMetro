@@ -4,12 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using NRand;
 
-public class InfosState : AState
+public class InfosState : ATravelerState
 {
 	Vector3 dest = new Vector3();
 	Vector3 infoPos = new Vector3 ();
 
-	public InfosState (Traveler t) : base(t, StateType.INFOS)
+	public InfosState (Traveler t) : base(t, StateType.TRAVELER_INFOS)
 	{
 	}
 

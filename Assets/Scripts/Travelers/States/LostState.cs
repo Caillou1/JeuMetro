@@ -2,9 +2,9 @@
 using NRand;
 using UnityEngine;
 
-public class LostState : AState
+public class LostState : ATravelerState
 {
-	public LostState (Traveler t) : base(t, StateType.LOST)
+	public LostState (Traveler t) : base(t, StateType.TRAVELER_LOST)
 	{
 	}
 
