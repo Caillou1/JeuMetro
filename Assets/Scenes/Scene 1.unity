@@ -23226,8 +23226,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entities:
   - {fileID: 1427005143703886, guid: c18e31107d19d445e9ad33af39ca5d8a, type: 2}
-  minDelay: 1
-  maxDelay: 1
+  minDelay: 0.5
+  maxDelay: 0.5
 --- !u!1 &1821224235
 GameObject:
   m_ObjectHideFlags: 0
@@ -26053,11 +26053,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4548487747243586, guid: c18e31107d19d445e9ad33af39ca5d8a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4548487747243586, guid: c18e31107d19d445e9ad33af39ca5d8a, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -16
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 4548487747243586, guid: c18e31107d19d445e9ad33af39ca5d8a, type: 2}
       propertyPath: m_LocalRotation.x
@@ -26082,6 +26082,11 @@ Prefab:
     - target: {fileID: 1427005143703886, guid: c18e31107d19d445e9ad33af39ca5d8a, type: 2}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114913635081199386, guid: c18e31107d19d445e9ad33af39ca5d8a,
+        type: 2}
+      propertyPath: Stats.LostAbility
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c18e31107d19d445e9ad33af39ca5d8a, type: 2}

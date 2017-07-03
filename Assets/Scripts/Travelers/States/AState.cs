@@ -4,7 +4,14 @@ public enum StateType
 {
 	MOVE,
 	STAIRS,
-	ESCALATOR
+	ESCALATOR,
+	LOST,
+	INFOS,
+	SIT,
+	THROW_WASTE_BIN,
+	THROW_WASTE_GROUND,
+	FOOD,
+	TICKET,
 }
 
 public abstract class AState

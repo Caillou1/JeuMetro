@@ -5,6 +5,17 @@ using NRand;
 
 public class Traveler : MonoBehaviour 
 {
+	public enum ActionType
+	{
+		NONE,
+		SIT,
+		THROW_WASTE,
+		FOOD,
+		TICKET,
+		LOST,
+		INFOS,
+	}
+
 	public TravelerStats Stats;
 
 	List<AState> states = new List<AState>();
@@ -22,6 +33,12 @@ public class Traveler : MonoBehaviour
 	public Vector3 destination;
 	[HideInInspector]
 	public TravelerDatas datas = new TravelerDatas ();
+	[HideInInspector]
+	public Vector3 altDestination;
+	[HideInInspector]
+	public ActionType altAction;
+	[HideInInspector]
+	public bool altWait = true;
 
 	float lostNessOnLastPath = 0;
 
@@ -35,6 +52,8 @@ public class Traveler : MonoBehaviour
 		states.Add (new MoveState (this));
 		states.Add (new StairsState (this));
 		states.Add (new EscalatorState (this));
+		states.Add (new LostState (this));
+		states.Add (new InfosState (this));
 
 		configurePathfinder ();
 		configureDatasFromStats ();
@@ -56,10 +75,10 @@ public class Traveler : MonoBehaviour
 
 		checkNextState ();
 
-		states [stateIndex].update ();
-
 		if (path.finished ())
 			OnPathFinished ();
+
+		states [stateIndex].update ();
 
 		DestroyOnExit ();
 	}
@@ -207,6 +226,8 @@ public class Traveler : MonoBehaviour
 
 	void OnPathFinished()
 	{
+		altAction = ActionType.NONE;
+		altWait = true;
 		Updatepath ();
 	}
 
@@ -227,7 +248,12 @@ public class Traveler : MonoBehaviour
 
 	public void Updatepath()
 	{
-		path.create (transform.position, destination, datas.Lostness);
+		if (altAction != ActionType.NONE) {
+			path.create (transform.position, altDestination, datas.Lostness);
+		} else {
+			altWait = true;
+			path.create (transform.position, destination, datas.Lostness);
+		}
 		lostNessOnLastPath = datas.Lostness;
 	}
 

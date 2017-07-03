@@ -8,4 +8,5 @@ public class TravelerDatas
 	public float Dirtiness;
 	public float Waste;
 	public float Speed;
+	public float Huger;
 }
