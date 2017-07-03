@@ -68,7 +68,7 @@ public class StairsState : ATravelerState
 		switch (state) {
 		case 0:
 			{
-				traveler.rigidbody.velocity = (stair.transform.position + stairsDir - traveler.transform.position).normalized * traveler.Stats.MovementSpeed;
+				traveler.rigidbody.velocity = (stair.transform.position + stairsDir - traveler.transform.position).normalized * traveler.datas.Speed;
 				traveler.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (traveler.rigidbody.velocity, Vector3.up).eulerAngles.y, 0);
 					
 				if (new Vector3i (traveler.transform.position).equal (new Vector3i (stair.transform.position + stairsDir)))
@@ -102,7 +102,7 @@ public class StairsState : ATravelerState
 		switch (state) {
 		case 0:
 			{
-				traveler.rigidbody.velocity = (stair.transform.position + 2 * Vector3.up - traveler.transform.position).normalized * traveler.Stats.MovementSpeed;
+				traveler.rigidbody.velocity = (stair.transform.position + 2 * Vector3.up - traveler.transform.position).normalized * traveler.datas.Speed;
 				traveler.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (traveler.rigidbody.velocity, Vector3.up).eulerAngles.y, 0);
 
 				if (new Vector3i (traveler.transform.position).equal (new Vector3i (stair.transform.position + 2 * Vector3.up)))
