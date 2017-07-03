@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class EscalatorState : AState
+public class EscalatorState : ATravelerState
 {
 	enum Dir { UP, DOWN }
 
@@ -11,7 +11,7 @@ public class EscalatorState : AState
 	Dir direction;
 	int state;
 
-	public EscalatorState (Traveler t) : base(t, StateType.ESCALATOR)
+	public EscalatorState (Traveler t) : base(t, StateType.TRAVELER_ESCALATOR)
 	{
 		
 	}
