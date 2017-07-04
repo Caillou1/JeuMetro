@@ -13,6 +13,7 @@ public abstract class AEntity  : MonoBehaviour
 		TICKET,
 		LOST,
 		INFOS,
+		CLEAN,
 	}
 
 	protected List<AState> states = new List<AState>();
@@ -68,8 +69,10 @@ public abstract class AEntity  : MonoBehaviour
 	{
 		checkNextState ();
 
-		if (path.finished ())
+		if (path.finished ()) {
 			OnPathFinished ();
+			Debug.Log ("Path Finished");
+		}
 
 		states [stateIndex].update ();
 

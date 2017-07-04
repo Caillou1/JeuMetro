@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using NRand;
 
 public class TileInfos
 {
@@ -44,6 +45,7 @@ public class Tilemap
 	public const int STAIRS_PRIORITY = 10;
 	public const int ELEVATOR_PRIORITY = 10;
 	public const int SPEAKER_PRIORITY = 10;
+	public const int WASTE_PRIORITY = 10;
 
 	private List<TilemapInfo> tiles = new List<TilemapInfo> ();
 	private Dictionary<TileID, List<Vector3i>> specialTiles = new Dictionary<TileID, List<Vector3i>> ();
@@ -435,5 +437,50 @@ public class Tilemap
 			if (p.x == pos.x && p.y == pos.y && p.z == pos.z)
 				return true;
 		return false;
+	}
+
+	public ATile getRandomGroundTile() {
+		bool found = false;
+		ATile tile = null;
+		while (!found) {
+			var t = tiles [new UniformIntDistribution (tiles.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())];
+			if (t.tiles.Count == 1 && t.tiles [0].tile.type == TileID.GROUND) {
+				found = true;
+				tile = t.tiles [0].tile;
+			}
+		}
+		return tile;
+	}
+
+	public List<ATile> getSurroundingTilesOfTypeAt(Vector3 pos, TileID id, int radius) {
+		List<Vector3> positionsToCheck = new List<Vector3> ();
+		List<ATile> surroundingTiles = new List<ATile> ();
+
+		positionsToCheck.Add (pos);
+
+		for (int i = 0; i < radius; i++) {
+			foreach (var v in positionsToCheck.ToList()) {
+				if (!positionsToCheck.Contains (v + Vector3.forward)) {
+					positionsToCheck.Add (v + Vector3.forward);
+				}
+				if (!positionsToCheck.Contains (v + Vector3.back)) {
+					positionsToCheck.Add (v + Vector3.back);
+				}
+				if (!positionsToCheck.Contains (v + Vector3.left)) {
+					positionsToCheck.Add (v + Vector3.left);
+				}
+				if (!positionsToCheck.Contains (v + Vector3.right)) {
+					positionsToCheck.Add (v + Vector3.right);
+				}
+			}
+		}
+
+		foreach (var v in positionsToCheck) {
+			var tmpTiles = at (v);
+			foreach (var t in tilesOfTypeAt(v, id))
+				surroundingTiles.Add (t);
+		}
+
+		return surroundingTiles;
 	}
 }

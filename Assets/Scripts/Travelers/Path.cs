@@ -25,6 +25,10 @@ public class Path
 		return points.Count == 0;
 	}
 
+	public Vector3 getEndPos() {
+		return endPos;
+	}
+
 	public Vector3 next(Vector3 current)
 	{
 		debugPath (current);
