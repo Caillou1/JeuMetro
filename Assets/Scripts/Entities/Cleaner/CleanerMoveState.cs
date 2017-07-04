@@ -11,8 +11,6 @@ public class CleanerMoveState : ACleanerState
 	Vector3 oldPos;
 	float speedMultiplier = 1;
 	float timeFromLastWait = 0;
-	float delayToNextWait = 0;
-	bool waiting = false;
 
 	public CleanerMoveState (CleanerEntity ce) : base(ce, StateType.CLEANER_MOVE)
 	{

@@ -452,7 +452,7 @@ public class Tilemap
 		return tile;
 	}
 
-	public List<ATile> getSurroundingTilesOfTypeAt(Vector3 pos, TileID id, int radius) {
+	/*public List<ATile> getSurroundingTilesOfTypeAt(Vector3 pos, TileID id, int radius) {
 		List<Vector3> positionsToCheck = new List<Vector3> ();
 		List<ATile> surroundingTiles = new List<ATile> ();
 
@@ -482,5 +482,51 @@ public class Tilemap
 		}
 
 		return surroundingTiles;
+	}*/
+
+	public List<Vector3> getSurrondingSpecialTile(Vector3 pos, TileID id, float radius, float verticalAmplification = 1)
+	{
+		var list = getSurrondingSpecialTile (new Vector3i (pos), id, radius, verticalAmplification);
+		List<Vector3> returnList = new List<Vector3> ();
+		foreach (var t in list)
+			returnList.Add (t.toVector3 ());
+		return returnList;
+	}
+
+	public List<Vector3i> getSurrondingSpecialTile(Vector3i pos, TileID id, float radius, float verticalAmplification = 1)
+	{
+		List<Vector3i> tiles = new List<Vector3i> ();
+		foreach (var t in getSpecialTilesI (id)) {
+			var dir = pos.toVector3 () - t.toVector3 ();
+			if (new Vector2 (dir.x, dir.z).magnitude + dir.y * verticalAmplification < radius)
+				tiles.Add (t);
+		}
+		return tiles;
+	}
+
+	public Pair<Vector3, bool> getNearestSpecialTileOfType(Vector3 pos, TileID id, float verticalAmplification = 1)
+	{
+		var tile = getNearestSpecialTileOfType (new Vector3i (pos), id, verticalAmplification);
+		return new Pair<Vector3, bool> (tile.First.toVector3 (), tile.Second);
+	}
+
+	public Pair<Vector3i, bool>  getNearestSpecialTileOfType(Vector3i pos, TileID id, float verticalAmplification = 1)
+	{
+		var list = getSpecialTilesI (id);
+		if (list.Count == 0)
+			return new Pair<Vector3i, bool> (new Vector3i (0, 0, 0), false);
+
+		Vector3i bestTile = new Vector3i (0, 0, 0);
+		float bestDist = float.MaxValue;
+		foreach (var t in list) {
+			var dir = pos.toVector3 () - t.toVector3 ();
+			var dist = new Vector2 (dir.x, dir.z).magnitude + dir.y * verticalAmplification;
+
+			if (dist < bestDist) {
+				bestDist = dist;
+				bestTile = t;
+			}
+		}
+		return new Pair<Vector3i, bool>(bestTile, true);
 	}
 }
