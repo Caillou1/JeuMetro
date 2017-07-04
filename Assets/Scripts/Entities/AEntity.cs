@@ -71,7 +71,6 @@ public abstract class AEntity  : MonoBehaviour
 
 		if (path.finished ()) {
 			OnPathFinished ();
-			Debug.Log ("Path Finished");
 		}
 
 		states [stateIndex].update ();

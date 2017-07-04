@@ -38,6 +38,10 @@ public class MenuManager : MonoBehaviour {
 
 	private Transform tf;
 
+	private GameObject[] ShopButtons;
+
+	private int ShopIndex = 0;
+
 	void Awake() {
 		G.Sys.menuManager = this;
 	}
@@ -50,7 +54,7 @@ public class MenuManager : MonoBehaviour {
 		PauseUI = tf.Find ("PauseUI").gameObject;
 		ScoreUI = tf.Find ("ScoresUI").gameObject;
 		GameUI = tf.Find ("GameUI").gameObject;
-		ShopUI = GameUI.transform.Find("Menu").Find ("ShopUI").gameObject;
+		ShopUI = GameUI.transform.Find ("Menu").Find ("ShopUI").gameObject;
 		SGPUI = tf.Find ("SGPUI").gameObject;
 
 		ParametersUI.transform.Find ("FullscreenToggle").GetComponent<Toggle> ().isOn = Screen.fullScreen;
@@ -67,8 +71,20 @@ public class MenuManager : MonoBehaviour {
 		ShopUI.SetActive (false);
 		SGPUI.SetActive (false);
 		var obj = GetCorrespondantUI (CurrentMenu);
-		if(obj != null)
+		if (obj != null)
 			obj.SetActive (true);
+
+		ShopButtons = new GameObject[8];
+		ShopButtons [0] = ShopUI.transform.Find ("Escalator").gameObject;
+		ShopButtons [1] = ShopUI.transform.Find ("Bench").gameObject;
+		ShopButtons [2] = ShopUI.transform.Find ("TicketDistrib").gameObject;
+		ShopButtons [3] = ShopUI.transform.Find ("FoodDistrib").gameObject;
+		ShopButtons [4] = ShopUI.transform.Find ("Bin").gameObject;
+		ShopButtons [5] = ShopUI.transform.Find ("Infos").gameObject;
+		ShopButtons [6] = ShopUI.transform.Find ("Speaker").gameObject;
+		ShopButtons [7] = ShopUI.transform.Find ("Podotactile").gameObject;
+
+		UpdateShopUI ();
 	}
 
 	GameObject GetCorrespondantUI(Menu menu) {
@@ -92,6 +108,25 @@ public class MenuManager : MonoBehaviour {
 		default:
 			return null;
 		}
+	}
+
+	private void UpdateShopUI() {
+		foreach (var b in ShopButtons)
+			b.SetActive (false);
+
+		for (int i = ShopIndex * 5; i < Mathf.Min(ShopIndex * 5 + 5, ShopButtons.Length); i++) {
+			ShopButtons [i].SetActive (true);
+		}
+	}
+
+	public void ShopLeft() {
+		ShopIndex = (ShopIndex + Mathf.CeilToInt (ShopButtons.Length / 5f) - 1) % Mathf.CeilToInt (ShopButtons.Length / 5f);
+		UpdateShopUI ();
+	}
+
+	public void ShopRight() {
+		ShopIndex = (ShopIndex + 1) % Mathf.CeilToInt (ShopButtons.Length / 5f);
+		UpdateShopUI ();
 	}
 
 	public void Zoom() {

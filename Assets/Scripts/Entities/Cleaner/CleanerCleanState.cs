@@ -105,7 +105,6 @@ public class CleanerCleanState : ACleanerState
 
 	public override void end ()
 	{
-		Debug.Log ("END CLEAN");
 		cleaner.altAction = AEntity.ActionType.NONE;
 	}
 
