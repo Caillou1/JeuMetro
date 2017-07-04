@@ -48,13 +48,16 @@ public sealed class G
 
 	public void registerTraveler(Traveler t)
 	{
-		if(!travelers.Contains(t))
+		if (!travelers.Contains (t)) {
 			travelers.Add (t);
+			_menuManager.SetTravelerNumber (travelerCount());
+		}
 	}
 
 	public bool removeTraveler(Traveler t)
 	{
 		return travelers.Remove (t);
+		_menuManager.SetTravelerNumber (travelerCount());
 	}
 
 	public int travelerCount()

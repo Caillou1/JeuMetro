@@ -36,6 +36,12 @@ public class MenuManager : MonoBehaviour {
 	private GameObject ShopUI;
 	private GameObject SGPUI;
 
+	private Image TimePie;
+	private Text TimeTxt;
+	private Text WaveNumber;
+	private Text TravelerNumber;
+	private Text Money;
+
 	private Transform tf;
 
 	private GameObject[] ShopButtons;
@@ -44,9 +50,7 @@ public class MenuManager : MonoBehaviour {
 
 	void Awake() {
 		G.Sys.menuManager = this;
-	}
 
-	void Start() {
 		tf = transform;
 		MainUI = tf.Find ("MainUI").gameObject;
 		ParametersUI = tf.Find ("OptionsUI").gameObject;
@@ -54,7 +58,16 @@ public class MenuManager : MonoBehaviour {
 		PauseUI = tf.Find ("PauseUI").gameObject;
 		ScoreUI = tf.Find ("ScoresUI").gameObject;
 		GameUI = tf.Find ("GameUI").gameObject;
-		ShopUI = GameUI.transform.Find ("Menu").Find ("ShopUI").gameObject;
+
+		var menuTf = GameUI.transform.Find ("Menu");
+		ShopUI = menuTf.Find ("ShopUI").gameObject;
+
+		TimePie = menuTf.Find ("Time").Find ("Pie").Find ("Wedge").GetComponent<Image> ();
+		TimeTxt = menuTf.Find ("Time").Find ("Text").GetComponent<Text> ();
+		WaveNumber = menuTf.Find ("Middle").Find ("Wave").Find ("Text").GetComponent<Text> ();
+		TravelerNumber = menuTf.Find ("Middle").Find ("Travelers").Find ("Text").GetComponent<Text> ();
+		Money = menuTf.Find ("Middle").Find ("Money").Find ("Text").GetComponent<Text> ();
+
 		SGPUI = tf.Find ("SGPUI").gameObject;
 
 		ParametersUI.transform.Find ("FullscreenToggle").GetComponent<Toggle> ().isOn = Screen.fullScreen;
@@ -108,6 +121,42 @@ public class MenuManager : MonoBehaviour {
 		default:
 			return null;
 		}
+	}
+
+	public void SetWaveNumber(int wave, int maxWave) {
+		WaveNumber.text = wave + "/" + maxWave;
+	}
+
+	public void SetTravelerNumber(int traveler) {
+		TravelerNumber.text = traveler + "";
+	}
+
+	public void SetMoneyNumber(int money) {
+		Money.text = money + "";
+	}
+
+	public void SetPieTime(float timePercentage, int secondTime) {
+		TimePie.fillAmount = timePercentage;
+		TimeTxt.text = IntToString (secondTime);
+	}
+
+	private string IntToString(int seconds) {
+		string time = "";
+
+		int minutes = Mathf.FloorToInt (seconds / 60);
+		int secondes = seconds % 60;
+
+		if (minutes < 10)
+			time += "0";
+		time += minutes.ToString () + ":";
+		if (secondes < 10)
+			time += "0";
+		time += secondes.ToString ();
+
+		if (seconds < 0)
+			time = "00:00";
+
+		return time;
 	}
 
 	private void UpdateShopUI() {

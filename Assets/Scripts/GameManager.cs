@@ -9,6 +9,13 @@ public class GameManager : MonoBehaviour
 	public float minDelay;
 	public float maxDelay;
 
+	public int StartingMoney = 0;
+
+	private int money;
+	private float time;
+	private float startTime;
+	private float totalTime;
+
     void Awake()
     {
         G.Sys.gameManager = this;
@@ -16,13 +23,32 @@ public class GameManager : MonoBehaviour
 
 	void Start ()
     {
-		if (entities.Count > 0)
-			StartCoroutine (spawnCoroutine()); 
+		AddMoney (StartingMoney);
+	}
+
+	public void StartTimer(float t) {
+		startTime = Time.time;
+		time = t;
+		totalTime = t;
 	}
 	
 	void Update ()
     {
-		
+		time = totalTime - Time.time + startTime;
+		G.Sys.menuManager.SetPieTime (1f-(time/totalTime), (int)time);
+	}
+
+	public void AddMoney(int m) {
+		money += m;
+		G.Sys.menuManager.SetMoneyNumber (money);
+	}
+
+	public int GetMoney() {
+		return money;
+	}
+
+	public bool HaveEnoughMoney(int m) {
+		return money >= m;
 	}
 
 	IEnumerator spawnCoroutine()
