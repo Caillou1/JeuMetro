@@ -50,7 +50,7 @@ public class MenuManager : MonoBehaviour {
 		PauseUI = tf.Find ("PauseUI").gameObject;
 		ScoreUI = tf.Find ("ScoresUI").gameObject;
 		GameUI = tf.Find ("GameUI").gameObject;
-		ShopUI = GameUI.transform.Find ("ShopUI").gameObject;
+		ShopUI = GameUI.transform.Find("Menu").Find ("ShopUI").gameObject;
 		SGPUI = tf.Find ("SGPUI").gameObject;
 
 		ParametersUI.transform.Find ("FullscreenToggle").GetComponent<Toggle> ().isOn = Screen.fullScreen;
