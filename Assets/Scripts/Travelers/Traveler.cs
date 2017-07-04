@@ -16,6 +16,7 @@ public class Traveler : AEntity
 		states.Add (new EscalatorState (this));
 		states.Add (new LostState (this));
 		states.Add (new InfosState (this));
+		states.Add (new SitState (this));
 
 		G.Sys.registerTraveler (this);
 		configureDatasFromStats ();
@@ -72,8 +73,9 @@ public class Traveler : AEntity
 		datas.Speed = Stats.MovementSpeed / (Stats.FaintnessPercentage / 100f + 1);
 		datas.Dirtiness =  0.5f - Stats.Cleanliness / 200f;
 		datas.Lostness = Stats.LostAbility / 100f;
-		datas.Waste = 0;
+		datas.Waste = new UniformFloatDistribution (0, 0.5f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());;
 		datas.Tiredness = Stats.FaintnessPercentage / 100f;
+		datas.Huger = new UniformFloatDistribution (0, 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());
 	}
 
 	void updateDatas()
@@ -82,6 +84,7 @@ public class Traveler : AEntity
 			datas.Dirtiness = 0.5f - Stats.Cleanliness / 200f;
 		else
 			datas.Dirtiness += 0.5f - Stats.Cleanliness / 200f * datas.Waste * Time.deltaTime;
+		datas.Dirtiness = Mathf.Min (datas.Dirtiness, 1);
 
 		var infoPannels = G.Sys.tilemap.getSpecialTiles (TileID.INFOPANEL);
 		float infoPannelsPower = 0;
@@ -101,6 +104,7 @@ public class Traveler : AEntity
 
 		datas.Speed = Stats.MovementSpeed / (datas.Tiredness + 1);
 		datas.Tiredness += Stats.FaintnessPercentage / 100f * Stats.FaintnessPercentage / 100f * Time.deltaTime;
+		datas.Tiredness = Mathf.Min (datas.Tiredness, 1);
 	}
 
 	float statValueToPathWeight(float value)
