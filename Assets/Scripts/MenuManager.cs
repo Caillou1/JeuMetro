@@ -19,9 +19,8 @@ public enum Menu {
 
 public class MenuManager : MonoBehaviour {
 	public Menu CurrentMenu = Menu.NONE;
-
-	public float ZoomPower = 10f;
 	public float[] ZoomLevels;
+	private Vector3 cameraOrigin;
 
 	private int CurrentZoomLevel;
 
@@ -47,10 +46,15 @@ public class MenuManager : MonoBehaviour {
 
 	private GameObject[] ShopButtons;
 
+	private Transform cameraTransform;
+
 	private int ShopIndex = 0;
 
 	void Awake() {
 		G.Sys.menuManager = this;
+
+		cameraTransform = Camera.main.transform;
+		cameraOrigin = cameraTransform.position;
 
 		tf = transform;
 		MainUI = tf.Find ("MainUI").gameObject;
@@ -75,7 +79,6 @@ public class MenuManager : MonoBehaviour {
 		ParametersUI.transform.Find ("FullscreenToggle").GetComponent<Toggle> ().isOn = Screen.fullScreen;
 
 		CurrentZoomLevel = 0;
-		Camera.main.fieldOfView = ZoomLevels [0];
 
 		MainUI.SetActive (false);
 		ParametersUI.SetActive (false);
@@ -200,15 +203,22 @@ public class MenuManager : MonoBehaviour {
 
 	public void Zoom() {
 		CurrentZoomLevel = (CurrentZoomLevel + 1) % ZoomLevels.Length;
-		DOVirtual.Float (Camera.main.fieldOfView, ZoomLevels [CurrentZoomLevel], .3f, (float f) => Camera.main.fieldOfView = f);
+		cameraTransform.position = cameraOrigin - cameraTransform.forward * ZoomLevels [CurrentZoomLevel];
 	}
 
-	public void ZoomIn() {
-		DOVirtual.Float (Camera.main.fieldOfView, Mathf.Max(ZoomLevels[0], Camera.main.fieldOfView - ZoomPower), .15f, (float f) => Camera.main.fieldOfView = f);
-	}
+	public void Zoom(float ZoomPower) {
+		bool done = false;
+		int iter = 0;
+		while (!done && iter < 3) {
+			Vector3 pos = cameraTransform.position + cameraTransform.forward * ZoomPower;
+			if (pos.y >= cameraOrigin.y && pos.y <= (cameraOrigin - cameraTransform.forward * ZoomLevels [ZoomLevels.Length - 1]).y) {
+				cameraTransform.position = pos;
+				done = true;
+			}
 
-	public void ZoomOut() {
-		DOVirtual.Float (Camera.main.fieldOfView, Mathf.Min(ZoomLevels[ZoomLevels.Length-1], Camera.main.fieldOfView + ZoomPower), .15f, (float f) => Camera.main.fieldOfView = f);
+			ZoomPower /= 2;
+			iter++;
+		}
 	}
 
 	public void Play() {

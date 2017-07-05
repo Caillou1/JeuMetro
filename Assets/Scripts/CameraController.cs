@@ -33,11 +33,13 @@ public class CameraController : MonoBehaviour {
 		if (Input.touchCount == 0) {
 			float scroll = Input.GetAxisRaw ("Mouse ScrollWheel");
 			if (scroll > 0) {
-				G.Sys.menuManager.ZoomIn ();
+				G.Sys.menuManager.Zoom (5);
 			} else if (scroll < 0) {
-				G.Sys.menuManager.ZoomOut ();
+				G.Sys.menuManager.Zoom (-5);
 			}
-		} if (Input.touchCount == 2) {
+		}
+
+		if (Input.touchCount == 2) {
 			Touch touchZero = Input.GetTouch(0);
 			Touch touchOne = Input.GetTouch(1);
 
@@ -49,28 +51,31 @@ public class CameraController : MonoBehaviour {
 
 			float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
-			if (deltaMagnitudeDiff < 0) {
-				G.Sys.menuManager.ZoomIn ();
-			} else if (deltaMagnitudeDiff > 0) {
-				G.Sys.menuManager.ZoomOut ();
+			if (deltaMagnitudeDiff != 0) {
+
+				if (deltaMagnitudeDiff < 0) {
+					G.Sys.menuManager.Zoom (1.25f);
+				} else if (deltaMagnitudeDiff > 0) {
+					G.Sys.menuManager.Zoom (-1.25f);
+				}
 			}
-		}
+		} else {
 
+			if (CanDrag && Input.touchCount <= 1) {
+				List<RaycastResult> raycastResults = new List<RaycastResult> ();
+				if (Input.GetMouseButtonDown (0)) {
+					PointerEventData ped = new PointerEventData (EventSystem.current);
+					ped.position = Input.mousePosition;
+					EventSystem.current.RaycastAll (ped, raycastResults);
 
-		if (CanDrag) {
-			List<RaycastResult> raycastResults = new List<RaycastResult> ();
-			if (Input.GetMouseButtonDown (0)) {
-				PointerEventData ped = new PointerEventData (EventSystem.current);
-				ped.position = Input.mousePosition;
-				EventSystem.current.RaycastAll (ped, raycastResults);
-
-				if (raycastResults.Count == 0) {
-					dragOrigin = Input.mousePosition;
-					canSelect = true;
-					SelectCoroutine = Select ();
-					StartCoroutine (SelectCoroutine);
-				} else {
-					isOnUI = true;
+					if (raycastResults.Count == 0) {
+						dragOrigin = Input.mousePosition;
+						canSelect = true;
+						SelectCoroutine = Select ();
+						StartCoroutine (SelectCoroutine);
+					} else {
+						isOnUI = true;
+					}
 				}
 			}
 
