@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
 	public GameObject ObjectToSpawn;
 
 	private GameObject spawnedObject;
 	private bool CanEndDrag;
+
+	void Awake() {
+		transform.Find ("Price").GetComponent<Text> ().text = ObjectToSpawn.GetComponent<DragAndDrop> ().Price.ToString();
+	}
 
 	void Spawn() {
 		if (!G.Sys.cameraController.IsSelecting) {
@@ -25,6 +30,7 @@ public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 		if (!G.Sys.cameraController.IsSelecting) {	
 			Spawn ();
 			spawnedObject.GetComponent<DragAndDrop> ().StartDrag ();
+			spawnedObject.GetComponent<DragAndDrop> ().IsBought = false;
 			CanEndDrag = true;
 		} else {
 			CanEndDrag = false;

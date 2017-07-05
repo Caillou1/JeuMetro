@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class DragAndDrop : MonoBehaviour{
+	public int Price;
+
 	protected Transform tf;
 	protected int Rotations = 0;
 	protected bool isRotating = false;
@@ -13,12 +15,14 @@ public class DragAndDrop : MonoBehaviour{
 	[HideInInspector]
 	public bool CanDrag = false;
 	protected bool Dragging = false;
+	public bool IsBought;
 
 	void Awake() {
 		tf = transform;
 		isRotating = false;
 		CheckCanPlace ();
 		CheckRotation ();
+		IsBought = true;
 	}
 
 	protected virtual void CheckCanPlace() {
@@ -92,6 +96,7 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void DeleteObject() {
+		G.Sys.gameManager.AddMoney (Price / 2);
 		Destroy (gameObject);
 	}
 
@@ -106,8 +111,12 @@ public class DragAndDrop : MonoBehaviour{
 	public void ValidateObject() {
 		CheckCanPlace ();
 		CheckRotation ();
-		if (canPlace) {
+		if (canPlace && (G.Sys.gameManager.HaveEnoughMoney(Price) || IsBought)) {
 			G.Sys.cameraController.IsSelecting = false;
+			if (!IsBought) {
+				G.Sys.gameManager.AddMoney (-Price);
+				IsBought = true;
+			}
 			G.Sys.selectionManager.Hide (true);
 			GetComponent<ATile> ().Register ();
 			CanDrag = false;
