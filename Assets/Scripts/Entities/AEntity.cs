@@ -132,7 +132,7 @@ public abstract class AEntity  : MonoBehaviour
 		enableNextState (bestIndex);
 	}
 
-	void OnTriggerStay(Collider c)
+	/*void OnTriggerStay(Collider c)
 	{
 		if (c.gameObject.tag != "Entity")
 			return;
@@ -148,7 +148,7 @@ public abstract class AEntity  : MonoBehaviour
 		avoidDir += direction * (2 - dist) / 2 * avoidPower;
 
 		OnEntityTriggerStay (c);
-	}
+	}*/
 
 	protected virtual void OnEntityTriggerStay(Collider c){}
 
