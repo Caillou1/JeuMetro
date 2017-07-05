@@ -8,11 +8,7 @@ public class CleanerCleanState : ACleanerState
 {
 	Vector3 dest = new Vector3();
 	Vector3 wastePos = new Vector3 ();
-
-	/*ATile targetToClean;
-	Vector3 oldPos;
-	float speedMultiplier = 1;
-	float timeFromLastWait = 0;*/
+	TileID cleanType = TileID.BIN;
 
 	public CleanerCleanState (CleanerEntity t) : base(t, StateType.CLEANER_CLEAN)
 	{
@@ -27,32 +23,48 @@ public class CleanerCleanState : ACleanerState
 		if (cleaner.altAction != AEntity.ActionType.NONE)
 			return 0;
 
-		var wastes = G.Sys.tilemap.getSpecialTiles (TileID.WASTE);
-		Vector3 bestTile = new Vector3 ();
-		var minDist = float.MaxValue;
-		foreach (var t in wastes) {
-			var dir = t - cleaner.transform.position;
-			var dist = new Vector2 (dir.x, dir.z).magnitude + 5 * dir.y;
-			if (dist < minDist) {
-				bestTile = t;
-				minDist = dist;
-			}
+		cleanType = TileID.BIN;
+		var waste = G.Sys.tilemap.getNearestSpecialTileOfType (cleaner.transform.position, TileID.WASTE, 5);
+		if (waste.Second) {
+			var dir = waste.First - cleaner.transform.position;
+			if (new Vector2 (dir.x, dir.z).magnitude + 5 * dir.y <= 5)
+				cleanType = TileID.WASTE;
 		}
 
-		if (minDist > 5)
-			return 0;
+		if (cleanType == TileID.BIN) {
+			var bins = G.Sys.tilemap.getSurrondingSpecialTile (cleaner.transform.position, TileID.BIN, 5, 5);
+			if (bins.Count == 0)
+				return 0;
+			Vector3 bestPos = new Vector3 ();
+			float bestDist = float.MaxValue;
 
-		var tiles = G.Sys.tilemap.tilesOfTypeAt (bestTile, TileID.WASTE);
-		if (tiles.Count == 0)
-			return 0;
+			foreach (var b in bins) {
+				var b1 = G.Sys.tilemap.tilesOfTypeAt (b, TileID.BIN);
+				if (b1.Count == 0)
+					continue;
+				var b2 = b1 [0] as BinTile;
+				if (b2.isEmpty ())
+					continue;	
+				var dir = b - cleaner.transform.position;
+				var dist = new Vector2 (dir.x, dir.z).magnitude + dir.z * 5;
+				if (dist < bestDist) {
+					bestDist = dist;
+					bestPos = b;
+				}
+			}
+
+			if (bestDist == float.MaxValue)
+				return 0;
+			waste = new Pair<Vector3, bool> (bestPos, true);
+		}
 			
 		List<Vector3> poss = new List<Vector3> ();
-		poss.Add (bestTile + Vector3.left);
-		poss.Add (bestTile + Vector3.right);
-		poss.Add (bestTile + Vector3.forward);
-		poss.Add (bestTile + Vector3.back);
+		poss.Add (waste.First + Vector3.left);
+		poss.Add (waste.First + Vector3.right);
+		poss.Add (waste.First + Vector3.forward);
+		poss.Add (waste.First + Vector3.back);
 
-		wastePos = bestTile;
+		wastePos = waste.First;
 
 		var pos = poss[new UniformIntDistribution(poss.Count-1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())];
 
@@ -66,31 +78,15 @@ public class CleanerCleanState : ACleanerState
 
 	public override void start ()
 	{
-		cleaner.StartCoroutine (CleanCoroutine ());
+		if (cleanType == TileID.WASTE)
+			cleaner.StartCoroutine (CleanCoroutine ());
+		else
+			cleaner.StartCoroutine (CleanBinCoroutine ());
 	}
 
 	public override void update()
 	{
 		cleaner.rigidbody.velocity = Vector3.zero;
-
-		/*timeFromLastWait += Time.deltaTime;
-		Debug.Log ("dest : " + cleaner.destination + " -- alt dest : " + cleaner.altDestination + " -- real dest : " + cleaner.path.getEndPos () + " -- alt action : " + cleaner.altAction);
-
-		var target = cleaner.path.next (cleaner.transform.position);
-		if ((cleaner.transform.position - target).magnitude > .5f && (cleaner.transform.position - target).magnitude > (oldPos - target).magnitude)
-			cleaner.Updatepath ();
-		target += cleaner.avoidDir;
-		oldPos = cleaner.transform.position;
-		var dir = Vector3.Slerp (cleaner.transform.forward, target - cleaner.transform.position, Time.deltaTime * cleaner.Stats.RotationSpeed).normalized;
-		cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (dir, Vector3.up).eulerAngles.y, 0);
-
-		Debug.DrawRay (cleaner.transform.position, cleaner.transform.forward, Color.blue);
-
-		cleaner.rigidbody.velocity = cleaner.transform.forward.normalized * cleaner.datas.Speed * speedMultiplier;
-		cleaner.avoidDir = new Vector3 ();
-
-		if((new Vector3i(cleaner.transform.position).equal(new Vector3i(targetToClean.transform.position))))
-			Debug.Log(targetToClean.name + " CLEANED");*/
 	}
 
 	IEnumerator CleanCoroutine()
@@ -99,6 +95,18 @@ public class CleanerCleanState : ACleanerState
 		var tiles = G.Sys.tilemap.tilesOfTypeAt (wastePos, TileID.WASTE);
 		foreach (var t in tiles)
 			UnityEngine.Object.Destroy (t.gameObject);
+		cleaner.altAction = AEntity.ActionType.NONE;
+		cleaner.BackToMoveState();
+	}
+
+	IEnumerator CleanBinCoroutine()
+	{
+		yield return new WaitForSeconds (1.0f);
+		var tiles = G.Sys.tilemap.tilesOfTypeAt (wastePos, TileID.BIN);
+		foreach (var t in tiles) {
+			var bin = t as BinTile;
+			bin.waste = 0;
+		}
 		cleaner.altAction = AEntity.ActionType.NONE;
 		cleaner.BackToMoveState();
 	}

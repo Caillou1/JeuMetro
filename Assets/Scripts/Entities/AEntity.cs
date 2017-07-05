@@ -13,6 +13,7 @@ public abstract class AEntity  : MonoBehaviour
 		TICKET,
 		LOST,
 		INFOS,
+		BUY_FOOD,
 		CLEAN,
 	}
 

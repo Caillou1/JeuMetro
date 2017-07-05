@@ -6,6 +6,20 @@ using UnityEngine;
 
 public class BinTile : ATile
 {
+	private float wasteValue = 0;
+	public float waste {
+		get { return wasteValue; }
+		set{ wasteValue = value; }
+	}
+	public bool canCountain(float _waste)
+	{
+		return wasteValue + _waste <= 1;
+	}
+	public bool isEmpty()
+	{
+		return wasteValue <= 0.1f;
+	}
+
 	protected override void Awake()
     {
 		type = TileID.BIN;
