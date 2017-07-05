@@ -78,7 +78,7 @@ public class CleanerStairsState : ACleanerState
 		case 1:
 			{
 				var dest = stair.transform.position - stairsDir + 2 * Vector3.up;
-				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * cleaner.datas.Speed * stairsSpeedMultiplier;
+				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * cleaner.Stats.MovementSpeed * stairsSpeedMultiplier;
 				cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (cleaner.rigidbody.velocity.x, 0, cleaner.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
 				if (new Vector3i (dest).equal (new Vector3i (cleaner.transform.position)))
@@ -112,7 +112,7 @@ public class CleanerStairsState : ACleanerState
 		case 1:
 			{
 				var dest = stair.transform.position + 2 * stairsDir ;
-				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * cleaner.datas.Speed * stairsSpeedMultiplier;
+				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * cleaner.Stats.MovementSpeed * stairsSpeedMultiplier;
 				cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (cleaner.rigidbody.velocity.x, 0, cleaner.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
 				if (new Vector3i (dest).equal (new Vector3i (cleaner.transform.position)))

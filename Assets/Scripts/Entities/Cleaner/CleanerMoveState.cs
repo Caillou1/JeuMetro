@@ -36,7 +36,7 @@ public class CleanerMoveState : ACleanerState
 
 		Debug.DrawRay (cleaner.transform.position, cleaner.transform.forward, Color.blue);
 
-		cleaner.rigidbody.velocity = cleaner.transform.forward.normalized * cleaner.datas.Speed * speedMultiplier;
+		cleaner.rigidbody.velocity = cleaner.transform.forward.normalized * cleaner.Stats.MovementSpeed * speedMultiplier;
 		cleaner.avoidDir = new Vector3 ();
 	}
 

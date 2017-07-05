@@ -6,6 +6,8 @@ using NRand;
 public class Traveler : AEntity 
 {
 	public TravelerStats Stats;
+	[HideInInspector]
+	public TravelerDatas datas = new TravelerDatas ();
 
 	float lostNessOnLastPath = 0;
 
@@ -91,7 +93,7 @@ public class Traveler : AEntity
 		float infoPannelsPower = 0;
 		foreach (var i in infoPannels) {
 			var dist = (i - transform.position);
-			var d = new Vector2 (dist.x, dist.z).magnitude + 5 * dist.y;
+			var d = new Vector2 (dist.x, dist.z).magnitude + Mathf.Abs(5 * dist.y);
 			if (d > 6)
 				continue;
 			infoPannelsPower += 1 - (d / 6);
@@ -127,9 +129,16 @@ public class Traveler : AEntity
 		if (G.Sys.tilemap.haveSpecialTileAt (TileID.OUT, transform.position))
 			Destroy (gameObject);
 	}
-		
-	protected override void OnEntityUpdatePath ()
+
+	public override void Updatepath ()
 	{
+		if (altAction != ActionType.NONE) {
+			path.create (transform.position, altDestination, datas.Lostness);
+		} else {
+			altWait = true;
+			path.create (transform.position, destination, datas.Lostness);
+		}
+
 		lostNessOnLastPath = datas.Lostness;
 	}
 }

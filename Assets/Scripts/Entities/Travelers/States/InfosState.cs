@@ -29,7 +29,7 @@ public class InfosState : ATravelerState
 		var minDist = float.MaxValue;
 		foreach (var s in signs) {
 			var dir = s - traveler.transform.position;
-			var dist = new Vector2 (dir.x, dir.z).magnitude + 5 * dir.y;
+			var dist = new Vector2 (dir.x, dir.z).magnitude + Mathf.Abs(5 * dir.y);
 			if (dist < minDist) {
 				bestSign = s;
 				minDist = dist;

@@ -27,12 +27,12 @@ public class CleanerCleanState : ACleanerState
 		var waste = G.Sys.tilemap.getNearestSpecialTileOfType (cleaner.transform.position, TileID.WASTE, 5);
 		if (waste.Second) {
 			var dir = waste.First - cleaner.transform.position;
-			if (new Vector2 (dir.x, dir.z).magnitude + 5 * dir.y <= 5)
+			if (new Vector2 (dir.x, dir.z).magnitude + 5 * dir.y <= cleaner.Stats.WasteVisibilityRadius)
 				cleanType = TileID.WASTE;
 		}
 
 		if (cleanType == TileID.BIN) {
-			var bins = G.Sys.tilemap.getSurrondingSpecialTile (cleaner.transform.position, TileID.BIN, 5, 5);
+			var bins = G.Sys.tilemap.getSurrondingSpecialTile (cleaner.transform.position, TileID.BIN, 5, cleaner.Stats.WasteVisibilityRadius);
 			if (bins.Count == 0)
 				return 0;
 			Vector3 bestPos = new Vector3 ();
@@ -46,7 +46,7 @@ public class CleanerCleanState : ACleanerState
 				if (b2.isEmpty ())
 					continue;	
 				var dir = b - cleaner.transform.position;
-				var dist = new Vector2 (dir.x, dir.z).magnitude + dir.z * 5;
+				var dist = new Vector2 (dir.x, dir.z).magnitude + Mathf.Abs(dir.y * 5);
 				if (dist < bestDist) {
 					bestDist = dist;
 					bestPos = b;
