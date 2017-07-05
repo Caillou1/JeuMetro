@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 	void Start ()
     {
 		AddMoney (StartingMoney);
+		StartCoroutine (spawnCoroutine ());
 	}
 
 	public void StartTimer(float t) {
