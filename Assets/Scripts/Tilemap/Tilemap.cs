@@ -476,7 +476,6 @@ public class Tilemap
 		}
 
 		foreach (var v in positionsToCheck) {
-			var tmpTiles = at (v);
 			foreach (var t in tilesOfTypeAt(v, id))
 				surroundingTiles.Add (t);
 		}

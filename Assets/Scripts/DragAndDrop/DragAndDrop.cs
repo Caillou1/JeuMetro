@@ -96,7 +96,7 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void DeleteObject() {
-		G.Sys.gameManager.AddMoney (Price / 2);
+		if(IsBought) G.Sys.gameManager.AddMoney (Price / 2);
 		Destroy (gameObject);
 	}
 
@@ -108,7 +108,7 @@ public class DragAndDrop : MonoBehaviour{
 		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
 	}
 
-	public void ValidateObject() {
+	public bool ValidateObject() {
 		CheckCanPlace ();
 		CheckRotation ();
 		if (canPlace && (G.Sys.gameManager.HaveEnoughMoney(Price) || IsBought)) {
@@ -122,7 +122,9 @@ public class DragAndDrop : MonoBehaviour{
 			CanDrag = false;
 			SendEvent ();
 			ActivateCollisions ();
+			return true;
 		}
+		return false;
 	}
 		
 	public void RotateObject() {
