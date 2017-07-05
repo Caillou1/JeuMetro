@@ -31,7 +31,7 @@ public static class PathFinder
 		if (weights == null)
 			weights = new Dictionary<TileID, float> ();
 		
-		if(start == end)
+		if(start.Equals(end))
 			return new List<Vector3i>(new Vector3i[]{start});
 		var startTile = G.Sys.tilemap.connectableTile (start);
 		var endTile = G.Sys.tilemap.connectableTile (end);
@@ -126,7 +126,14 @@ public static class PathFinder
 			}
 		}
 		poss.Reverse ();
+		debugVisited (visited);
 		return poss;
+	}
+
+	private static void debugVisited(List<Pair<ATile, Pair<ATile, Vector3i>>> visited)
+	{
+		foreach (var v in visited)
+			Debug.DrawLine (v.First.transform.position, v.Second.Second.toVector3 (), Color.green);
 	}
 }
 

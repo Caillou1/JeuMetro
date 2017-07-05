@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class Vector3i
+public struct Vector3i
 {
     public int x;
     public int y;
@@ -41,10 +41,15 @@ public class Vector3i
 
 	public override bool Equals (object obj)
 	{
-		var v = obj as Vector3i;
+		if (!(obj is Vector3i))
+			return false;
+
+		return equal ((Vector3i)obj);
+
+		/*var v = obj as Vector3i;
 		if (v == null)
 			return false;
-		return equal (v);
+		return equal (v);*/
 	}
 
 	public override int GetHashCode ()
