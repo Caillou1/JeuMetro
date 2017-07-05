@@ -41,6 +41,7 @@ public class MenuManager : MonoBehaviour {
 	private Text WaveNumber;
 	private Text TravelerNumber;
 	private Text Money;
+	private Text MoneyAdded;
 
 	private Transform tf;
 
@@ -67,6 +68,7 @@ public class MenuManager : MonoBehaviour {
 		WaveNumber = menuTf.Find ("Middle").Find ("Wave").Find ("Text").GetComponent<Text> ();
 		TravelerNumber = menuTf.Find ("Middle").Find ("Travelers").Find ("Text").GetComponent<Text> ();
 		Money = menuTf.Find ("Middle").Find ("Money").Find ("Text").GetComponent<Text> ();
+		MoneyAdded = menuTf.Find ("Middle").Find("Money").Find ("MoneyAdded").GetComponent<Text> ();
 
 		SGPUI = tf.Find ("SGPUI").gameObject;
 
@@ -166,6 +168,21 @@ public class MenuManager : MonoBehaviour {
 		for (int i = ShopIndex * 5; i < Mathf.Min(ShopIndex * 5 + 5, ShopButtons.Length); i++) {
 			ShopButtons [i].SetActive (true);
 		}
+	}
+
+	public void ShowMoneyAdded(int value) {
+		string str = "";
+		if (value > 0)
+			str += "+";
+		str += value;
+
+		MoneyAdded.text = str;
+
+		DOVirtual.Float (1f, 0f, 2f, (float x) => {
+			MoneyAdded.color = new Color(MoneyAdded.color.r, MoneyAdded.color.g, MoneyAdded.color.b, x);
+		}).OnComplete(() => {
+			MoneyAdded.text = "";
+		});
 	}
 
 	public void ShopLeft() {

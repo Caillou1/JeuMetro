@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
 	public void AddMoney(int m) {
 		money += m;
 		G.Sys.menuManager.SetMoneyNumber (money);
+		G.Sys.menuManager.ShowMoneyAdded (m);
 	}
 
 	public int GetMoney() {
