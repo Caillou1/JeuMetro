@@ -38,4 +38,17 @@ public class Vector3i
 	{
 		return x == other.x && y == other.y && z == other.z;
 	}
+
+	public override bool Equals (object obj)
+	{
+		var v = obj as Vector3i;
+		if (v == null)
+			return false;
+		return equal (v);
+	}
+
+	public override int GetHashCode ()
+	{
+		return x ^ (y * 13) ^ (z * 23);
+	}
 }

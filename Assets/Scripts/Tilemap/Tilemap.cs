@@ -47,7 +47,9 @@ public class Tilemap
 	public const int SPEAKER_PRIORITY = 10;
 	public const int WASTE_PRIORITY = 10;
 
-	private List<TilemapInfo> tiles = new List<TilemapInfo> ();
+	//private List<TilemapInfo> tiles = new List<TilemapInfo> ();
+	private Dictionary<Vector3i, List<TileInfos>> tiles = new Dictionary<Vector3i, List<TileInfos>>();
+
 	private Dictionary<TileID, List<Vector3i>> specialTiles = new Dictionary<TileID, List<Vector3i>> ();
 
 	/// <summary>
@@ -120,8 +122,9 @@ public class Tilemap
 	public void addTile(Vector3i pos, ATile tile, bool canBeConnected, bool preventConnexions, int priority = 0)
 	{
 		var t = map (pos);
-		if(!t.tiles.Exists(it => it.tile == tile))
-			t.tiles.Add(new TileInfos(tile, canBeConnected, preventConnexions, priority));
+		if(!t.Exists(it => it.tile == tile))
+			t.Add(new TileInfos(tile, canBeConnected, preventConnexions, priority));
+		sort (t);
 	}
 
 	/// <summary>
@@ -143,7 +146,7 @@ public class Tilemap
 	/// <param name="tile">Tile.</param>
 	public bool delTile(Vector3i pos, ATile tile)
 	{
-		return map (pos).tiles.RemoveAll (it => it.tile == tile) > 0;
+		return map (pos).RemoveAll (it => it.tile == tile) > 0;
 	}
 
 	/// <summary>
@@ -162,7 +165,7 @@ public class Tilemap
 	public List<ATile> at(Vector3i pos)
 	{
 		List<ATile> list = new List<ATile> ();
-		foreach (var t in map(pos).tiles)
+		foreach (var t in map(pos))
 			list.Add (t.tile);
 		return list;
 	}
@@ -186,11 +189,10 @@ public class Tilemap
 	/// <param name="id">Identifier.</param>
 	public List<ATile> tilesOfTypeAt(Vector3i pos, TileID id)
 	{
-		var list = at (pos);
 		List<ATile> returnlist = new List<ATile> ();
-		foreach (var t in list)
-			if (t.type == id)
-				returnlist.Add (t);
+		foreach (var t in map(pos))
+			if (t.tile.type == id)
+				returnlist.Add (t.tile);
 		return returnlist;
 	}
 
@@ -210,7 +212,7 @@ public class Tilemap
 	public bool connectable(Vector3i pos)
 	{
 		bool isConnectable = false;
-		foreach (var tile in map(pos).tiles) {
+		foreach (var tile in map(pos)) {
 			if (tile.preventConnexions)
 				return false;
 			if (tile.canBeConnected)
@@ -237,7 +239,7 @@ public class Tilemap
 	public List<ATile> connectableTiles(Vector3i pos)
 	{
 		List<ATile> list = new List<ATile> ();
-		foreach (var tile in map(pos).tiles) {
+		foreach (var tile in map(pos)) {
 			if (tile.preventConnexions)
 				return new List<ATile> ();
 			if (tile.canBeConnected)
@@ -268,7 +270,7 @@ public class Tilemap
 		int bestValue = int.MinValue;
 		bool bestCanBeConnected = false;
 		ATile bestTile = null;
-		foreach (var tile in map(pos).tiles) {
+		foreach (var tile in map(pos)) {
 			if (tile.preventConnexions)
 				return null;
 			if (tile.priority > bestValue) {
@@ -299,20 +301,14 @@ public class Tilemap
 	/// <param name="pos">Position.</param>
 	public TileInfos tileInfosOf(ATile tile, Vector3i pos)
 	{
-		return map (pos).tiles.Find (it => it.tile == tile);
+		return map (pos).Find (it => it.tile == tile);
 	}
 
-	private TilemapInfo map(Vector3i pos)
+	private List<TileInfos> map(Vector3i pos)
 	{
-		foreach (var t in tiles) {
-			if (t.pos.x == pos.x && t.pos.y == pos.y && t.pos.z == pos.z) {
-				sort (t.tiles);
-				t.tiles.Reverse ();
-				return t;
-			}
-		}
-		tiles.Add(new TilemapInfo(pos));
-		return tiles [tiles.Count - 1];
+		if (!tiles.ContainsKey (pos))
+			tiles.Add (pos, new List<TileInfos> ());
+		return tiles [pos];
 	}
 
 	private static void sort(List<TileInfos> list)
@@ -439,17 +435,16 @@ public class Tilemap
 		return false;
 	}
 
-	public ATile getRandomGroundTile() {
-		bool found = false;
-		ATile tile = null;
-		while (!found) {
-			var t = tiles [new UniformIntDistribution (tiles.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())];
-			if (t.tiles.Count == 1 && t.tiles [0].tile.type == TileID.GROUND) {
-				found = true;
-				tile = t.tiles [0].tile;
-			}
+	public ATile getRandomGroundTile() 
+	{
+		List<ATile> validTiles = new List<ATile> ();
+		foreach (var t in tiles) {
+			if (t.Value.Count != 1 || t.Value [0].tile.type != TileID.GROUND)
+				continue;
+			validTiles.Add (t.Value[0].tile);
 		}
-		return tile;
+		return validTiles [new UniformIntDistribution (validTiles.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())];
+
 	}
 
 	/*public List<ATile> getSurroundingTilesOfTypeAt(Vector3 pos, TileID id, int radius) {
@@ -494,13 +489,13 @@ public class Tilemap
 
 	public List<Vector3i> getSurrondingSpecialTile(Vector3i pos, TileID id, float radius, float verticalAmplification = 1)
 	{
-		List<Vector3i> tiles = new List<Vector3i> ();
+		List<Vector3i> validTiles = new List<Vector3i> ();
 		foreach (var t in getSpecialTilesI (id)) {
 			var dir = pos.toVector3 () - t.toVector3 ();
 			if (new Vector2 (dir.x, dir.z).magnitude + dir.y * verticalAmplification < radius)
-				tiles.Add (t);
+				validTiles.Add (t);
 		}
-		return tiles;
+		return validTiles;
 	}
 
 	public Pair<Vector3, bool> getNearestSpecialTileOfType(Vector3 pos, TileID id, float verticalAmplification = 1)
