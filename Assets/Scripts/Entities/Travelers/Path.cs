@@ -58,10 +58,13 @@ public class Path
 
 	void variancePath(int variations)
 	{
+		if (points.Count < 3)
+			return;
+
 		List<Pair<int, Vector3>> newPoints = new List<Pair<int, Vector3>>();
 
 		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
-		var dPoint = new UniformIntDistribution (1, points.Count - 1);
+		var dPoint = new UniformIntDistribution (1, points.Count - 2);
 		var dDest = new UniformVector3BoxDistribution (-3, 3, 0, 0, -3, 3);
 
 		for (int i = 0; i < variations; i++) {
