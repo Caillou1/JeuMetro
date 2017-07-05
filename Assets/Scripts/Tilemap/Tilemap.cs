@@ -519,7 +519,7 @@ public class Tilemap
 		float bestDist = float.MaxValue;
 		foreach (var t in list) {
 			var dir = pos.toVector3 () - t.toVector3 ();
-			var dist = new Vector2 (dir.x, dir.z).magnitude + dir.y * verticalAmplification;
+			var dist = new Vector2 (dir.x, dir.z).magnitude + Mathf.Abs(dir.y * verticalAmplification);
 
 			if (dist < bestDist) {
 				bestDist = dist;
@@ -529,3 +529,4 @@ public class Tilemap
 		return new Pair<Vector3i, bool>(bestTile, true);
 	}
 }
+ 

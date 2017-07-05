@@ -14,7 +14,6 @@ public class CleanerEntity  : AEntity
 		states.Add (new CleanerStairsState (this));
 		states.Add (new CleanerEscalatorState (this));
 		states.Add (new CleanerCleanState (this));
-		datas.Speed = Stats.MovementSpeed;
 	}
 
 	public override void BackToMoveState ()
@@ -39,6 +38,16 @@ public class CleanerEntity  : AEntity
 		var t = G.Sys.tilemap.getRandomGroundTile ();
 		if (t != null) {
 			destination = t.transform.position;
+		}
+	}
+
+	public override void Updatepath ()
+	{
+		if (altAction != ActionType.NONE) {
+			path.create (transform.position, altDestination, 0);
+		} else {
+			altWait = true;
+			path.create (transform.position, destination, 0);
 		}
 	}
 }

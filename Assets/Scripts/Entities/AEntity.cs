@@ -31,8 +31,6 @@ public abstract class AEntity  : MonoBehaviour
 	[HideInInspector]
 	public Vector3 destination;
 	[HideInInspector]
-	public TravelerDatas datas = new TravelerDatas ();
-	[HideInInspector]
 	public Vector3 altDestination;
 	[HideInInspector]
 	public ActionType altAction;
@@ -168,19 +166,7 @@ public abstract class AEntity  : MonoBehaviour
 
 	protected abstract void InitialiseTarget();
 
-	public void Updatepath()
-	{
-		if (altAction != ActionType.NONE) {
-			path.create (transform.position, altDestination, datas.Lostness);
-		} else {
-			altWait = true;
-			path.create (transform.position, destination, datas.Lostness);
-		}
-
-		OnEntityUpdatePath ();
-	}
-
-	protected virtual void OnEntityUpdatePath(){}
+	public abstract void Updatepath ();
 
 	void onPlaceObject(ObjectPlacedEvent e)
 	{
