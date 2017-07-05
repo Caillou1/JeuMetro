@@ -50,9 +50,9 @@ public class CameraController : MonoBehaviour {
 			float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
 			if (deltaMagnitudeDiff < 0) {
-				G.Sys.menuManager.ZoomOut ();
-			} else if (deltaMagnitudeDiff > 0) {
 				G.Sys.menuManager.ZoomIn ();
+			} else if (deltaMagnitudeDiff > 0) {
+				G.Sys.menuManager.ZoomOut ();
 			}
 		}
 

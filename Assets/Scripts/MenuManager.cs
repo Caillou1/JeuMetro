@@ -126,15 +126,18 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void SetWaveNumber(int wave, int maxWave) {
-		WaveNumber.text = wave + "/" + maxWave;
+		if(WaveNumber != null)
+			WaveNumber.text = wave + "/" + maxWave;
 	}
 
 	public void SetTravelerNumber(int traveler) {
-		TravelerNumber.text = traveler + "";
+		if(TravelerNumber != null)
+			TravelerNumber.text = traveler + "";
 	}
 
 	public void SetMoneyNumber(int money) {
-		Money.text = money + "";
+		if(Money != null)
+			Money.text = money + "";
 	}
 
 	public void SetPieTime(float timePercentage, int secondTime) {
@@ -269,6 +272,7 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Replay() {
+		Time.timeScale = 1f;
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
 

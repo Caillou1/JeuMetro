@@ -56,8 +56,8 @@ public sealed class G
 
 	public bool removeTraveler(Traveler t)
 	{
-		return travelers.Remove (t);
 		_menuManager.SetTravelerNumber (travelerCount());
+		return travelers.Remove (t);
 	}
 
 	public int travelerCount()

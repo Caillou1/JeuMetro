@@ -55,15 +55,23 @@ public class SelectionManager : MonoBehaviour {
 		}
 	}
 
-	public void Validate() {
-		if (obj != null) {
+	public void ValidateNoReturn() {
+		if (obj != null)
 			obj.ValidateObject ();
+	}
+
+	public bool Validate() {
+		if (obj != null) {
+			return obj.ValidateObject ();
 		}
+		return false;
 	}
 
 	public void Delete() {
 		G.Sys.cameraController.IsSelecting = false;
-		obj.DeleteObject ();
+		if (obj != null) {
+			obj.DeleteObject ();
+		}
 		Hide (false);
 	}
 
