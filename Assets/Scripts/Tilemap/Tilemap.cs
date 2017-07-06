@@ -314,9 +314,9 @@ public class Tilemap
 	private static void sort(List<TileInfos> list)
 	{
 		list.Sort (delegate(TileInfos a, TileInfos b) {
-			if(a.priority > b.priority)
+			if(a.priority < b.priority)
 				return 1;
-			else if (a.priority < b.priority)
+			else if (a.priority > b.priority)
 				return -1;
 			else return 0;
 		});
