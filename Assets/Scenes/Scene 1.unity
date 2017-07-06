@@ -20357,11 +20357,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4914383096672328, guid: 6f291861566d840feafdf9edcf6a9472, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 14
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4914383096672328, guid: 6f291861566d840feafdf9edcf6a9472, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 14
+      value: -9
       objectReference: {fileID: 0}
     - target: {fileID: 4914383096672328, guid: 6f291861566d840feafdf9edcf6a9472, type: 2}
       propertyPath: m_LocalPosition.z
@@ -20391,6 +20391,18 @@ Prefab:
         type: 2}
       propertyPath: DragSpeed
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4042409018066794, guid: 6f291861566d840feafdf9edcf6a9472, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 11.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4042409018066794, guid: 6f291861566d840feafdf9edcf6a9472, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 6.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 4042409018066794, guid: 6f291861566d840feafdf9edcf6a9472, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -1.27
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6f291861566d840feafdf9edcf6a9472, type: 2}
@@ -23908,8 +23920,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entities:
   - {fileID: 1427005143703886, guid: c18e31107d19d445e9ad33af39ca5d8a, type: 2}
-  minDelay: 0.05
-  maxDelay: 0.05
+  minDelay: 0.1
+  maxDelay: 0.1
   StartingMoney: 1000
 --- !u!1 &1821224235
 GameObject:
