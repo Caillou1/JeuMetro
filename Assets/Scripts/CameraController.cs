@@ -94,7 +94,6 @@ public class CameraController : MonoBehaviour {
 						StopCoroutine (SelectCoroutine);
 				}
 				var bounds = G.Sys.tilemap.GlobalBounds ();
-				var move = new Vector3 (Mathf.Clamp(-Input.GetAxis ("Mouse X") * Time.deltaTime * DragSpeed, bounds.center.x - bounds.extents.x, bounds.center.x + bounds.extents.x), 0, Mathf.Clamp(-Input.GetAxis ("Mouse Y") * Time.deltaTime * DragSpeed, bounds.center.z - bounds.extents.z, bounds.center.z + bounds.extents.z));
 				cameraTransform.Translate(new Vector3 (-Input.GetAxis ("Mouse X") * Time.deltaTime * DragSpeed * G.Sys.menuManager.GetZoomRatio(), 0, -Input.GetAxis ("Mouse Y") * Time.deltaTime * DragSpeed * G.Sys.menuManager.GetZoomRatio()));
 				cameraTransform.position = new Vector3 (Mathf.Clamp(cameraTransform.position.x, bounds.center.x - bounds.extents.x, bounds.center.x + bounds.extents.x), cameraTransform.position.y, Mathf.Clamp(cameraTransform.position.z, bounds.center.z - bounds.extents.z, bounds.center.z + bounds.extents.z));
 				dragOrigin = Input.mousePosition;
