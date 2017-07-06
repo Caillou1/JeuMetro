@@ -15,7 +15,9 @@ public class CameraController : MonoBehaviour {
 	private Transform cameraTransform;
 	private bool canSelect;
 	private bool isOnUI = false;
+	public bool pinching = false;
 
+	IEnumerator PinchingCoroutine;
 	IEnumerator SelectCoroutine;
 
 	void Awake() {
@@ -33,9 +35,9 @@ public class CameraController : MonoBehaviour {
 		if (Input.touchCount == 0) {
 			float scroll = Input.GetAxisRaw ("Mouse ScrollWheel");
 			if (scroll > 0) {
-				G.Sys.menuManager.Zoom (5);
+				G.Sys.menuManager.Zoom (7.5f);
 			} else if (scroll < 0) {
-				G.Sys.menuManager.Zoom (-5);
+				G.Sys.menuManager.Zoom (-7.5f);
 			}
 		}
 
@@ -52,14 +54,20 @@ public class CameraController : MonoBehaviour {
 			float deltaMagnitudeDiff = prevTouchDeltaMag - touchDeltaMag;
 
 			if (deltaMagnitudeDiff != 0) {
-
+				if (PinchingCoroutine != null)
+					StopCoroutine (PinchingCoroutine);
+				pinching = true;
 				if (deltaMagnitudeDiff < 0) {
-					G.Sys.menuManager.Zoom (1.25f);
+					G.Sys.menuManager.Zoom (4f);
 				} else if (deltaMagnitudeDiff > 0) {
-					G.Sys.menuManager.Zoom (-1.25f);
+					G.Sys.menuManager.Zoom (-4f);
 				}
 			}
 		} else {
+			if (pinching) {
+				PinchingCoroutine = DelayedPinch ();
+				StartCoroutine (PinchingCoroutine);
+			}
 			if (CanDrag && Input.touchCount <= 1) {
 				List<RaycastResult> raycastResults = new List<RaycastResult> ();
 				if (Input.GetMouseButtonDown (0)) {
@@ -78,18 +86,29 @@ public class CameraController : MonoBehaviour {
 				}
 			}
 
-			if ((Input.GetMouseButton (0) || Input.GetMouseButton(2)) && Vector3.Distance (Input.mousePosition, dragOrigin) > 1f && !isOnUI && CanDrag) {
+			float dist = Vector3.Distance (Input.mousePosition, dragOrigin);
+			if (!pinching && (Input.GetMouseButton (0) || Input.GetMouseButton(2)) &&  dist > 1f /*&& dist <= 500f*/ && !isOnUI && CanDrag && Input.touchCount <= 1) {
 				if (canSelect) {
 					canSelect = false;
 					if(SelectCoroutine != null)
 						StopCoroutine (SelectCoroutine);
 				}
-				cameraTransform.Translate (new Vector3 (-Input.GetAxis ("Mouse X") * Time.deltaTime * DragSpeed, 0, -Input.GetAxis ("Mouse Y") * Time.deltaTime * DragSpeed));
+				var bounds = G.Sys.tilemap.GlobalBounds ();
+				var move = new Vector3 (Mathf.Clamp(-Input.GetAxis ("Mouse X") * Time.deltaTime * DragSpeed, bounds.center.x - bounds.extents.x, bounds.center.x + bounds.extents.x), 0, Mathf.Clamp(-Input.GetAxis ("Mouse Y") * Time.deltaTime * DragSpeed, bounds.center.z - bounds.extents.z, bounds.center.z + bounds.extents.z));
+				cameraTransform.Translate(new Vector3 (-Input.GetAxis ("Mouse X") * Time.deltaTime * DragSpeed * G.Sys.menuManager.GetZoomRatio(), 0, -Input.GetAxis ("Mouse Y") * Time.deltaTime * DragSpeed * G.Sys.menuManager.GetZoomRatio()));
+				cameraTransform.position = new Vector3 (Mathf.Clamp(cameraTransform.position.x, bounds.center.x - bounds.extents.x, bounds.center.x + bounds.extents.x), cameraTransform.position.y, Mathf.Clamp(cameraTransform.position.z, bounds.center.z - bounds.extents.z, bounds.center.z + bounds.extents.z));
+				dragOrigin = Input.mousePosition;
 			}
 		}
 
 		if (Input.GetMouseButtonUp (0))
 			isOnUI = false;
+	}
+
+	IEnumerator DelayedPinch() {
+		yield return new WaitForSeconds (.1f);
+		if(pinching)
+			pinching = false;
 	}
 
 	IEnumerator Select() {

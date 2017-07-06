@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     {
 		AddMoney (StartingMoney);
 		StartCoroutine (spawnCoroutine ());
+		G.Sys.tilemap.UpdateGlobalBounds ();
 	}
 
 	public void StartTimer(float t) {

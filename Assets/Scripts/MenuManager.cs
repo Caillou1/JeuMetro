@@ -221,6 +221,10 @@ public class MenuManager : MonoBehaviour {
 		}
 	}
 
+	public float GetZoomRatio() {
+		return (cameraTransform.position.y - cameraOrigin.y) / (cameraOrigin - cameraTransform.forward * ZoomLevels [ZoomLevels.Length - 1]).y + .1f;
+	}
+
 	public void Play() {
 		Debug.Log ("Play");
 	}
