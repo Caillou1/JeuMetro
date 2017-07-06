@@ -60,7 +60,6 @@ public class CameraController : MonoBehaviour {
 				}
 			}
 		} else {
-
 			if (CanDrag && Input.touchCount <= 1) {
 				List<RaycastResult> raycastResults = new List<RaycastResult> ();
 				if (Input.GetMouseButtonDown (0)) {
@@ -79,7 +78,7 @@ public class CameraController : MonoBehaviour {
 				}
 			}
 
-			if ((Input.GetMouseButton (0) || Input.GetMouseButton(2)) && Vector3.Distance (Input.mousePosition, dragOrigin) > 1f && !isOnUI) {
+			if ((Input.GetMouseButton (0) || Input.GetMouseButton(2)) && Vector3.Distance (Input.mousePosition, dragOrigin) > 1f && !isOnUI && CanDrag) {
 				if (canSelect) {
 					canSelect = false;
 					if(SelectCoroutine != null)
