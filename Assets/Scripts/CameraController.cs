@@ -125,9 +125,9 @@ public class CameraController : MonoBehaviour {
 				IsSelecting = true;
 				tile.Unregister ();
 				dad.DesactivateCollisions ();
-			} else if (IsSelecting && info.transform != null) {
+			}/* else if (IsSelecting && info.transform != null) {
 				G.Sys.selectionManager.Move (info.transform.position);
-			}
+			}*/
 		}
 	}
 }
