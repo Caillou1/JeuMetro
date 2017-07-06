@@ -47,10 +47,11 @@ public class Tilemap
 	public const int SPEAKER_PRIORITY = 10;
 	public const int WASTE_PRIORITY = 10;
 
-	//private List<TilemapInfo> tiles = new List<TilemapInfo> ();
 	private Dictionary<Vector3i, List<TileInfos>> tiles = new Dictionary<Vector3i, List<TileInfos>>();
 
 	private Dictionary<TileID, List<Vector3i>> specialTiles = new Dictionary<TileID, List<Vector3i>> ();
+
+	private Bounds bounds;
 
 	/// <summary>
 	/// Ajoute une tile connectable à la position demandé.
@@ -435,6 +436,11 @@ public class Tilemap
 		return false;
 	}
 
+
+	/// <summary>
+	/// Retourne une tile aléatoire à une position contenant uniquement une tile GROUND
+	/// </summary>
+	/// <returns>The random ground tile.</returns>
 	public ATile getRandomGroundTile() 
 	{
 		List<ATile> validTiles = new List<ATile> ();
@@ -447,37 +453,14 @@ public class Tilemap
 
 	}
 
-	/*public List<ATile> getSurroundingTilesOfTypeAt(Vector3 pos, TileID id, int radius) {
-		List<Vector3> positionsToCheck = new List<Vector3> ();
-		List<ATile> surroundingTiles = new List<ATile> ();
-
-		positionsToCheck.Add (pos);
-
-		for (int i = 0; i < radius; i++) {
-			foreach (var v in positionsToCheck.ToList()) {
-				if (!positionsToCheck.Contains (v + Vector3.forward)) {
-					positionsToCheck.Add (v + Vector3.forward);
-				}
-				if (!positionsToCheck.Contains (v + Vector3.back)) {
-					positionsToCheck.Add (v + Vector3.back);
-				}
-				if (!positionsToCheck.Contains (v + Vector3.left)) {
-					positionsToCheck.Add (v + Vector3.left);
-				}
-				if (!positionsToCheck.Contains (v + Vector3.right)) {
-					positionsToCheck.Add (v + Vector3.right);
-				}
-			}
-		}
-
-		foreach (var v in positionsToCheck) {
-			foreach (var t in tilesOfTypeAt(v, id))
-				surroundingTiles.Add (t);
-		}
-
-		return surroundingTiles;
-	}*/
-
+	/// <summary>
+	/// Retourne une liste de tile speciale dans un rayon autour d'un point.
+	/// </summary>
+	/// <returns>The surronding special tile.</returns>
+	/// <param name="pos">Position.</param>
+	/// <param name="id">Identifier.</param>
+	/// <param name="radius">Radius.</param>
+	/// <param name="verticalAmplification">Multiplieur sur le poid vertical.</param>
 	public List<Vector3> getSurrondingSpecialTile(Vector3 pos, TileID id, float radius, float verticalAmplification = 1)
 	{
 		var list = getSurrondingSpecialTile (new Vector3i (pos), id, radius, verticalAmplification);
@@ -487,6 +470,14 @@ public class Tilemap
 		return returnList;
 	}
 
+	/// <summary>
+	/// Retourne une liste de tile speciale dans un rayon autour d'un point.
+	/// </summary>
+	/// <returns>The surronding special tile.</returns>
+	/// <param name="pos">Position.</param>
+	/// <param name="id">Identifier.</param>
+	/// <param name="radius">Radius.</param>
+	/// <param name="verticalAmplification">Multiplieur sur le poid vertical.</param>
 	public List<Vector3i> getSurrondingSpecialTile(Vector3i pos, TileID id, float radius, float verticalAmplification = 1)
 	{
 		List<Vector3i> validTiles = new List<Vector3i> ();
@@ -498,12 +489,28 @@ public class Tilemap
 		return validTiles;
 	}
 
+	/// <summary>
+	/// Retourne la tile spéciale la plus proche du type spécifiée.
+	/// La seconde valeur de la paire est à faux si aucune tile n'a été trouvée.
+	/// </summary>
+	/// <returns>The nearest special tile of type.</returns>
+	/// <param name="pos">Position.</param>
+	/// <param name="id">Identifier.</param>
+	/// <param name="verticalAmplification">Vertical amplification.</param>
 	public Pair<Vector3, bool> getNearestSpecialTileOfType(Vector3 pos, TileID id, float verticalAmplification = 1)
 	{
 		var tile = getNearestSpecialTileOfType (new Vector3i (pos), id, verticalAmplification);
 		return new Pair<Vector3, bool> (tile.First.toVector3 (), tile.Second);
 	}
 
+	// <summary>
+	/// Retourne la tile spéciale la plus proche du type spécifiée.
+	/// La seconde valeur de la paire est à faux si aucune tile n'a été trouvée.
+	/// </summary>
+	/// <returns>The nearest special tile of type.</returns>
+	/// <param name="pos">Position.</param>
+	/// <param name="id">Identifier.</param>
+	/// <param name="verticalAmplification">Vertical amplification.</param>
 	public Pair<Vector3i, bool>  getNearestSpecialTileOfType(Vector3i pos, TileID id, float verticalAmplification = 1)
 	{
 		var list = getSpecialTilesI (id);
@@ -522,6 +529,33 @@ public class Tilemap
 			}
 		}
 		return new Pair<Vector3i, bool>(bestTile, true);
+	}
+
+	/// <summary>
+	/// Met a jour les dimentions de la map.
+	/// A appeler si la map à changé de taille.
+	/// </summary>
+	public void UpdateGlobalBounds()
+	{
+		Vector3 min = new Vector3 (float.MaxValue, float.MaxValue, float.MaxValue);
+		Vector3 max = new Vector3 (float.MinValue, float.MinValue, float.MinValue);
+
+		foreach (var t in tiles) {
+			var pos = t.Key.toVector3 ();
+			min = new Vector3 (Mathf.Min (min.x, pos.x), Mathf.Min (min.y, pos.y), Mathf.Min (min.z, pos.z));
+			max = new Vector3 (Mathf.Max (max.x, pos.x), Mathf.Max (max.y, pos.y), Mathf.Max (max.z, pos.z));
+		}
+
+		bounds = new Bounds ((min + max) / 2.0f, max - min);
+	}
+
+	/// <summary>
+	/// Retourne la surface prise par la map.
+	/// </summary>
+	/// <returns>The bounds.</returns>
+	public Bounds GlobalBounds()
+	{
+		return bounds;
 	}
 }
  
