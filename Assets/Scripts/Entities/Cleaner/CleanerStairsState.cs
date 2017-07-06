@@ -71,6 +71,11 @@ public class CleanerStairsState : ACleanerState
 				cleaner.rigidbody.velocity = (stair.transform.position + stairsDir - cleaner.transform.position).normalized * cleaner.Stats.MovementSpeed;
 				cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (cleaner.rigidbody.velocity, Vector3.up).eulerAngles.y, 0);
 					
+				if (G.Sys.tilemap.tilesOfTypeAt (cleaner.transform.position, TileID.STAIRS).Count == 0) {
+					cleaner.Updatepath ();
+					cleaner.BackToMoveState ();
+				}
+
 				if (new Vector3i (cleaner.transform.position).equal (new Vector3i (stair.transform.position + stairsDir)))
 					state = 1;
 			}
@@ -80,6 +85,11 @@ public class CleanerStairsState : ACleanerState
 				var dest = stair.transform.position - stairsDir + 2 * Vector3.up;
 				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * cleaner.Stats.MovementSpeed * stairsSpeedMultiplier;
 				cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (cleaner.rigidbody.velocity.x, 0, cleaner.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
+
+				if (G.Sys.tilemap.tilesOfTypeAt (cleaner.transform.position, TileID.STAIRS).Count == 0) {
+					cleaner.Updatepath ();
+					cleaner.BackToMoveState ();
+				}
 
 				if (new Vector3i (dest).equal (new Vector3i (cleaner.transform.position)))
 					state = 2;

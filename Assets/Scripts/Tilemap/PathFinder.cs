@@ -47,7 +47,7 @@ public static class PathFinder
 		int iteration = 0;
 
 		while (nexts.Count > 0 && iteration ++ < maxIteration) {
-			var current = Min (nexts, start, end, weights);
+			var current = Min (nexts, start, end);
 			nexts.Remove (current);
 
 			foreach (var tile in current.First.connectedTiles) {
@@ -55,7 +55,8 @@ public static class PathFinder
 					continue;
 
 				visiteds.Add(new Pair<ATile, Pair<ATile, Vector3i>>(current.First, tile));
-				nexts.Add (new Pair<ATile, float> (tile.First, current.Second + distance (new Vector3i (current.First.transform.position), tile.Second)));
+				//nexts.Add (new Pair<ATile, float> (tile.First, current.Second + distance (new Vector3i (current.First.transform.position), tile.Second)));
+				nexts.Add (new Pair<ATile, float> (tile.First, current.Second + moveWeight(tile.First.transform.position - current.First.transform.position, tile.First.transform.position, weights)));
 
 				if (tile.First == endTile) {
 					var p = createPath (visiteds);
@@ -68,6 +69,21 @@ public static class PathFinder
 		return new List<Vector3i> ();
 	}
 
+	private static float moveWeight(Vector3 dir, Vector3 pos, Dictionary<TileID, float> weights)
+	{
+		float weight = 0;
+		int count = 0;
+		foreach (var t in G.Sys.tilemap.at(pos)) {
+			if (weights.ContainsKey (t.type))
+				weight += weights [t.type];
+		}
+		if (count == 0)
+			weight = 1;
+		else
+			weight /= count;
+		return new Vector2 (dir.x, dir.z).magnitude + Mathf.Abs (dir.y);
+	}
+
 	private static float distance(Vector3i start, Vector3i end)
 	{
 		int x = Mathf.Abs (start.x - end.x);
@@ -77,8 +93,22 @@ public static class PathFinder
 		return Mathf.Abs (start.y - end.y) * verticalDistanceMultiplier + diagonal * 1.5f + (x + y - 2 * diagonal);
 	}
 
-	private static Pair<ATile, float> Min(List<Pair<ATile, float>> list, Vector3i start, Vector3i end, Dictionary<TileID, float> weights)
+	private static Pair<ATile, float> Min(List<Pair<ATile, float>> list, Vector3i start, Vector3i end)
 	{
+		float minValue = float.MaxValue;
+		Pair<ATile, float> minElement = null;
+		foreach(var it in list)
+		{
+			var dir = end.toVector3() - it.First.transform.position;
+			float value = it.Second + new Vector2(dir.x, dir.z).magnitude + Mathf.Abs(dir.y * 5);
+			if (value < minValue) {
+				minValue = value;
+				minElement = it;
+			}
+		}
+		return minElement;
+
+		/*
 		float minValue = float.MaxValue;
 		Pair<ATile, float> minElement = null;
 		foreach(var it in list)
@@ -101,7 +131,7 @@ public static class PathFinder
 				minElement = it;
 			}
 		}
-		return minElement;
+		return minElement;*/
 	}
 
 	private static bool isVisited(ATile tile, List<Pair<ATile, Pair<ATile, Vector3i>>> visited)
@@ -126,14 +156,7 @@ public static class PathFinder
 			}
 		}
 		poss.Reverse ();
-		debugVisited (visited);
 		return poss;
-	}
-
-	private static void debugVisited(List<Pair<ATile, Pair<ATile, Vector3i>>> visited)
-	{
-		foreach (var v in visited)
-			Debug.DrawLine (v.First.transform.position, v.Second.Second.toVector3 (), Color.green);
 	}
 }
 
