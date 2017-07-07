@@ -21,6 +21,7 @@ public class DragAndDropBench : DragAndDrop {
 		v = G.Sys.tilemap.at (tf.position + new Vector3(dir.x, 0, dir.z));
 		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(dir.x, 0, dir.z), TileID.ESCALATOR).Count > 0)
 			canPlace = false;
+
 	}
 
 	protected override void CheckRotation() {

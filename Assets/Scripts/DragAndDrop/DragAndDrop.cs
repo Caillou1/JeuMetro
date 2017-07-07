@@ -57,25 +57,21 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void StartDrag() {
-		G.Sys.selectionManager.Hide (false);
-		G.Sys.cameraController.CanDrag = false;
-		Dragging = true;
+			G.Sys.selectionManager.Hide (false);
+			G.Sys.cameraController.CanDrag = false;
+			Dragging = true;
 	}
 
 	void Update() {
-		if (Dragging && CanDrag) {
+		if (Dragging && CanDrag && !IsBought) {
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit[] hit;
-			hit = Physics.RaycastAll (ray);
+			RaycastHit[] hits;
+			hits = Physics.RaycastAll (ray);
+			RaycastHit hit = FindGround (hits);
 
-			if (hit.Length>0) {
-				if (hit[0].transform.CompareTag ("Ground")) {
-					Vector3 objPos = hit[0].transform.position;
-					tf.position = new Vector3 (Mathf.RoundToInt (objPos.x), Mathf.RoundToInt (objPos.y), Mathf.RoundToInt (objPos.z));
-				} else if (hit[0].transform.gameObject == gameObject && hit.Length > 1 && hit[1].transform.CompareTag ("Ground")) {
-					Vector3 objPos = hit[1].transform.position;
-					tf.position = new Vector3 (Mathf.RoundToInt (objPos.x), Mathf.RoundToInt (objPos.y), Mathf.RoundToInt (objPos.z));
-				}
+			if (hit.transform != null) {
+				Vector3 objPos = hit.transform.position;
+				tf.position = new Vector3 (Mathf.RoundToInt (objPos.x), Mathf.RoundToInt (objPos.y), Mathf.RoundToInt (objPos.z));
 			} else {
 				Vector3 pos = ray.origin + (ray.direction * 1000);
 				tf.position = new Vector3 (Mathf.RoundToInt (pos.x), Mathf.RoundToInt (pos.y), Mathf.RoundToInt (pos.z));
@@ -84,6 +80,15 @@ public class DragAndDrop : MonoBehaviour{
 			CheckCanPlace ();
 			CheckRotation ();
 		}
+	}
+
+	RaycastHit FindGround(RaycastHit[] hits) {
+		foreach (var h in hits) {
+			if (h.transform.CompareTag ("Ground"))
+				return h;
+		}
+
+		return new RaycastHit ();
 	}
 
 	public void OnMouseUp() {
@@ -96,7 +101,7 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void DeleteObject() {
-		if(IsBought) G.Sys.gameManager.AddMoney (Price / 2);
+		//if(IsBought) G.Sys.gameManager.AddMoney (Price / 2);
 		Destroy (gameObject);
 	}
 
@@ -111,7 +116,7 @@ public class DragAndDrop : MonoBehaviour{
 	public bool ValidateObject() {
 		CheckCanPlace ();
 		CheckRotation ();
-		if (canPlace && (G.Sys.gameManager.HaveEnoughMoney(Price) || IsBought)) {
+		if (canPlace && (IsBought || (!IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)))) {
 			G.Sys.cameraController.IsSelecting = false;
 			if (!IsBought) {
 				G.Sys.gameManager.AddMoney (-Price);
