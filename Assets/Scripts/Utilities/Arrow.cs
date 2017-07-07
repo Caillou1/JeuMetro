@@ -38,8 +38,7 @@ public class Arrow : MonoBehaviour {
 		head = Instantiate (ArrowHead, tf.position, Quaternion.identity, tf);
 		tailroutine = SpawnTail ();
 		StartCoroutine (tailroutine);
-		pathTween = tf.DOPath (points, TimeToCompleteAnimation, PathType.CatmullRom, PathMode.Full3D, 5, new Color (Random.value, Random.value, Random.value, 1f)).SetLookAt (.01f , Vector3.forward, Vector3.up);
-		pathTween.OnComplete (() => {
+		pathTween = tf.DOPath (points, TimeToCompleteAnimation, PathType.CatmullRom, PathMode.Full3D, 5, new Color (Random.value, Random.value, Random.value, 1f)).SetLookAt (.01f , Vector3.forward, Vector3.up).SetEase(Ease.Linear).OnComplete (() => {
 			StopMove();
 			if(Loops)
 				StartMove();
