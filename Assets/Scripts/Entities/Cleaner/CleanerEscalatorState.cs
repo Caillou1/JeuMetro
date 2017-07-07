@@ -5,7 +5,6 @@ public class CleanerEscalatorState : ACleanerState
 {
 	enum Dir { UP, DOWN }
 
-	const float escalatorSpeed = 3.0f;
 	Vector3 stairsDir;
 	ATile escalator;
 	Dir direction;
@@ -90,7 +89,7 @@ public class CleanerEscalatorState : ACleanerState
 		case 1:
 			{
 				var dest = escalator.transform.position - stairsDir + 2 * Vector3.up;
-				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * escalatorSpeed;
+				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
 				cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (cleaner.rigidbody.velocity.x, 0, cleaner.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
 				if (new Vector3i (dest).equal (new Vector3i (cleaner.transform.position)))
@@ -129,7 +128,7 @@ public class CleanerEscalatorState : ACleanerState
 		case 1:
 			{
 				var dest = escalator.transform.position + 2 * stairsDir ;
-				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * escalatorSpeed;
+				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
 				cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (cleaner.rigidbody.velocity.x, 0, cleaner.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
 				if (new Vector3i (dest).equal (new Vector3i (cleaner.transform.position)))

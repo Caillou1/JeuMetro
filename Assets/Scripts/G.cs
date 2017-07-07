@@ -15,6 +15,7 @@ public sealed class G
 	private CameraController _cameraController;
 	private SelectionManager _selectionManager;
 	private MenuManager _menuManager;
+	private Constants _constants;
 
     public static G Sys
     {
@@ -103,6 +104,15 @@ public sealed class G
 			if (_menuManager != null)
 				Debug.Log ("2 menuManager instantiated !");
 			_menuManager = value;
+		}
+	}
+
+	public Constants constants {
+		get { return _constants; }
+		set {
+			if (_constants != null)
+				Debug.Log ("2 constants instanciated !");
+			_constants = value;
 		}
 	}
 }

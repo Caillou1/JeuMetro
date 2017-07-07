@@ -34,6 +34,11 @@ public class MoveState : ATravelerState
 	{
 		timeFromLastWait += Time.deltaTime;
 
+		if (traveler.path.finished ()) {
+			traveler.rigidbody.velocity = new Vector3 (0, 0, 0);
+			return;
+		}
+
 		var target = traveler.path.next (traveler.transform.position);
 		if ((traveler.transform.position - target).magnitude > 1.5f && (traveler.transform.position - target).magnitude > (oldPos - target).magnitude)
 			traveler.Updatepath ();

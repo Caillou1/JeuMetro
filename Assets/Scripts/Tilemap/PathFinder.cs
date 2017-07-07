@@ -9,35 +9,48 @@ public static class PathFinder
 
 	/// <summary>
 	/// Retourne le chemin optimal entre les 2 positions
+	/// Si la 2e valeur est égal à faux, le chemin retourné amenne sur la position la plus proche de l'arrivée
 	/// </summary>
 	/// <param name="start">Start.</param>
 	/// <param name="end">End.</param>
-	public static List<Vector3> Path (Vector3 start, Vector3 end, Dictionary<TileID, float> weights = default(Dictionary<TileID, float>), int maxIteration = int.MaxValue)
+	public static Pair<List<Vector3>, bool> Path (Vector3 start, Vector3 end, Dictionary<TileID, float> weights = default(Dictionary<TileID, float>), int maxIteration = int.MaxValue)
 	{
 		var p = Path (new Vector3i (start), new Vector3i (end), weights, maxIteration);
 		List<Vector3> endPath = new List<Vector3> ();
-		foreach (var item in p)
+		foreach (var item in p.First)
 			endPath.Add (item.toVector3 ());
-		return endPath;
+		return new Pair<List<Vector3>, bool>(endPath, p.Second);
 	}
 
 	/// <summary>
 	/// Retourne le chemin optimal entre les 2 positions
+	/// Si la 2e valeur est égal à faux, le chemin retourné amenne sur la position la plus proche de l'arrivée
 	/// </summary>
 	/// <param name="start">Start.</param>
 	/// <param name="end">End.</param>
-	public static List<Vector3i> Path(Vector3i start, Vector3i end, Dictionary<TileID, float> weights = default(Dictionary<TileID, float>), int maxIteration = int.MaxValue)
+	public static Pair<List<Vector3i>, bool> Path(Vector3i start, Vector3i end, Dictionary<TileID, float> weights = default(Dictionary<TileID, float>), int maxIteration = int.MaxValue)
 	{
 		if (weights == null)
 			weights = new Dictionary<TileID, float> ();
 		
 		if(start.Equals(end))
-			return new List<Vector3i>(new Vector3i[]{start});
+			return new Pair<List<Vector3i>, bool>(new Vector3i[]{start}.ToList(), true);
 		var startTile = G.Sys.tilemap.connectableTile (start);
 		var endTile = G.Sys.tilemap.connectableTile (end);
+	
+		if (startTile == null) {
+			var t = G.Sys.tilemap.tilesOfTypeAt (start, TileID.GROUND);
+			if (t.Count > 0)
+				startTile = t [0];
+		}
+		if (endTile == null) {
+			var t = G.Sys.tilemap.tilesOfTypeAt (end, TileID.GROUND);
+			if (t.Count > 0)
+				endTile = t [0];
+		}
 
 		if (startTile == null || endTile == null)
-			return new List<Vector3i> ();
+			return new Pair<List<Vector3i>, bool>(new List<Vector3i>(), false);
 
 		List<Pair<ATile, float>> nexts = new List<Pair<ATile, float>> ();
 		List<Pair<ATile, Pair<ATile, Vector3i>>> visiteds = new List<Pair<ATile, Pair<ATile, Vector3i>>>();
@@ -55,18 +68,17 @@ public static class PathFinder
 					continue;
 
 				visiteds.Add(new Pair<ATile, Pair<ATile, Vector3i>>(current.First, tile));
-				//nexts.Add (new Pair<ATile, float> (tile.First, current.Second + distance (new Vector3i (current.First.transform.position), tile.Second)));
 				nexts.Add (new Pair<ATile, float> (tile.First, current.Second + moveWeight(tile.First.transform.position - current.First.transform.position, tile.First.transform.position, weights)));
 
 				if (tile.First == endTile) {
 					var p = createPath (visiteds);
 					p.Insert (0, start);
-					return p;
+					return new Pair<List<Vector3i>, bool>(p, true);
 				}
 			}
 		}
 
-		return new List<Vector3i> ();
+		return new Pair<List<Vector3i>, bool>(createNearestPath(visiteds, end), false);
 	}
 
 	private static float moveWeight(Vector3 dir, Vector3 pos, Dictionary<TileID, float> weights)
@@ -107,31 +119,6 @@ public static class PathFinder
 			}
 		}
 		return minElement;
-
-		/*
-		float minValue = float.MaxValue;
-		Pair<ATile, float> minElement = null;
-		foreach(var it in list)
-		{
-			float weight = 0;
-			int count = 0;
-			foreach (var tile in it.First.tilesHere)
-				if (weights.ContainsKey (it.First.type)) {
-					weight += weights [it.First.type];
-					count++;
-				}
-			if (count == 0)
-				weight = 1;
-			else
-				weight /= count;
-
-			float value = it.Second + distance (new Vector3i (it.First.transform.position), end) * weight;
-			if (value < minValue) {
-				minValue = value;
-				minElement = it;
-			}
-		}
-		return minElement;*/
 	}
 
 	private static bool isVisited(ATile tile, List<Pair<ATile, Pair<ATile, Vector3i>>> visited)
@@ -150,6 +137,33 @@ public static class PathFinder
 		ATile current = visited [visited.Count - 1].Second.First;
 		List<Vector3i> poss = new List<Vector3i> ();
 		for (int i = visited.Count - 1; i >= 0; i--) {
+			if (visited [i].Second.First == current) {
+				poss.Add (visited [i].Second.Second);
+				current = visited [i].First;
+			}
+		}
+		poss.Reverse ();
+		return poss;
+	}
+
+	private static List<Vector3i> createNearestPath(List<Pair<ATile, Pair<ATile, Vector3i>>> visited, Vector3i dest)
+	{
+		if (visited.Count == 0)
+			return new List<Vector3i> ();
+		int bestIndex = -1;
+		float bestDist = float.MaxValue;
+		for (int i = 0; i < visited.Count; i++) {
+			var dir = visited [i].Second.Second - dest;
+			var dist = new Vector2 (dir.x, dir.z).magnitude + Mathf.Abs (dir.y) * G.Sys.constants.VerticalAmplification;
+			if (dist < bestDist) {
+				bestDist = dist;
+				bestIndex = i;
+			}
+		}
+
+		ATile current = visited [bestIndex].Second.First;
+		List<Vector3i> poss = new List<Vector3i> ();
+		for (int i = bestIndex; i >= 0; i--) {
 			if (visited [i].Second.First == current) {
 				poss.Add (visited [i].Second.Second);
 				current = visited [i].First;
