@@ -39,7 +39,11 @@ public abstract class ATile : MonoBehaviour
 	protected abstract void Awake();
 	protected abstract void OnDestroy (); 
 
-	public void Unregister() { OnDestroy (); }
+	public void Unregister()
+	{
+		OnDestroy (); 
+		connectedTiles.Clear ();
+	}
 
 	public void Register() { Awake (); }
 

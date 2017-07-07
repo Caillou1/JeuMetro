@@ -116,7 +116,7 @@ public class DragAndDrop : MonoBehaviour{
 	public bool ValidateObject() {
 		CheckCanPlace ();
 		CheckRotation ();
-		if (canPlace && (G.Sys.gameManager.HaveEnoughMoney(Price) || IsBought)) {
+		if (canPlace && (IsBought || (!IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)))) {
 			G.Sys.cameraController.IsSelecting = false;
 			if (!IsBought) {
 				G.Sys.gameManager.AddMoney (-Price);

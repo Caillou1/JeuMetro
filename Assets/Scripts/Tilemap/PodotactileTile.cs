@@ -25,10 +25,10 @@ public class PodotactileTile : ATile
 
 		G.Sys.tilemap.addTile (tf.position, this, true, false, Tilemap.LOW_PRIORITY);
 
+		G.Sys.tilemap.addSpecialTile (type, tf.position);
+
 		foreach (var t in G.Sys.tilemap.at(tf.position))
 			t.Connect ();
-
-		G.Sys.tilemap.addSpecialTile (type, tf.position);
     }
 
 	public override void Connect ()
@@ -203,8 +203,10 @@ public class PodotactileTile : ATile
 		}
 
 		List<Pair<ATile,Vector3i>> list2 = new List<Pair<ATile, Vector3i>> ();
-		foreach (var it in list)
+		foreach (var it in list) {
 			list2.Add (new Pair<ATile, Vector3i> (it, new Vector3i (it.transform.position)));
+		}
+
 		applyConnexions (list2);
 	}
 
@@ -212,6 +214,7 @@ public class PodotactileTile : ATile
 	{
 		G.Sys.tilemap.delTile (tf.position, this);
 		G.Sys.tilemap.delSpecialTile (TileID.PODOTACTILE, tf.position);
+
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();
 		foreach (var t in connectedTiles)
