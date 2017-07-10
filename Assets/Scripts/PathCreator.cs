@@ -12,7 +12,7 @@ public class PathCreator : MonoBehaviour
 	{
 		var path = PathFinder.Path (startPos, endPos);
 		
-		foreach (var p in path) {
+		foreach (var p in path.First) {
 			Instantiate (pathObj, p, new Quaternion());
 		}
 

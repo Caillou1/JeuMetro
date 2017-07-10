@@ -29,7 +29,7 @@ public class LostState : ATravelerState
 	void createLostPath()
 	{
 		traveler.altAction = Traveler.ActionType.LOST;
-		var dir = new UniformVector3SphereDistribution (5).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());
+		var dir = new UniformVector3SphereDistribution (G.Sys.constants.travelerLostRadius).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());
 		dir.y /= 4;
 		traveler.altDestination = new Vector3i (traveler.transform.position + dir).toVector3 ();
 		traveler.Updatepath ();

@@ -70,7 +70,12 @@ public class StairsState : ATravelerState
 			{
 				traveler.rigidbody.velocity = (stair.transform.position + stairsDir - traveler.transform.position).normalized * traveler.datas.Speed;
 				traveler.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (traveler.rigidbody.velocity, Vector3.up).eulerAngles.y, 0);
-					
+
+				if (G.Sys.tilemap.tilesOfTypeAt (traveler.transform.position, TileID.STAIRS).Count == 0) {
+					traveler.Updatepath ();
+					traveler.BackToMoveState ();
+				}
+
 				if (new Vector3i (traveler.transform.position).equal (new Vector3i (stair.transform.position + stairsDir)))
 					state = 1;
 			}
@@ -104,6 +109,12 @@ public class StairsState : ATravelerState
 			{
 				traveler.rigidbody.velocity = (stair.transform.position + 2 * Vector3.up - traveler.transform.position).normalized * traveler.datas.Speed;
 				traveler.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (traveler.rigidbody.velocity, Vector3.up).eulerAngles.y, 0);
+
+				if (G.Sys.tilemap.tilesOfTypeAt (traveler.transform.position, TileID.STAIRS).Count == 0) {
+					traveler.Updatepath ();
+					traveler.BackToMoveState ();
+				}
+
 
 				if (new Vector3i (traveler.transform.position).equal (new Vector3i (stair.transform.position + 2 * Vector3.up)))
 					state = 1;

@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 	public List<GameObject> entities = new List<GameObject>();
 	public float minDelay;
 	public float maxDelay;
+	public GameObject wastePrefab;
 
 	public int StartingMoney = 0;
 

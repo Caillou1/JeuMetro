@@ -11,10 +11,12 @@ public class BinTile : ATile
 		get { return wasteValue; }
 		set{ wasteValue = value; }
 	}
-	public bool canCountain(float _waste)
+
+	public bool canContain(float _waste)
 	{
 		return wasteValue + _waste <= 1;
 	}
+
 	public bool isEmpty()
 	{
 		return wasteValue <= 0.1f;

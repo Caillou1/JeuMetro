@@ -10,7 +10,7 @@ public class WasteTile : ATile
     {
 		type = TileID.WASTE;
 
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.WASTE_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.LOW_PRIORITY);
 
 		foreach (var t in G.Sys.tilemap.at(transform.position))
 			t.Connect ();

@@ -5,7 +5,6 @@ public class CleanerEscalatorState : ACleanerState
 {
 	enum Dir { UP, DOWN }
 
-	const float escalatorSpeed = 3.0f;
 	Vector3 stairsDir;
 	ATile escalator;
 	Dir direction;
@@ -78,6 +77,11 @@ public class CleanerEscalatorState : ACleanerState
 				cleaner.rigidbody.velocity = (escalator.transform.position + stairsDir - cleaner.transform.position).normalized * cleaner.Stats.MovementSpeed;
 				cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (cleaner.rigidbody.velocity, Vector3.up).eulerAngles.y, 0);
 
+				if (G.Sys.tilemap.tilesOfTypeAt (cleaner.transform.position, TileID.ESCALATOR).Count == 0) {
+					cleaner.Updatepath ();
+					cleaner.BackToMoveState ();
+				}
+
 				if (new Vector3i (cleaner.transform.position).equal (new Vector3i (escalator.transform.position + stairsDir)))
 					state = 1;
 			}
@@ -85,7 +89,7 @@ public class CleanerEscalatorState : ACleanerState
 		case 1:
 			{
 				var dest = escalator.transform.position - stairsDir + 2 * Vector3.up;
-				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * escalatorSpeed;
+				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
 				cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (cleaner.rigidbody.velocity.x, 0, cleaner.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
 				if (new Vector3i (dest).equal (new Vector3i (cleaner.transform.position)))
@@ -112,6 +116,11 @@ public class CleanerEscalatorState : ACleanerState
 				cleaner.rigidbody.velocity = (escalator.transform.position + 2 * Vector3.up - cleaner.transform.position).normalized * cleaner.Stats.MovementSpeed;
 				cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (cleaner.rigidbody.velocity, Vector3.up).eulerAngles.y, 0);
 
+				if (G.Sys.tilemap.tilesOfTypeAt (cleaner.transform.position, TileID.ESCALATOR).Count == 0) {
+					cleaner.Updatepath ();
+					cleaner.BackToMoveState ();
+				}
+
 				if (new Vector3i (cleaner.transform.position).equal (new Vector3i (escalator.transform.position + 2 * Vector3.up)))
 					state = 1;
 			}
@@ -119,7 +128,7 @@ public class CleanerEscalatorState : ACleanerState
 		case 1:
 			{
 				var dest = escalator.transform.position + 2 * stairsDir ;
-				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * escalatorSpeed;
+				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
 				cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (cleaner.rigidbody.velocity.x, 0, cleaner.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
 				if (new Vector3i (dest).equal (new Vector3i (cleaner.transform.position)))

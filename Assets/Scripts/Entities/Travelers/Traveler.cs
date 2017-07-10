@@ -20,6 +20,7 @@ public class Traveler : AEntity
 		states.Add (new InfosState (this));
 		states.Add (new SitState (this));
 		states.Add (new BuyFoodState (this));
+		states.Add (new WasteState (this));
 
 		G.Sys.registerTraveler (this);
 		configureDatasFromStats ();
@@ -29,6 +30,8 @@ public class Traveler : AEntity
 	{
 		updateDatas ();
 		DestroyOnExit ();
+
+		Debug.DrawRay (transform.position, Vector3.up * datas.Dirtiness, Color.magenta);
 	}
 
 	protected override void OnEntityDestroy ()
@@ -48,6 +51,7 @@ public class Traveler : AEntity
 		dico.Add (TileID.ELEVATOR, statValueToPathWeight(Stats.ElevatorAttraction));
 		dico.Add (TileID.STAIRS, statValueToPathWeight(Stats.StairsAttraction));
 		dico.Add (TileID.PODOTACTILE, statValueToPathWeight (Stats.TouchComprehension));
+		dico.Add (TileID.WASTE, 20);
 
 		switch (Stats.Type) {
 		case TravelerType.WITH_BAG:
@@ -64,6 +68,7 @@ public class Traveler : AEntity
 			dico [TileID.ESCALATOR] *= 5;
 			dico [TileID.STAIRS] /= 10;
 			dico [TileID.PODOTACTILE] *= 10;
+			dico [TileID.WASTE] = 2;
 			break;
 		default:
 			break;
@@ -86,7 +91,7 @@ public class Traveler : AEntity
 		if (datas.Waste == 0)
 			datas.Dirtiness = 0.5f - Stats.Cleanliness / 200f;
 		else
-			datas.Dirtiness += 0.5f - Stats.Cleanliness / 200f * datas.Waste * Time.deltaTime;
+			datas.Dirtiness += (0.5f - Stats.Cleanliness / 200f * datas.Waste) * Time.deltaTime;
 		datas.Dirtiness = Mathf.Min (datas.Dirtiness, 1);
 
 		var infoPannels = G.Sys.tilemap.getSpecialTiles (TileID.INFOPANEL);

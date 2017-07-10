@@ -14,8 +14,15 @@ public class Path
 
 	public void create(Vector3 start, Vector3 end, float variations = 0)
 	{
-		points = PathFinder.Path (start, end, weights);
-		endPos = end;
+		var path = PathFinder.Path (start, end, weights);
+		points = path.First;
+		if (path.Second)
+			endPos = end;
+		else if (path.First.Count > 0)
+			endPos = path.First [path.First.Count - 1];
+		else
+			endPos = end;
+	
 		if (variations * points.Count >= 1 && points.Count > 0)
 			variancePath ((int)(variations * points.Count));
 	}
@@ -65,7 +72,8 @@ public class Path
 
 		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
 		var dPoint = new UniformIntDistribution (1, points.Count - 2);
-		var dDest = new UniformVector3BoxDistribution (-3, 3, 0, 0, -3, 3);
+		var r = G.Sys.constants.travelerLostVariance;
+		var dDest = new UniformVector3BoxDistribution (-r, r, 0, 0, -r, r);
 
 		for (int i = 0; i < variations; i++) {
 			var rDest = new Vector3i(dDest.Next (gen)).toVector3();
@@ -74,7 +82,7 @@ public class Path
 			var point = dPoint.Next (gen);
 			if (newPoints.Find (it => it.First == point) != null)
 				continue;
-			if (PathFinder.Path (points [point], points [point] + rDest, weights, 20).Count == 0)
+			if (PathFinder.Path (points [point], points [point] + rDest, weights, 20).Second)
 				continue;
 			newPoints.Add(new Pair<int, Vector3>(point, points [point] + rDest));
 		}
@@ -85,14 +93,14 @@ public class Path
 
 		foreach (var p in newPoints) {
 
-			points.AddRange(PathFinder.Path(pos, p.Second, weights));
+			points.AddRange(PathFinder.Path(pos, p.Second, weights).First);
 
 			if (points.Count != 0)
 				points.RemoveAt (points.Count - 1);
 			
 			pos = p.Second;
 		}
-		points.AddRange (PathFinder.Path (pos, endPos, weights));
+		points.AddRange (PathFinder.Path (pos, endPos, weights).First);
 	}
 
 	public bool isOnPath(Vector3i pos)
