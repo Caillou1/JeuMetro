@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator spawnCoroutine()
 	{
+		yield return new WaitForSeconds (5f);
 		StaticRandomGenerator<DefaultRandomGenerator> gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
 		UniformIntDistribution dType = new UniformIntDistribution (entities.Count-1);
 		UniformFloatDistribution dDelta = new UniformFloatDistribution (minDelay, maxDelay);

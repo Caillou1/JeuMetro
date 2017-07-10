@@ -9,4 +9,5 @@ public class TravelerDatas
 	public float Waste;
 	public float Speed;
 	public float Hunger;
+	public bool HasTicket;
 }

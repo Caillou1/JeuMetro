@@ -115,19 +115,25 @@ public class CameraController : MonoBehaviour {
 
 		if (canSelect) {
 			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-			RaycastHit info;
-			Physics.Raycast (ray, out info);
+			var disposable = GetDisposable (Physics.RaycastAll (ray));
 
-			if (info.transform != null && info.transform.CompareTag ("Disposable") && !IsSelecting) {
-				var dad = info.transform.GetComponent<DragAndDrop> ();
-				var tile = dad.GetComponent<ATile> ();
+			if (disposable != null && !IsSelecting) {
+				var dad = disposable.GetComponent<DragAndDrop> ();
+				var tile = disposable.GetComponent<ATile> ();
 				G.Sys.selectionManager.Show (dad);
 				IsSelecting = true;
 				tile.Unregister ();
-				dad.DesactivateCollisions ();
-			}/* else if (IsSelecting && info.transform != null) {
-				G.Sys.selectionManager.Move (info.transform.position);
-			}*/
+				//dad.DesactivateCollisions ();
+			}
 		}
+	}
+
+	GameObject GetDisposable(RaycastHit[] infos) {
+		foreach (var info in infos) {
+			if (info.transform.CompareTag ("Disposable")) {
+				return info.transform.gameObject;
+			}
+		}
+		return null;
 	}
 }

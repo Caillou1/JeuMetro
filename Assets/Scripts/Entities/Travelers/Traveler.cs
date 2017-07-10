@@ -21,6 +21,7 @@ public class Traveler : AEntity
 		states.Add (new SitState (this));
 		states.Add (new BuyFoodState (this));
 		states.Add (new WasteState (this));
+		states.Add (new BuyTicketState (this));
 
 		G.Sys.registerTraveler (this);
 		configureDatasFromStats ();
@@ -84,6 +85,7 @@ public class Traveler : AEntity
 		datas.Waste = new UniformFloatDistribution (0, 0.5f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());;
 		datas.Tiredness = Stats.FaintnessPercentage / 100f;
 		datas.Hunger = new UniformFloatDistribution (0, 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());
+		datas.HasTicket = new BernoulliDistribution(0.5f).Next(new StaticRandomGenerator<DefaultRandomGenerator>());
 	}
 
 	void updateDatas()
