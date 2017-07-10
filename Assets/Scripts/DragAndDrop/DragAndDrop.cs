@@ -15,14 +15,25 @@ public class DragAndDrop : MonoBehaviour{
 	[HideInInspector]
 	public bool CanDrag = false;
 	protected bool Dragging = false;
-	public bool IsBought;
+	protected bool bought;
+	public bool IsBought {
+		get{ return bought; }
+		set{
+			bought = value;
+			Debug.Log ("End Set Bought");
+		}
+	}
+
+	void Awake() {
+		bought = true;
+		Debug.Log ("End Awake");
+	}
 
 	void Start() {
 		tf = transform;
 		isRotating = false;
 		CheckCanPlace ();
 		CheckRotation ();
-		IsBought = true;
 	}
 
 	protected virtual void CheckCanPlace() {
@@ -151,13 +162,13 @@ public class DragAndDrop : MonoBehaviour{
 
 	public void DesactivateCollisions() {
 		foreach (var c in GetComponentsInChildren<Collider>())
-			if(c.transform.parent == tf)
+			if(c.transform != tf)
 				c.enabled = false;
 	}
 
 	public void ActivateCollisions() {
 		foreach (var c in GetComponentsInChildren<Collider>())
-			if(c.transform.parent == tf)
+			if(c.transform != tf)
 				c.enabled = true;
 	}
 

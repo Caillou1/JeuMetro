@@ -19,7 +19,7 @@ public class DragAndDropBin : DragAndDrop {
 		NotWalledObject = tf.Find ("NotWalled").gameObject;
 		CheckCanPlace ();
 		CheckRotation ();
-		IsBought = true;
+		//IsBought = true;
 	}
 
 	protected override void CheckRotation() {
