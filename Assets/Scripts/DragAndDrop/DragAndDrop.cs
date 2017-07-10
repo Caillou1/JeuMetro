@@ -123,6 +123,8 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public bool ValidateObject() {
+		Rotations = 0;
+
 		CheckCanPlace ();
 		CheckRotation ();
 		if (canPlace && (IsBought || (!IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)))) {
