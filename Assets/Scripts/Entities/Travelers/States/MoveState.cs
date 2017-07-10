@@ -40,7 +40,7 @@ public class MoveState : ATravelerState
 		}
 
 		var target = traveler.path.next (traveler.transform.position);
-		if ((traveler.transform.position - target).magnitude > 1.5f && (traveler.transform.position - target).magnitude > (oldPos - target).magnitude)
+		if ((traveler.transform.position - target).magnitude > 1.0f && (traveler.transform.position - target).magnitude > (oldPos - target).magnitude)
 			traveler.Updatepath ();
 		target += traveler.avoidDir;
 		oldPos = traveler.transform.position;

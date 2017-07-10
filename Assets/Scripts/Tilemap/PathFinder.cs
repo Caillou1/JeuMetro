@@ -78,7 +78,7 @@ public static class PathFinder
 			}
 		}
 
-		return new Pair<List<Vector3i>, bool>(createNearestPath(visiteds, end), false);
+		return new Pair<List<Vector3i>, bool>(createNearestPath(visiteds, end, start), false);
 	}
 
 	private static float moveWeight(Vector3 dir, Vector3 pos, Dictionary<TileID, float> weights)
@@ -146,7 +146,7 @@ public static class PathFinder
 		return poss;
 	}
 
-	private static List<Vector3i> createNearestPath(List<Pair<ATile, Pair<ATile, Vector3i>>> visited, Vector3i dest)
+	private static List<Vector3i> createNearestPath(List<Pair<ATile, Pair<ATile, Vector3i>>> visited, Vector3i dest, Vector3i start)
 	{
 		if (visited.Count == 0)
 			return new List<Vector3i> ();
@@ -160,6 +160,9 @@ public static class PathFinder
 				bestIndex = i;
 			}
 		}
+
+		if(visited [bestIndex].Second.Second.Equals(start))
+			return new Vector3i[]{ start }.ToList ();
 
 		ATile current = visited [bestIndex].Second.First;
 		List<Vector3i> poss = new List<Vector3i> ();

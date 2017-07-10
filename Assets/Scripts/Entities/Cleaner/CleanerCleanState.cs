@@ -24,9 +24,11 @@ public class CleanerCleanState : ACleanerState
 			return 0;
 
 		cleanType = TileID.BIN;
-		var waste = G.Sys.tilemap.getNearestSpecialTileOfType (cleaner.transform.position, TileID.WASTE, G.Sys.constants.VerticalAmplification);
-		if (waste.Second) {
-			var dir = waste.First - cleaner.transform.position;
+		var wastes = G.Sys.tilemap.getSurrondingSpecialTile (cleaner.transform.position, TileID.WASTE, cleaner.Stats.WasteVisibilityRadius, G.Sys.constants.VerticalAmplification);
+		Vector3 waste = new Vector3 ();
+		if (wastes.Count != 0) {
+			waste = wastes[new UniformIntDistribution (wastes.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())];
+			var dir = waste - cleaner.transform.position;
 			if (new Vector2 (dir.x, dir.z).magnitude + G.Sys.constants.VerticalAmplification * dir.y <= cleaner.Stats.WasteVisibilityRadius)
 				cleanType = TileID.WASTE;
 		}
@@ -55,16 +57,16 @@ public class CleanerCleanState : ACleanerState
 
 			if (bestDist == float.MaxValue)
 				return 0;
-			waste = new Pair<Vector3, bool> (bestPos, true);
+			waste = bestPos;
 		}
 			
 		List<Vector3> poss = new List<Vector3> ();
-		poss.Add (waste.First + Vector3.left);
-		poss.Add (waste.First + Vector3.right);
-		poss.Add (waste.First + Vector3.forward);
-		poss.Add (waste.First + Vector3.back);
+		poss.Add (waste + Vector3.left);
+		poss.Add (waste + Vector3.right);
+		poss.Add (waste + Vector3.forward);
+		poss.Add (waste + Vector3.back);
 
-		wastePos = waste.First;
+		wastePos = waste;
 
 		var pos = poss[new UniformIntDistribution(poss.Count-1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())];
 

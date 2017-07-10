@@ -67,7 +67,9 @@ public class GameManager : MonoBehaviour
 			var door = doors [new UniformIntDistribution (doors.Count-1).Next (gen)];
 			var e = Instantiate (entities [dType.Next (gen)], door, new Quaternion ());
 			var d = G.Sys.tilemap.tilesOfTypeAt (door, TileID.IN) [0];
-			e.transform.rotation = Quaternion.LookRotation (d.connectedTiles [0].Second.toVector3 () - e.transform.position, Vector3.up);
+			var tiles = d.connectedTiles;
+			if(tiles.Count != 0)
+				e.transform.rotation = Quaternion.LookRotation (tiles[new UniformIntDistribution(tiles.Count-1).Next(gen)].Second.toVector3 () - e.transform.position, Vector3.up);
 		}
 	}
 }
