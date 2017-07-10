@@ -87,7 +87,7 @@ public class CameraController : MonoBehaviour {
 			}
 
 			float dist = Vector3.Distance (Input.mousePosition, dragOrigin);
-			if (!pinching && (Input.GetMouseButton (0) || Input.GetMouseButton(2)) &&  dist > 10f /*&& dist <= 500f*/ && !isOnUI && CanDrag && Input.touchCount <= 1) {
+			if (!pinching && (Input.GetMouseButton (0) || Input.GetMouseButton(2)) &&  dist > 10f /*&& dist <= 500f && !isOnUI*/ && CanDrag && Input.touchCount <= 1) {
 				if (canSelect) {
 					canSelect = false;
 					if(SelectCoroutine != null)

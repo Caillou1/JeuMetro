@@ -11,13 +11,13 @@ public class DragAndDropDistrib : DragAndDrop {
 		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
 		List<Orientation> PossibleOrientations = new List<Orientation> ();
 
-		if (G.Sys.tilemap.at (tf.position + Vector3.forward).Count == 0)
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.forward))
 			PossibleOrientations.Add (Orientation.LEFT);
-		if (G.Sys.tilemap.at (tf.position + Vector3.back).Count == 0)
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.back))
 			PossibleOrientations.Add (Orientation.RIGHT);
-		if (G.Sys.tilemap.at (tf.position + Vector3.right).Count == 0)
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.right))
 			PossibleOrientations.Add (Orientation.UP);
-		if (G.Sys.tilemap.at (tf.position + Vector3.left).Count == 0)
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.left))
 			PossibleOrientations.Add (Orientation.DOWN);
 
 		if (PossibleOrientations.Count > 0 && (!PossibleOrientations.Contains(or)))
