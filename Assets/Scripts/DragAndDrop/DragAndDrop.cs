@@ -20,13 +20,11 @@ public class DragAndDrop : MonoBehaviour{
 		get{ return bought; }
 		set{
 			bought = value;
-			Debug.Log ("End Set Bought");
 		}
 	}
 
 	void Awake() {
 		bought = true;
-		Debug.Log ("End Awake");
 	}
 
 	void Start() {
