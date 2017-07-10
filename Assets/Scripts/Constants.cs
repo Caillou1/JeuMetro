@@ -27,5 +27,4 @@ public class Constants : MonoBehaviour
 	{
 		G.Sys.constants = this;
 	}
-
 }

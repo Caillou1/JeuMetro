@@ -12,7 +12,7 @@ public class DragAndDropSpeaker : DragAndDrop {
 	private GameObject WalledObject;
 	private GameObject NotWalledObject;
 
-	void Awake() {
+	void Start() {
 		tf = transform;
 		isRotating = false;
 		WalledObject = tf.Find ("Walled").gameObject;
@@ -38,7 +38,7 @@ public class DragAndDropSpeaker : DragAndDrop {
 		{
 			float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0]);
 
-			if (!IsWalled)
+			if (!IsWalled || NotWalledObject.activeInHierarchy)
 			{
 				IsWalled = true;
 				WalledObject.SetActive (true);
@@ -49,7 +49,7 @@ public class DragAndDropSpeaker : DragAndDrop {
 		}
 		else if (PossibleOrientations.Count == 0)
 		{
-			if (IsWalled)
+			if (IsWalled || WalledObject.activeInHierarchy)
 			{
 				IsWalled = false;
 				WalledObject.SetActive (false);

@@ -17,7 +17,7 @@ public class DragAndDrop : MonoBehaviour{
 	protected bool Dragging = false;
 	public bool IsBought;
 
-	void Awake() {
+	void Start() {
 		tf = transform;
 		isRotating = false;
 		CheckCanPlace ();

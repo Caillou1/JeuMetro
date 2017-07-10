@@ -12,13 +12,14 @@ public class DragAndDropBin : DragAndDrop {
 	private GameObject WalledObject;
 	private GameObject NotWalledObject;
 
-	void Awake() {
+	void Start() {
 		tf = transform;
 		isRotating = false;
 		WalledObject = tf.Find ("Walled").gameObject;
 		NotWalledObject = tf.Find ("NotWalled").gameObject;
 		CheckCanPlace ();
 		CheckRotation ();
+		IsBought = true;
 	}
 
 	protected override void CheckRotation() {
@@ -38,7 +39,7 @@ public class DragAndDropBin : DragAndDrop {
 		{
 			float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0]);
 
-			if (!IsWalled)
+			if (!IsWalled || NotWalledObject.activeInHierarchy)
 			{
 				IsWalled = true;
 				WalledObject.SetActive (true);
@@ -49,7 +50,7 @@ public class DragAndDropBin : DragAndDrop {
 		}
 		else if (PossibleOrientations.Count == 0)
 		{
-			if (IsWalled)
+			if (IsWalled || WalledObject.activeInHierarchy)
 			{
 				IsWalled = false;
 				WalledObject.SetActive (false);

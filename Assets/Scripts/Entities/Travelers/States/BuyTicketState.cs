@@ -63,7 +63,6 @@ public class BuyTicketState : ATravelerState
 		traveler.Updatepath ();
 		traveler.BackToMoveState ();
 		traveler.altAction = Traveler.ActionType.NONE;
-		Debug.Log ("Bought ticket");
 	}
 
 	public override void update()
