@@ -137,7 +137,6 @@ public class DragAndDrop : MonoBehaviour{
 			GetComponent<ATile> ().Register ();
 			CanDrag = false;
 			SendEvent ();
-			ActivateCollisions ();
 			return true;
 		}
 		return false;
@@ -162,13 +161,12 @@ public class DragAndDrop : MonoBehaviour{
 
 	public void DesactivateCollisions() {
 		foreach (var c in GetComponentsInChildren<Collider>())
-			if(c.transform != tf)
+			if (c.transform != tf)
 				c.enabled = false;
 	}
 
 	public void ActivateCollisions() {
 		foreach (var c in GetComponentsInChildren<Collider>())
-			if(c.transform != tf)
 				c.enabled = true;
 	}
 
