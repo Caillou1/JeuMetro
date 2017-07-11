@@ -32,8 +32,8 @@ public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 		if (!G.Sys.cameraController.IsSelecting) {	
 			Spawn ();
 			var dad = spawnedObject.GetComponent<DragAndDrop> ();
-			dad.StartDrag ();
 			dad.IsBought = false;
+			dad.StartDrag ();
 			CanEndDrag = true;
 		} else {
 			CanEndDrag = false;
