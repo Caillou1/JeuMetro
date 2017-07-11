@@ -33,7 +33,7 @@ public abstract class ATile : MonoBehaviour
 
 	public virtual void Connect()
 	{
-		G.Sys.tilemap.at (transform.position);
+		
 	}
 
 	protected abstract void Awake();
@@ -92,7 +92,5 @@ public abstract class ATile : MonoBehaviour
 	public List<Pair<ATile, Vector3i>> connectedTiles { get; protected set; }
 	[HideInInspector]
 	public List<ATile> targetOf = new List<ATile> (); 
-	[HideInInspector]
-	public List<ATile> tilesHere = new List<ATile> ();
 	public TileID type { get; protected set; }
 }

@@ -34,7 +34,7 @@ public class EscalatorState : ATravelerState
 			return int.MaxValue;
 		if (next.y < tPos.y && escalator.side == EscalatorSide.DOWN)
 			return int.MaxValue;
-		
+
 		return 0;
 	}
 
@@ -90,7 +90,7 @@ public class EscalatorState : ATravelerState
 		case 1:
 			{
 				var dest = escalator.transform.position - stairsDir + 2 * Vector3.up;
-				traveler.rigidbody.velocity = (dest - traveler.transform.position).normalized * escalatorSpeed;
+				traveler.rigidbody.velocity = (dest - traveler.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
 				traveler.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (traveler.rigidbody.velocity.x, 0, traveler.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
 				if (new Vector3i (dest).equal (new Vector3i (traveler.transform.position)))
@@ -129,7 +129,7 @@ public class EscalatorState : ATravelerState
 		case 1:
 			{
 				var dest = escalator.transform.position + 2 * stairsDir ;
-				traveler.rigidbody.velocity = (dest - traveler.transform.position).normalized * escalatorSpeed;
+				traveler.rigidbody.velocity = (dest - traveler.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
 				traveler.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (traveler.rigidbody.velocity.x, 0, traveler.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
 				if (new Vector3i (dest).equal (new Vector3i (traveler.transform.position)))

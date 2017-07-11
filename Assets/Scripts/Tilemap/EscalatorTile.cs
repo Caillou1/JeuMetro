@@ -38,8 +38,6 @@ public class EscalatorTile : ATile
 		
     public override void Connect()
     {
-		base.Connect ();
-
 		List<Pair<ATile, Vector3i>> connexions = new List<Pair<ATile, Vector3i>>();
 
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));

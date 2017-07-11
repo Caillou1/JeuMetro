@@ -32,6 +32,12 @@ public class MoveState : ATravelerState
 
 	public override void update()
 	{
+		var t = G.Sys.tilemap.at (traveler.transform.position);
+		string l = "";
+		foreach(var tt in t)
+			l += tt.type + ", ";
+		Debug.Log ("*" + l);
+
 		timeFromLastWait += Time.deltaTime;
 
 		if (traveler.path.finished ()) {
