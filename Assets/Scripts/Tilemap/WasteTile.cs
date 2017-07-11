@@ -8,6 +8,10 @@ public class WasteTile : ATile
 {
 	protected override void Awake()
     {
+		/*if (G.Sys.tilemap.at (transform.position).Count != 1) {
+			Destroy (gameObject);
+		}*/
+
 		type = TileID.WASTE;
 
 		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.LOW_PRIORITY);

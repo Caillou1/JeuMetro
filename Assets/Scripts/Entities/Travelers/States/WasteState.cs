@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using NRand;
 
@@ -106,6 +107,7 @@ public class WasteState : ATravelerState
 		traveler.Updatepath ();
 		traveler.BackToMoveState ();
 		traveler.altAction = Traveler.ActionType.NONE;
+		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (new Vector3[]{ new Vector3i (traveler.transform.position).toVector3 () }.ToList()));
 	}
 
 	public override void update()
