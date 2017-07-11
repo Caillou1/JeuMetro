@@ -1,37 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-
 
 public class SelectionManager : MonoBehaviour {
 	private DragAndDrop obj;
 	private Transform tf;
-	private Transform DragSpriteTransform;
-	private Image DragSprite;
-	private bool ShowingSprite;
 
 	void Awake() {
 		G.Sys.selectionManager = this;
-		ShowingSprite = false;
 	}
 
 	void Start() {
 		tf = transform;
 		Hide (false);
-		DragSpriteTransform = GameObject.Find ("DragSprite").transform;
-		DragSprite = DragSpriteTransform.GetComponent<Image> ();
-	}
-
-	public void ShowSprite(Sprite s) {
-		DragSprite.sprite = s;
-		DragSprite.color = new Color (DragSprite.color.r, DragSprite.color.g, DragSprite.color.b, 1f);
-		ShowingSprite = true;
-	}
-
-	public void HideSprite() {
-		DragSprite.color = new Color (DragSprite.color.r, DragSprite.color.g, DragSprite.color.b, 0f);
-		ShowingSprite = false;
 	}
 
 	public void Show(DragAndDrop o) {
@@ -101,10 +82,6 @@ public class SelectionManager : MonoBehaviour {
 	void Update() {
 		if (obj != null) {
 			tf.position = Camera.main.WorldToScreenPoint (obj.transform.position);
-		}
-
-		if (ShowingSprite) {
-			DragSpriteTransform.position = Camera.main.WorldToScreenPoint (Input.mousePosition);
 		}
 	}
 }

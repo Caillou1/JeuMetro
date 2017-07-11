@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
 	public GameObject ObjectToSpawn;
-	public Sprite SpriteToShowOnUI;
 
 	private GameObject spawnedObject;
 	private bool CanEndDrag;
