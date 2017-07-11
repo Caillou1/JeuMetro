@@ -5,6 +5,9 @@ using NRand;
 
 public class Path
 {
+
+	bool pathValid = false;
+
 	public Path(Dictionary<TileID, float> _weights)
 	{
 		points = new List<Vector3> ();
@@ -16,8 +19,11 @@ public class Path
 	{
 		var path = PathFinder.Path (start, end, weights);
 		points = path.First;
-		if (path.Second)
+		pathValid = false;
+		if (path.Second) {
+			pathValid = true;
 			endPos = end;
+		}
 		else if (path.First.Count > 0)
 			endPos = path.First [path.First.Count - 1];
 		else
@@ -138,6 +144,11 @@ public class Path
 			return x.First.CompareTo(y.First);
 		}
 
+	}
+
+	public bool isPathValid()
+	{
+		return pathValid;
 	}
 }
 

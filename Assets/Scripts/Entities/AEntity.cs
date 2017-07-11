@@ -40,6 +40,8 @@ public abstract class AEntity  : MonoBehaviour
 
 	protected SubscriberList subscriberList = new SubscriberList();
 
+	protected float timeFromLastFinishedPath = 10.0f;
+
 	void Awake()
 	{
 		rigidbody = GetComponent<Rigidbody> ();
@@ -67,6 +69,8 @@ public abstract class AEntity  : MonoBehaviour
 
 	void Update() 
 	{
+		timeFromLastFinishedPath += Time.deltaTime;
+
 		checkNextState ();
 
 		if (path.finished ()) {
@@ -159,7 +163,12 @@ public abstract class AEntity  : MonoBehaviour
 	{
 		altAction = ActionType.NONE;
 		altWait = true;
-		Updatepath ();
+		if (!path.isPathValid() && timeFromLastFinishedPath > 1.0f) {
+				timeFromLastFinishedPath = 0.0f;
+				Updatepath ();
+		}
+		else
+			Updatepath ();
 		OnEntityPathFinished ();
 	}
 
