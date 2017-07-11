@@ -110,7 +110,6 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void DeleteObject() {
-		//if(IsBought) G.Sys.gameManager.AddMoney (Price / 2);
 		Destroy (gameObject);
 	}
 

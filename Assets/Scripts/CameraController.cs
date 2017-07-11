@@ -123,7 +123,6 @@ public class CameraController : MonoBehaviour {
 				G.Sys.selectionManager.Show (dad);
 				IsSelecting = true;
 				tile.Unregister ();
-				//dad.DesactivateCollisions ();
 			}
 		}
 	}

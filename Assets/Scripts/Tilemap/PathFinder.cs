@@ -39,12 +39,12 @@ public static class PathFinder
 		var endTile = G.Sys.tilemap.connectableTile (end);
 	
 		if (startTile == null) {
-			var t = G.Sys.tilemap.tilesOfTypeAt (start, TileID.GROUND);
+			var t = G.Sys.tilemap.at (start);
 			if (t.Count > 0)
 				startTile = t [0];
 		}
 		if (endTile == null) {
-			var t = G.Sys.tilemap.tilesOfTypeAt (end, TileID.GROUND);
+			var t = G.Sys.tilemap.at (end);
 			if (t.Count > 0)
 				endTile = t [0];
 		}
@@ -93,7 +93,7 @@ public static class PathFinder
 			weight = 1;
 		else
 			weight /= count;
-		return new Vector2 (dir.x, dir.z).magnitude + Mathf.Abs (dir.y);
+		return (new Vector2 (dir.x, dir.z).magnitude + Mathf.Abs (dir.y) * G.Sys.constants.VerticalAmplification) * weight;
 	}
 
 	private static float distance(Vector3i start, Vector3i end)

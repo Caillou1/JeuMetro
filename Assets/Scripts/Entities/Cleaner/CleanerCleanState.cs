@@ -27,6 +27,20 @@ public class CleanerCleanState : ACleanerState
 		var wastes = G.Sys.tilemap.getSurrondingSpecialTile (cleaner.transform.position, TileID.WASTE, cleaner.Stats.WasteVisibilityRadius, G.Sys.constants.VerticalAmplification);
 		Vector3 waste = new Vector3 ();
 		if (wastes.Count != 0) {
+			/* METHODE DE PIERRE
+			foreach (var w in wastes) {
+				var tile = G.Sys.tilemap.GetTileOfTypeAt (w, TileID.WASTE);
+				var wasteTile = tile as WasteTile;
+				if (wasteTile != null) {
+					if (wasteTile.CanBeCleaned) {
+						wasteTile.CanBeCleaned = false;
+						waste = w;
+						break;
+					}
+				}
+			}*/
+
+			/* ANCIENNE METHODE*/
 			waste = wastes[new UniformIntDistribution (wastes.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())];
 			var dir = waste - cleaner.transform.position;
 			if (new Vector2 (dir.x, dir.z).magnitude + G.Sys.constants.VerticalAmplification * dir.y <= cleaner.Stats.WasteVisibilityRadius)
