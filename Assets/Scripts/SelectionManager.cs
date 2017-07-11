@@ -24,6 +24,7 @@ public class SelectionManager : MonoBehaviour {
 			}
 			obj.CanDrag = true;
 			G.Sys.cameraController.IsSelecting = true;
+			obj.ActivateCollisions ();
 		}
 	}
 
@@ -32,9 +33,12 @@ public class SelectionManager : MonoBehaviour {
 	}
 
 	public void Hide(bool register) {
-		if (obj != null && register) {
-			obj.GetComponent<ATile> ().Register ();
-			G.Sys.cameraController.IsSelecting = false;
+		if (obj != null) {
+			obj.DesactivateCollisions ();
+			if (register) {
+				obj.GetComponent<ATile> ().Register ();
+				G.Sys.cameraController.IsSelecting = false;
+			}
 		}
 		obj = null;
 		for (int i = 0; i < tf.childCount; i++) {

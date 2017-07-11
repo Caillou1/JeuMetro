@@ -489,6 +489,16 @@ public class Tilemap
 		return validTiles;
 	}
 
+	public ATile GetTileOfTypeAt(Vector3 pos, TileID id) {
+		var tiles = at (pos);
+		foreach (var t in tiles) {
+			if (t.type == id) {
+				return t;
+			}
+		}
+		return null;
+	}
+
 	/// <summary>
 	/// Retourne la tile spéciale la plus proche du type spécifiée.
 	/// La seconde valeur de la paire est à faux si aucune tile n'a été trouvée.

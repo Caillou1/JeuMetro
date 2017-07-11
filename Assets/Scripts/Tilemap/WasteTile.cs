@@ -6,8 +6,20 @@ using UnityEngine;
 
 public class WasteTile : ATile
 {
+	private bool _canBeCleaned;
+
+	public bool CanBeCleaned {
+		get {
+			return _canBeCleaned;
+		}
+		set {
+			_canBeCleaned = value;
+		}
+	}
+
 	protected override void Awake()
     {
+		_canBeCleaned = true;
 		/*if (G.Sys.tilemap.at (transform.position).Count != 1) {
 			Destroy (gameObject);
 		}*/
