@@ -27,6 +27,8 @@ public class EscalatorTile : ATile
 			down.canBeConnected = side == EscalatorSide.UP;
 			down.preventConnexions = side != EscalatorSide.UP;
 
+			Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (new Vector3i[]{}.ToList()));
+
             Connect();
         }
         get { return _side; }
