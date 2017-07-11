@@ -126,14 +126,14 @@ public class DragAndDrop : MonoBehaviour{
 
 		CheckCanPlace ();
 		CheckRotation ();
-		if (canPlace && (IsBought || (!IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)))) {
+		if ((canPlace && !IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)) || IsBought) {
 			G.Sys.cameraController.IsSelecting = false;
 			if (!IsBought) {
 				G.Sys.gameManager.AddMoney (-Price);
 				IsBought = true;
+				GetComponent<ATile> ().Register ();
 			}
 			G.Sys.selectionManager.Hide (true);
-			GetComponent<ATile> ().Register ();
 			CanDrag = false;
 			SendEvent ();
 			return true;

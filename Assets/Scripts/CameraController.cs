@@ -122,7 +122,6 @@ public class CameraController : MonoBehaviour {
 				var tile = disposable.GetComponent<ATile> ();
 				G.Sys.selectionManager.Show (dad);
 				IsSelecting = true;
-				tile.Unregister ();
 			}
 		}
 	}
