@@ -24,7 +24,7 @@ public class SelectionManager : MonoBehaviour {
 			}
 			obj.CanDrag = true;
 			G.Sys.cameraController.IsSelecting = true;
-			obj.ActivateCollisions ();
+			obj.DesactivateCollisions ();
 		}
 	}
 
@@ -34,7 +34,7 @@ public class SelectionManager : MonoBehaviour {
 
 	public void Hide(bool register) {
 		if (obj != null) {
-			obj.DesactivateCollisions ();
+			obj.ActivateCollisions ();
 			if (register) {
 				obj.GetComponent<ATile> ().Register ();
 				G.Sys.cameraController.IsSelecting = false;
