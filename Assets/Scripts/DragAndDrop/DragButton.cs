@@ -16,7 +16,7 @@ public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
 	void Spawn() {
 		if (!G.Sys.cameraController.IsSelecting) {
-			spawnedObject = Instantiate (ObjectToSpawn, new Vector3i (Camera.main.ScreenToWorldPoint(Input.mousePosition)).toVector3 (), Quaternion.identity);
+			spawnedObject = Instantiate (ObjectToSpawn, new Vector3i (G.Sys.MainCamera.ScreenToWorldPoint(Input.mousePosition)).toVector3 (), Quaternion.identity);
 			spawnedObject.GetComponent<ATile> ().Unregister ();
 			var dad = spawnedObject.GetComponent<DragAndDrop> ();
 			G.Sys.selectionManager.Show (dad);
@@ -32,8 +32,8 @@ public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 		if (!G.Sys.cameraController.IsSelecting) {	
 			Spawn ();
 			var dad = spawnedObject.GetComponent<DragAndDrop> ();
-			dad.StartDrag ();
 			dad.IsBought = false;
+			dad.StartDrag ();
 			CanEndDrag = true;
 		} else {
 			CanEndDrag = false;

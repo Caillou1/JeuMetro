@@ -23,6 +23,8 @@ public class DragAndDrop : MonoBehaviour{
 		}
 	}
 
+	private Tweener rotTween;
+
 	void Awake() {
 		bought = true;
 	}
@@ -66,14 +68,16 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void StartDrag() {
+		if (!IsBought) {
 			G.Sys.selectionManager.Hide (false);
 			G.Sys.cameraController.CanDrag = false;
 			Dragging = true;
+		}
 	}
 
 	void Update() {
 		if (Dragging && CanDrag && !IsBought) {
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			Ray ray = G.Sys.MainCamera.ScreenPointToRay (Input.mousePosition);
 			RaycastHit[] hits;
 			hits = Physics.RaycastAll (ray);
 			RaycastHit hit = FindGround (hits);
@@ -123,15 +127,17 @@ public class DragAndDrop : MonoBehaviour{
 
 	public bool ValidateObject() {
 		Rotations = 0;
-
+		rotTween.Complete ();
 		CheckCanPlace ();
 		CheckRotation ();
-		if ((canPlace && !IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)) || IsBought) {
+
+		if ((canPlace && !IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)) || IsBought && canPlace) {
 			G.Sys.cameraController.IsSelecting = false;
 			if (!IsBought) {
 				G.Sys.gameManager.AddMoney (-Price);
 				IsBought = true;
-				GetComponent<ATile> ().Register ();
+				var tile = GetComponent<ATile> ();
+				tile.Register ();
 			}
 			G.Sys.selectionManager.Hide (true);
 			CanDrag = false;
@@ -146,15 +152,17 @@ public class DragAndDrop : MonoBehaviour{
 			Rotations++;
 		} else {
 			isRotating = true;
-			if(tf != null) tf.DORotate (new Vector3 (0, tf.rotation.eulerAngles.y + 90, 0), .3f, RotateMode.FastBeyond360).OnComplete(() => {
-				if(Rotations > 0) {
-					Rotations--;
-					isRotating = false;
-					RotateObject();
-				} else {
-					isRotating = false;
-				}
-			});
+			if (tf != null) {
+				rotTween = tf.DORotate (new Vector3 (0, tf.rotation.eulerAngles.y + 90, 0), .3f, RotateMode.FastBeyond360).OnComplete (() => {
+					if (Rotations > 0) {
+						Rotations--;
+						isRotating = false;
+						RotateObject ();
+					} else {
+						isRotating = false;
+					}
+				});
+			}
 		}
 	}
 
@@ -170,6 +178,6 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	protected void RotateObject(float desiredAngle) {
-		tf.DORotate (new Vector3 (0, desiredAngle, 0), .3f, RotateMode.FastBeyond360);
+		rotTween = tf.DORotate (new Vector3 (0, desiredAngle, 0), .3f, RotateMode.FastBeyond360);
 	}
 }

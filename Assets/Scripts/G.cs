@@ -9,6 +9,7 @@ public sealed class G
     public Tilemap tilemap = new Tilemap();
 	private List<Traveler> travelers = new List<Traveler> ();
 
+	private Camera _camera;
     private GameManager _gameManager;
 	private WaveManager _waveManager;
 	private AudioManager _audioManager;
@@ -16,6 +17,7 @@ public sealed class G
 	private SelectionManager _selectionManager;
 	private MenuManager _menuManager;
 	private Constants _constants;
+
 
     public static G Sys
     {
@@ -26,6 +28,14 @@ public sealed class G
             return G._instance;
         }
     }
+
+	public Camera MainCamera {
+		get {
+			if(_camera == null)
+				_camera = Camera.main;
+			return _camera;
+		}
+	}
 
     public GameManager gameManager
     {
