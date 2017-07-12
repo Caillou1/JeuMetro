@@ -76,6 +76,11 @@ public sealed class G
 		return travelers.Count;
 	}
 
+	public Traveler traveler(int index)
+	{
+		return travelers [index];
+	}
+
 	public void clear()
 	{
 		travelers.Clear ();
