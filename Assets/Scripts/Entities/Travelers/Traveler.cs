@@ -79,21 +79,22 @@ public class Traveler : AEntity
 
 	void configureDatasFromStats()
 	{
+		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
 		datas.Speed = Stats.MovementSpeed / (Stats.FaintnessPercentage / 100f + 1);
-		datas.Dirtiness =  0.5f - Stats.Cleanliness / 200f;
+		datas.Dirtiness = new UniformFloatDistribution (0, 0.5f - Stats.Cleanliness / 200f).Next (gen);
 		datas.Lostness = Stats.LostAbility / 100f;
 		//datas.Waste = new UniformFloatDistribution (0, 0.5f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());;
 		datas.Tiredness = Stats.FaintnessPercentage / 100f;
-		datas.Hunger = new UniformFloatDistribution (0, 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());
-		datas.HasTicket = new BernoulliDistribution(0.5f).Next(new StaticRandomGenerator<DefaultRandomGenerator>());
+		datas.Hunger = new UniformFloatDistribution (0, 1).Next (gen);
+		datas.HasTicket = new BernoulliDistribution (0.5f).Next (gen);
 	}
 
 	void updateDatas()
 	{
 		if (datas.Waste == 0)
-			datas.Dirtiness = 0.5f - Stats.Cleanliness / 200f;
+			datas.Dirtiness = new UniformFloatDistribution (0, 0.5f - Stats.Cleanliness / 200f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());
 		else
-			datas.Dirtiness += (0.5f - Stats.Cleanliness / 200f * datas.Waste) * Time.deltaTime;
+			datas.Dirtiness += ((0.5f - Stats.Cleanliness / 200f) * datas.Waste) * Time.deltaTime;
 		datas.Dirtiness = Mathf.Min (datas.Dirtiness, 1);
 
 		var infoPannels = G.Sys.tilemap.getSpecialTiles (TileID.INFOPANEL);
