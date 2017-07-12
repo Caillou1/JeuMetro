@@ -77,7 +77,7 @@ public class DragAndDrop : MonoBehaviour{
 
 	void Update() {
 		if (Dragging && CanDrag && !IsBought) {
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			Ray ray = G.Sys.MainCamera.ScreenPointToRay (Input.mousePosition);
 			RaycastHit[] hits;
 			hits = Physics.RaycastAll (ray);
 			RaycastHit hit = FindGround (hits);

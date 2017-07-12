@@ -7009,6 +7009,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 479941704}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!20 &482051419 stripped
+Camera:
+  m_PrefabParentObject: {fileID: 20838677613757662, guid: 6f291861566d840feafdf9edcf6a9472,
+    type: 2}
+  m_PrefabInternal: {fileID: 1616464385}
 --- !u!1 &495371522
 GameObject:
   m_ObjectHideFlags: 0
@@ -29643,22 +29648,22 @@ Prefab:
     - target: {fileID: 224691134958391808, guid: c39d285f690f14e74927f54d61e731f4,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224121751981483740, guid: c39d285f690f14e74927f54d61e731f4,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224988408356149610, guid: c39d285f690f14e74927f54d61e731f4,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224320557803241524, guid: c39d285f690f14e74927f54d61e731f4,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224375721517699690, guid: c39d285f690f14e74927f54d61e731f4,
         type: 2}
@@ -29667,7 +29672,22 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1632387940588438, guid: c39d285f690f14e74927f54d61e731f4, type: 2}
       propertyPath: m_Layer
-      value: 2
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 223884208469200064, guid: c39d285f690f14e74927f54d61e731f4,
+        type: 2}
+      propertyPath: m_RenderMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 223884208469200064, guid: c39d285f690f14e74927f54d61e731f4,
+        type: 2}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 482051419}
+    - target: {fileID: 223884208469200064, guid: c39d285f690f14e74927f54d61e731f4,
+        type: 2}
+      propertyPath: m_PlaneDistance
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c39d285f690f14e74927f54d61e731f4, type: 2}

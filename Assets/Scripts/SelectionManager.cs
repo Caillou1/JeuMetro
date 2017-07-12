@@ -18,7 +18,7 @@ public class SelectionManager : MonoBehaviour {
 	public void Show(DragAndDrop o) {
 		if (o != null) {
 			obj = o;
-			tf.position = Camera.main.WorldToScreenPoint (obj.transform.position);
+			tf.position = G.Sys.MainCamera.WorldToScreenPoint (obj.transform.position);
 			for (int i = 0; i < tf.childCount; i++) {
 				tf.GetChild (i).gameObject.SetActive (true);
 			}
@@ -81,7 +81,7 @@ public class SelectionManager : MonoBehaviour {
 
 	void Update() {
 		if (obj != null) {
-			tf.position = Camera.main.WorldToScreenPoint (obj.transform.position);
+			tf.position = G.Sys.MainCamera.WorldToScreenPoint (obj.transform.position);
 		}
 	}
 }

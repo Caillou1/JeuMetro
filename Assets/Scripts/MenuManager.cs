@@ -53,7 +53,7 @@ public class MenuManager : MonoBehaviour {
 	void Awake() {
 		G.Sys.menuManager = this;
 
-		cameraTransform = Camera.main.transform;
+		cameraTransform = G.Sys.MainCamera.transform;
 		cameraOrigin = cameraTransform.position;
 
 		tf = transform;
