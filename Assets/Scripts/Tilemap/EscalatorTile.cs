@@ -12,6 +12,8 @@ public class EscalatorTile : ATile
     [SerializeField]
     private EscalatorSide _side = EscalatorSide.UP;
 
+	private Animator anim;
+
     public EscalatorSide side
     {
         set
@@ -68,6 +70,8 @@ public class EscalatorTile : ATile
 
 	protected override void Awake()
 	{
+		anim = transform.Find ("mesh").GetComponent<Animator> ();
+
 		type = TileID.ESCALATOR;
 
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
@@ -104,6 +108,10 @@ public class EscalatorTile : ATile
 		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * Vector3.up - dir))
 			t.Connect();
     }
+
+	void Start() {
+		anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
+	}
 
 	protected override void OnDestroy()
 	{

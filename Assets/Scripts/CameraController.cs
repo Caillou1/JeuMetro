@@ -114,7 +114,7 @@ public class CameraController : MonoBehaviour {
 		yield return new WaitForSeconds (.1f);
 
 		if (canSelect) {
-			Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+			Ray ray = G.Sys.MainCamera.ScreenPointToRay (Input.mousePosition);
 			var disposable = GetDisposable (Physics.RaycastAll (ray));
 
 			if (disposable != null && !IsSelecting) {

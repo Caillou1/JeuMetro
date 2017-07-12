@@ -22,19 +22,29 @@ public class DragAndDropBench : DragAndDrop {
 		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(dir.x, 0, dir.z), TileID.ESCALATOR).Count > 0)
 			canPlace = false;
 
+		//Case en face centrale
+		v = G.Sys.tilemap.at (tf.position + new Vector3(-dir.z, 0, dir.x));
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(-dir.z, 0, dir.x), TileID.ESCALATOR).Count > 0)
+			canPlace = false;
+
+		//Case en face côté
+		v = G.Sys.tilemap.at (tf.position + new Vector3(dir.x - dir.z, 0, dir.x + dir.z));
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(dir.x - dir.z, 0, dir.x + dir.z), TileID.ESCALATOR).Count > 0)
+			canPlace = false;
+
 	}
 
 	protected override void CheckRotation() {
 		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
 		List<Orientation> PossibleOrientations = new List<Orientation> ();
 
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.forward))
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.forward) || G.Sys.tilemap.at(tf.position + Vector3.forward).Count == 0)
 			PossibleOrientations.Add (Orientation.LEFT);
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.back))
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.back) || G.Sys.tilemap.at(tf.position + Vector3.back).Count == 0)
 			PossibleOrientations.Add (Orientation.RIGHT);
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.right))
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.right) || G.Sys.tilemap.at(tf.position + Vector3.right).Count == 0)
 			PossibleOrientations.Add (Orientation.UP);
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.left))
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.left) || G.Sys.tilemap.at(tf.position + Vector3.left).Count == 0)
 			PossibleOrientations.Add (Orientation.DOWN);
 
 		if(PossibleOrientations.Count > 0 && !PossibleOrientations.Contains(or)) {
