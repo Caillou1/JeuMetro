@@ -24,9 +24,6 @@ public abstract class AEntity  : MonoBehaviour
 	[HideInInspector]
 	public new Rigidbody rigidbody;
 
-	public float avoidPower = 1.0f;
-	[HideInInspector]
-	public Vector3 avoidDir;
 	[HideInInspector]
 	public Path path;
 	[HideInInspector]

@@ -41,12 +41,17 @@ public static class PathFinder
 		if (startTile == null) {
 			var t = G.Sys.tilemap.at (start);
 			if (t.Count > 0)
+			{
 				startTile = t [0];
-		}
-		if (endTile == null) {
-			var t = G.Sys.tilemap.at (end);
-			if (t.Count > 0)
-				endTile = t [0];
+				if (startTile.connectedTiles.Count == 0) {
+					foreach (var t2 in t) {
+						if (t2.connectedTiles.Count > 0) {
+							startTile = t2;
+							break;
+						}
+					}
+				}
+			}
 		}
 
 		if (startTile == null || endTile == null)
