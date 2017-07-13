@@ -22,7 +22,11 @@ public enum TileID
 	ELEVATOR,
 	SPEAKER,
 	WASTE,
+<<<<<<< HEAD
 	EMPTYWALL,
+=======
+	CONTROLELINE,
+>>>>>>> Nico
 }
 
 public abstract class ATile : MonoBehaviour
@@ -55,9 +59,31 @@ public abstract class ATile : MonoBehaviour
 
 	static protected void Add(Vector3i pos, List<Pair<ATile, Vector3i>> list, bool addNull = false)
     {
-		var tile = G.Sys.tilemap.connectableTile (pos);
+		if (!G.Sys.tilemap.connectable (pos)) {
+			if (addNull)
+				list.Add (new Pair<ATile, Vector3i> ());
+			return;
+		}
+
+		var cTile = G.Sys.tilemap.connectableTile (pos);
+
+		TileID[] validTiles = { TileID.GROUND, TileID.ESCALATOR, TileID.STAIRS };
+
+		var tiles = G.Sys.tilemap.at (pos);
+		foreach (var t in tiles) {
+			if (t == cTile) {
+				list.Add (new Pair<ATile, Vector3i> (t, pos));
+				continue;
+			}
+			if (!validTiles.Contains (t.type))
+				continue;
+			list.Add (new Pair<ATile, Vector3i> (t, pos));
+		}
+
+
+		/*var tile = G.Sys.tilemap.connectableTile (pos);
 		if (tile != null || addNull)
-			list.Add(new Pair<ATile, Vector3i>(tile, pos));
+			list.Add(new Pair<ATile, Vector3i>(tile, pos));*/
     }
 
 	protected static bool validConnexions(List<Pair<ATile, Vector3i>> first, List<Pair<ATile, Vector3i>> second)

@@ -66,7 +66,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1427005143703886}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 2, z: -5}
+  m_LocalPosition: {x: 4, y: -2, z: -16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4236780519288100}
@@ -139,8 +139,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 0}
-  avoidPower: 1
-  avoidDir: {x: 0, y: 0, z: 0}
   destination: {x: 0, y: 0, z: 0}
   altDestination: {x: 0, y: 0, z: 0}
   altAction: 0
@@ -158,7 +156,7 @@ MonoBehaviour:
     FaintnessPercentage: 0
     LostAbility: 0
     MovementSpeed: 5
-    RotationSpeed: 5
+    RotationSpeed: 6
 --- !u!136 &136956853394791184
 CapsuleCollider:
   m_ObjectHideFlags: 1

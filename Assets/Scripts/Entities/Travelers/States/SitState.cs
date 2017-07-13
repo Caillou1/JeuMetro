@@ -16,7 +16,6 @@ public class SitState : ATravelerState
 	public override int check()
 	{
 		if (traveler.altAction == Traveler.ActionType.SIT) {
-			Debug.DrawRay (benchPos, Vector3.up, Color.green);
 			var benchs = G.Sys.tilemap.tilesOfTypeAt (benchPos, TileID.BENCH);
 			if (benchs.Count == 0) {
 				traveler.altAction = AEntity.ActionType.NONE;
