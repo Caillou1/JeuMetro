@@ -567,5 +567,38 @@ public class Tilemap
 	{
 		return bounds;
 	}
+
+	public bool HasGroundAt(Vector3 pos) {
+		var tiles = at (pos);
+
+		foreach (var tile in tiles) {
+			if (tile.type == TileID.GROUND || tile.type == TileID.IN || tile.type == TileID.OUT)
+				return true;
+		}
+
+		return false;
+	}
+
+	public bool HasEmptyWallAt(Vector3 pos) {
+		var tiles = at (pos);
+
+		foreach (var tile in tiles) {
+			if (tile.type == TileID.EMPTYWALL)
+				return true;
+		}
+
+		return false;
+	}
+
+	public bool IsEmpty(Vector3 pos) {
+		var tiles = at (pos);
+
+		foreach (var tile in tiles) {
+			if (tile.type != TileID.EMPTYWALL)
+				return false;
+		}
+
+		return true;
+	}
 }
  
