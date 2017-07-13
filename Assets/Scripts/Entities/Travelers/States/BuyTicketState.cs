@@ -35,7 +35,6 @@ public class BuyTicketState : ATravelerState
 		shopPos = shop.First;
 		var dir = Orienter.orientationToDir(Orienter.angleToOrientation(tile[0].transform.rotation.eulerAngles.y));
 		var pos = shopPos + new Vector3 (-dir.y, 0, dir.x);
-		Debug.DrawLine (shopPos, pos, Color.green);
 
 		traveler.altAction = Traveler.ActionType.BUY_TICKET;
 		traveler.altDestination = pos;

@@ -57,10 +57,26 @@ public class EscalatorTile : ATile
 			Add (transform.position + 3 * dir, connexions);
 			Add (transform.position + 2 * dir + perpendicularDir, connexions);
 			Add (transform.position + 2 * dir - perpendicularDir, connexions);
+			var tiles = G.Sys.tilemap.at (transform.position + 2 * dir);
+			foreach (var t in tiles) {
+				if (t.type != TileID.ESCALATOR && t.type != TileID.STAIRS)
+					continue;
+				if (t == this)
+					continue;
+				connexions.Add (new Pair<ATile, Vector3i> (t, new Vector3i (transform.position + 2 * dir)));
+			}
 		} else {
 			Add (transform.position + 2 * Vector3.up - 2 * dir, connexions);
 			Add (transform.position + 2 * Vector3.up - dir + perpendicularDir, connexions);
 			Add (transform.position + 2 * Vector3.up - dir - perpendicularDir, connexions);
+			var tiles = G.Sys.tilemap.at (transform.position + 2 * Vector3.up - dir);
+			foreach (var t in tiles) {
+				if (t.type != TileID.ESCALATOR && t.type != TileID.STAIRS)
+					continue;
+				if (t == this)
+					continue;
+				connexions.Add (new Pair<ATile, Vector3i> (t, new Vector3i (transform.position + 2 * Vector3.up - dir)));
+			}
 		}
 
 		applyConnexions (connexions);
@@ -74,11 +90,11 @@ public class EscalatorTile : ATile
 
 		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.STAIRS_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + dir, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + 2 * dir, this, side == EscalatorSide.UP, side != EscalatorSide.UP, Tilemap.STAIRS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position + 2 * dir, this, side == EscalatorSide.UP, false, Tilemap.STAIRS_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + Vector3.up, this, false, true, Tilemap.STAIRS_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + Vector3.up + dir, this, false, true, Tilemap.STAIRS_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up - dir, this, side == EscalatorSide.DOWN, side != EscalatorSide.DOWN, Tilemap.STAIRS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up - dir, this, side == EscalatorSide.DOWN, false, Tilemap.STAIRS_PRIORITY);
 
 
 		//Supprime les bandes podotactiles en dessous des escalators

@@ -17,20 +17,19 @@ class GroundTile : ATile
 			applyConnexions (list);
 		}
 
-		Add (pos + new Vector3i (0, 0, 1), list, true);
-		Add (pos + new Vector3i(0, 0, -1), list, true);
-		Add (pos + new Vector3i(1, 0, 0), list, true);
-		Add (pos + new Vector3i(-1, 0, 0), list, true);
+		Add (pos + new Vector3i (0, 0, 1), list);
+		Add (pos + new Vector3i(0, 0, -1), list);
+		Add (pos + new Vector3i(1, 0, 0), list);
+		Add (pos + new Vector3i(-1, 0, 0), list);
 
-		if(list[0].First != null && list[2].First != null)
-			Add(pos + new Vector3i(1, 0, 1), list);
-		if(list[2].First != null && list[1].First != null)
-			Add(pos + new Vector3i(1, 0, -1), list);
-		if(list[3].First != null && list[0].First != null)
-			Add(pos + new Vector3i(-1, 0, 1), list);
-		if(list[3].First != null && list[1].First != null)
-			Add(pos + new Vector3i(-1, 0, -1), list);
-		list.RemoveAll (t => t.First == null);
+		if (G.Sys.tilemap.connectable (pos + new Vector3i (1, 0, 0)) && G.Sys.tilemap.connectable (pos + new Vector3i (0, 0, 1)))
+			Add (pos + new Vector3i (1, 0, 1), list);
+		if (G.Sys.tilemap.connectable (pos + new Vector3i (1, 0, 0)) && G.Sys.tilemap.connectable (pos + new Vector3i (0, 0, -1)))
+			Add (pos + new Vector3i (1, 0, -1), list);
+		if (G.Sys.tilemap.connectable (pos + new Vector3i (-1, 0, 0)) && G.Sys.tilemap.connectable (pos + new Vector3i (0, 0, 1)))
+			Add (pos + new Vector3i (-1, 0, 1), list);
+		if (G.Sys.tilemap.connectable (pos + new Vector3i (-1, 0, 0)) && G.Sys.tilemap.connectable (pos + new Vector3i (0, 0, -1)))
+			Add (pos + new Vector3i (-1, 0, -1), list);
 
 		applyConnexions (list);
     }
