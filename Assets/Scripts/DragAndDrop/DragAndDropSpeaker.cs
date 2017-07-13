@@ -7,12 +7,11 @@ using DG.Tweening;
 
 public class DragAndDropSpeaker : DragAndDrop {
 
-	private bool IsWalled;
-
 	private GameObject WalledObject;
 	private GameObject NotWalledObject;
 
 	void Start() {
+		HasToCheckWall = true;
 		tf = transform;
 		isRotating = false;
 		WalledObject = tf.Find ("Walled").gameObject;
@@ -43,13 +42,13 @@ public class DragAndDropSpeaker : DragAndDrop {
 		List<Orientation> PossibleOrientations = new List<Orientation> ();
 		var dir = Orienter.orientationToDir3 (or);
 
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.forward) || G.Sys.tilemap.at(tf.position + Vector3.forward).Count == 0)
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.forward))
 			PossibleOrientations.Add (Orientation.LEFT);
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.back) || G.Sys.tilemap.at(tf.position + Vector3.back).Count == 0)
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.back))
 			PossibleOrientations.Add (Orientation.RIGHT);
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.right) || G.Sys.tilemap.at(tf.position + Vector3.right).Count == 0)
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.right))
 			PossibleOrientations.Add (Orientation.UP);
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.left) || G.Sys.tilemap.at(tf.position + Vector3.left).Count == 0)
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.left))
 			PossibleOrientations.Add (Orientation.DOWN);
 
 		if (PossibleOrientations.Count > 0 && (!PossibleOrientations.Contains(or) || !IsWalled))

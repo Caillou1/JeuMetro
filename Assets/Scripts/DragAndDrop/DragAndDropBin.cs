@@ -7,12 +7,11 @@ using DG.Tweening;
 
 public class DragAndDropBin : DragAndDrop {
 
-	private bool IsWalled;
-
 	private GameObject WalledObject;
 	private GameObject NotWalledObject;
 
 	void Start() {
+		HasToCheckWall = true;
 		tf = transform;
 		isRotating = false;
 		WalledObject = tf.Find ("Walled").gameObject;
