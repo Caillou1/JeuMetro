@@ -14,7 +14,6 @@ public class CameraController : MonoBehaviour {
 	private Vector3 dragOrigin;
 	private Transform cameraTransform;
 	private bool canSelect;
-	private bool isOnUI = false;
 	public bool pinching = false;
 
 	IEnumerator PinchingCoroutine;
@@ -80,8 +79,6 @@ public class CameraController : MonoBehaviour {
 						canSelect = true;
 						SelectCoroutine = Select ();
 						StartCoroutine (SelectCoroutine);
-					} else {
-						isOnUI = true;
 					}
 				}
 			}
@@ -99,9 +96,6 @@ public class CameraController : MonoBehaviour {
 				dragOrigin = Input.mousePosition;
 			}
 		}
-
-		if (Input.GetMouseButtonUp (0))
-			isOnUI = false;
 	}
 
 	IEnumerator DelayedPinch() {
