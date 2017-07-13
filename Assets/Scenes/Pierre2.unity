@@ -846,7 +846,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56ec55402e21442249006d6a90ef5d69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Vagues: []
+  Vagues:
+  - Entrees:
+    - Entree: {fileID: 998118656}
+      Vague: {fileID: 0}
+    - Entree: {fileID: 997272060}
+      Vague: {fileID: 0}
+    TimeBeforeWave: 0
 --- !u!4 &58455827
 Transform:
   m_ObjectHideFlags: 0
