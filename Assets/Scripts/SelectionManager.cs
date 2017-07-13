@@ -1,17 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectionManager : MonoBehaviour {
 	private DragAndDrop obj;
 	private Transform tf;
 
+	private GameObject validate;
+	private GameObject rotate;
+	private GameObject delete;
+	private GameObject changeside;
+	private Text changeSideText;
+
 	void Awake() {
 		G.Sys.selectionManager = this;
+		tf = transform;
+
+		validate = tf.Find ("validate").gameObject;
+		rotate = tf.Find ("rotate").gameObject;
+		delete = tf.Find ("delete").gameObject;
+		changeside = tf.Find ("changeside").gameObject;
+		changeSideText = changeside.transform.Find ("Text").GetComponent<Text>();
 	}
 
 	void Start() {
-		tf = transform;
 		Hide (false);
 	}
 
@@ -19,9 +32,21 @@ public class SelectionManager : MonoBehaviour {
 		if (o != null) {
 			obj = o;
 			tf.position = G.Sys.MainCamera.WorldToScreenPoint (obj.transform.position);
-			for (int i = 0; i < tf.childCount; i++) {
-				tf.GetChild (i).gameObject.SetActive (true);
+
+			validate.SetActive (true);
+			rotate.SetActive (true);
+			delete.SetActive (true);
+
+			var e = obj.GetComponent<EscalatorTile> ();
+			if (e != null) {
+				changeside.SetActive (true);
+				if (e.side == EscalatorSide.DOWN) {
+					changeSideText.text = "D";
+				} else {
+					changeSideText.text = "U";
+				}
 			}
+
 			obj.CanDrag = true;
 			G.Sys.cameraController.IsSelecting = true;
 			obj.DesactivateCollisions ();
@@ -41,22 +66,15 @@ public class SelectionManager : MonoBehaviour {
 			}
 		}
 		obj = null;
-		for (int i = 0; i < tf.childCount; i++) {
-			tf.GetChild (i).gameObject.SetActive (false);
-		}
+
+		validate.SetActive (false);
+		rotate.SetActive (false);
+		delete.SetActive (false);
+		changeside.SetActive (false);
 	}
 
 	public void Rotate() {
-		var dade = obj.GetComponent<DragAndDropEscalator> ();
-		if (dade == null) {
-			obj.RotateObject ();
-		} else {
-			var e = obj.GetComponent<EscalatorTile> ();
-			if (e.side == EscalatorSide.DOWN)
-				e.SetSide (EscalatorSide.UP);
-			else
-				e.SetSide (EscalatorSide.DOWN);
-		}
+		obj.RotateObject ();
 	}
 
 	public void ValidateNoReturn() {
@@ -77,6 +95,19 @@ public class SelectionManager : MonoBehaviour {
 			obj.DeleteObject ();
 		}
 		Hide (false);
+	}
+
+	public void ChangeSide() {
+		var e = obj.GetComponent<EscalatorTile> ();
+		if (e != null) {
+			if (e.side == EscalatorSide.DOWN) {
+				e.SetSide (EscalatorSide.UP);
+				changeSideText.text = "U";
+			} else {
+				e.SetSide (EscalatorSide.DOWN);
+				changeSideText.text = "D";
+			}
+		}
 	}
 
 	void Update() {

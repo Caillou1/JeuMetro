@@ -47,6 +47,7 @@ public class EscalatorTile : ATile
 
 	public void SetSide(EscalatorSide s) {
 		_side = s;
+		anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
 	}
 		
     public override void Connect()
