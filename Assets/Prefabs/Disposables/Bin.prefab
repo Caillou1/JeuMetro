@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33866004918369536}
   - component: {fileID: 23973964801990806}
   - component: {fileID: 95227353137085512}
+  - component: {fileID: 65040173522158660}
   m_Layer: 0
   m_Name: NotWalled
   m_TagString: Untagged
@@ -58,6 +59,7 @@ GameObject:
   - component: {fileID: 33075125856222084}
   - component: {fileID: 23181075146609544}
   - component: {fileID: 95656904194353134}
+  - component: {fileID: 65197817142955166}
   m_Layer: 0
   m_Name: Walled
   m_TagString: Untagged
@@ -97,15 +99,15 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1593981669569730}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.01, y: 0.049999982, z: -1.786}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4709890544858650}
   - {fileID: 4326272946672800}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!23 &23181075146609544
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -184,6 +186,30 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1449538420479500}
   m_Mesh: {fileID: 4300000, guid: 0190dcaf53b1a41d2a89e28c404cb9ee, type: 3}
+--- !u!65 &65040173522158660
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1449538420479500}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.26436558, y: 0.5366972, z: 0.26436558}
+  m_Center: {x: 0, y: 0.26618746, z: 0}
+--- !u!65 &65197817142955166
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1940966935377488}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.33798692, y: 0.46787733, z: 0.15478595}
+  m_Center: {x: 0, y: 0, z: 0.07649914}
 --- !u!65 &65819300448265990
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -243,7 +269,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Price: 50
   CanDrag: 0
-  IsBought: 0
 --- !u!114 &114464358451308852
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -256,4 +281,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetOf: []
-  tilesHere: []

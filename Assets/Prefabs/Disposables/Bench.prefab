@@ -40,6 +40,7 @@ GameObject:
   - component: {fileID: 33260411806075476}
   - component: {fileID: 23761401281992762}
   - component: {fileID: 95025309907250592}
+  - component: {fileID: 65922361460311314}
   m_Layer: 0
   m_Name: banc
   m_TagString: Untagged
@@ -54,7 +55,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1157032559819030}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: -2, z: -10}
+  m_LocalPosition: {x: 4, y: 0, z: -7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4632791605096472}
@@ -126,6 +127,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.1, y: 0.75, z: 1.1}
   m_Center: {x: 0.5, y: 0.375, z: 0}
+--- !u!65 &65922361460311314
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1246725375100114}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.7160693, y: 1.1582739, z: 0.7268623}
+  m_Center: {x: 0, y: 0.57913697, z: 0}
 --- !u!95 &95025309907250592
 Animator:
   serializedVersion: 3
@@ -156,7 +169,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Price: 100
   CanDrag: 0
-  IsBought: 0
 --- !u!114 &114050358926966646
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -169,4 +181,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetOf: []
-  tilesHere: []
