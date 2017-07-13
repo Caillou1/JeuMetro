@@ -21,36 +21,53 @@ public class DragAndDropSpeaker : DragAndDrop {
 		CheckRotation ();
 	}
 
+	protected override void CheckCanPlace ()
+	{
+		canPlace = true;
+
+		var dir = Orienter.orientationToDir3 (Orienter.angleToOrientation (tf.rotation.eulerAngles.y));
+
+		//Case centrale
+		var v = G.Sys.tilemap.at (tf.position);
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position, TileID.ESCALATOR).Count > 0)
+			canPlace = false;
+
+		//Case en face
+		v = G.Sys.tilemap.at (tf.position + new Vector3(-dir.z, 0, dir.x));
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(-dir.z, 0, dir.x), TileID.ESCALATOR).Count > 0)
+			canPlace = false;
+	}
+
 	protected override void CheckRotation() {
 		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
 		List<Orientation> PossibleOrientations = new List<Orientation> ();
+		var dir = Orienter.orientationToDir3 (or);
 
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.forward))
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.forward) || G.Sys.tilemap.at(tf.position + Vector3.forward).Count == 0)
 			PossibleOrientations.Add (Orientation.LEFT);
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.back))
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.back) || G.Sys.tilemap.at(tf.position + Vector3.back).Count == 0)
 			PossibleOrientations.Add (Orientation.RIGHT);
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.right))
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.right) || G.Sys.tilemap.at(tf.position + Vector3.right).Count == 0)
 			PossibleOrientations.Add (Orientation.UP);
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.left))
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.left) || G.Sys.tilemap.at(tf.position + Vector3.left).Count == 0)
 			PossibleOrientations.Add (Orientation.DOWN);
 
 		if (PossibleOrientations.Count > 0 && (!PossibleOrientations.Contains(or) || !IsWalled))
 		{
 			float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0]);
 
-			if (!IsWalled || NotWalledObject.activeInHierarchy)
-			{
+			if (tf.rotation.eulerAngles.y != desiredAngle)
+				RotateObject(desiredAngle);
+		}
+
+		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + new Vector3 (dir.z, 0, -dir.x))) {
+			if (!IsWalled || NotWalledObject.activeInHierarchy) {
 				IsWalled = true;
 				WalledObject.SetActive (true);
 				NotWalledObject.SetActive (false);
 			}
-			if (tf.rotation.eulerAngles.y != desiredAngle)
-				RotateObject(desiredAngle);
-		}
-		else if (PossibleOrientations.Count == 0)
-		{
-			if (IsWalled || WalledObject.activeInHierarchy)
-			{
+		} else {
+			if (IsWalled || WalledObject.activeInHierarchy) {
 				IsWalled = false;
 				WalledObject.SetActive (false);
 				NotWalledObject.SetActive (true);

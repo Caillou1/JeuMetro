@@ -27,10 +27,10 @@ public class DragAndDrop : MonoBehaviour{
 
 	void Awake() {
 		bought = true;
+		tf = transform;
 	}
 
 	void Start() {
-		tf = transform;
 		isRotating = false;
 		CheckCanPlace ();
 		CheckRotation ();
@@ -142,10 +142,13 @@ public class DragAndDrop : MonoBehaviour{
 			G.Sys.selectionManager.Hide (true);
 			CanDrag = false;
 			SendEvent ();
+			DeletePossibleEmptyWalls ();
 			return true;
 		}
 		return false;
 	}
+
+	protected virtual void DeletePossibleEmptyWalls () {}
 		
 	public void RotateObject() {
 		if (isRotating) {

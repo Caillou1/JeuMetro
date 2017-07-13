@@ -12,6 +12,8 @@ public class EscalatorTile : ATile
     [SerializeField]
     private EscalatorSide _side = EscalatorSide.UP;
 
+	private Animator anim;
+
     public EscalatorSide side
     {
         set
@@ -45,6 +47,7 @@ public class EscalatorTile : ATile
 
 	public void SetSide(EscalatorSide s) {
 		_side = s;
+		anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
 	}
 		
     public override void Connect()
@@ -84,6 +87,8 @@ public class EscalatorTile : ATile
 
 	protected override void Awake()
 	{
+		anim = transform.Find ("mesh").GetComponent<Animator> ();
+
 		type = TileID.ESCALATOR;
 
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
@@ -121,8 +126,13 @@ public class EscalatorTile : ATile
 			t.Connect();
     }
 
+	void Start() {
+		anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
+	}
+
 	protected override void OnDestroy()
 	{
+		GetComponent<DragAndDropEscalator> ().OnDestroy ();
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
 
 		G.Sys.tilemap.delTile (transform.position, this);

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class DragAndDropEscalator : DragAndDrop {
+	protected bool hadWallAboveCenter;
+	protected bool hadWallAboveStart;
 	
 	protected override void CheckCanPlace() {
 		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
@@ -15,25 +17,25 @@ public class DragAndDropEscalator : DragAndDrop {
 
 		//Pivot
 		var v = G.Sys.tilemap.at (tf.position);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt (tf.position, TileID.ESCALATOR).Count > 0 || G.Sys.tilemap.at (tf.position + Vector3.up * 2).Count > 0) {
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt (tf.position, TileID.ESCALATOR).Count > 0 || !G.Sys.tilemap.IsEmpty (tf.position + Vector3.up * 2)) {
 			canPlace = false;
 		}
 
 		//Case  plus basse
 		v = G.Sys.tilemap.at (tf.position + dir);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt (tf.position + dir, TileID.ESCALATOR).Count > 0 || G.Sys.tilemap.at (tf.position + dir + Vector3.up * 2).Count > 0) {
+		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt (tf.position + dir, TileID.ESCALATOR).Count > 0 || !G.Sys.tilemap.IsEmpty (tf.position + dir + Vector3.up * 2)) {
 			canPlace = false;
 		}
 
 		//Pied escalator
 		v = G.Sys.tilemap.at (tf.position + 2 * dir);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.at (tf.position + 2 * dir + Vector3.up * 2).Count > 0) {
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && v[0].type != TileID.ESCALATOR && v[0].type != TileID.STAIRS) || !G.Sys.tilemap.IsEmpty (tf.position + 2 * dir + Vector3.up * 2)) {
 			canPlace = false;
 		}
 
 		//Haut escalator
 		v = G.Sys.tilemap.at (tf.position - dir + Vector3.up * 2);
-		if (v.Count == 0 || v [0].type != TileID.GROUND) {
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && v[0].type != TileID.ESCALATOR && v[0].type != TileID.STAIRS)) {
 			canPlace = false;
 		}
 	}
@@ -75,5 +77,19 @@ public class DragAndDropEscalator : DragAndDrop {
 		list.Add (tf.position - dir + Vector3.up * 2);
 
 		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+	}
+
+	protected override void DeletePossibleEmptyWalls ()
+	{
+		var t = G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.up * 2, TileID.EMPTYWALL);
+
+		if (t != null) {
+			Destroy (t.gameObject);
+		}
+	}
+
+	public void OnDestroy() {
+		if(!G.Sys.tilemap.HasEmptyWallAt(tf.position + Vector3.up * 2))
+			G.Sys.gameManager.InstantiateEmptyWallAt (tf.position + Vector3.up * 2);
 	}
 }
