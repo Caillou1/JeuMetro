@@ -14,6 +14,13 @@ public class CleanerEntity  : AEntity
 		states.Add (new CleanerStairsState (this));
 		states.Add (new CleanerEscalatorState (this));
 		states.Add (new CleanerCleanState (this));
+
+		G.Sys.removeCleaner (this);
+	}
+
+	protected override void OnEntityDestroy ()
+	{
+		G.Sys.removeCleaner (this);
 	}
 
 	public override void BackToMoveState ()
