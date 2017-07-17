@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class Vector3i
+public struct Vector3i
 {
     public int x;
     public int y;
@@ -33,4 +33,32 @@ public class Vector3i
     {
         return new Vector3i(a.x + b.x, a.y + b.y, a.z + b.z);
     }
+
+	public static Vector3i operator-(Vector3i a, Vector3i b)
+	{
+		return new Vector3i (a.x - b.x, a.y - b.y, a.z - b.z);
+	}
+
+	public bool equal(Vector3i other)
+	{
+		return x == other.x && y == other.y && z == other.z;
+	}
+
+	public override bool Equals (object obj)
+	{
+		if (!(obj is Vector3i))
+			return false;
+
+		return equal ((Vector3i)obj);
+
+		/*var v = obj as Vector3i;
+		if (v == null)
+			return false;
+		return equal (v);*/
+	}
+
+	public override int GetHashCode ()
+	{
+		return x ^ (y * 13) ^ (z * 23);
+	}
 }

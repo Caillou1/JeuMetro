@@ -18,7 +18,8 @@ public static class Orienter
     {
         angle %= 360.0f;
 		if (angle < 0)
-			angle += 360;
+			angle += 360.0f;
+		
         if (angle < 45.0f || angle > 315.0f)
             return Orientation.RIGHT;
         if (angle < 135.0f)
@@ -57,6 +58,16 @@ public static class Orienter
                 return new Vector2(0, 1);
         }
     }
+
+	public static Vector3 orientationToDir3(Orientation o)
+	{
+		Vector2 v = orientationToDir (o);
+		return new Vector3 (v.x, 0, v.y);
+	}
+
+	public static bool IsOppositeTo(Orientation o1, Orientation o2) {
+		return orientationToAngle (o1) == (orientationToAngle (o2) + 180.0f)%360.0f;
+	}
 }
 
 
