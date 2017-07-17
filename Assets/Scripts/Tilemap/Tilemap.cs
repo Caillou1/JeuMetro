@@ -46,6 +46,7 @@ public class Tilemap
 	public const int ELEVATOR_PRIORITY = 10;
 	public const int SPEAKER_PRIORITY = 10;
 	public const int WASTE_PRIORITY = 10;
+	public const int CONTROLE_LINE_PRIORITY = 15;
 
 	private Dictionary<Vector3i, List<TileInfos>> tiles = new Dictionary<Vector3i, List<TileInfos>>();
 
