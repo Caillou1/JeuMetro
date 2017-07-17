@@ -163,6 +163,8 @@ public abstract class AEntity  : MonoBehaviour
 		if (!path.isPathValid() && timeFromLastFinishedPath > 1.0f) {
 				timeFromLastFinishedPath = 0.0f;
 				Updatepath ();
+			if (!path.isPathValid ())
+				ForcePath ();
 		}
 		else
 			Updatepath ();
@@ -187,4 +189,6 @@ public abstract class AEntity  : MonoBehaviour
 		if (onPath)
 			Updatepath ();
 	}
+
+	protected abstract void ForcePath();
 }
