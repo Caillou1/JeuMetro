@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class DragAndDrop : MonoBehaviour{
 	public int Price;
+	protected bool IsWalled;
+	protected bool HasToCheckWall;
 
 	protected Transform tf;
 	protected int Rotations = 0;
@@ -26,6 +28,7 @@ public class DragAndDrop : MonoBehaviour{
 	private Tweener rotTween;
 
 	void Awake() {
+		IsWalled = false;
 		bought = true;
 		tf = transform;
 	}
@@ -129,7 +132,8 @@ public class DragAndDrop : MonoBehaviour{
 		Rotations = 0;
 		rotTween.Complete ();
 		CheckCanPlace ();
-		CheckRotation ();
+		if(HasToCheckWall)
+			CheckRotation ();
 
 		if ((canPlace && !IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)) || IsBought && canPlace) {
 			G.Sys.cameraController.IsSelecting = false;
