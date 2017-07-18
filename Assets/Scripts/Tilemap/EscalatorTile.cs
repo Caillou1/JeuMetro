@@ -36,7 +36,8 @@ public class EscalatorTile : ATile
 				new Vector3i(transform.position + Vector3.up),
 				new Vector3i(transform.position + Vector3.up + dir),
 				new Vector3i(transform.position + 2 * Vector3.up), 
-				new Vector3i(transform.position + 2 * Vector3.up - dir)
+				new Vector3i(transform.position + 2 * Vector3.up - dir),
+				new Vector3i(transform.position + 2 * Vector3.up + dir)
 
 			}.ToList()));
 
@@ -100,6 +101,7 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.addTile (transform.position + Vector3.up + dir, this, false, true, Tilemap.STAIRS_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up, this, false, true, Tilemap.STAIRS_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up - dir, this, side == EscalatorSide.DOWN, false, Tilemap.STAIRS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up + dir, this, false, true, Tilemap.STAIRS_PRIORITY);
 
 
 		//Supprime les bandes podotactiles en dessous des escalators
@@ -142,6 +144,7 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.delTile (transform.position + Vector3.up + dir, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up - dir, this);
+		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up + dir, this);
 
 		foreach(var t in G.Sys.tilemap.at(transform.position))
 			t.Connect();
