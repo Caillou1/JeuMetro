@@ -47,4 +47,16 @@ public class AgentEntity  : AEntity
 			path.create (transform.position, destination, 0);
 		}
 	}
+
+	protected override void ForcePath ()
+	{
+		var dest = altAction != ActionType.NONE ? altDestination : destination;
+		var startOffset = new Vector3[]{ Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
+
+		foreach (var s in startOffset) {
+			path.create (transform.position + s, dest, 0);
+			if (path.isPathValid ())
+				return;
+		}
+	}
 }
