@@ -8,6 +8,7 @@ public sealed class G
 
     public Tilemap tilemap = new Tilemap();
 	private List<Traveler> travelers = new List<Traveler> ();
+	private List<CleanerEntity> cleaners = new List<CleanerEntity> ();
 
 	private Camera _camera;
     private GameManager _gameManager;
@@ -67,8 +68,9 @@ public sealed class G
 
 	public bool removeTraveler(Traveler t)
 	{
+		var value = travelers.Remove (t);
 		_menuManager.SetTravelerNumber (travelerCount());
-		return travelers.Remove (t);
+		return value;
 	}
 
 	public int travelerCount()
@@ -81,9 +83,31 @@ public sealed class G
 		return travelers [index];
 	}
 
+	public void registerCleaner(CleanerEntity c)
+	{
+		if(!cleaners.Contains(c))
+			cleaners.Add (c);
+	}
+
+	public bool removeCleaner(CleanerEntity c)
+	{
+		return cleaners.Remove(c);
+	}
+
+	public int cleanerCount()
+	{
+		return cleaners.Count;
+	}
+
+	public CleanerEntity cleaner(int index)
+	{
+		return cleaners[index];
+	}
+
 	public void clear()
 	{
 		travelers.Clear ();
+		cleaners.Clear ();
 	}
 
 	public AudioManager audioManager {

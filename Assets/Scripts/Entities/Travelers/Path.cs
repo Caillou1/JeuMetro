@@ -150,5 +150,25 @@ public class Path
 	{
 		return pathValid;
 	}
+
+	public bool haveOnPath(TileID id)
+	{
+		foreach (var p in points) {
+			if (G.Sys.tilemap.haveSpecialTileAt (id, p))
+				return true;
+		}
+		return false;
+	}
+
+	public List<Vector3> posOnPath(TileID id)
+	{
+		List<Vector3> pos = new List<Vector3>();
+
+		foreach (var p in points) {
+			if(G.Sys.tilemap.haveSpecialTileAt(id, p))
+				pos.Add(p);
+		}
+		return pos;
+	}
 }
 

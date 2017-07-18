@@ -14,6 +14,13 @@ public class CleanerEntity  : AEntity
 		states.Add (new CleanerStairsState (this));
 		states.Add (new CleanerEscalatorState (this));
 		states.Add (new CleanerCleanState (this));
+
+		G.Sys.removeCleaner (this);
+	}
+
+	protected override void OnEntityDestroy ()
+	{
+		G.Sys.removeCleaner (this);
 	}
 
 	public override void BackToMoveState ()
@@ -48,6 +55,18 @@ public class CleanerEntity  : AEntity
 		} else {
 			altWait = true;
 			path.create (transform.position, destination, 0);
+		}
+	}
+
+	protected override void ForcePath ()
+	{
+		var dest = altAction != ActionType.NONE ? altDestination : destination;
+		var startOffset = new Vector3[]{ Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
+
+		foreach (var s in startOffset) {
+			path.create (transform.position + s, dest, 0);
+			if (path.isPathValid ())
+				return;
 		}
 	}
 }
