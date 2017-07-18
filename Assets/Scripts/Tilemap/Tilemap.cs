@@ -557,7 +557,7 @@ public class Tilemap
 			max = new Vector3 (Mathf.Max (max.x, pos.x), Mathf.Max (max.y, pos.y), Mathf.Max (max.z, pos.z));
 		}
 
-		bounds = new Bounds ((min + max) / 2.0f, (max - min) * 	1.5f);
+		bounds = new Bounds ((min + max) / 2.0f, (max - min) * 	2f);
 	}
 
 	/// <summary>
