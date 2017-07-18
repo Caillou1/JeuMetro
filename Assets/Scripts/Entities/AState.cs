@@ -17,6 +17,7 @@ public enum StateType
 	CLEANER_STAIRS,
 	CLEANER_ESCALATOR,
 	CLEANER_CLEAN,
+	AGENT_MOVE,
 }
 
 public abstract class AState

@@ -11,7 +11,6 @@ public class SelectionManager : MonoBehaviour {
 	private GameObject rotate;
 	private GameObject delete;
 	private GameObject changeside;
-	private Text changeSideText;
 
 	void Awake() {
 		G.Sys.selectionManager = this;
@@ -21,7 +20,6 @@ public class SelectionManager : MonoBehaviour {
 		rotate = tf.Find ("rotate").gameObject;
 		delete = tf.Find ("delete").gameObject;
 		changeside = tf.Find ("changeside").gameObject;
-		changeSideText = changeside.transform.Find ("Text").GetComponent<Text>();
 	}
 
 	void Start() {
@@ -40,11 +38,6 @@ public class SelectionManager : MonoBehaviour {
 			var e = obj.GetComponent<EscalatorTile> ();
 			if (e != null) {
 				changeside.SetActive (true);
-				if (e.side == EscalatorSide.DOWN) {
-					changeSideText.text = "D";
-				} else {
-					changeSideText.text = "U";
-				}
 			}
 
 			obj.CanDrag = true;
@@ -102,10 +95,8 @@ public class SelectionManager : MonoBehaviour {
 		if (e != null) {
 			if (e.side == EscalatorSide.DOWN) {
 				e.SetSide (EscalatorSide.UP);
-				changeSideText.text = "U";
 			} else {
 				e.SetSide (EscalatorSide.DOWN);
-				changeSideText.text = "D";
 			}
 		}
 	}

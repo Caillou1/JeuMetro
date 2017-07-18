@@ -34,6 +34,7 @@ public class MenuManager : MonoBehaviour {
 	private GameObject GameUI;
 	private GameObject ShopUI;
 	private GameObject SGPUI;
+	private GameObject FadeUI;
 
 	private Image TimePie;
 	private Text TimeTxt;
@@ -57,6 +58,7 @@ public class MenuManager : MonoBehaviour {
 		cameraOrigin = cameraTransform.position;
 
 		tf = transform;
+		FadeUI = tf.Find ("FadeUI").gameObject;
 		MainUI = tf.Find ("MainUI").gameObject;
 		ParametersUI = tf.Find ("OptionsUI").gameObject;
 		CreditsUI = tf.Find ("CreditsUI").gameObject;
@@ -80,6 +82,7 @@ public class MenuManager : MonoBehaviour {
 
 		CurrentZoomLevel = 0;
 
+		FadeUI.SetActive (false);
 		MainUI.SetActive (false);
 		ParametersUI.SetActive (false);
 		CreditsUI.SetActive (false);
@@ -270,16 +273,16 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Pause () {
+		FadeUI.SetActive (true);
 		PauseUI.SetActive (true);
-		GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.Pause;
 		Time.timeScale = 0f;
 	}
 
 	public void Resume() {
+		FadeUI.SetActive (false);
 		PauseUI.SetActive (false);
-		GetCorrespondantUI(LastMenu).SetActive (true);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.Game;
 		Time.timeScale = 1f;
@@ -299,11 +302,11 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void SetSoundVolume(float v) {
-		G.Sys.audioManager.SetSoundVolume (v);
+		//G.Sys.audioManager.SetSoundVolume (v);
 	}
 
 	public void SetMusicVolume(float v) {
-		G.Sys.audioManager.SetMusicVolume (v);
+		//G.Sys.audioManager.SetMusicVolume (v);
 	}
 
 	public void SetFullscreen(bool b) {
