@@ -18,7 +18,18 @@ public class EscalatorState : ATravelerState
 
 	public override int check()
 	{
-		var tile = G.Sys.tilemap.connectableTile(traveler.transform.position);
+		var ePos = new Vector3i (traveler.transform.position);
+		var nextPos = new Vector3i (traveler.path.next (traveler.transform.position));
+		var dir = new Vector3i (nextPos.x - ePos.x, 0, nextPos.z - ePos.z);
+		if (Mathf.Abs (dir.x) > Mathf.Abs (dir.z))
+			dir.z = 0;
+		else
+			dir.x = 0;
+
+		dir.x = dir.x > 0 ? 1 : dir.x < 0 ? -1 : 0;
+		dir.z = dir.z > 0 ? 1 : dir.z < 0 ? -1 : 0;
+
+		var tile = G.Sys.tilemap.GetTileOfTypeAt(traveler.transform.position + dir.toVector3(), TileID.ESCALATOR);
 		if (tile == null)
 			return 0;
 		if (tile.type != TileID.ESCALATOR)

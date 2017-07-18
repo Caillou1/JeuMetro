@@ -23,7 +23,7 @@ public class Traveler : AEntity
 		states.Add (new WasteState (this));
 		states.Add (new BuyTicketState (this));
 
-		G.Sys.registerTraveler (this);
+		//G.Sys.registerTraveler (this);
 		configureDatasFromStats ();
 	}
 
