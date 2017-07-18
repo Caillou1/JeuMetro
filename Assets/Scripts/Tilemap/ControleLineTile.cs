@@ -33,10 +33,9 @@ public class ControleLineTile : ATile
 		Add (transform.position + dir + perpendicularDir, connexions);
 		Add (transform.position + dir - perpendicularDir, connexions);
 
-		Add (transform.position - 2 * dir, connexions);
+		/*Add (transform.position - 2 * dir, connexions);
 		Add (transform.position - dir + perpendicularDir, connexions);
-		Add (transform.position - dir - perpendicularDir, connexions);
-
+		Add (transform.position - dir - perpendicularDir, connexions);*/
 
 		applyConnexions (connexions);
 	}

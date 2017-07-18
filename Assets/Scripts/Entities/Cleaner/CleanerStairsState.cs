@@ -17,14 +17,24 @@ public class CleanerStairsState : ACleanerState
 
 	public override int check()
 	{
-		var tile = G.Sys.tilemap.connectableTile(cleaner.transform.position);
+		var ePos = new Vector3i (cleaner.transform.position);
+		var next = new Vector3i (cleaner.path.next (cleaner.transform.position));
+		var dir = new Vector3i (next.x - ePos.x, 0, next.z - ePos.z);
+		if (Mathf.Abs (dir.x) > Mathf.Abs (dir.z))
+			dir.z = 0;
+		else
+			dir.x = 0;
+
+		dir.x = dir.x > 0 ? 1 : dir.x < 0 ? -1 : 0;
+		dir.z = dir.z > 0 ? 1 : dir.z < 0 ? -1 : 0;
+
+		var tile = G.Sys.tilemap.GetTileOfTypeAt(cleaner.transform.position + dir.toVector3(), TileID.STAIRS);
 		if (tile == null)
 			return 0;
 		if (tile.type != TileID.STAIRS)
 			return 0;
 
-		var next = new Vector3i(cleaner.path.next (cleaner.transform.position));
-		if (next.y == new Vector3i (cleaner.transform.position).y)
+		if (next.y == ePos.y)
 			return 0;
 
 		return int.MaxValue;
