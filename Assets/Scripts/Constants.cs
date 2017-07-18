@@ -22,6 +22,8 @@ public class Constants : MonoBehaviour
 	public float travelerLostRadius = 6;
 	[Tooltip("Utilisé pour définir un chemin chaotique lorsqu'un voyageur est un peut perdu")]
 	public float travelerLostVariance = 3;
+	[Tooltip("Temps que met un agent pour aider un voyageur ayant fait un malaise")]
+	public float HelpTime;
 
 	void Awake()
 	{

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class SelectionManager : MonoBehaviour {
 	private DragAndDrop obj;
+	private DragAndDropEntity ent;
 	private Transform tf;
 
 	private GameObject validate;
@@ -46,6 +47,41 @@ public class SelectionManager : MonoBehaviour {
 		}
 	}
 
+	public void Show(DragAndDropEntity e) {
+		if (e != null) {
+			ent = e;
+			ent.IsSelected = true;
+			tf.position = G.Sys.MainCamera.WorldToScreenPoint (ent.transform.position);
+
+			validate.SetActive (true);
+			delete.SetActive (true);
+
+			ent.CanDrag = true;
+			G.Sys.cameraController.IsSelecting = true;
+			//ent.DesactivateCollisions ();
+		}
+	}
+
+	public void Hide(bool register, bool isEntity) {
+		if (isEntity) {
+			//ent.ActivateCollisions ();
+			if (register) {
+				ent.GetComponent<AEntity> ().enabled = true;
+				G.Sys.cameraController.IsSelecting = false;
+				ent.IsSelected = false;
+			}
+
+			ent = null;
+
+			validate.SetActive (false);
+			rotate.SetActive (false);
+			delete.SetActive (false);
+			changeside.SetActive (false);
+		} else {
+			Hide (register);
+		}
+	}
+
 	public void Move(Vector3 v) {
 		obj.transform.position = new Vector3i (v).toVector3();
 	}
@@ -73,11 +109,16 @@ public class SelectionManager : MonoBehaviour {
 	public void ValidateNoReturn() {
 		if (obj != null)
 			obj.ValidateObject ();
+		if (ent != null)
+			ent.ValidateObject ();
 	}
 
 	public bool Validate() {
 		if (obj != null) {
 			return obj.ValidateObject ();
+		}
+		if (ent != null) {
+			return ent.ValidateObject ();
 		}
 		return false;
 	}
@@ -86,8 +127,12 @@ public class SelectionManager : MonoBehaviour {
 		G.Sys.cameraController.IsSelecting = false;
 		if (obj != null) {
 			obj.DeleteObject ();
+			Hide (false);
 		}
-		Hide (false);
+		if (ent != null) {
+			ent.DeleteObject ();
+			Hide (false, true);
+		}
 	}
 
 	public void ChangeSide() {
@@ -104,6 +149,9 @@ public class SelectionManager : MonoBehaviour {
 	void Update() {
 		if (obj != null) {
 			tf.position = G.Sys.MainCamera.WorldToScreenPoint (obj.transform.position);
+		}
+		if (ent != null) {
+			tf.position = G.Sys.MainCamera.WorldToScreenPoint (ent.transform.position);
 		}
 	}
 }

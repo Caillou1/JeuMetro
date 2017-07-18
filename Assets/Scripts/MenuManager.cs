@@ -33,6 +33,7 @@ public class MenuManager : MonoBehaviour {
 	private GameObject ScoreUI;
 	private GameObject GameUI;
 	private GameObject ShopUI;
+	private GameObject PersonnelUI;
 	private GameObject SGPUI;
 	private GameObject FadeUI;
 
@@ -68,6 +69,7 @@ public class MenuManager : MonoBehaviour {
 
 		var menuTf = GameUI.transform.Find ("Menu");
 		ShopUI = menuTf.Find ("ShopUI").gameObject;
+		PersonnelUI = menuTf.Find ("PersonnelUI").gameObject;
 
 		TimePie = menuTf.Find ("Time").Find ("Pie").Find ("Wedge").GetComponent<Image> ();
 		TimeTxt = menuTf.Find ("Time").Find ("Text").GetComponent<Text> ();
@@ -90,6 +92,7 @@ public class MenuManager : MonoBehaviour {
 		ScoreUI.SetActive (false);
 		GameUI.SetActive (false);
 		ShopUI.SetActive (false);
+		PersonnelUI.SetActive (false);
 		SGPUI.SetActive (false);
 		var obj = GetCorrespondantUI (CurrentMenu);
 		if (obj != null)
@@ -259,6 +262,18 @@ public class MenuManager : MonoBehaviour {
 
 	public void ToggleShopUI() {
 		ShopUI.SetActive (!ShopUI.activeInHierarchy);
+	}
+
+	public void TogglePersonnelUI() {
+		PersonnelUI.SetActive (!PersonnelUI.activeInHierarchy);
+	}
+
+	public void DisableShopUI() {
+		ShopUI.SetActive (false);
+	}
+
+	public void DisablePersonnelUI() {
+		PersonnelUI.SetActive (false);
 	}
 
 	public void Quit() {

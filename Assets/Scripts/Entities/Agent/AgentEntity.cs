@@ -11,6 +11,8 @@ public class AgentEntity  : AEntity
 	protected override void OnEntityAwake ()
 	{
 		states.Add (new AgentMoveState (this));
+		states.Add (new AgentStairsState (this));
+		states.Add (new AgentEscalatorState (this));
 	}
 
 	public override void BackToMoveState ()
