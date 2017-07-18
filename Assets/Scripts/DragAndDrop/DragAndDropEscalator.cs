@@ -35,7 +35,7 @@ public class DragAndDropEscalator : DragAndDrop {
 
 		//Haut escalator
 		v = G.Sys.tilemap.at (tf.position - dir + Vector3.up * 2);
-		if (v.Count == 0 || (v [0].type != TileID.GROUND && v[0].type != TileID.ESCALATOR && v[0].type != TileID.STAIRS)) {
+		if (v.Count == 0 || (v.Count == 1 && v[0].type != TileID.GROUND) || (v.Count == 2 && v [0].type != TileID.GROUND && v [0].type != TileID.ESCALATOR && v [0].type != TileID.STAIRS)) {
 			canPlace = false;
 		}
 	}
