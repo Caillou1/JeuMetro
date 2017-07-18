@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     {
 		tf = transform;
 		AddMoney (StartingMoney);
-		//StartCoroutine (spawnCoroutine ());
+		StartCoroutine (spawnCoroutine ());
 		G.Sys.tilemap.UpdateGlobalBounds ();
 		InstantiateColliders ();
 	}
