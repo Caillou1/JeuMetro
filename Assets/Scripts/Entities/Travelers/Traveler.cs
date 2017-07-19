@@ -74,7 +74,7 @@ public class Traveler : AEntity
 		default:
 			break;
 		}
-		path = new Path (dico);
+		path = new EntityPath (dico);
 	}
 
 	void configureDatasFromStats()

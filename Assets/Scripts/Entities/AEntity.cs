@@ -26,7 +26,7 @@ public abstract class AEntity  : MonoBehaviour
 	public new Rigidbody rigidbody;
 
 	[HideInInspector]
-	public Path path;
+	public EntityPath path;
 	[HideInInspector]
 	public Vector3 destination;
 	[HideInInspector]

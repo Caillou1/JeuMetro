@@ -3,12 +3,12 @@ using UnityEngine;
 using System.Collections.Generic;
 using NRand;
 
-public class Path
+public class EntityPath
 {
 
 	bool pathValid = false;
 
-	public Path(Dictionary<TileID, float> _weights)
+	public EntityPath(Dictionary<TileID, float> _weights)
 	{
 		points = new List<Vector3> ();
 		endPos = new Vector3 ();

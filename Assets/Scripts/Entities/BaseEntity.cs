@@ -9,7 +9,7 @@ public class BaseEntity : MonoBehaviour
 	public float rotationSpeed = 10.0f;
 	public float avoidPower = 1.0f;
 
-	private Path path = new Path (new Dictionary<TileID, float>());
+	private EntityPath path = new EntityPath (new Dictionary<TileID, float>());
 	private new Rigidbody rigidbody;
 	private Vector3 pathTarget;
 	private Vector3 avoidDir;

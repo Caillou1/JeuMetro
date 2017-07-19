@@ -24,7 +24,7 @@ public class AgentEntity  : AEntity
 	{
 		var dico = new Dictionary<TileID, float> ();
 
-		path = new Path (dico);
+		path = new EntityPath (dico);
 	}
 
 	protected override void OnEntityPathFinished ()
