@@ -30,25 +30,9 @@ public class ElevatorTile : ATile
 
 			G.Sys.tilemap.addTile (pos, this, true, false, Tilemap.ELEVATOR_PRIORITY);
 
-			foreach (var t in G.Sys.tilemap.at(pos))
-				t.Connect ();
-
 			G.Sys.tilemap.addSpecialTile (type, pos);
 		}
     }
-
-	public override void Connect (){
-		if (this != null) {
-			List<Pair<ATile, Vector3i>> connexions = new List<Pair<ATile, Vector3i>>();
-			var dir = Orienter.orientationToDir3 (Orienter.angleToOrientation (transform.rotation.eulerAngles.y));
-
-			for (int i = 0; i < Floors; i++) {
-				Add (transform.position + 2 * i * Vector3.up + dir, connexions);
-			}
-
-			applyConnexions (connexions);
-		}
-	}
 
 	protected override void OnDestroy()
 	{
@@ -56,12 +40,6 @@ public class ElevatorTile : ATile
 
 		for (int i = 0; i < Floors; i++) {
 			G.Sys.tilemap.delTile (pos, this);
-			foreach (var t in connectedTiles)
-				t.First.targetOf.Remove (this);
-			foreach (var t in targetOf.ToList())
-				t.Connect ();
-			foreach (var t in G.Sys.tilemap.at(pos))
-				t.Connect ();
 
 			G.Sys.tilemap.delSpecialTile (type, pos);
 		}

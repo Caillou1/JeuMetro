@@ -22,7 +22,8 @@ public class EscalatorTile : ATile
     {
         set
         {
-            _side = value;
+			_side = value;
+			anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
 
 			foreach (var l in linksUp)
 				l.enabled = _side == EscalatorSide.UP;
@@ -50,49 +51,8 @@ public class EscalatorTile : ATile
 
 			}.ToList()));
 
-            Connect();
         }
         get { return _side; }
-    }
-
-	public void SetSide(EscalatorSide s) {
-		_side = s;
-		anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
-	}
-		
-    public override void Connect()
-    {
-		List<Pair<ATile, Vector3i>> connexions = new List<Pair<ATile, Vector3i>>();
-
-		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
-		var perpendicularDir = new Vector3 (-dir.z, dir.y, dir.x);
-		if (side == EscalatorSide.DOWN) {
-			Add (transform.position + 3 * dir, connexions);
-			Add (transform.position + 2 * dir + perpendicularDir, connexions);
-			Add (transform.position + 2 * dir - perpendicularDir, connexions);
-			var tiles = G.Sys.tilemap.at (transform.position + 2 * dir);
-			foreach (var t in tiles) {
-				if (t.type != TileID.ESCALATOR && t.type != TileID.STAIRS)
-					continue;
-				if (t == this)
-					continue;
-				connexions.Add (new Pair<ATile, Vector3i> (t, new Vector3i (transform.position + 2 * dir)));
-			}
-		} else {
-			Add (transform.position + 2 * Vector3.up - 2 * dir, connexions);
-			Add (transform.position + 2 * Vector3.up - dir + perpendicularDir, connexions);
-			Add (transform.position + 2 * Vector3.up - dir - perpendicularDir, connexions);
-			var tiles = G.Sys.tilemap.at (transform.position + 2 * Vector3.up - dir);
-			foreach (var t in tiles) {
-				if (t.type != TileID.ESCALATOR && t.type != TileID.STAIRS)
-					continue;
-				if (t == this)
-					continue;
-				connexions.Add (new Pair<ATile, Vector3i> (t, new Vector3i (transform.position + 2 * Vector3.up - dir)));
-			}
-		}
-
-		applyConnexions (connexions);
     }
 
 	protected override void Awake()
@@ -121,30 +81,6 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up - dir, this, side == EscalatorSide.DOWN, false, Tilemap.STAIRS_PRIORITY);
 		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up + dir, this, false, true, Tilemap.STAIRS_PRIORITY);
 
-
-		//Supprime les bandes podotactiles en dessous des escalators
-		var podo = G.Sys.tilemap.tilesOfTypeAt (transform.position, TileID.PODOTACTILE);
-		podo = podo.Concat (G.Sys.tilemap.tilesOfTypeAt (transform.position + dir, TileID.PODOTACTILE)).ToList ();
-
-		foreach (var p in podo) {
-			Destroy (p.gameObject);
-		}
-
-		foreach(var t in G.Sys.tilemap.at(transform.position))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + dir))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * dir))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + Vector3.up))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + Vector3.up + dir))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * Vector3.up))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * Vector3.up - dir))
-			t.Connect();
-
 		side = _side;
     }
 
@@ -167,25 +103,5 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up - dir, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up + dir, this);
-
-		foreach(var t in G.Sys.tilemap.at(transform.position))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + dir))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * dir))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + Vector3.up))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + Vector3.up + dir))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * Vector3.up))
-			t.Connect();
-		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * Vector3.up - dir))
-			t.Connect();
-
-		foreach (var t in connectedTiles)
-			t.First.targetOf.Remove (this);
-		foreach (var t in targetOf.ToList())
-			t.Connect ();
 	}
 }
