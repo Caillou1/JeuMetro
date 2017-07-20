@@ -28,7 +28,7 @@ public class ElevatorTile : ATile
 		for (int i = 0; i < Floors; i++) {
 			pos += i * 2 * Vector3.up;
 
-			G.Sys.tilemap.addTile (pos, this, true, false, Tilemap.ELEVATOR_PRIORITY);
+			G.Sys.tilemap.addTile (pos, this, Tilemap.ELEVATOR_PRIORITY);
 
 			G.Sys.tilemap.addSpecialTile (type, pos);
 		}

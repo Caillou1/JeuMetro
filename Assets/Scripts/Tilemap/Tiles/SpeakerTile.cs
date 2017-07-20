@@ -10,10 +10,7 @@ public class SpeakerTile : ATile
 	{
 		type = TileID.SPEAKER;
 
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.SPEAKER_PRIORITY);
-
-		foreach (var t in G.Sys.tilemap.at(transform.position))
-			t.Connect ();
+		G.Sys.tilemap.addTile (transform.position, this, Tilemap.SPEAKER_PRIORITY);
 
 		G.Sys.tilemap.addSpecialTile (type, transform.position);
     }
@@ -21,9 +18,6 @@ public class SpeakerTile : ATile
 	protected override void OnDestroy()
 	{
 		G.Sys.tilemap.delTile (transform.position, this);
-
-		foreach (var t in G.Sys.tilemap.at(transform.position))
-			t.Connect ();
 
 		G.Sys.tilemap.delSpecialTile (type, transform.position);
 	}

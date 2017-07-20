@@ -10,16 +10,11 @@ public class EmptyWallTile : ATile
     {
 		type = TileID.EMPTYWALL;
 
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.LOW_PRIORITY);
-
-
-		G.Sys.tilemap.addSpecialTile (type, transform.position);
+		G.Sys.tilemap.addTile (transform.position, this, Tilemap.LOW_PRIORITY);
     }
 
 	protected override void OnDestroy()
 	{
 		G.Sys.tilemap.delTile (transform.position, this);
-
-		G.Sys.tilemap.delSpecialTile (type, transform.position);
 	}
 }

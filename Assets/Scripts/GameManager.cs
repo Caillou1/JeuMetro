@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     {
 		tf = transform;
 		AddMoney (StartingMoney);
-		StartCoroutine (spawnCoroutine ());
+		//StartCoroutine (spawnCoroutine ());
 		G.Sys.tilemap.UpdateGlobalBounds ();
 		InstantiateColliders ();
 	}
@@ -102,10 +102,17 @@ public class GameManager : MonoBehaviour
 			var doors = G.Sys.tilemap.getSpecialTiles (TileID.IN);
 			var door = doors [new UniformIntDistribution (doors.Count-1).Next (gen)];
 			var e = Instantiate (entities [dType.Next (gen)], door, new Quaternion ());
-			var d = G.Sys.tilemap.tilesOfTypeAt (door, TileID.IN) [0];
-			var tiles = d.connectedTiles;
-			if(tiles.Count != 0)
-				e.transform.rotation = Quaternion.LookRotation (tiles[new UniformIntDistribution(tiles.Count-1).Next(gen)].Second.toVector3 () - e.transform.position, Vector3.up);
+			var dir = new Vector3[]{ Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
+			var validDir = new List<Vector3> ();
+			foreach(var d in dir)
+			{
+				var tiles = G.Sys.tilemap.at (door + d);
+				if (tiles.Count == 0 && tiles [0].type == TileID.GROUND)
+					validDir.Add (door + d);
+			}
+		
+			if(validDir.Count != 0)
+				e.transform.rotation = Quaternion.LookRotation (validDir[new UniformIntDistribution(validDir.Count-1).Next(gen)] - e.transform.position, Vector3.up);
 		}
 	}
 }

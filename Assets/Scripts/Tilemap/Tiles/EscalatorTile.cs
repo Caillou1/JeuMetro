@@ -30,27 +30,6 @@ public class EscalatorTile : ATile
 			foreach (var l in linksDown)
 				l.enabled = _side == EscalatorSide.DOWN;
 
-			var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
-
-			var up = G.Sys.tilemap.tileInfosOf(this, transform.position + 2 * Vector3.up - dir);
-			var down = G.Sys.tilemap.tileInfosOf (this, transform.position + 2 * dir);
-			up.canBeConnected = side == EscalatorSide.DOWN;
-			up.preventConnexions = side != EscalatorSide.DOWN;
-			down.canBeConnected = side == EscalatorSide.UP;
-			down.preventConnexions = side != EscalatorSide.UP;
-
-			Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (new Vector3i[]{
-				new Vector3i(transform.position),
-				new Vector3i(transform.position + dir),
-				new Vector3i(transform.position + 2 * dir),
-				new Vector3i(transform.position + Vector3.up),
-				new Vector3i(transform.position + Vector3.up + dir),
-				new Vector3i(transform.position + 2 * Vector3.up), 
-				new Vector3i(transform.position + 2 * Vector3.up - dir),
-				new Vector3i(transform.position + 2 * Vector3.up + dir)
-
-			}.ToList()));
-
         }
         get { return _side; }
     }
@@ -72,22 +51,18 @@ public class EscalatorTile : ATile
 
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
 
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + dir, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + 2 * dir, this, side == EscalatorSide.UP, false, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + Vector3.up, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + Vector3.up + dir, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up, this, false, true, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up - dir, this, side == EscalatorSide.DOWN, false, Tilemap.STAIRS_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up + dir, this, false, true, Tilemap.STAIRS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position, this, Tilemap.STAIRS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position + dir, this, Tilemap.STAIRS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position + Vector3.up, this, Tilemap.STAIRS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position + Vector3.up + dir, this, Tilemap.STAIRS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up, this, Tilemap.STAIRS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up + dir, this, Tilemap.STAIRS_PRIORITY);
 
 		side = _side;
     }
 
 	void Start() {
 		anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
-
-		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 	}
 
 	protected override void OnDestroy()
@@ -97,11 +72,9 @@ public class EscalatorTile : ATile
 
 		G.Sys.tilemap.delTile (transform.position, this);
 		G.Sys.tilemap.delTile (transform.position + dir, this);
-		G.Sys.tilemap.delTile (transform.position + 2 * dir, this);
 		G.Sys.tilemap.delTile (transform.position + Vector3.up, this);
 		G.Sys.tilemap.delTile (transform.position + Vector3.up + dir, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up, this);
-		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up - dir, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up + dir, this);
 	}
 }

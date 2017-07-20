@@ -11,9 +11,9 @@ public class ControleLineTile : ATile
 
 		type = TileID.CONTROLELINE;
 
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.CONTROLE_LINE_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + dir, this, true, false, Tilemap.CONTROLE_LINE_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position - dir, this, true, false, Tilemap.CONTROLE_LINE_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position, this, Tilemap.CONTROLE_LINE_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position + dir, this, Tilemap.CONTROLE_LINE_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position - dir, this, Tilemap.CONTROLE_LINE_PRIORITY);
 	}
 
 	protected override void OnDestroy ()

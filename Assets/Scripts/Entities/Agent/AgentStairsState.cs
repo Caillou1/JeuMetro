@@ -17,7 +17,8 @@ public class AgentStairsState : AAgentState
 
 	public override int check()
 	{
-		var tile = G.Sys.tilemap.connectableTile(agent.transform.position);
+		
+		var tile = G.Sys.tilemap.GetTileOfTypeAt(agent.transform.position, TileID.ESCALATOR);
 		if (tile == null)
 			return 0;
 		if (tile.type != TileID.STAIRS)

@@ -26,7 +26,7 @@ public class BinTile : ATile
     {
 		type = TileID.BIN;
 
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.BIN_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position, this, Tilemap.BIN_PRIORITY);
 
 		G.Sys.tilemap.addSpecialTile (type, transform.position);
     }

@@ -21,13 +21,8 @@ public class BenchTile : ATile
 
 		type = TileID.BENCH;
 
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.BENCH_PRIORITY);
-		G.Sys.tilemap.addTile (transform.position + new Vector3(dir.x, 0, dir.y), this, false, true, Tilemap.BENCH_PRIORITY);
-
-		foreach (var t in G.Sys.tilemap.at(transform.position))
-			t.Connect ();
-		foreach (var t in G.Sys.tilemap.at(transform.position + new Vector3(dir.x, 0, dir.y)))
-			t.Connect ();
+		G.Sys.tilemap.addTile (transform.position, this, Tilemap.BENCH_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position + new Vector3(dir.x, 0, dir.y), this, Tilemap.BENCH_PRIORITY);
 
 		G.Sys.tilemap.addSpecialTile (type, transform.position);
 		G.Sys.tilemap.addSpecialTile (type, transform.position + new Vector3 (dir.x, 0, dir.y));
@@ -39,11 +34,6 @@ public class BenchTile : ATile
 
 		G.Sys.tilemap.delTile (transform.position, this);
 		G.Sys.tilemap.delTile (transform.position + new Vector3(dir.x, 0, dir.y), this);
-
-		foreach (var t in G.Sys.tilemap.at(transform.position))
-			t.Connect ();
-		foreach (var t in G.Sys.tilemap.at(transform.position + new Vector3(dir.x, 0, dir.y)))
-			t.Connect ();
 
 		G.Sys.tilemap.delSpecialTile (type, transform.position);
 		G.Sys.tilemap.delSpecialTile (type, transform.position + new Vector3 (dir.x, 0, dir.y));

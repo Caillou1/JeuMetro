@@ -10,21 +10,11 @@ public class WallTile : ATile
     {
 		type = TileID.WALL;
 
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.LOW_PRIORITY);
-
-		foreach (var t in G.Sys.tilemap.at(transform.position))
-			t.Connect ();
-
-		G.Sys.tilemap.addSpecialTile (type, transform.position);
+		G.Sys.tilemap.addTile (transform.position, this, Tilemap.LOW_PRIORITY);
     }
 
 	protected override void OnDestroy()
 	{
 		G.Sys.tilemap.delTile (transform.position, this);
-
-		foreach (var t in G.Sys.tilemap.at(transform.position))
-			t.Connect ();
-
-		G.Sys.tilemap.delSpecialTile (type, transform.position);
 	}
 }

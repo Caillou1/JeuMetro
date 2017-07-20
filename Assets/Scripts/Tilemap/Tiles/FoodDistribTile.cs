@@ -10,7 +10,7 @@ public class FoodDistribTile : ATile
 	{
 		type = TileID.FOODDISTRIBUTEUR;
 
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.DISTRIBUTEUR_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position, this, Tilemap.DISTRIBUTEUR_PRIORITY);
 
 		G.Sys.tilemap.addSpecialTile (type, transform.position);
     }

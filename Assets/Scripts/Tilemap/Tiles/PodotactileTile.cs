@@ -23,15 +23,14 @@ public class PodotactileTile : ATile
 
 		type = TileID.PODOTACTILE;
 
-		G.Sys.tilemap.addTile (tf.position, this, true, false, Tilemap.LOW_PRIORITY);
+		G.Sys.tilemap.addTile (tf.position, this, Tilemap.LOW_PRIORITY);
 
 		G.Sys.tilemap.addSpecialTile (type, tf.position);
 
-		foreach (var t in G.Sys.tilemap.at(tf.position))
-			t.Connect ();
+		Connect ();
     }
 
-	public override void Connect ()
+	public void Connect ()
 	{
 		Vector3i pos = new Vector3i (transform.position);
 		List<ATile> list = new List<ATile> ();
@@ -202,24 +201,12 @@ public class PodotactileTile : ATile
 			break;
 		}
 
-		List<Pair<ATile,Vector3i>> list2 = new List<Pair<ATile, Vector3i>> ();
-		foreach (var it in list) {
-			list2.Add (new Pair<ATile, Vector3i> (it, new Vector3i (it.transform.position)));
-		}
 
-		applyConnexions (list2);
 	}
 
 	protected override void OnDestroy()
 	{
 		G.Sys.tilemap.delTile (tf.position, this);
 		G.Sys.tilemap.delSpecialTile (TileID.PODOTACTILE, tf.position);
-
-		foreach (var t in G.Sys.tilemap.at(transform.position))
-			t.Connect ();
-		foreach (var t in connectedTiles)
-			t.First.targetOf.Remove (this);
-		foreach (var t in targetOf.ToList())
-			t.Connect ();
 	}
 }

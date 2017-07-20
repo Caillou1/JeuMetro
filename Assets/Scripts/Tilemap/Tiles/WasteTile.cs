@@ -20,16 +20,10 @@ public class WasteTile : ATile
 	protected override void Awake()
     {
 		_canBeCleaned = true;
-		/*if (G.Sys.tilemap.at (transform.position).Count != 1) {
-			Destroy (gameObject);
-		}*/
 
 		type = TileID.WASTE;
 
-		G.Sys.tilemap.addTile (transform.position, this, false, true, Tilemap.LOW_PRIORITY);
-
-		foreach (var t in G.Sys.tilemap.at(transform.position))
-			t.Connect ();
+		G.Sys.tilemap.addTile (transform.position, this, Tilemap.LOW_PRIORITY);
 
 		G.Sys.tilemap.addSpecialTile (type, transform.position);
     }
@@ -37,10 +31,6 @@ public class WasteTile : ATile
 	protected override void OnDestroy()
 	{
 		G.Sys.tilemap.delTile (transform.position, this);
-
-		foreach (var t in G.Sys.tilemap.at(transform.position))
-			t.Connect ();
-
 		G.Sys.tilemap.delSpecialTile (type, transform.position);
 	}
 }

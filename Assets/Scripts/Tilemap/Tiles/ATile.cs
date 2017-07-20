@@ -28,11 +28,6 @@ public enum TileID
 
 public abstract class ATile : MonoBehaviour
 {
-	public virtual void Connect()
-	{
-		
-	}
-
 	protected abstract void Awake();
 	protected abstract void OnDestroy (); 
 

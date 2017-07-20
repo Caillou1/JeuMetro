@@ -16,7 +16,7 @@ public class ExitsTile : ATile
 		
 		type = id;
 
-		G.Sys.tilemap.addTile (transform.position, this, true, false, Tilemap.EXITS_PRIORITY);
+		G.Sys.tilemap.addTile (transform.position, this, Tilemap.EXITS_PRIORITY);
 
 		G.Sys.tilemap.addSpecialTile (type, transform.position);
 	}
