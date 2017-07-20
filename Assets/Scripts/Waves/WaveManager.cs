@@ -3,49 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WaveManager : MonoBehaviour {
-	public Wave[] Vagues;
+	public Entrance[] Entrees;
 
-	private int CurrentWaveIndex;
+	private int[] WaveIndex;
 	private Transform tf;
 
 	void Awake() {
-		G.Sys.waveManager = this;
-		CurrentWaveIndex = 0;
 		tf = transform;
+		G.Sys.waveManager = this;
+
+		WaveIndex = new int[Entrees.Length];
 	}
 
 	void Start() {
-		StartCoroutine (SpawnNext ());
-		G.Sys.menuManager.SetWaveNumber (0, Vagues.Length);
-	}
-
-	IEnumerator SpawnNext() {
-		if (CurrentWaveIndex < Vagues.Length) {
-			G.Sys.gameManager.StartTimer (Vagues [CurrentWaveIndex].TimeBeforeWave);
-
-			yield return new WaitForSeconds (Vagues [CurrentWaveIndex].TimeBeforeWave);
-
-			G.Sys.menuManager.SetWaveNumber (CurrentWaveIndex+1, Vagues.Length);
-
-			foreach (var e in Vagues[CurrentWaveIndex].Entrees) {
-				Instantiate (e.Vague, e.Entree.position, Quaternion.identity, tf);
-			}
-
-			CurrentWaveIndex++;
-
-			StartCoroutine (SpawnNext ());
+		for (int i = 0; i < Entrees.Length; i++) {
+			StartCoroutine (SpawnNext (i));
 		}
 	}
+
+	IEnumerator SpawnNext(int i) {
+		var e = Entrees [i];
+
+		if (WaveIndex [i] < e.Vagues.Length) {
+			var v = e.Vagues [WaveIndex [i]];
+			if (e.Type == EntranceType.Door) {
+				yield return new WaitForSeconds (v.TimeBeforeWave);
+				InstantiateWave (v.Vague, e.Entree.position);
+			} else {
+				yield return new WaitForSeconds (v.TimeBeforeWave - G.Sys.constants.MetroComeTime);
+				Debug.Log ("Faire venir metro");
+				yield return new WaitForSeconds (G.Sys.constants.MetroComeTime);
+				InstantiateWave (v.Vague, e.Entree.position);
+				yield return new WaitForSeconds (G.Sys.constants.MetroWaitTime);
+				Debug.Log ("Faire repartir le métro");
+			}
+
+			WaveIndex [i]++;
+			StartCoroutine (SpawnNext (i));
+		}
+	}
+
+	void InstantiateWave(GameObject wave, Vector3 pos) {
+		Instantiate (wave, pos, Quaternion.identity, tf);
+	}
+}
+
+public enum EntranceType {
+	Door,
+	Metro,
+}
+
+[System.Serializable]
+public class Entrance {
+	public Transform Entree;
+	public EntranceType Type;
+	public Wave[] Vagues;
 }
 
 [System.Serializable]
 public class Wave {
-	public Enter[] Entrees;
-	public float TimeBeforeWave;
-}
-
-[System.Serializable]
-public class Enter {
-	public Transform Entree;
 	public GameObject Vague;
+	public float TimeBeforeWave;
 }

@@ -616,7 +616,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56ec55402e21442249006d6a90ef5d69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Vagues: []
+  Entrees:
+  - Entree: {fileID: 0}
+    Type: 0
+    Vagues:
+    - Vague: {fileID: 0}
+      TimeBeforeWave: 0
+    - Vague: {fileID: 0}
+      TimeBeforeWave: 0
+    - Vague: {fileID: 0}
+      TimeBeforeWave: 0
+    - Vague: {fileID: 0}
+      TimeBeforeWave: 0
+    - Vague: {fileID: 0}
+      TimeBeforeWave: 0
+  - Entree: {fileID: 0}
+    Type: 0
+    Vagues: []
 --- !u!4 &58455827
 Transform:
   m_ObjectHideFlags: 0
@@ -16347,6 +16363,8 @@ MonoBehaviour:
   travelerLostRadius: 6
   travelerLostVariance: 3
   HelpTime: 0
+  MetroComeTime: 0
+  MetroWaitTime: 0
 --- !u!1001 &1822548620
 Prefab:
   m_ObjectHideFlags: 0

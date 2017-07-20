@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NRand;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,7 +22,12 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        G.Sys.gameManager = this;
+		G.Sys.gameManager = this;
+
+		if (SceneManager.GetActiveScene ().name.ToLower().Contains("sidney")) {
+			Application.OpenURL ("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+			Debug.LogError ("You've been Rickrolled !");
+		}
     }
 
 	void Start ()
