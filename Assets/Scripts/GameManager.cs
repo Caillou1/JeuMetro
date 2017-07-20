@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NRand;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
 
 		if (SceneManager.GetActiveScene ().name.ToLower().Contains("sidney")) {
 			Application.OpenURL ("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+			EditorUtility.DisplayDialog ("FATAL ERROR", "YOU HAVE BEEN RICK ROLLED", "I AM A NOOB");
 			Debug.LogError ("You've been Rickrolled !");
 		}
     }
