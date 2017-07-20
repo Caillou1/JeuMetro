@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum EscalatorSide
 { UP, DOWN }
@@ -14,11 +15,19 @@ public class EscalatorTile : ATile
 
 	private Animator anim;
 
+	private List<NavMeshLink> linksUp = new List<NavMeshLink> ();
+	private List<NavMeshLink> linksDown = new List<NavMeshLink> ();
+
     public EscalatorSide side
     {
         set
         {
             _side = value;
+
+			foreach (var l in linksUp)
+				l.enabled = _side == EscalatorSide.UP;
+			foreach (var l in linksDown)
+				l.enabled = _side == EscalatorSide.DOWN;
 
 			var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
 
@@ -88,6 +97,15 @@ public class EscalatorTile : ATile
 
 	protected override void Awake()
 	{
+		foreach (var l in GetComponents<NavMeshLink>()) {
+			if (l.bidirectional)
+				continue;
+			if (l.endPoint.y < l.startPoint.y)
+				linksDown.Add (l);
+			else
+				linksUp.Add (l);
+		}
+
 		anim = transform.Find ("mesh").GetComponent<Animator> ();
 
 		type = TileID.ESCALATOR;
@@ -126,10 +144,14 @@ public class EscalatorTile : ATile
 			t.Connect();
 		foreach(var t in G.Sys.tilemap.at(transform.position + 2 * Vector3.up - dir))
 			t.Connect();
+
+		side = _side;
     }
 
 	void Start() {
 		anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
+
+		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 	}
 
 	protected override void OnDestroy()

@@ -41,7 +41,8 @@ GameObject:
   - component: {fileID: 23299158167583328}
   - component: {fileID: 95733574883046640}
   - component: {fileID: 65001704876721776}
-  m_Layer: 0
+  - component: {fileID: 114416006360931554}
+  m_Layer: 8
   m_Name: distributeur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +56,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1313614091276182}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 5, y: -2, z: -8}
+  m_LocalPosition: {x: 0, y: -4, z: -27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4395681176419838}
@@ -168,6 +169,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Price: 150
   CanDrag: 0
+--- !u!114 &114416006360931554
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1627785087799132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
 --- !u!114 &114851686609970422
 MonoBehaviour:
   m_ObjectHideFlags: 1
