@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class WaveManager : MonoBehaviour {
 	public Entrance[] Entrees;
@@ -58,6 +59,13 @@ public class Entrance {
 	public Transform Entree;
 	public EntranceType Type;
 	public Wave[] Vagues;
+	[ShowIf("IsMetro")]
+	public Metro Metro;
+
+
+	private bool IsMetro() {
+		return Type == EntranceType.Metro;
+	}
 }
 
 [System.Serializable]

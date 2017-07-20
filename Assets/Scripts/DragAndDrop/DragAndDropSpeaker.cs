@@ -18,6 +18,7 @@ public class DragAndDropSpeaker : DragAndDrop {
 		NotWalledObject = tf.Find ("NotWalled").gameObject;
 		CheckCanPlace ();
 		CheckRotation ();
+		ToggleOutline (false);
 	}
 
 	protected override void CheckCanPlace ()

@@ -28,15 +28,16 @@ public class DragAndDrop : MonoBehaviour{
 	private Tweener rotTween;
 
 	void Awake() {
+		tf = transform;
 		IsWalled = false;
 		bought = true;
-		tf = transform;
 	}
 
 	void Start() {
-		isRotating = false;
 		CheckCanPlace ();
 		CheckRotation ();
+		ToggleOutline (false);
+		isRotating = false;
 	}
 
 	protected virtual void CheckCanPlace() {
@@ -186,5 +187,9 @@ public class DragAndDrop : MonoBehaviour{
 
 	protected void RotateObject(float desiredAngle) {
 		rotTween = tf.DORotate (new Vector3 (0, desiredAngle, 0), .3f, RotateMode.FastBeyond360);
+	}
+
+	public void ToggleOutline(bool b) {
+		GetComponentInChildren<cakeslice.Outline> ().enabled = b;
 	}
 }

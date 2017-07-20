@@ -44,6 +44,7 @@ public class SelectionManager : MonoBehaviour {
 			obj.CanDrag = true;
 			G.Sys.cameraController.IsSelecting = true;
 			obj.DesactivateCollisions ();
+			obj.GetComponent<DragAndDrop> ().ToggleOutline (true);
 		}
 	}
 
@@ -92,6 +93,7 @@ public class SelectionManager : MonoBehaviour {
 			if (register) {
 				obj.GetComponent<ATile> ().Register ();
 				G.Sys.cameraController.IsSelecting = false;
+				obj.GetComponent<DragAndDrop> ().ToggleOutline (false);
 			}
 		}
 		obj = null;

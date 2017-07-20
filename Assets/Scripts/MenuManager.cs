@@ -232,7 +232,7 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Play() {
-		Debug.Log ("Play");
+		SceneManager.LoadScene ("Pierre2");
 	}
 
 	public void MainMenu() {

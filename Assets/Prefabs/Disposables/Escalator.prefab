@@ -71,6 +71,7 @@ GameObject:
   - component: {fileID: 4599408533034262}
   - component: {fileID: 137755958586674244}
   - component: {fileID: 95893549677082404}
+  - component: {fileID: 114523234456961052}
   m_Layer: 0
   m_Name: mesh
   m_TagString: Untagged
@@ -126,8 +127,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1579386877539220}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -5, y: 0, z: -8}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -2, z: -14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4599408533034262}
@@ -243,6 +244,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetOf: []
   _side: 1
+--- !u!114 &114523234456961052
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1628079749477182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114558452296472534
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -208,6 +208,7 @@ public class PodotactileTile : ATile
 		}
 
 		applyConnexions (list2);
+		GetComponent<DragAndDrop> ().ToggleOutline (false);
 	}
 
 	protected override void OnDestroy()
