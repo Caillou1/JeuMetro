@@ -25,13 +25,13 @@ public class DragAndDropInfoPanel : DragAndDrop {
 		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
 		List<Orientation> PossibleOrientations = new List<Orientation> ();
 
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.forward))
+		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.forward, TileID.WALL) != null)
 			PossibleOrientations.Add (Orientation.LEFT);
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.back))
+		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.back, TileID.WALL) != null)
 			PossibleOrientations.Add (Orientation.RIGHT);
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.right))
+		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.right, TileID.WALL) != null)
 			PossibleOrientations.Add (Orientation.UP);
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + Vector3.left))
+		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.left, TileID.WALL) != null)
 			PossibleOrientations.Add (Orientation.DOWN);
 
 		if (PossibleOrientations.Count > 0 && (!PossibleOrientations.Contains(or) || !IsWalled))
