@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 33848698025437908}
   - component: {fileID: 136488450532361712}
   - component: {fileID: 23402128770151326}
+  - component: {fileID: 114206067538719550}
   m_Layer: 0
   m_Name: NotWalled
   m_TagString: Untagged
@@ -76,6 +77,7 @@ GameObject:
   - component: {fileID: 33662446714018706}
   - component: {fileID: 23610078720184680}
   - component: {fileID: 95078382335895506}
+  - component: {fileID: 114754899000881350}
   m_Layer: 0
   m_Name: Walled
   m_TagString: Untagged
@@ -301,6 +303,21 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114206067538719550
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1808707672515414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114235423800888590
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -313,7 +330,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetOf: []
-  tilesHere: []
 --- !u!114 &114527459965125844
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -327,7 +343,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Price: 150
   CanDrag: 0
-  IsBought: 0
+--- !u!114 &114754899000881350
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1892247973436900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!136 &136488450532361712
 CapsuleCollider:
   m_ObjectHideFlags: 1
