@@ -9,6 +9,8 @@ public class ExitsTile : ATile
 	[Tooltip("Must be IN OUT or METRO")]
 	public TileID id = TileID.IN;
 
+	public string exitname;
+
 	protected override void Awake()
 	{
 		if (id != TileID.IN && id != TileID.OUT && id != TileID.METRO)

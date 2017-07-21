@@ -27,6 +27,5 @@ public class NavMeshManager : MonoBehaviour
 	{
 		foreach (var n in navmesh)
 			n.BuildNavMesh ();
-		Debug.Log ("Poop");
 	}
 }

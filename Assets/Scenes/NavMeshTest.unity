@@ -5920,25 +5920,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 1755563133644110, guid: 6d6875ddc24434c40a77f716f7300b62, type: 2}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1039407200586784, guid: 6d6875ddc24434c40a77f716f7300b62, type: 2}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1357913789224166, guid: 6d6875ddc24434c40a77f716f7300b62, type: 2}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 1984995104227444, guid: 6d6875ddc24434c40a77f716f7300b62, type: 2}
       propertyPath: m_Name
       value: Stairs (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4172446729004990, guid: 6d6875ddc24434c40a77f716f7300b62, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6d6875ddc24434c40a77f716f7300b62, type: 2}
@@ -16236,6 +16220,16 @@ Prefab:
     - target: {fileID: 4581421795220398, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: minDelay
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: maxDelay
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}
