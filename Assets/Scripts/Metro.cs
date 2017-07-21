@@ -6,6 +6,7 @@ using DG.Tweening;
 public class Metro : MonoBehaviour {
 	private Transform tf;
 	private Vector3 positionToReach;
+	private Vector3 startPosition;
 	private Material mat;
 
 	void Start () {
@@ -13,12 +14,12 @@ public class Metro : MonoBehaviour {
 		mat = tf.Find("Mesh").GetComponent<MeshRenderer> ().material;
 		mat.color = new Color (mat.color.r, mat.color.g, mat.color.b, 0f);
 		positionToReach = tf.position;
+		startPosition = tf.position - tf.forward * 15f;
 		ResetPos ();
-		Invoke ("CallMetro", 5f);
 	}
 
 	void ResetPos() {
-		tf.position = tf.position - tf.forward * 15f;
+		tf.position = startPosition;
 	}
 
 	void Disappear() {
@@ -34,6 +35,7 @@ public class Metro : MonoBehaviour {
 	}
 
 	public void CallMetro() {
+		ResetPos ();
 		Reappear ();
 		tf.DOMove (positionToReach, G.Sys.constants.MetroComeTime).OnComplete(()=>{
 			DOVirtual.DelayedCall(G.Sys.constants.MetroWaitTime, () => {
@@ -44,8 +46,6 @@ public class Metro : MonoBehaviour {
 
 	public void Leave() {
 		Disappear ();
-		tf.DOMove (tf.position + tf.forward * 15f, G.Sys.constants.MetroComeTime/2f).OnComplete(()=>{
-			ResetPos();
-		});
+		tf.DOMove (tf.position + tf.forward * 15f, G.Sys.constants.MetroComeTime / 2f);
 	}
 }

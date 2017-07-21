@@ -2,45 +2,69 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using DG.Tweening;
 
 public class WaveManager : MonoBehaviour {
-	public Entrance[] Entrees;
+	public Wave[] Vagues;
 
-	private int[] WaveIndex;
+	private int CurrentWaveIndex;
 	private Transform tf;
+	private Wave CurrentArrivingWave;
+	private float ChronoStartTime;
 
 	void Awake() {
 		tf = transform;
 		G.Sys.waveManager = this;
-
-		WaveIndex = new int[Entrees.Length];
+		CurrentWaveIndex = 0;
 	}
 
 	void Start() {
-		for (int i = 0; i < Entrees.Length; i++) {
-			StartCoroutine (SpawnNext (i));
+		G.Sys.menuManager.SetWaveNumber (0, Vagues.Length);
+		StartCoroutine (SpawnNext ());
+	}
+
+	void Update() {
+		if (CurrentArrivingWave != null) {
+			float time = CurrentArrivingWave.TimeBeforeWave - (Time.time - ChronoStartTime);
+			float timePercentage = (Time.time - ChronoStartTime) / CurrentArrivingWave.TimeBeforeWave;
+
+			G.Sys.menuManager.SetPieTime (timePercentage, (int)time + 1);
 		}
 	}
 
-	IEnumerator SpawnNext(int i) {
-		var e = Entrees [i];
+	void StartChrono(Wave w) {
+		CurrentArrivingWave = w;
+		ChronoStartTime = Time.time;
+	}
 
-		if (WaveIndex [i] < e.Vagues.Length) {
-			var v = e.Vagues [WaveIndex [i]];
-			if (e.Type == EntranceType.Door) {
-				yield return new WaitForSeconds (v.TimeBeforeWave);
-				InstantiateWave (v.Vague, e.Entree.position);
-			} else {
-				yield return new WaitForSeconds (v.TimeBeforeWave - G.Sys.constants.MetroComeTime);
-				Debug.Log ("Faire venir metro");
-				yield return new WaitForSeconds (G.Sys.constants.MetroComeTime);
-				InstantiateWave (v.Vague, e.Entree.position);
-				yield return new WaitForSeconds (G.Sys.constants.MetroWaitTime);
-				Debug.Log ("Faire repartir le métro");
+	IEnumerator SpawnNext() {
+		if (CurrentWaveIndex < Vagues.Length) {
+			var v = Vagues [CurrentWaveIndex];
+			StartChrono (v);
+			yield return new WaitForSeconds (v.TimeBeforeWave - G.Sys.constants.MetroComeTime);
+
+			foreach (var e in v.Entrees) {
+				if (e.Type == EntranceType.Metro) {
+					e.Metro.CallMetro ();
+					DOVirtual.DelayedCall (G.Sys.constants.MetroComeTime, () => {
+						InstantiateWave (e.Vague, e.Entree.position);
+					});
+				}
 			}
 
-			WaveIndex [i]++;
-			StartCoroutine (SpawnNext (i));
+			yield return new WaitForSeconds (G.Sys.constants.MetroComeTime);
+
+			foreach (var e in v.Entrees) {
+				if (e.Type == EntranceType.Door) {
+					InstantiateWave (e.Vague, e.Entree.position);
+				}
+			}
+				
+			CurrentWaveIndex++;
+
+			G.Sys.menuManager.SetWaveNumber (CurrentWaveIndex, Vagues.Length);
+
+			StartCoroutine (SpawnNext ());
 		}
 	}
 
@@ -58,7 +82,7 @@ public enum EntranceType {
 public class Entrance {
 	public Transform Entree;
 	public EntranceType Type;
-	public Wave[] Vagues;
+	public GameObject Vague;
 	[ShowIf("IsMetro")]
 	public Metro Metro;
 
@@ -70,6 +94,6 @@ public class Entrance {
 
 [System.Serializable]
 public class Wave {
-	public GameObject Vague;
+	public Entrance[] Entrees;
 	public float TimeBeforeWave;
 }
