@@ -8,6 +8,7 @@ public class Metro : MonoBehaviour {
 	private Vector3 positionToReach;
 	private Vector3 startPosition;
 	private Material mat;
+	private ExitsTile[] exitsTiles;
 
 	void Start () {
 		tf = transform;
@@ -15,7 +16,10 @@ public class Metro : MonoBehaviour {
 		mat.color = new Color (mat.color.r, mat.color.g, mat.color.b, 0f);
 		positionToReach = tf.position;
 		startPosition = tf.position - tf.forward * 15f;
-		ResetPos ();
+		exitsTiles = GetComponentsInChildren<ExitsTile> ();
+		foreach (var et in exitsTiles) {
+			et.Unregister ();
+		}
 	}
 
 	void ResetPos() {
@@ -38,6 +42,9 @@ public class Metro : MonoBehaviour {
 		ResetPos ();
 		Reappear ();
 		tf.DOMove (positionToReach, G.Sys.constants.MetroComeTime).OnComplete(()=>{
+			foreach (var et in exitsTiles) {
+				et.Register ();
+			}
 			DOVirtual.DelayedCall(G.Sys.constants.MetroWaitTime, () => {
 				Leave();
 			});
@@ -45,6 +52,9 @@ public class Metro : MonoBehaviour {
 	}
 
 	public void Leave() {
+		foreach (var et in exitsTiles) {
+			et.Unregister ();
+		}
 		Disappear ();
 		tf.DOMove (tf.position + tf.forward * 15f, G.Sys.constants.MetroComeTime / 2f);
 	}
