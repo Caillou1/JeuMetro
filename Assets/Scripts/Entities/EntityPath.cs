@@ -185,9 +185,11 @@ public class EntityPath
 
 	public void Update()
 	{
-		
 		debugPath ();
 
+		if (currentAction == null &&  _actions.Count > 0)
+			checkAction ();
+		
 		if (_agent.isOnOffMeshLink && !isOnOffMeshLink)
 			onLink ();
 
@@ -199,6 +201,15 @@ public class EntityPath
 				updateAgentPath ();
 			else if (!currentAction.Exec ())
 				updateAgentPath ();
+		}
+	}
+
+	void checkAction()
+	{
+		if ((_agent.transform.position - _agent.destination).sqrMagnitude > (_agent.transform.position - _actions [0].pos).sqrMagnitude) {
+			_points.Insert (0, _agent.destination);
+			currentAction = _actions [0];
+			_agent.SetDestination (currentAction.pos);
 		}
 	}
 

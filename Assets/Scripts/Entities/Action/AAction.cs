@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum ActionType
 {
-
+	SIGN,
 }
 
 public abstract class AAction

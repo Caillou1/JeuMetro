@@ -368,9 +368,9 @@ public class Tilemap
 	/// <param name="pos">Position.</param>
 	/// <param name="id">Identifier.</param>
 	/// <param name="verticalAmplification">Vertical amplification.</param>
-	public Pair<Vector3, bool> getNearestSpecialTileOfType(Vector3 pos, TileID id, float verticalAmplification = 1)
+	public Pair<Vector3, bool> getNearestSpecialTileOfType(Vector3 pos, TileID id, float verticalAmplification = 1, float maxDistance = float.MaxValue)
 	{
-		var tile = getNearestSpecialTileOfType (new Vector3i (pos), id, verticalAmplification);
+		var tile = getNearestSpecialTileOfType (new Vector3i (pos), id, verticalAmplification, maxDistance);
 		return new Pair<Vector3, bool> (tile.First.toVector3 (), tile.Second);
 	}
 
@@ -382,7 +382,7 @@ public class Tilemap
 	/// <param name="pos">Position.</param>
 	/// <param name="id">Identifier.</param>
 	/// <param name="verticalAmplification">Vertical amplification.</param>
-	public Pair<Vector3i, bool>  getNearestSpecialTileOfType(Vector3i pos, TileID id, float verticalAmplification = 1)
+	public Pair<Vector3i, bool>  getNearestSpecialTileOfType(Vector3i pos, TileID id, float verticalAmplification = 1, float maxDistance = float.MaxValue)
 	{
 		var list = getSpecialTilesI (id);
 		if (list.Count == 0)
@@ -393,7 +393,8 @@ public class Tilemap
 		foreach (var t in list) {
 			var dir = pos.toVector3 () - t.toVector3 ();
 			var dist = new Vector2 (dir.x, dir.z).magnitude + Mathf.Abs(dir.y * verticalAmplification);
-
+			if (dist > maxDistance)
+				continue;
 			if (dist < bestDist) {
 				bestDist = dist;
 				bestTile = t;

@@ -9,7 +9,8 @@ public class Traveler : AEntity
 
 	[SerializeField]
 	string targetName;
-	TravelerDatas datas = new TravelerDatas ();
+	[HideInInspector]
+	public TravelerDatas datas = new TravelerDatas ();
 
 	bool isLost = false;
 
@@ -59,7 +60,12 @@ public class Traveler : AEntity
 
 	protected override void Check ()
 	{
-
+		if (datas.Lostness > 0.5f && !path.haveAction (ActionType.SIGN)) {
+			var sign = G.Sys.tilemap.getNearestSpecialTileOfType (transform.position, TileID.INFOPANEL, G.Sys.constants.VerticalAmplification, G.Sys.constants.TravelerDetectionRadius);
+			if (sign.Second) {
+				path.addAction (new SignAction (this, sign.First));
+			}
+		}
 	}
 
 	void updateSpeed()
@@ -81,6 +87,10 @@ public class Traveler : AEntity
 
 	void updateDatas()
 	{
+		var signs = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.INFOPANEL, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification).Count;
+
+		datas.Lostness = Mathf.Clamp(datas.Lostness + ((signs == 0 || signs > 3) ? 1 : -1) * stats.LostAbility * stats.LostAbility / 20000 * Time.deltaTime, 0, 1);
+
 		if (datas.Lostness > 0.95f && !isLost) {
 			isLost = true;
 			OnPathFinished ();
@@ -89,6 +99,7 @@ public class Traveler : AEntity
 			isLost = false;
 			OnPathFinished ();
 		}
+		path.lostness = datas.Lostness;
 	}
 
 	protected override void OnPathFinished ()
@@ -98,6 +109,18 @@ public class Traveler : AEntity
 			return;
 		}
 
-		path.destnation = transform.position + new UniformVector3SphereDistribution (G.Sys.constants.travelerLostRadius).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());
+		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
+		var d = new UniformVector3SphereDistribution (G.Sys.constants.travelerLostRadius);
+
+		for (int i = 0; i < 10; i++) {
+			var pos = transform.position + d.Next(gen);
+			var tiles = G.Sys.tilemap.at (pos);
+			if (tiles.Count == 1 && tiles [0].type == TileID.GROUND) {
+				path.destnation = pos;
+				return;
+			}
+		}
+		path.destnation = transform.position + d.Next (gen);
+
 	}
 }

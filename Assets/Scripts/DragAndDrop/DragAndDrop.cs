@@ -147,6 +147,7 @@ public class DragAndDrop : MonoBehaviour{
 			CanDrag = false;
 			SendEvent ();
 			DeletePossibleEmptyWalls ();
+			Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 			return true;
 		}
 		return false;
