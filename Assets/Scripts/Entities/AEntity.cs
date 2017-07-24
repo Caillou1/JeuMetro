@@ -37,6 +37,8 @@ public abstract class AEntity : MonoBehaviour
 			OnPathFinished ();
 
 		path.Update ();
+		if (!path.IsOnAction ())
+			Check ();
 
 		OnUpdate ();
 	}

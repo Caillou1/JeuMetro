@@ -1,8 +1,6 @@
 ﻿using System;
 
-namespace V1
-{
-public class TravelerDatas
+public struct TravelerDatas
 {
 	public float Lostness;
 	public float Tiredness;
@@ -11,5 +9,4 @@ public class TravelerDatas
 	public float Speed;
 	public float Hunger;
 	public bool HasTicket;
-}
 }

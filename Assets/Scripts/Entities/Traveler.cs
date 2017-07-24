@@ -5,8 +5,13 @@ using NRand;
 
 public class Traveler : AEntity
 {
+	public TravelerStats stats = new TravelerStats ();
+
 	[SerializeField]
 	string targetName;
+	TravelerDatas datas = new TravelerDatas ();
+
+	bool isLost = false;
 
 	protected override void OnAwake ()
 	{
@@ -14,10 +19,13 @@ public class Traveler : AEntity
 		target = findExit (targetName);
 		path.destnation = target;
 		//path.lostness = 0.5f;
+		initializeDatas();
 	}
 
 	protected override void OnUpdate ()
 	{
+		updateDatas ();
+		updateSpeed ();
 		if (G.Sys.tilemap.haveSpecialTileAt (TileID.OUT, transform.position))
 			Destroy (gameObject);
 	}
@@ -47,5 +55,49 @@ public class Traveler : AEntity
 	void OnDestroy()
 	{
 		G.Sys.removeTraveler (this);
+	}
+
+	protected override void Check ()
+	{
+
+	}
+
+	void updateSpeed()
+	{
+		var tiles = G.Sys.tilemap.at (transform.position);
+		if (tiles.Exists (t => t.type == TileID.ESCALATOR)) {
+			agent.speed = G.Sys.constants.EscalatorSpeed;
+		} else if (tiles.Exists (t => t.type == TileID.STAIRS)) {
+			agent.speed = G.Sys.constants.StairsSpeedMultiplier * datas.Speed;
+		} else
+			agent.speed = datas.Speed;
+	}
+
+	void initializeDatas()
+	{
+		datas.Speed = stats.MovementSpeed;
+		datas.Lostness = stats.LostAbility / 100;
+	}
+
+	void updateDatas()
+	{
+		if (datas.Lostness > 0.95f && !isLost) {
+			isLost = true;
+			OnPathFinished ();
+		}
+		if (datas.Lostness < 0.95f && isLost) {
+			isLost = false;
+			OnPathFinished ();
+		}
+	}
+
+	protected override void OnPathFinished ()
+	{
+		if (!isLost) {
+			path.destnation = target;
+			return;
+		}
+
+		path.destnation = transform.position + new UniformVector3SphereDistribution (G.Sys.constants.travelerLostRadius).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());
 	}
 }

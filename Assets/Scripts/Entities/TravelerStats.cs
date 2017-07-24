@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace V1
-{
 public enum TravelerType
 {
 	CLASSIC,
@@ -15,10 +13,13 @@ public enum TravelerType
 [System.Serializable]
 public class TravelerStats {
 	public TravelerType Type;
+	[HideInInspector]
 	[Range(-100f,100f)]
 	public float ElevatorAttraction;
+	[HideInInspector]
 	[Range(-100f,100f)]
 	public float EscalatorAttraction;
+	[HideInInspector]
 	[Range(-100f,100f)]
 	public float StairsAttraction;
 	[Range(-100f,100f)]
@@ -36,6 +37,7 @@ public class TravelerStats {
 	[Range(0f,100f)]
 	public float LostAbility;
 	public float MovementSpeed;
+	[HideInInspector]
 	public float RotationSpeed;
 
 	public void SetStats(TravelerStats stats) {
@@ -53,5 +55,4 @@ public class TravelerStats {
 		MovementSpeed = stats.MovementSpeed;
 		RotationSpeed = stats.RotationSpeed;
 	}
-}
 }

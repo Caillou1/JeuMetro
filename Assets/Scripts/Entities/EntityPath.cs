@@ -50,6 +50,12 @@ public class EntityPath
 		}
 	}
 
+	public void clearPath()
+	{
+		_points.Clear ();
+		_agent.destination = _agent.transform.position;
+	}
+
 	public float lostness {
 		get{ return _lostness; }
 		set{
@@ -61,11 +67,22 @@ public class EntityPath
 		}
 	}
 
-	void addAction(AAction action)
+	public void addAction(AAction action)
 	{
 		_actions.Add (action);
 		if (finished)
 			updateAgentPath ();
+	}
+
+	public void abortNextAction()
+	{
+		if (_actions.Count > 0)
+			_actions.RemoveAt (0);
+	}
+
+	public void abortAllActions()
+	{
+		_actions.Clear ();
 	}
 
 	void updatePath()
@@ -133,6 +150,7 @@ public class EntityPath
 			currentAction = null;
 			return;
 		}
+		finished = false;
 
 		if (_points.Count == 0) {
 			currentAction = _actions [0];
@@ -222,26 +240,6 @@ public class EntityPath
 		isOnOffMeshLink = true;
 
 		_behavior.StartCoroutine (onLinkCoroutine ());
-
-		/*var data = _agent.currentOffMeshLinkData;
-		_agent.CompleteOffMeshLink ();
-		var dir = (data.endPos - data.startPos).normalized;
-		_agent.transform.position += dir * Time.deltaTime * _agent.speed;
-		Debug.Log (data.startPos + " " + data.endPos);*/
-		
-		/*if (agent.isOnOffMeshLink)
-
-			OffMeshLinkData data = agent.currentOffMeshLinkData;
-		Vector3 startPos = agent.transform.position;
-		Vector3 endPos = data.endPos + Vector3.up * agent.baseOffset;
-		float normalizedTime = 0.0f;
-		while (normalizedTime < 1.0f)
-		{
-			float yOffset = m_Curve.Evaluate(normalizedTime);
-			agent.transform.position = Vector3.Lerp(startPos, endPos, normalizedTime) + yOffset * Vector3.up;
-			normalizedTime += Time.deltaTime / duration;
-			yield return null;
-		}*/
 	}
 
 	IEnumerator onLinkCoroutine()
