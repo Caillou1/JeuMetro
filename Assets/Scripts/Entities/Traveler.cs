@@ -13,7 +13,7 @@ public class Traveler : AEntity
 		G.Sys.registerTraveler (this);
 		target = findExit (targetName);
 		path.destnation = target;
-		path.lostness = 0.5f;
+		//path.lostness = 0.5f;
 	}
 
 	protected override void OnUpdate ()
