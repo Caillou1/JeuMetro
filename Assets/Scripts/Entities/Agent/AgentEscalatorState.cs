@@ -99,12 +99,14 @@ public class AgentEscalatorState : AAgentState
 			break;
 		case 1:
 			{
-				var dest = escalator.transform.position - stairsDir + 2 * Vector3.up;
-				agent.rigidbody.velocity = (dest - agent.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
-				agent.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (agent.rigidbody.velocity.x, 0, agent.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
+				if (escalator != null) {
+					var dest = escalator.transform.position - stairsDir + 2 * Vector3.up;
+					agent.rigidbody.velocity = (dest - agent.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
+					agent.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (agent.rigidbody.velocity.x, 0, agent.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
-				if (new Vector3i (dest).equal (new Vector3i (agent.transform.position)))
-					state = 2;
+					if (new Vector3i (dest).equal (new Vector3i (agent.transform.position)))
+						state = 2;
+				}
 			}
 			break;
 		case 2:
@@ -138,12 +140,14 @@ public class AgentEscalatorState : AAgentState
 			break;
 		case 1:
 			{
-				var dest = escalator.transform.position + 2 * stairsDir ;
-				agent.rigidbody.velocity = (dest - agent.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
-				agent.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (agent.rigidbody.velocity.x, 0, agent.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
+				if (escalator != null) {
+					var dest = escalator.transform.position + 2 * stairsDir;
+					agent.rigidbody.velocity = (dest - agent.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
+					agent.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (agent.rigidbody.velocity.x, 0, agent.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
-				if (new Vector3i (dest).equal (new Vector3i (agent.transform.position)))
-					state = 2;
+					if (new Vector3i (dest).equal (new Vector3i (agent.transform.position)))
+						state = 2;
+				}
 			}
 			break;
 		case 2:

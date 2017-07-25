@@ -56,9 +56,9 @@ public class CameraController : MonoBehaviour {
 				if (PinchingCoroutine != null)
 					StopCoroutine (PinchingCoroutine);
 				pinching = true;
-				if (deltaMagnitudeDiff < 0) {
+				if (deltaMagnitudeDiff < 0f) {
 					G.Sys.menuManager.Zoom (4f);
-				} else if (deltaMagnitudeDiff > 0) {
+				} else if (deltaMagnitudeDiff > 0f) {
 					G.Sys.menuManager.Zoom (-4f);
 				}
 			}
