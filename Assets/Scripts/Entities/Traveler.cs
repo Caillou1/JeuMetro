@@ -60,10 +60,24 @@ public class Traveler : AEntity
 
 	protected override void Check ()
 	{
+		checkSigns ();
+	}
+
+	void checkSigns()
+	{
 		if (datas.Lostness > 0.5f && !path.haveAction (ActionType.SIGN)) {
 			var sign = G.Sys.tilemap.getNearestSpecialTileOfType (transform.position, TileID.INFOPANEL, G.Sys.constants.VerticalAmplification, G.Sys.constants.TravelerDetectionRadius);
 			if (sign.Second) {
-				path.addAction (new SignAction (this, sign.First));
+				List<Vector3> validPos = new List<Vector3> ();
+				if (G.Sys.tilemap.IsEmptyGround (sign.First + Vector3.left))
+					validPos.Add (sign.First + Vector3.left);
+				if (G.Sys.tilemap.IsEmptyGround (sign.First + Vector3.right))
+					validPos.Add (sign.First + Vector3.right);
+				if (G.Sys.tilemap.IsEmptyGround (sign.First + Vector3.forward))
+					validPos.Add (sign.First + Vector3.forward);
+				if (G.Sys.tilemap.IsEmptyGround (sign.First + Vector3.back))
+					validPos.Add (sign.First + Vector3.back);
+				path.addAction (new SignAction (this, validPos[new UniformIntDistribution(validPos.Count-1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())], sign.First));
 			}
 		}
 	}
@@ -90,6 +104,7 @@ public class Traveler : AEntity
 		var signs = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.INFOPANEL, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification).Count;
 
 		datas.Lostness = Mathf.Clamp(datas.Lostness + ((signs == 0 || signs > 3) ? 1 : -1) * stats.LostAbility * stats.LostAbility / 20000 * Time.deltaTime, 0, 1);
+		Debug.Log (datas.Lostness);
 
 		if (datas.Lostness > 0.95f && !isLost) {
 			isLost = true;

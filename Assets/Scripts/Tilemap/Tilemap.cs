@@ -390,6 +390,7 @@ public class Tilemap
 
 		Vector3i bestTile = new Vector3i (0, 0, 0);
 		float bestDist = float.MaxValue;
+		bool found = false;
 		foreach (var t in list) {
 			var dir = pos.toVector3 () - t.toVector3 ();
 			var dist = new Vector2 (dir.x, dir.z).magnitude + Mathf.Abs(dir.y * verticalAmplification);
@@ -398,9 +399,10 @@ public class Tilemap
 			if (dist < bestDist) {
 				bestDist = dist;
 				bestTile = t;
+				found = true;
 			}
 		}
-		return new Pair<Vector3i, bool>(bestTile, true);
+		return new Pair<Vector3i, bool>(bestTile, found);
 	}
 
 	/// <summary>
@@ -450,6 +452,12 @@ public class Tilemap
 		}
 
 		return false;
+	}
+
+	public bool IsEmptyGround(Vector3 pos)
+	{
+		var tiles = at (pos);
+		return tiles.Count == 1 && tiles [0].type == TileID.GROUND;
 	}
 
 	public bool IsEmpty(Vector3 pos) {

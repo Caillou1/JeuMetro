@@ -4,9 +4,11 @@ using UnityEngine;
 public class SignAction : AEntityAction<Traveler>
 {
 	float time = 0;
-	public SignAction (Traveler t, Vector3 pos) : base(t, ActionType.SIGN, pos)
+	Vector3 signPos = new Vector3();
+
+	public SignAction (Traveler t, Vector3 pos, Vector3 sign) : base(t, ActionType.SIGN, pos)
 	{
-		
+		signPos = sign;
 	}
 
 	public override bool Exec ()

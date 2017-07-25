@@ -147,10 +147,17 @@ public class DragAndDrop : MonoBehaviour{
 			CanDrag = false;
 			SendEvent ();
 			DeletePossibleEmptyWalls ();
-			Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
+			StartCoroutine (eventCoroutine ());
 			return true;
 		}
 		return false;
+	}
+
+	IEnumerator eventCoroutine()
+	{
+		yield return new WaitForEndOfFrame ();
+		yield return new WaitForEndOfFrame ();
+		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 	}
 
 	protected virtual void DeletePossibleEmptyWalls () {}

@@ -9,7 +9,7 @@ using DG.Tweening;
 
 public class EntityPath
 {
-	const float dLostness = 0.1f;
+	const float dLostness = 0.15f;
 
 	NavMeshAgent _agent;
 	MonoBehaviour _behavior;
@@ -24,6 +24,7 @@ public class EntityPath
 
 	bool pathPending = false;
 	AAction currentAction = null;
+	bool onAction = false;
 	bool isOnOffMeshLink = false;
 
 	bool finished = true;
@@ -145,6 +146,11 @@ public class EntityPath
 
 	void updateAgentPath()
 	{
+		if (currentAction != null) {
+			_agent.destination = currentAction.pos;
+			return;
+		}
+		
 		if (_points.Count == 0 && _actions.Count == 0) {
 			finished = true;
 			currentAction = null;
@@ -159,48 +165,41 @@ public class EntityPath
 			return;
 		}
 
-		if (_actions.Count > 0) {
-			float minDist = float.MaxValue;
-			for (int i = 0; i < _points.Count; i++) {
-				float dist = (_actions [0].pos - _points [i]).sqrMagnitude;
-				if (dist < minDist)
-					minDist = dist;
-			}
-			if ((_agent.transform.position - _actions [0].pos).sqrMagnitude < minDist) {
-				currentAction = _actions [0];
-				_agent.SetDestination (currentAction.pos);
-				_actions.RemoveAt (0);
-			} else {
-				currentAction = null;
-				_agent.SetDestination (_points [0]);
-				_points.RemoveAt (0);
-			}
-
-		} else {
-			currentAction = null;
-			_agent.SetDestination (_points [0]);
-			_points.RemoveAt (0);
-		}
+		currentAction = null;
+		_agent.SetDestination (_points [0]);
+		_points.RemoveAt (0);
 	}
 
 	public void Update()
 	{
 		debugPath ();
 
-		if (currentAction == null &&  _actions.Count > 0)
-			checkAction ();
-		
 		if (_agent.isOnOffMeshLink && !isOnOffMeshLink)
 			onLink ();
 
 		if (pathPending && !_agent.pathPending)
 			onPathCreated();
-
-		if (_agent.remainingDistance < 0.1f) {
+		
+		if (currentAction == null && _actions.Count > 0)
+			checkAction ();
+		
+		if (new Vector3i(_agent.transform.position).Equals(new Vector3i(_agent.destination))) {
 			if (currentAction == null)
 				updateAgentPath ();
-			else if (!currentAction.Exec ())
+			else {
+				_agent.updatePosition = false;
+				onAction = true;
+			}
+		}
+
+		if (onAction) {
+			_agent.nextPosition = _agent.transform.position;
+			if (currentAction.Exec ()) {
+				onAction = false;
+				currentAction = null;
+				_agent.updatePosition = true;
 				updateAgentPath ();
+			}
 		}
 	}
 
@@ -209,6 +208,7 @@ public class EntityPath
 		if ((_agent.transform.position - _agent.destination).sqrMagnitude > (_agent.transform.position - _actions [0].pos).sqrMagnitude) {
 			_points.Insert (0, _agent.destination);
 			currentAction = _actions [0];
+			_actions.RemoveAt (0);
 			_agent.SetDestination (currentAction.pos);
 		}
 	}
@@ -220,6 +220,10 @@ public class EntityPath
 			var point = i == 0 ? _agent.destination : _points [i - 1];
 			Debug.DrawLine(oldPoint, point, Color.red);
 		}
+		if (currentAction != null)
+			Debug.DrawLine (_agent.transform.position, currentAction.pos, Color.magenta);
+		if (onAction)
+			Debug.DrawRay (_agent.transform.position, Vector3.up, Color.cyan);
 	}
 
 	public bool Finished()
@@ -281,6 +285,7 @@ public class EntityPath
 
 		while (time < 1) {
 			_agent.transform.position = startLinkPos + dir * time;
+			_agent.nextPosition = _agent.transform.position;
 			float dist = Time.deltaTime * _agent.speed;
 			time += dist / norm;
 			yield return new WaitForFixedUpdate ();
