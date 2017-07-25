@@ -11,11 +11,11 @@ public class Metro : MonoBehaviour {
 	private ExitsTile[] exitsTiles;
 
 	void Start () {
-		tf = transform;
-		mat = tf.Find("Mesh").GetComponent<MeshRenderer> ().material;
+		tf = transform.Find("Mesh");
+		mat = transform.Find("Mesh").GetComponent<MeshRenderer> ().material;
 		mat.color = new Color (mat.color.r, mat.color.g, mat.color.b, 0f);
 		positionToReach = tf.position;
-		startPosition = tf.position - tf.forward * 15f;
+		startPosition = tf.position - tf.right * 15f;
 		exitsTiles = GetComponentsInChildren<ExitsTile> ();
 		foreach (var et in exitsTiles) {
 			et.Unregister ();
@@ -56,6 +56,6 @@ public class Metro : MonoBehaviour {
 			et.Unregister ();
 		}
 		Disappear ();
-		tf.DOMove (tf.position + tf.forward * 15f, G.Sys.constants.MetroComeTime / 2f);
+		tf.DOMove (tf.position + tf.right * 15f, G.Sys.constants.MetroComeTime / 2f);
 	}
 }
