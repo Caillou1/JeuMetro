@@ -60,7 +60,7 @@ public class Traveler : AEntity
 	protected override void Check ()
 	{
 		checkSigns ();
-		checkSit ();
+		checkTiredness ();
 	}
 
 	void checkSigns()
@@ -82,8 +82,12 @@ public class Traveler : AEntity
 		}
 	}
 
-	void checkSit()
+	void checkTiredness()
 	{
+		if (datas.Tiredness > 0.95f && !path.haveAction(ActionType.FAINT)) {
+			path.addAction (new FaintAction (this, transform.position));
+			return;
+		}
 		if (datas.Tiredness < (0.5f - stats.RestPlaceAttraction / 200) || path.haveAction (ActionType.SIT))
 			return;
 		var benchs = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.BENCH, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification);
@@ -118,6 +122,7 @@ public class Traveler : AEntity
 	{
 		updateLostness ();
 		updateSpeed ();
+		updateTiredness ();
 	}
 
 	void updateSpeed()
@@ -138,7 +143,6 @@ public class Traveler : AEntity
 		var signs = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.INFOPANEL, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification).Count;
 
 		datas.Lostness = Mathf.Clamp(datas.Lostness + ((signs == 0 || signs > 3) ? 1 : -1) * stats.LostAbility * stats.LostAbility / 20000 * Time.deltaTime, 0, 1);
-		Debug.Log (datas.Lostness);
 
 		if (datas.Lostness > 0.95f && !isLost) {
 			isLost = true;

@@ -70,7 +70,27 @@ public class EntityPath
 
 	public void addAction(AAction action)
 	{
-		_actions.Add (action);
+		if (action.priority < 0)
+			_actions.Add (action);
+		else {
+			if (action.priority > currentAction.priority && !onAction) {
+				_actions.Insert (0, currentAction);
+				currentAction = action;
+				_agent.SetDestination (currentAction.pos);
+			} else {
+				bool inserted = false;
+				for (int i = 0; i < _actions.Count; i++) {
+					if (_actions [i].priority < action.priority) {
+						_actions.Insert (i, action);
+						inserted = true;
+						break;
+					}
+				}
+				if (!inserted)
+					_actions.Add (action);
+			}
+		}
+
 		if (finished)
 			updateAgentPath ();
 	}
@@ -188,6 +208,8 @@ public class EntityPath
 				updateAgentPath ();
 			else {
 				_agent.updatePosition = false;
+				_agent.updateRotation = false;
+				_agent.updateUpAxis = false;
 				onAction = true;
 			}
 		}
@@ -198,6 +220,8 @@ public class EntityPath
 				onAction = false;
 				currentAction = null;
 				_agent.updatePosition = true;
+				_agent.updateRotation = true;
+				_agent.updateUpAxis = true;
 				updateAgentPath ();
 			}
 		}
@@ -294,5 +318,10 @@ public class EntityPath
 		_agent.updatePosition = true;
 		_agent.transform.position = endPos;
 		isOnOffMeshLink = false;
+	}
+
+	public bool CanStartAction()
+	{
+		return !isOnOffMeshLink;
 	}
 }

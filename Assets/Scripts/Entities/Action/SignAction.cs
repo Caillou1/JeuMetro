@@ -11,7 +11,7 @@ public class SignAction : AEntityAction<Traveler>
 		signPos = sign;
 	}
 
-	public override bool Exec ()
+	protected override bool Update ()
 	{
 		time += Time.deltaTime;
 		if (time >= 2) {

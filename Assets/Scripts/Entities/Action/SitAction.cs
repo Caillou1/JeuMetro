@@ -6,7 +6,6 @@ public class SitAction : AEntityAction<Traveler>
 	float time = 0;
 	BenchTile bench;
 	BenchTile.Side benchSide;
-	bool sit = false;
 
 	public SitAction (Traveler t, Vector3 pos, BenchTile b, BenchTile.Side side) : base(t, ActionType.SIT, pos)
 	{
@@ -14,14 +13,13 @@ public class SitAction : AEntityAction<Traveler>
 		benchSide = side;
 	}
 
-	public override bool Exec ()
+	protected override bool Start ()
 	{
-		if (!sit) {
-			if (!bench.sit (benchSide, entity))
-				return true;
-			sit = true;
-		}
+		return !bench.sit (benchSide, entity);
+	}
 
+	protected override bool Update ()
+	{
 		time += Time.deltaTime;
 
 		if (time > 5) {
@@ -31,4 +29,5 @@ public class SitAction : AEntityAction<Traveler>
 		}
 		return false;
 	}
+
 }
