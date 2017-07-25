@@ -93,4 +93,10 @@ public class BenchTile : ATile
 	{
 		return transform.position + (s == Side.LEFT ? Vector3.zero : Orienter.orientationToDir3 (Orienter.angleToOrientation (transform.rotation.eulerAngles.y))) ;
 	}
+
+	public Vector3 sideToFrontPos(Side s)
+	{
+		var dir = Orienter.orientationToDir (Orienter.angleToOrientation (transform.rotation.eulerAngles.y));
+		return sideToPos (s) + new Vector3 (-dir.y, 0, dir.x);
+	}
 }

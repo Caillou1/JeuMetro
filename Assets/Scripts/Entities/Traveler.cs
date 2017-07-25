@@ -26,7 +26,6 @@ public class Traveler : AEntity
 	protected override void OnUpdate ()
 	{
 		updateDatas ();
-		updateSpeed ();
 		if (G.Sys.tilemap.haveSpecialTileAt (TileID.OUT, transform.position))
 			Destroy (gameObject);
 	}
@@ -61,6 +60,7 @@ public class Traveler : AEntity
 	protected override void Check ()
 	{
 		checkSigns ();
+		checkSit ();
 	}
 
 	void checkSigns()
@@ -82,8 +82,48 @@ public class Traveler : AEntity
 		}
 	}
 
+	void checkSit()
+	{
+		if (datas.Tiredness < (0.5f - stats.RestPlaceAttraction / 200) || path.haveAction (ActionType.SIT))
+			return;
+		var benchs = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.BENCH, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification);
+
+		List<Pair<BenchTile, BenchTile.Side>> validBenchs = new List<Pair<BenchTile, BenchTile.Side>>();
+		foreach (var bPos in benchs) {
+			var	b = G.Sys.tilemap.GetTileOfTypeAt (bPos, TileID.BENCH) as BenchTile;
+			if (b == null)
+				continue;
+
+			foreach (var p in b.freePlaces()) {
+				if(!G.Sys.tilemap.IsEmptyGround(b.sideToFrontPos(p)))
+					continue;
+				validBenchs.Add (new Pair<BenchTile, BenchTile.Side> (b, p));
+			}
+		}
+
+		if (validBenchs.Count == 0)
+			return;
+		var bench = validBenchs [new UniformIntDistribution (validBenchs.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())];
+		path.addAction (new SitAction (this, bench.First.sideToFrontPos (bench.Second), bench.First, bench.Second));
+	}
+
+	void initializeDatas()
+	{
+		datas.Speed = stats.MovementSpeed;
+		datas.Lostness = stats.LostAbility / 100;
+		datas.Tiredness = stats.FaintnessPercentage / 100;
+	}
+
+	void updateDatas()
+	{
+		updateLostness ();
+		updateSpeed ();
+	}
+
 	void updateSpeed()
 	{
+		datas.Speed = stats.MovementSpeed * (2 - datas.Tiredness)/2;
+
 		var tiles = G.Sys.tilemap.at (transform.position);
 		if (tiles.Exists (t => t.type == TileID.ESCALATOR)) {
 			agent.speed = G.Sys.constants.EscalatorSpeed;
@@ -93,13 +133,7 @@ public class Traveler : AEntity
 			agent.speed = datas.Speed;
 	}
 
-	void initializeDatas()
-	{
-		datas.Speed = stats.MovementSpeed;
-		datas.Lostness = stats.LostAbility / 100;
-	}
-
-	void updateDatas()
+	void updateLostness()
 	{
 		var signs = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.INFOPANEL, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification).Count;
 
@@ -115,6 +149,11 @@ public class Traveler : AEntity
 			OnPathFinished ();
 		}
 		path.lostness = datas.Lostness;
+	}
+
+	void updateTiredness()
+	{
+		datas.Tiredness = Mathf.Min (datas.Tiredness + stats.FaintnessPercentage * stats.FaintnessPercentage / 20000 * Time.deltaTime, 1);
 	}
 
 	protected override void OnPathFinished ()

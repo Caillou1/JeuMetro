@@ -4,6 +4,7 @@ using UnityEngine;
 public enum ActionType
 {
 	SIGN,
+	SIT,
 }
 
 public abstract class AAction
