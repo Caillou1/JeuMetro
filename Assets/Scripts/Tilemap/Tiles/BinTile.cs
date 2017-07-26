@@ -27,6 +27,11 @@ public class BinTile : ATile
 		return wasteValue <= 0.1f;
 	}
 
+	public bool isFull()
+	{
+		return wasteValue > 0.99f;
+	}
+
 	protected override void Awake()
     {
 		type = TileID.BIN;

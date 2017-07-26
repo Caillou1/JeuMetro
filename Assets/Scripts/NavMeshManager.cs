@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
 
+using System.Threading;
+
 
 public class NavMeshManager : MonoBehaviour 
 {

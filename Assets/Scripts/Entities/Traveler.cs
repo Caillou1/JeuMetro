@@ -114,7 +114,7 @@ public class Traveler : AEntity
 
 	void checkWaste()
 	{
-		/*if (datas.Waste < 0.01f || path.haveAction(ActionType.THROW_IN_BIN) || path.haveAction(ActionType.THROW_IN_GROUND))
+		if (datas.Waste < 0.01f || path.haveAction(ActionType.THROW_IN_BIN) || path.haveAction(ActionType.THROW_IN_GROUND))
 			return;
 
 		if (datas.Dirtiness > 0.95f) {
@@ -128,18 +128,40 @@ public class Traveler : AEntity
 		float bestDistance = float.MaxValue;
 		foreach (var binPos in bins) {
 			var bin = G.Sys.tilemap.GetTileOfTypeAt (binPos, TileID.BIN) as BinTile;
-
+			if (bin.isFull())
+				continue;
+			var d = (transform.position - binPos).sqrMagnitude;
+			if (d < bestDistance) {
+				bestDistance = d;
+				bestBin = bin;
+			}
 		}
-		*/
+
+		if (bestBin == null)
+			return;
+
+		List<Vector3> validPos = new List<Vector3>();
+		var pos = bestBin.transform.position;
+		if (G.Sys.tilemap.IsEmptyGround (pos + Vector3.forward))
+			validPos.Add (pos + Vector3.forward);
+		if (G.Sys.tilemap.IsEmptyGround (pos + Vector3.back))
+			validPos.Add (pos + Vector3.back);
+		if (G.Sys.tilemap.IsEmptyGround (pos + Vector3.left))
+			validPos.Add (pos + Vector3.left);
+		if (G.Sys.tilemap.IsEmptyGround (pos + Vector3.right))
+			validPos.Add (pos + Vector3.right);
+		
+		path.addAction(new ThrowInBinAction(this, validPos[new UniformIntDistribution(validPos.Count-1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())], bestBin));
 	}
 
 	void initializeDatas()
 	{
+		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
 		datas.Speed = stats.MovementSpeed;
 		datas.Lostness = stats.LostAbility / 100;
 		datas.Tiredness = stats.FaintnessPercentage / 100;
 		datas.Dirtiness = 1 - (stats.Cleanliness / 100);
-		datas.Waste = new UniformFloatDistribution (0.25f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());
+		datas.Waste = new BernoulliDistribution().Next(gen) ? new UniformFloatDistribution (0.25f).Next (gen) : 0;
 	}
 
 	void updateDatas()
