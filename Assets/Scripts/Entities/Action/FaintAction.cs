@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class FaintAction : AEntityAction<Traveler>
 {
-	public FaintAction (Traveler t, Vector3 pos) : base(t, ActionType.FAINT, pos, 100)
+	public FaintAction (Traveler t) : base(t, ActionType.FAINT, t.transform.position, 100)
 	{
 		
 	}

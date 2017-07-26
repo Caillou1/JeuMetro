@@ -25,13 +25,13 @@ public class TravelerStats {
 	[Range(-100f,100f)]
 	public float RestPlaceAttraction;
 	[Range(-100f,100f)]
-	public float Cleanliness;
-	[Range(-100f,100f)]
 	public float VisualComprehension;
 	[Range(-100f,100f)]
 	public float AudioComprehension;
 	[Range(-100f,100f)]
 	public float TouchComprehension;
+	[Range(0f,100f)]
+	public float Cleanliness;
 	[Range(0f,100f)]
 	public float FaintnessPercentage;
 	[Range(0f,100f)]

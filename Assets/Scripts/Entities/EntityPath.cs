@@ -106,6 +106,11 @@ public class EntityPath
 		_actions.Clear ();
 	}
 
+	public void removeActionOfType(ActionType type)
+	{
+		_actions.RemoveAll (a => a.type == type);
+	}
+
 	void updatePath()
 	{
 		_agent.SetDestination (_destination);
@@ -322,6 +327,6 @@ public class EntityPath
 
 	public bool CanStartAction()
 	{
-		return !isOnOffMeshLink;
+		return !isOnOffMeshLink && G.Sys.tilemap.IsEmptyGround (_agent.transform.position) && !onAction;
 	}
 }

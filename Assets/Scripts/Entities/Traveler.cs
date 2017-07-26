@@ -61,6 +61,7 @@ public class Traveler : AEntity
 	{
 		checkSigns ();
 		checkTiredness ();
+		checkWaste ();
 	}
 
 	void checkSigns()
@@ -85,7 +86,7 @@ public class Traveler : AEntity
 	void checkTiredness()
 	{
 		if (datas.Tiredness > 0.95f && !path.haveAction(ActionType.FAINT)) {
-			path.addAction (new FaintAction (this, transform.position));
+			path.addAction (new FaintAction (this));
 			return;
 		}
 		if (datas.Tiredness < (0.5f - stats.RestPlaceAttraction / 200) || path.haveAction (ActionType.SIT))
@@ -111,18 +112,44 @@ public class Traveler : AEntity
 		path.addAction (new SitAction (this, bench.First.sideToFrontPos (bench.Second), bench.First, bench.Second));
 	}
 
+	void checkWaste()
+	{
+		/*if (datas.Waste < 0.01f || path.haveAction(ActionType.THROW_IN_BIN) || path.haveAction(ActionType.THROW_IN_GROUND))
+			return;
+
+		if (datas.Dirtiness > 0.95f) {
+			path.addAction (new ThrowInGroundAction (this));
+			return;
+		}
+
+		var bins = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.BIN, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification);
+
+		BinTile bestBin = null;
+		float bestDistance = float.MaxValue;
+		foreach (var binPos in bins) {
+			var bin = G.Sys.tilemap.GetTileOfTypeAt (binPos, TileID.BIN) as BinTile;
+
+		}
+		*/
+	}
+
 	void initializeDatas()
 	{
 		datas.Speed = stats.MovementSpeed;
 		datas.Lostness = stats.LostAbility / 100;
 		datas.Tiredness = stats.FaintnessPercentage / 100;
+		datas.Dirtiness = 1 - (stats.Cleanliness / 100);
+		datas.Waste = new UniformFloatDistribution (0.25f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());
 	}
 
 	void updateDatas()
 	{
+		if (!path.CanStartAction())
+			return;
 		updateLostness ();
 		updateSpeed ();
 		updateTiredness ();
+		updateDirtiness ();
 	}
 
 	void updateSpeed()
@@ -158,6 +185,11 @@ public class Traveler : AEntity
 	void updateTiredness()
 	{
 		datas.Tiredness = Mathf.Min (datas.Tiredness + stats.FaintnessPercentage * stats.FaintnessPercentage / 20000 * Time.deltaTime, 1);
+	}
+
+	void updateDirtiness()
+	{
+		datas.Dirtiness = Mathf.Min (datas.Dirtiness + (1 - (stats.Cleanliness * stats.Cleanliness / 10000)) * datas.Waste * datas.Waste * Time.deltaTime);
 	}
 
 	protected override void OnPathFinished ()

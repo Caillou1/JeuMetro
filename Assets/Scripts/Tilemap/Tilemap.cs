@@ -457,7 +457,9 @@ public class Tilemap
 	public bool IsEmptyGround(Vector3 pos)
 	{
 		var tiles = at (pos);
-		return tiles.Count == 1 && tiles [0].type == TileID.GROUND;
+		if (tiles.Count == 1 && tiles [0].type == TileID.GROUND)
+			return true;
+		return tiles.Count == 2 && tiles.Exists (t => t.type == TileID.GROUND) && tiles.Exists (t => t.type == TileID.PODOTACTILE);
 	}
 
 	public bool IsEmpty(Vector3 pos) {

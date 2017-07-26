@@ -12,6 +12,11 @@ public class BinTile : ATile
 		set{ wasteValue = value; }
 	}
 
+	public float freeSpace()
+	{
+		return 1 - wasteValue;
+	}
+
 	public bool canContain(float _waste)
 	{
 		return wasteValue + _waste <= 1;

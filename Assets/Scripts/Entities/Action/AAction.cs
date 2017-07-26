@@ -6,6 +6,8 @@ public enum ActionType
 	SIGN,
 	SIT,
 	FAINT,
+	THROW_IN_BIN,
+	THROW_IN_GROUND,
 }
 
 public abstract class AAction
