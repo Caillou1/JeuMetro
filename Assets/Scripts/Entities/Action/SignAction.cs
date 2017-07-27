@@ -14,10 +14,11 @@ public class SignAction : AEntityAction<Traveler>
 	protected override bool Update ()
 	{
 		time += Time.deltaTime;
-		if (time >= 2) {
-			entity.datas.Lostness = 0;
-			return true;
-		}
-		return false;
+		return time > 0;
+	}
+
+	protected override void End ()
+	{
+		entity.datas.Lostness = 0;
 	}
 }

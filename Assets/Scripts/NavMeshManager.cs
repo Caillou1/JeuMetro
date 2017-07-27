@@ -12,12 +12,16 @@ public class NavMeshManager : MonoBehaviour
 	List<NavMeshSurface> navmesh;
 	SubscriberList subscriberList = new SubscriberList();
 
+	bool needToBuild = false;
+
 	void Awake () 
 	{
 		navmesh = GetComponents<NavMeshSurface> ().ToList();
 
 		subscriberList.Add (new Event<BakeNavMeshEvent>.Subscriber (onBakeEvent));
 		subscriberList.Subscribe ();
+
+		StartCoroutine (buildNavmeshCoroutine ());
 	}
 
 	void onDestroy()
@@ -27,7 +31,21 @@ public class NavMeshManager : MonoBehaviour
 
 	void onBakeEvent(BakeNavMeshEvent e)
 	{
-		foreach (var n in navmesh)
-			n.BuildNavMesh ();
+		needToBuild = true;
+	}
+
+	IEnumerator buildNavmeshCoroutine()
+	{
+		while (true) {
+			if (!needToBuild) {
+				yield return new WaitForEndOfFrame ();
+			} else {
+				needToBuild = false;
+				foreach (var n in navmesh) {
+					n.BuildNavMesh ();
+					yield return new WaitForEndOfFrame ();
+				}
+			}
+		}
 	}
 }

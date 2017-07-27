@@ -456,10 +456,20 @@ public class Tilemap
 
 	public bool IsEmptyGround(Vector3 pos)
 	{
+		var validTiles = new TileID[]{ TileID.GROUND, TileID.PODOTACTILE, TileID.WASTE };
+
 		var tiles = at (pos);
-		if (tiles.Count == 1 && tiles [0].type == TileID.GROUND)
-			return true;
-		return tiles.Count == 2 && tiles.Exists (t => t.type == TileID.GROUND) && tiles.Exists (t => t.type == TileID.PODOTACTILE);
+		if (tiles.Count == 0)
+			return false;
+
+		if (!tiles.Exists (t => t.type == TileID.GROUND))
+			return false;
+		
+		foreach (var t in tiles) {
+			if (!validTiles.Contains (t.type))
+				return false;
+		}
+		return true;
 	}
 
 	public bool IsEmpty(Vector3 pos) {

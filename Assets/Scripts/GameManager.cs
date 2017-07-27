@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         G.Sys.gameManager = this;
+		StartCoroutine (updateTravelersDatasCoroutine ());
     }
 
 	void Start ()
@@ -32,6 +33,16 @@ public class GameManager : MonoBehaviour
 		StartCoroutine (spawnCoroutine ());
 		G.Sys.tilemap.UpdateGlobalBounds ();
 		InstantiateColliders ();
+	}
+
+	IEnumerator updateTravelersDatasCoroutine()
+	{
+		const float time = 0.1f;
+		while (true) {
+			for(int i = 0 ; i < G.Sys.travelerCount() ; i++)
+				G.Sys.traveler(i).updateDatas (time);
+			yield return new WaitForSeconds (time);
+		}
 	}
 
 	void InstantiateColliders() {

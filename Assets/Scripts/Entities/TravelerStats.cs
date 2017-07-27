@@ -35,6 +35,8 @@ public class TravelerStats {
 	[Range(0f,100f)]
 	public float FaintnessPercentage;
 	[Range(0f,100f)]
+	public float FraudPercentage;
+	[Range(0f,100f)]
 	public float LostAbility;
 	public float MovementSpeed;
 	[HideInInspector]

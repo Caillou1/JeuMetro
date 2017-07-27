@@ -21,13 +21,13 @@ public class SitAction : AEntityAction<Traveler>
 	protected override bool Update ()
 	{
 		time += Time.deltaTime;
+		return time > 5;
+	}
 
-		if (time > 5) {
-			entity.datas.Tiredness = 0;
-			bench.leave (benchSide, entity);
-			return true;
-		}
-		return false;
+	protected override void End ()
+	{
+		entity.datas.Tiredness = 0;
+		bench.leave (benchSide, entity);
 	}
 
 }

@@ -6,20 +6,25 @@ using UnityEngine;
 
 public class WasteTile : ATile
 {
-	private bool _canBeCleaned;
+	bool _bigWaste = false;
+	GameObject _bigWasteObject;
 
-	public bool CanBeCleaned {
-		get {
-			return _canBeCleaned;
-		}
+	public bool big
+	{
+		get{ return _bigWaste; }
 		set {
-			_canBeCleaned = value;
+			if (_bigWaste != value) {
+				_bigWaste = value;
+				_bigWasteObject.SetActive (_bigWaste);
+				Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
+			}
 		}
 	}
 
 	protected override void Awake()
     {
-		_canBeCleaned = true;
+		_bigWasteObject = transform.Find ("LVL2").gameObject;
+		_bigWasteObject.SetActive (false);
 
 		type = TileID.WASTE;
 

@@ -8,6 +8,8 @@ public enum ActionType
 	FAINT,
 	THROW_IN_BIN,
 	THROW_IN_GROUND,
+	BUY_FOOD,
+	BUY_TICKET,
 }
 
 public abstract class AAction

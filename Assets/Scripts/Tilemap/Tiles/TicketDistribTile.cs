@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class TicketDistribTile : ATile
 {
+	public int price = 1;
+
 	protected override void Awake()
 	{
 		type = TileID.TICKETDISTRIBUTEUR;

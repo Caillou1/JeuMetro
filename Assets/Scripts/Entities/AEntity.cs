@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections;
 
 public abstract class AEntity : MonoBehaviour 
 {
@@ -12,6 +13,8 @@ public abstract class AEntity : MonoBehaviour
 	{
 		agent = GetComponent<NavMeshAgent> ();
 		path = new EntityPath (agent);
+
+		StartCoroutine (checkCoroutine ());
 
 		OnAwake ();
 	}
@@ -37,8 +40,6 @@ public abstract class AEntity : MonoBehaviour
 			OnPathFinished ();
 
 		path.Update ();
-		if (!path.IsOnAction () && path.CanStartAction())
-			Check ();
 
 		OnUpdate ();
 	}
@@ -51,6 +52,16 @@ public abstract class AEntity : MonoBehaviour
 	protected virtual void OnPathFinished()
 	{
 
+	}
+
+	IEnumerator checkCoroutine()
+	{
+		while (true) {
+			if (!path.IsOnAction () && path.CanStartAction())
+				Check ();
+
+			yield return new WaitForSeconds (0.2f);
+		}
 	}
 
 	protected virtual void Check()

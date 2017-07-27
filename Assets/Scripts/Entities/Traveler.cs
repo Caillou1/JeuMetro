@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NRand;
@@ -25,7 +26,7 @@ public class Traveler : AEntity
 
 	protected override void OnUpdate ()
 	{
-		updateDatas ();
+		//updateDatas ();
 		if (G.Sys.tilemap.haveSpecialTileAt (TileID.OUT, transform.position))
 			Destroy (gameObject);
 	}
@@ -62,6 +63,7 @@ public class Traveler : AEntity
 		checkSigns ();
 		checkTiredness ();
 		checkWaste ();
+		checkHunger ();
 	}
 
 	void checkSigns()
@@ -118,7 +120,24 @@ public class Traveler : AEntity
 			return;
 
 		if (datas.Dirtiness > 0.95f) {
-			path.addAction (new ThrowInGroundAction (this));
+			List<Pair<Vector3, ATile>> surrondingTiles = new List<Pair<Vector3, ATile>>();
+			surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position, G.Sys.tilemap.GetTileOfTypeAt (transform.position, TileID.WASTE)));
+			surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position + Vector3.left, G.Sys.tilemap.GetTileOfTypeAt (transform.position + Vector3.left, TileID.WASTE)));
+			surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position + Vector3.right, G.Sys.tilemap.GetTileOfTypeAt (transform.position + Vector3.right, TileID.WASTE)));
+			surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position + Vector3.forward, G.Sys.tilemap.GetTileOfTypeAt (transform.position + Vector3.forward, TileID.WASTE)));
+			surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position + Vector3.back, G.Sys.tilemap.GetTileOfTypeAt (transform.position + Vector3.back, TileID.WASTE)));
+			if (surrondingTiles [0].Second == null)
+				path.addAction (new ThrowInGroundAction (this, transform.position, false));
+			else if (surrondingTiles.FindIndex (t => t.Second == null) < 0)
+				path.addAction (new ThrowInGroundAction (this, transform.position, true));
+			else {
+				List<Vector3> freeTiles = new List<Vector3> ();
+				foreach (var t in surrondingTiles)
+					if (t.Second == null)
+						freeTiles.Add (t.First);
+				path.addAction (new ThrowInGroundAction (this, freeTiles[new UniformIntDistribution (freeTiles.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())], true));
+			}
+			
 			return;
 		}
 
@@ -154,6 +173,36 @@ public class Traveler : AEntity
 		path.addAction(new ThrowInBinAction(this, validPos[new UniformIntDistribution(validPos.Count-1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())], bestBin));
 	}
 
+	void checkHunger()
+	{
+		if (datas.Hunger < 0.95f)
+			return;
+
+		var tiles = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.FOODDISTRIBUTEUR, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification);
+		ATile bestTile = null;
+		float bestDistance = float.MaxValue;
+		bool found = false;
+		foreach (var value in tiles) {
+			var t = G.Sys.tilemap.GetTileOfTypeAt (value, TileID.FOODDISTRIBUTEUR);
+			if (t == null)
+				continue;
+			if (!G.Sys.tilemap.IsEmptyGround (t.transform.position + Orienter.orientationToDir3 (Orienter.angleToOrientation (t.transform.rotation.eulerAngles.y))))
+				continue;
+			
+			var d = (value - transform.position).sqrMagnitude;
+			if (d < bestDistance) {
+				found = true;
+				bestTile = t;
+				bestDistance = d;
+			}
+		}
+		if (!found)
+			return;
+
+		var pos = bestTile.transform.position + Orienter.orientationToDir3 (Orienter.angleToOrientation (bestTile.transform.rotation.eulerAngles.y));
+		path.addAction(new BuyFoodAction(this, pos, bestTile as FoodDistribTile));
+	}
+
 	void initializeDatas()
 	{
 		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
@@ -162,16 +211,20 @@ public class Traveler : AEntity
 		datas.Tiredness = stats.FaintnessPercentage / 100;
 		datas.Dirtiness = 1 - (stats.Cleanliness / 100);
 		datas.Waste = new BernoulliDistribution().Next(gen) ? new UniformFloatDistribution (0.25f).Next (gen) : 0;
+		datas.Hunger = new UniformFloatDistribution (0.5f).Next (gen);
+		datas.HasTicket = new BernoulliDistribution ().Next (gen);
+		datas.Fraud = new BernoulliDistribution (stats.FraudPercentage / 100).Next (gen);
 	}
 
-	void updateDatas()
+	public void updateDatas(float time)
 	{
 		if (!path.CanStartAction())
 			return;
-		updateLostness ();
+		updateLostness (time);
+		updateTiredness (time);
+		updateDirtiness (time);
+
 		updateSpeed ();
-		updateTiredness ();
-		updateDirtiness ();
 	}
 
 	void updateSpeed()
@@ -187,11 +240,11 @@ public class Traveler : AEntity
 			agent.speed = datas.Speed;
 	}
 
-	void updateLostness()
+	void updateLostness(float time)
 	{
 		var signs = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.INFOPANEL, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification).Count;
 
-		datas.Lostness = Mathf.Clamp(datas.Lostness + ((signs == 0 || signs > 3) ? 1 : -1) * stats.LostAbility * stats.LostAbility / 20000 * Time.deltaTime, 0, 1);
+		datas.Lostness = Mathf.Clamp(datas.Lostness + ((signs == 0 || signs > 3) ? 1 : -1) * stats.LostAbility * stats.LostAbility / 20000 * time, 0, 1);
 
 		if (datas.Lostness > 0.95f && !isLost) {
 			isLost = true;
@@ -204,14 +257,15 @@ public class Traveler : AEntity
 		path.lostness = datas.Lostness;
 	}
 
-	void updateTiredness()
+	void updateTiredness(float time)
 	{
-		datas.Tiredness = Mathf.Min (datas.Tiredness + stats.FaintnessPercentage * stats.FaintnessPercentage / 20000 * Time.deltaTime, 1);
+		datas.Tiredness = Mathf.Min (datas.Tiredness + stats.FaintnessPercentage * stats.FaintnessPercentage / 20000 * time, 1);
+		datas.Hunger = Mathf.Min (datas.Hunger + datas.Tiredness * datas.Tiredness * time, 1);
 	}
 
-	void updateDirtiness()
+	void updateDirtiness(float time)
 	{
-		datas.Dirtiness = Mathf.Min (datas.Dirtiness + (1 - (stats.Cleanliness * stats.Cleanliness / 10000)) * datas.Waste * datas.Waste * Time.deltaTime);
+		datas.Dirtiness = Mathf.Min (datas.Dirtiness + (1 - (stats.Cleanliness * stats.Cleanliness / 10000)) * datas.Waste * datas.Waste * time);
 	}
 
 	protected override void OnPathFinished ()

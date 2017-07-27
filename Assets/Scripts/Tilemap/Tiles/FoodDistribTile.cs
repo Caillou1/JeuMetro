@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class FoodDistribTile : ATile
 {
+	public int price = 1;
+
 	protected override void Awake()
 	{
 		type = TileID.FOODDISTRIBUTEUR;
