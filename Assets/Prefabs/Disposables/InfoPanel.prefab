@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 95725080994366642}
   - component: {fileID: 114461975633515138}
   - component: {fileID: 65039624758289114}
+  - component: {fileID: 114737387483074412}
   m_Layer: 8
   m_Name: NotWalled
   m_TagString: Untagged
@@ -60,6 +61,7 @@ GameObject:
   - component: {fileID: 33564575602100040}
   - component: {fileID: 23174068995733002}
   - component: {fileID: 95500763645176182}
+  - component: {fileID: 114155619445559620}
   - component: {fileID: 65852149091056770}
   - component: {fileID: 114555930009512862}
   m_Layer: 8
@@ -260,6 +262,21 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114155619445559620
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1904706021406954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114461975633515138
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -314,3 +331,18 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &114737387483074412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1281070120490248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []

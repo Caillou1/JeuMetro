@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NRand;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,9 +16,6 @@ public class GameManager : MonoBehaviour
 	public int StartingMoney = 0;
 
 	private int money;
-	private float time;
-	private float startTime;
-	private float totalTime;
 
     void Awake()
     {
@@ -74,18 +72,6 @@ public class GameManager : MonoBehaviour
 
 	public void InstantiateEmptyWallAt(Vector3 pos) {
 		Instantiate (emptyWall, pos, Quaternion.identity, tf);
-	}
-
-	public void StartTimer(float t) {
-		startTime = Time.time;
-		time = t;
-		totalTime = t;
-	}
-	
-	void Update ()
-    {
-		time = totalTime - Time.time + startTime;
-		G.Sys.menuManager.SetPieTime (1f-(time/totalTime), (int)time);
 	}
 
 	public void AddMoney(int m) {

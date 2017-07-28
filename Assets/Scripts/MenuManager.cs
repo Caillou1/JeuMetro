@@ -53,6 +53,7 @@ public class MenuManager : MonoBehaviour {
 	private int ShopIndex = 0;
 
 	void Awake() {
+		Time.timeScale = 1f;
 		G.Sys.menuManager = this;
 
 		cameraTransform = G.Sys.MainCamera.transform;
@@ -209,7 +210,7 @@ public class MenuManager : MonoBehaviour {
 
 	public void Zoom() {
 		CurrentZoomLevel = (CurrentZoomLevel + 1) % ZoomLevels.Length;
-		cameraTransform.position = cameraOrigin - cameraTransform.forward * ZoomLevels [CurrentZoomLevel];
+		cameraTransform.position = cameraOrigin - cameraTransform.forward * ZoomLevels[CurrentZoomLevel];
 	}
 
 	public void Zoom(float ZoomPower) {
@@ -232,7 +233,7 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Play() {
-		Debug.Log ("Play");
+		SceneManager.LoadScene ("Pierre2");
 	}
 
 	public void MainMenu() {

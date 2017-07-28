@@ -110,12 +110,14 @@ public class CleanerEscalatorState : ACleanerState
 			break;
 		case 1:
 			{
-				var dest = escalator.transform.position - stairsDir + 2 * Vector3.up;
-				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
-				cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (cleaner.rigidbody.velocity.x, 0, cleaner.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
+				if (escalator != null) {
+					var dest = escalator.transform.position - stairsDir + 2 * Vector3.up;
+					cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
+					cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (cleaner.rigidbody.velocity.x, 0, cleaner.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
-				if (new Vector3i (dest).equal (new Vector3i (cleaner.transform.position)))
-					state = 2;
+					if (new Vector3i (dest).equal (new Vector3i (cleaner.transform.position)))
+						state = 2;
+				}
 			}
 			break;
 		case 2:
@@ -149,12 +151,14 @@ public class CleanerEscalatorState : ACleanerState
 			break;
 		case 1:
 			{
-				var dest = escalator.transform.position + 2 * stairsDir ;
-				cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
-				cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (cleaner.rigidbody.velocity.x, 0, cleaner.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
+				if (escalator != null) {
+					var dest = escalator.transform.position + 2 * stairsDir;
+					cleaner.rigidbody.velocity = (dest - cleaner.transform.position).normalized * G.Sys.constants.EscalatorSpeed;
+					cleaner.transform.rotation = Quaternion.Euler (0, Quaternion.LookRotation (new Vector3 (cleaner.rigidbody.velocity.x, 0, cleaner.rigidbody.velocity.z), Vector3.up).eulerAngles.y, 0);
 
-				if (new Vector3i (dest).equal (new Vector3i (cleaner.transform.position)))
-					state = 2;
+					if (new Vector3i (dest).equal (new Vector3i (cleaner.transform.position)))
+						state = 2;
+				}
 			}
 			break;
 		case 2:

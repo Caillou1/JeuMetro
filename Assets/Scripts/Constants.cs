@@ -24,6 +24,10 @@ public class Constants : MonoBehaviour
 	public float travelerLostVariance = 3;
 	[Tooltip("Temps que met un agent pour aider un voyageur ayant fait un malaise")]
 	public float HelpTime;
+	[Tooltip("Temps que met un métro pour arriver à quai")]
+	public float MetroComeTime;
+	[Tooltip("Temps qu'attend un métro à quai")]
+	public float MetroWaitTime;
 
 	void Awake()
 	{

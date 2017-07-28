@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 95563766480734872}
   - component: {fileID: 65313605788831572}
   - component: {fileID: 114811781379821516}
+  - component: {fileID: 114624606653336934}
   m_Layer: 8
   m_Name: borne_billet
   m_TagString: Untagged
@@ -169,6 +170,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Price: 150
   CanDrag: 0
+--- !u!114 &114624606653336934
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1399568049572582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114811781379821516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -195,4 +211,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73309a794487e47c7a56ba6695b2abe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetOf: []
+  price: 1

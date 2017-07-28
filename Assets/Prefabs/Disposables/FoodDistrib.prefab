@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 23299158167583328}
   - component: {fileID: 95733574883046640}
   - component: {fileID: 65001704876721776}
+  - component: {fileID: 114580852309261098}
   - component: {fileID: 114416006360931554}
   m_Layer: 8
   m_Name: distributeur
@@ -62,7 +63,7 @@ Transform:
   - {fileID: 4395681176419838}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!4 &4395681176419838
 Transform:
   m_ObjectHideFlags: 1
@@ -184,6 +185,21 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &114580852309261098
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1627785087799132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114851686609970422
 MonoBehaviour:
   m_ObjectHideFlags: 1
