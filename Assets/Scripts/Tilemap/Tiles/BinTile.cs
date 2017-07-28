@@ -6,10 +6,20 @@ using UnityEngine;
 
 public class BinTile : ATile
 {
-	private float wasteValue = 0;
+	bool targetted = false;
+	private float wasteValue = 0f;
 	public float waste {
 		get { return wasteValue; }
 		set{ wasteValue = value; }
+	}
+
+	public bool Targetted {
+		get {
+			return targetted;
+		}
+		set {
+			targetted = value;
+		}
 	}
 
 	public float freeSpace()

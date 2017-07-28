@@ -10,6 +10,9 @@ public enum ActionType
 	THROW_IN_GROUND,
 	BUY_FOOD,
 	BUY_TICKET,
+	CLEAN_WASTE,
+	CLEAN_BIN,
+	HELP_TRAVELER,
 }
 
 public abstract class AAction

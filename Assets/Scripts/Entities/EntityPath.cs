@@ -113,6 +113,7 @@ public class EntityPath
 
 	void updatePath()
 	{
+		finished = false;
 		_agent.SetDestination (_destination);
 		if (_agent.pathPending)
 			pathPending = true;
