@@ -14,7 +14,6 @@ public class Cleaner : AEntity
 	{
 		//path.lostness = 0.5f;
 		initializeDatas();
-		path.destnation = transform.position + Vector3.left * 5;OnPathFinished ();
 	}
 
 	protected override void OnUpdate ()

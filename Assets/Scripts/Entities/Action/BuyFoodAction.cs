@@ -25,4 +25,3 @@ public class BuyFoodAction : AEntityAction<Traveler>
 		G.Sys.gameManager.AddMoney (foodDistrib.price);
 	}
 }
-

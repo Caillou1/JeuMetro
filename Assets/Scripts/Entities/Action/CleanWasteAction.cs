@@ -14,7 +14,7 @@ public class CleanWasteAction : AEntityAction<Cleaner>
 	protected override bool Update ()
 	{
 		time += Time.deltaTime;
-		return time > G.Sys.constants.WasteCleanTime;
+		return time > G.Sys.constants.WasteCleanTime * (wasteTile.big ? 2 : 1);
 	}
 
 	protected override void End ()
