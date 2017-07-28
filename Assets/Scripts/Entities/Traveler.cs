@@ -64,6 +64,7 @@ public class Traveler : AEntity
 		checkTiredness ();
 		checkWaste ();
 		checkHunger ();
+		checkTicket ();
 	}
 
 	void checkSigns()
@@ -175,7 +176,7 @@ public class Traveler : AEntity
 
 	void checkHunger()
 	{
-		if (datas.Hunger < 0.95f)
+		if (datas.Hunger < 0.95f || path.haveAction(ActionType.BUY_FOOD))
 			return;
 
 		var tiles = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.FOODDISTRIBUTEUR, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification);
@@ -186,7 +187,8 @@ public class Traveler : AEntity
 			var t = G.Sys.tilemap.GetTileOfTypeAt (value, TileID.FOODDISTRIBUTEUR);
 			if (t == null)
 				continue;
-			if (!G.Sys.tilemap.IsEmptyGround (t.transform.position + Orienter.orientationToDir3 (Orienter.angleToOrientation (t.transform.rotation.eulerAngles.y))))
+			var dir = Orienter.orientationToDir (Orienter.angleToOrientation (t.transform.rotation.eulerAngles.y));
+			if (!G.Sys.tilemap.IsEmptyGround (t.transform.position + new Vector3(-dir.y, 0, dir.x)))
 				continue;
 			
 			var d = (value - transform.position).sqrMagnitude;
@@ -199,8 +201,41 @@ public class Traveler : AEntity
 		if (!found)
 			return;
 
-		var pos = bestTile.transform.position + Orienter.orientationToDir3 (Orienter.angleToOrientation (bestTile.transform.rotation.eulerAngles.y));
-		path.addAction(new BuyFoodAction(this, pos, bestTile as FoodDistribTile));
+		var bestDir = Orienter.orientationToDir (Orienter.angleToOrientation (bestTile.transform.rotation.eulerAngles.y));
+		path.addAction(new BuyFoodAction(this, bestTile.transform.position + new Vector3(-bestDir.y, 0, bestDir.x), bestTile as FoodDistribTile));
+	}
+
+
+	void checkTicket ()
+	{
+		if (datas.HasTicket || datas.Fraud ||path.haveAction(ActionType.BUY_TICKET))
+			return;
+
+		var tiles = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.TICKETDISTRIBUTEUR, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification);
+		ATile bestTile = null;
+		float bestDistance = float.MaxValue;
+		bool found = false;
+		foreach (var value in tiles) {
+			var t = G.Sys.tilemap.GetTileOfTypeAt (value, TileID.TICKETDISTRIBUTEUR);
+			if (t == null)
+				continue;
+			var dir = Orienter.orientationToDir (Orienter.angleToOrientation (t.transform.rotation.eulerAngles.y));
+			if (!G.Sys.tilemap.IsEmptyGround (t.transform.position + new Vector3(-dir.y, 0, dir.x)))
+				continue;
+
+			var d = (value - transform.position).sqrMagnitude;
+			if (d < bestDistance) {
+				found = true;
+				bestTile = t;
+				bestDistance = d;
+			}
+		}
+		if (!found)
+			return;
+
+		var bestDir = Orienter.orientationToDir (Orienter.angleToOrientation (bestTile.transform.rotation.eulerAngles.y));
+		path.addAction(new BuyTicketAction(this, bestTile.transform.position + new Vector3(-bestDir.y, 0, bestDir.x), bestTile as TicketDistribTile));
+
 	}
 
 	void initializeDatas()
@@ -214,6 +249,7 @@ public class Traveler : AEntity
 		datas.Hunger = new UniformFloatDistribution (0.5f).Next (gen);
 		datas.HasTicket = new BernoulliDistribution ().Next (gen);
 		datas.Fraud = new BernoulliDistribution (stats.FraudPercentage / 100).Next (gen);
+		datas.LostNoTicket = false;
 	}
 
 	public void updateDatas(float time)
