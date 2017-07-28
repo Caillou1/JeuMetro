@@ -19,22 +19,28 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-		G.Sys.gameManager = this;
-
-		/*if (SceneManager.GetActiveScene ().name.ToLower().Contains("sidney")) {
-			Application.OpenURL ("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-			EditorUtility.DisplayDialog ("FATAL ERROR", "YOU HAVE BEEN RICK ROLLED", "I AM A NOOB");
-			Debug.LogError ("You've been Rickrolled !");
-		}*/
+        G.Sys.gameManager = this;
+		StartCoroutine (updateTravelersDatasCoroutine ());
     }
 
 	void Start ()
     {
+		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 		tf = transform;
 		AddMoney (StartingMoney);
-		//StartCoroutine (spawnCoroutine ());
+		StartCoroutine (spawnCoroutine ());
 		G.Sys.tilemap.UpdateGlobalBounds ();
 		InstantiateColliders ();
+	}
+
+	IEnumerator updateTravelersDatasCoroutine()
+	{
+		const float time = 0.1f;
+		while (true) {
+			for(int i = 0 ; i < G.Sys.travelerCount() ; i++)
+				G.Sys.traveler(i).updateDatas (time);
+			yield return new WaitForSeconds (time);
+		}
 	}
 
 	void InstantiateColliders() {
@@ -94,10 +100,17 @@ public class GameManager : MonoBehaviour
 			var doors = G.Sys.tilemap.getSpecialTiles (TileID.IN);
 			var door = doors [new UniformIntDistribution (doors.Count-1).Next (gen)];
 			var e = Instantiate (entities [dType.Next (gen)], door, new Quaternion ());
-			var d = G.Sys.tilemap.tilesOfTypeAt (door, TileID.IN) [0];
-			var tiles = d.connectedTiles;
-			if(tiles.Count != 0)
-				e.transform.rotation = Quaternion.LookRotation (tiles[new UniformIntDistribution(tiles.Count-1).Next(gen)].Second.toVector3 () - e.transform.position, Vector3.up);
+			var dir = new Vector3[]{ Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
+			var validDir = new List<Vector3> ();
+			foreach(var d in dir)
+			{
+				var tiles = G.Sys.tilemap.at (door + d);
+				if (tiles.Count == 0 && tiles [0].type == TileID.GROUND)
+					validDir.Add (door + d);
+			}
+		
+			if(validDir.Count != 0)
+				e.transform.rotation = Quaternion.LookRotation (validDir[new UniformIntDistribution(validDir.Count-1).Next(gen)] - e.transform.position, Vector3.up);
 		}
 	}
 }

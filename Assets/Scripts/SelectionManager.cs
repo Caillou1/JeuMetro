@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class SelectionManager : MonoBehaviour {
 	private DragAndDrop obj;
 	private DragAndDropEntity ent;
@@ -141,9 +142,9 @@ public class SelectionManager : MonoBehaviour {
 		var e = obj.GetComponent<EscalatorTile> ();
 		if (e != null) {
 			if (e.side == EscalatorSide.DOWN) {
-				e.SetSide (EscalatorSide.UP);
+				e.side = EscalatorSide.UP;
 			} else {
-				e.SetSide (EscalatorSide.DOWN);
+				e.side = EscalatorSide.DOWN;
 			}
 		}
 	}
