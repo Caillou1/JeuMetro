@@ -244,15 +244,19 @@ public class EntityPath
 
 	void debugPath()
 	{
-		for (int i = 0; i <= _points.Count; i++) {
+		/*for (int i = 0; i <= _points.Count; i++) {
 			var oldPoint = i == 0 ? _agent.transform.position : i == 1 ? _agent.destination : _points [i - 2];
 			var point = i == 0 ? _agent.destination : _points [i - 1];
 			Debug.DrawLine(oldPoint, point, Color.red);
+		}*/
+		Vector3 pos = _agent.transform.position;
+		foreach (var p in _agent.path.corners)
+		{
+			Debug.DrawLine (pos, p, Color.red);
+			pos = p;
 		}
 		if (currentAction != null)
 			Debug.DrawLine (_agent.transform.position, currentAction.pos, Color.magenta);
-		if (onAction)
-			Debug.DrawRay (_agent.transform.position, Vector3.up, Color.cyan);
 	}
 
 	public bool Finished()
@@ -319,9 +323,12 @@ public class EntityPath
 			time += dist / norm;
 			yield return new WaitForFixedUpdate ();
 		}
-		
-		_agent.updatePosition = true;
+
 		_agent.transform.position = endPos;
+		_agent.updatePosition = true;
+		_agent.enabled = false;
+		yield return new WaitForEndOfFrame ();
+		_agent.enabled = true;
 		isOnOffMeshLink = false;
 	}
 
