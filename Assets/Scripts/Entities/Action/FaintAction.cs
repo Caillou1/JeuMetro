@@ -24,7 +24,6 @@ public class FaintAction : AEntityAction<Traveler>
 
 	protected override void End ()
 	{
-		Debug.Log ("poop");
 		entity.transform.DORotate (new Vector3(0, entity.transform.rotation.eulerAngles.y, 0), 0.5f, RotateMode.Fast);
 	}
 }

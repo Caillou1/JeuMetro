@@ -20,13 +20,11 @@ public class Traveler : AEntity
 		G.Sys.registerTraveler (this);
 		target = findExit (targetName);
 		path.destnation = target;
-		//path.lostness = 0.5f;
 		initializeDatas();
 	}
 
 	protected override void OnUpdate ()
 	{
-		//updateDatas ();
 		if (G.Sys.tilemap.haveSpecialTileAt (TileID.OUT, transform.position))
 			Destroy (gameObject);
 	}
@@ -250,6 +248,7 @@ public class Traveler : AEntity
 		datas.HasTicket = new BernoulliDistribution ().Next (gen);
 		datas.Fraud = new BernoulliDistribution (stats.FraudPercentage / 100).Next (gen);
 		datas.LostNoTicket = false;
+		path.canPassControl = datas.HasTicket || datas.Fraud;
 	}
 
 	public void updateDatas(float time)
@@ -274,6 +273,9 @@ public class Traveler : AEntity
 			agent.speed = G.Sys.constants.StairsSpeedMultiplier * datas.Speed;
 		} else
 			agent.speed = datas.Speed;
+
+		if ((datas.HasTicket || datas.Fraud) && !path.canPassControl)
+			path.canPassControl = true;
 	}
 
 	void updateLostness(float time)
@@ -306,7 +308,8 @@ public class Traveler : AEntity
 
 	protected override void OnPathFinished ()
 	{
-		if (!isLost) {
+		
+		if (!isLost && path.canPassControl) {
 			path.destnation = target;
 			return;
 		}
@@ -314,15 +317,13 @@ public class Traveler : AEntity
 		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
 		var d = new UniformVector3SphereDistribution (G.Sys.constants.travelerLostRadius);
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 30; i++) {
 			var pos = transform.position + d.Next(gen);
-			var tiles = G.Sys.tilemap.at (pos);
-			if (tiles.Count == 1 && tiles [0].type == TileID.GROUND) {
+			if(G.Sys.tilemap.IsEmptyGround(pos)){
 				path.destnation = pos;
 				return;
 			}
 		}
 		path.destnation = transform.position + d.Next (gen);
-
 	}
 }
