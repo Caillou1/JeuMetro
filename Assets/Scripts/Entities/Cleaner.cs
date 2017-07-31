@@ -23,7 +23,7 @@ public class Cleaner : AEntity
 	}
 
 	void OnDestroy() {
-
+		G.Sys.removeCleaner (this);
 	}
 
 	public override void EnableAgent ()
