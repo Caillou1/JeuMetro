@@ -19,7 +19,7 @@ public class HelpTraveler : AEntityAction<Agent>
 
 	protected override void End ()
 	{
-		traveler.stats.FaintnessPercentage = 0f;
+		traveler.datas.Tiredness = 0f;
 	}
 }
 

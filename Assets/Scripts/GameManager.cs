@@ -19,10 +19,13 @@ public class GameManager : MonoBehaviour
 
 	private SubscriberList subscriberList = new SubscriberList();
 
+	private List<Traveler> faintingTravelers;
+
     void Awake()
     {
         G.Sys.gameManager = this;
 		StartCoroutine (updateTravelersDatasCoroutine ());
+		faintingTravelers = new List<Traveler> ();
     }
 
 	void Start ()

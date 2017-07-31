@@ -14,6 +14,7 @@ public class Cleaner : AEntity
 	{
 		//path.lostness = 0.5f;
 		initializeDatas();
+		agent.enabled = false;
 	}
 
 	protected override void OnUpdate ()

@@ -14,7 +14,7 @@ public class Agent : AEntity
 	{
 		//path.lostness = 0.5f;
 		initializeDatas();
-		G.Sys.registerAgent (this);
+		agent.enabled = false;
 	}
 
 	protected override void OnUpdate ()
@@ -26,13 +26,21 @@ public class Agent : AEntity
 		G.Sys.removeAgent (this);
 	}
 
+	public override void EnableAgent ()
+	{
+		base.EnableAgent ();
+		G.Sys.registerAgent (this);
+	}
+
 	protected override void Check ()
 	{
 		
 	}
 
 	public void GoHelpTraveler(Traveler t) {
-		path.addAction(new HelpTraveler(this, t.transform.position, t));
+		var pos = t.transform.position;
+		var dir = Vector3.Normalize (pos - transform.position);
+		path.addAction(new HelpTraveler(this, pos - new Vector3(dir.x, 0, dir.y), t));
 	}
 
 	void initializeDatas()

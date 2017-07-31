@@ -29,6 +29,10 @@ public abstract class AEntity : MonoBehaviour
 		OnStart ();
 	}
 
+	public virtual void EnableAgent() {
+		agent.enabled = true;
+	}
+
 	protected virtual void OnStart()
 	{
 

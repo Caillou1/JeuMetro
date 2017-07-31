@@ -114,7 +114,9 @@ public class DragAndDropEntity : MonoBehaviour{
 			}
 			G.Sys.selectionManager.Hide (true, true);
 			CanDrag = false;
-			GetComponent<AEntity> ().enabled = true;
+			var e = GetComponent<AEntity> ();
+			e.enabled = true;
+			e.EnableAgent ();
 			return true;
 		}
 		return false;
