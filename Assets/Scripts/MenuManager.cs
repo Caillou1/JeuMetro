@@ -33,7 +33,9 @@ public class MenuManager : MonoBehaviour {
 	private GameObject ScoreUI;
 	private GameObject GameUI;
 	private GameObject ShopUI;
+	private GameObject PersonnelUI;
 	private GameObject SGPUI;
+	private GameObject FadeUI;
 
 	private Image TimePie;
 	private Text TimeTxt;
@@ -51,12 +53,14 @@ public class MenuManager : MonoBehaviour {
 	private int ShopIndex = 0;
 
 	void Awake() {
+		Time.timeScale = 1f;
 		G.Sys.menuManager = this;
 
 		cameraTransform = G.Sys.MainCamera.transform;
 		cameraOrigin = cameraTransform.position;
 
 		tf = transform;
+		FadeUI = tf.Find ("FadeUI").gameObject;
 		MainUI = tf.Find ("MainUI").gameObject;
 		ParametersUI = tf.Find ("OptionsUI").gameObject;
 		CreditsUI = tf.Find ("CreditsUI").gameObject;
@@ -66,6 +70,7 @@ public class MenuManager : MonoBehaviour {
 
 		var menuTf = GameUI.transform.Find ("Menu");
 		ShopUI = menuTf.Find ("ShopUI").gameObject;
+		PersonnelUI = menuTf.Find ("PersonnelUI").gameObject;
 
 		TimePie = menuTf.Find ("Time").Find ("Pie").Find ("Wedge").GetComponent<Image> ();
 		TimeTxt = menuTf.Find ("Time").Find ("Text").GetComponent<Text> ();
@@ -80,6 +85,7 @@ public class MenuManager : MonoBehaviour {
 
 		CurrentZoomLevel = 0;
 
+		FadeUI.SetActive (false);
 		MainUI.SetActive (false);
 		ParametersUI.SetActive (false);
 		CreditsUI.SetActive (false);
@@ -87,6 +93,7 @@ public class MenuManager : MonoBehaviour {
 		ScoreUI.SetActive (false);
 		GameUI.SetActive (false);
 		ShopUI.SetActive (false);
+		PersonnelUI.SetActive (false);
 		SGPUI.SetActive (false);
 		var obj = GetCorrespondantUI (CurrentMenu);
 		if (obj != null)
@@ -203,7 +210,7 @@ public class MenuManager : MonoBehaviour {
 
 	public void Zoom() {
 		CurrentZoomLevel = (CurrentZoomLevel + 1) % ZoomLevels.Length;
-		cameraTransform.position = cameraOrigin - cameraTransform.forward * ZoomLevels [CurrentZoomLevel];
+		cameraTransform.position = cameraOrigin - cameraTransform.forward * ZoomLevels[CurrentZoomLevel];
 	}
 
 	public void Zoom(float ZoomPower) {
@@ -226,7 +233,7 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Play() {
-		Debug.Log ("Play");
+		SceneManager.LoadScene ("Pierre2");
 	}
 
 	public void MainMenu() {
@@ -258,6 +265,18 @@ public class MenuManager : MonoBehaviour {
 		ShopUI.SetActive (!ShopUI.activeInHierarchy);
 	}
 
+	public void TogglePersonnelUI() {
+		PersonnelUI.SetActive (!PersonnelUI.activeInHierarchy);
+	}
+
+	public void DisableShopUI() {
+		ShopUI.SetActive (false);
+	}
+
+	public void DisablePersonnelUI() {
+		PersonnelUI.SetActive (false);
+	}
+
 	public void Quit() {
 		Application.Quit ();
 	}
@@ -270,16 +289,16 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Pause () {
+		FadeUI.SetActive (true);
 		PauseUI.SetActive (true);
-		GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.Pause;
 		Time.timeScale = 0f;
 	}
 
 	public void Resume() {
+		FadeUI.SetActive (false);
 		PauseUI.SetActive (false);
-		GetCorrespondantUI(LastMenu).SetActive (true);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.Game;
 		Time.timeScale = 1f;
@@ -299,11 +318,11 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void SetSoundVolume(float v) {
-		G.Sys.audioManager.SetSoundVolume (v);
+		//G.Sys.audioManager.SetSoundVolume (v);
 	}
 
 	public void SetMusicVolume(float v) {
-		G.Sys.audioManager.SetMusicVolume (v);
+		//G.Sys.audioManager.SetMusicVolume (v);
 	}
 
 	public void SetFullscreen(bool b) {

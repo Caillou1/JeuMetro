@@ -7,17 +7,13 @@ using NRand;
 
 public class TileInfos
 {
-	public TileInfos(ATile _tile, bool _canBeConnected, bool _preventConnexions, int _priority)
+	public TileInfos(ATile _tile, int _priority)
 	{
 		priority = _priority;
-		canBeConnected = _canBeConnected;
-		preventConnexions = _preventConnexions;
 		tile = _tile;
 	}
 
 	public int priority;
-	public bool canBeConnected;
-	public bool preventConnexions;
 	public ATile tile;
 }
 
@@ -73,59 +69,9 @@ public class Tilemap
 	/// <param name="priority">Priority.</param>
 	public void addTile(Vector3i pos, ATile tile, int priority = 0)
 	{
-		addTile (pos, tile, true, false, priority);
-	}
-
-	/// <summary>
-	/// Ajoute une tile qui n'est pas connectable si canBConnected est faux.
-	/// </summary>
-	/// <param name="pos">Position.</param>
-	/// <param name="tile">Tile.</param>
-	/// <param name="canBeConnected">If set to <c>true</c> can be connected.</param>
-	/// <param name="priority">Priority.</param>
-	public void addTile(Vector3 pos, ATile tile, bool canBeConnected, int priority = 0)
-	{
-		addTile (new Vector3i (pos), tile, canBeConnected, priority);
-	}
-
-	/// <summary>
-	/// Ajoute une tile qui n'est pas connectable si canBConnected est faux.
-	/// </summary>
-	/// <param name="pos">Position.</param>
-	/// <param name="tile">Tile.</param>
-	/// <param name="canBeConnected">If set to <c>true</c> can be connected.</param>
-	/// <param name="priority">Priority.</param>
-	public void addTile(Vector3i pos, ATile tile, bool canBeConnected, int priority = 0)
-	{
-		addTile (pos, tile, canBeConnected, false, priority);
-	}
-
-	/// <summary>
-	/// Si preventConnexion est a vrais, toutes les tiles connectable à cette position ne pourrons pas etre connecté.
-	/// </summary>
-	/// <param name="pos">Position.</param>
-	/// <param name="tile">Tile.</param>
-	/// <param name="canBeConnected">If set to <c>true</c> can be connected.</param>
-	/// <param name="preventConnexions">If set to <c>true</c> prevent connexions.</param>
-	/// <param name="priority">Priority.</param>
-	public void addTile(Vector3 pos, ATile tile, bool canBeConnected, bool preventConnexions, int priority = 0)
-	{
-		addTile (new Vector3i (pos), tile, canBeConnected, preventConnexions, priority);
-	}
-
-	/// <summary>
-	/// Si preventConnexion est a vrais, toutes les tiles connectable à cette position ne pourrons pas etre connecté.
-	/// </summary>
-	/// <param name="pos">Position.</param>
-	/// <param name="tile">Tile.</param>
-	/// <param name="canBeConnected">If set to <c>true</c> can be connected.</param>
-	/// <param name="preventConnexions">If set to <c>true</c> prevent connexions.</param>
-	/// <param name="priority">Priority.</param>
-	public void addTile(Vector3i pos, ATile tile, bool canBeConnected, bool preventConnexions, int priority = 0)
-	{
 		var t = map (pos);
 		if(!t.Exists(it => it.tile == tile))
-			t.Add(new TileInfos(tile, canBeConnected, preventConnexions, priority));
+			t.Add(new TileInfos(tile, priority));
 		sort (t);
 	}
 
@@ -197,93 +143,7 @@ public class Tilemap
 				returnlist.Add (t.tile);
 		return returnlist;
 	}
-
-	/// <summary>
-	/// Retourne vrais si une tile à cette position est connectable.
-	/// </summary>
-	/// <param name="pos">Position.</param>
-	public bool connectable(Vector3 pos)
-	{
-		return connectable (new Vector3i (pos));
-	}
-
-	/// <summary>
-	/// Retourne vrais si une tile à cette position est connectable.
-	/// </summary>
-	/// <param name="pos">Position.</param>
-	public bool connectable(Vector3i pos)
-	{
-		bool isConnectable = false;
-		foreach (var tile in map(pos)) {
-			if (tile.preventConnexions)
-				return false;
-			if (tile.canBeConnected)
-				isConnectable = true;
-		}
-		return isConnectable;
-	}
-
-	/// <summary>
-	/// Retourne toutes les tiles connectables à la position spécifiée.
-	/// </summary>
-	/// <returns>The tiles.</returns>
-	/// <param name="pos">Position.</param>
-	public List<ATile> connectableTiles(Vector3 pos)
-	{
-		return connectableTiles (new Vector3i (pos));
-	}
-
-	/// <summary>
-	/// Retourne toutes les tiles connectables à la position spécifiée.
-	/// </summary>
-	/// <returns>The tiles.</returns>
-	/// <param name="pos">Position.</param>
-	public List<ATile> connectableTiles(Vector3i pos)
-	{
-		List<ATile> list = new List<ATile> ();
-		foreach (var tile in map(pos)) {
-			if (tile.preventConnexions)
-				return new List<ATile> ();
-			if (tile.canBeConnected)
-				list.Add (tile.tile);
-		}
-		return list;
-	}
-
-	/// <summary>
-	/// Retourne la tile connectable avec la priorité la plus elevé.
-	/// Retourne null si aucune tile n'est trouvable
-	/// </summary>
-	/// <returns>The tile.</returns>
-	/// <param name="pos">Position.</param>
-	public ATile connectableTile(Vector3 pos)
-	{
-		return connectableTile (new Vector3i (pos));
-	}
-
-	/// <summary>
-	/// Retourne la tile connectable avec la priorité la plus elevé.
-	/// Retourne null si aucune tile n'est trouvable
-	/// </summary>
-	/// <returns>The tile.</returns>
-	/// <param name="pos">Position.</param>
-	public ATile connectableTile(Vector3i pos)
-	{
-		int bestValue = int.MinValue;
-		bool bestCanBeConnected = false;
-		ATile bestTile = null;
-		foreach (var tile in map(pos)) {
-			if (tile.preventConnexions)
-				return null;
-			if (tile.priority > bestValue) {
-				bestTile = tile.tile;
-				bestCanBeConnected = tile.canBeConnected;
-				bestValue = tile.priority;
-			}
-		}
-		return bestCanBeConnected ? bestTile : null;
-	}
-
+		
 	/// <summary>
 	/// Retourne le tileinfo associé à la tile et à la position spécifiée.
 	/// </summary>
@@ -508,9 +368,9 @@ public class Tilemap
 	/// <param name="pos">Position.</param>
 	/// <param name="id">Identifier.</param>
 	/// <param name="verticalAmplification">Vertical amplification.</param>
-	public Pair<Vector3, bool> getNearestSpecialTileOfType(Vector3 pos, TileID id, float verticalAmplification = 1)
+	public Pair<Vector3, bool> getNearestSpecialTileOfType(Vector3 pos, TileID id, float verticalAmplification = 1, float maxDistance = float.MaxValue)
 	{
-		var tile = getNearestSpecialTileOfType (new Vector3i (pos), id, verticalAmplification);
+		var tile = getNearestSpecialTileOfType (new Vector3i (pos), id, verticalAmplification, maxDistance);
 		return new Pair<Vector3, bool> (tile.First.toVector3 (), tile.Second);
 	}
 
@@ -522,7 +382,7 @@ public class Tilemap
 	/// <param name="pos">Position.</param>
 	/// <param name="id">Identifier.</param>
 	/// <param name="verticalAmplification">Vertical amplification.</param>
-	public Pair<Vector3i, bool>  getNearestSpecialTileOfType(Vector3i pos, TileID id, float verticalAmplification = 1)
+	public Pair<Vector3i, bool>  getNearestSpecialTileOfType(Vector3i pos, TileID id, float verticalAmplification = 1, float maxDistance = float.MaxValue)
 	{
 		var list = getSpecialTilesI (id);
 		if (list.Count == 0)
@@ -530,16 +390,19 @@ public class Tilemap
 
 		Vector3i bestTile = new Vector3i (0, 0, 0);
 		float bestDist = float.MaxValue;
+		bool found = false;
 		foreach (var t in list) {
 			var dir = pos.toVector3 () - t.toVector3 ();
 			var dist = new Vector2 (dir.x, dir.z).magnitude + Mathf.Abs(dir.y * verticalAmplification);
-
+			if (dist > maxDistance)
+				continue;
 			if (dist < bestDist) {
 				bestDist = dist;
 				bestTile = t;
+				found = true;
 			}
 		}
-		return new Pair<Vector3i, bool>(bestTile, true);
+		return new Pair<Vector3i, bool>(bestTile, found);
 	}
 
 	/// <summary>
@@ -557,7 +420,7 @@ public class Tilemap
 			max = new Vector3 (Mathf.Max (max.x, pos.x), Mathf.Max (max.y, pos.y), Mathf.Max (max.z, pos.z));
 		}
 
-		bounds = new Bounds ((min + max) / 2.0f, (max - min) * 	1.5f);
+		bounds = new Bounds ((min + max) / 2.0f, (max - min) * 	2f);
 	}
 
 	/// <summary>
@@ -589,6 +452,24 @@ public class Tilemap
 		}
 
 		return false;
+	}
+
+	public bool IsEmptyGround(Vector3 pos)
+	{
+		var validTiles = new TileID[]{ TileID.GROUND, TileID.PODOTACTILE, TileID.WASTE };
+
+		var tiles = at (pos);
+		if (tiles.Count == 0)
+			return false;
+
+		if (!tiles.Exists (t => t.type == TileID.GROUND))
+			return false;
+		
+		foreach (var t in tiles) {
+			if (!validTiles.Contains (t.type))
+				return false;
+		}
+		return true;
 	}
 
 	public bool IsEmpty(Vector3 pos) {

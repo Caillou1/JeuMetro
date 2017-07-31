@@ -19,8 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4548487747243586}
-  - component: {fileID: 54385110558756204}
-  - component: {fileID: 114913635081199386}
+  - component: {fileID: 195317550349095360}
+  - component: {fileID: 114345358887005058}
   m_Layer: 0
   m_Name: Traveler base
   m_TagString: Untagged
@@ -66,7 +66,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1427005143703886}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: -2, z: -16}
+  m_LocalPosition: {x: 4, y: 0, z: -17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4236780519288100}
@@ -112,22 +112,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1899182938410298}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54385110558756204
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1427005143703886}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 2
---- !u!114 &114913635081199386
+--- !u!114 &114345358887005058
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -135,28 +120,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1427005143703886}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 509694578419d4e1491a0c4316096458, type: 3}
+  m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody: {fileID: 0}
-  destination: {x: 0, y: 0, z: 0}
-  altDestination: {x: 0, y: 0, z: 0}
-  altAction: 0
-  altWait: 1
-  Stats:
+  stats:
     Type: 0
     ElevatorAttraction: 0
     EscalatorAttraction: 0
     StairsAttraction: 0
     RestPlaceAttraction: 0
-    Cleanliness: 50
     VisualComprehension: 0
     AudioComprehension: 0
     TouchComprehension: 0
-    FaintnessPercentage: 0
+    Cleanliness: 100
+    FaintnessPercentage: 10
+    FraudPercentage: 0
     LostAbility: 0
     MovementSpeed: 5
-    RotationSpeed: 6
+    RotationSpeed: 0
+  targetName: Exit
 --- !u!136 &136956853394791184
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -170,3 +152,24 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!195 &195317550349095360
+NavMeshAgent:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1427005143703886}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.3
+  m_Speed: 3.5
+  m_Acceleration: 50
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 0
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 2

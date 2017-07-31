@@ -37,11 +37,12 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4228750826863494}
-  - component: {fileID: 54765648349272762}
-  - component: {fileID: 114835687556317816}
+  - component: {fileID: 195706360768268578}
+  - component: {fileID: 114493059262654958}
+  - component: {fileID: 114153679457239188}
   m_Layer: 0
   m_Name: Cleaner
-  m_TagString: Untagged
+  m_TagString: Disposable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53,7 +54,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1772199070187468}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: -2, z: -12}
+  m_LocalPosition: {x: 1, y: -2, z: -17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4619569116100108}
@@ -112,22 +113,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1676749109872364}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54765648349272762
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1772199070187468}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!114 &114835687556317816
+--- !u!114 &114153679457239188
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -135,20 +121,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 1772199070187468}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a73c0686b520b43d998b4721459bf684, type: 3}
+  m_Script: {fileID: 11500000, guid: cf324f942f4484e77a2cb29868482b4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidbody: {fileID: 0}
-  avoidPower: 1
-  avoidDir: {x: 0, y: 0, z: 0}
-  destination: {x: 0, y: 0, z: 0}
-  altDestination: {x: 0, y: 0, z: 0}
-  altAction: 0
-  altWait: 1
-  Stats:
+  stats:
     MovementSpeed: 5
-    RotationSpeed: 5
-    WasteVisibilityRadius: 5
+    RotationSpeed: 0
+    WasteVisibilityRadius: 0
+--- !u!114 &114493059262654958
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1772199070187468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: def03237a67b64288b9bcc5ff9076fae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Price: 500
+  CanDrag: 0
+  IsSelected: 0
 --- !u!136 &136650480791330712
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -162,3 +155,24 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!195 &195706360768268578
+NavMeshAgent:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1772199070187468}
+  m_Enabled: 0
+  m_AgentTypeID: -1923039037
+  m_Radius: 0.3
+  m_Speed: 3.5
+  m_Acceleration: 50
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 0
+  m_AutoBraking: 0
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 2

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using NRand;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,22 +16,45 @@ public class GameManager : MonoBehaviour
 	public int StartingMoney = 0;
 
 	private int money;
-	private float time;
-	private float startTime;
-	private float totalTime;
+
+	private SubscriberList subscriberList = new SubscriberList();
+
+	private List<Traveler> faintingTravelers;
 
     void Awake()
     {
         G.Sys.gameManager = this;
+		StartCoroutine (updateTravelersDatasCoroutine ());
+		faintingTravelers = new List<Traveler> ();
     }
 
 	void Start ()
     {
+		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 		tf = transform;
 		AddMoney (StartingMoney);
 		StartCoroutine (spawnCoroutine ());
 		G.Sys.tilemap.UpdateGlobalBounds ();
 		InstantiateColliders ();
+		subscriberList.Add(new Event<FaintEvent>.Subscriber(OnTravelerFaint));
+		subscriberList.Subscribe ();
+	}
+
+	void OnTravelerFaint(FaintEvent e) {
+		var a = G.Sys.GetNearestAgent (e.traveler.transform.position);
+		if (a != null) {
+			a.GoHelpTraveler (e.traveler);
+		}
+	}
+
+	IEnumerator updateTravelersDatasCoroutine()
+	{
+		const float time = 0.1f;
+		while (true) {
+			for(int i = 0 ; i < G.Sys.travelerCount() ; i++)
+				G.Sys.traveler(i).updateDatas (time);
+			yield return new WaitForSeconds (time);
+		}
 	}
 
 	void InstantiateColliders() {
@@ -64,18 +88,6 @@ public class GameManager : MonoBehaviour
 		Instantiate (emptyWall, pos, Quaternion.identity, tf);
 	}
 
-	public void StartTimer(float t) {
-		startTime = Time.time;
-		time = t;
-		totalTime = t;
-	}
-	
-	void Update ()
-    {
-		time = totalTime - Time.time + startTime;
-		G.Sys.menuManager.SetPieTime (1f-(time/totalTime), (int)time);
-	}
-
 	public void AddMoney(int m) {
 		money += m;
 		G.Sys.menuManager.SetMoneyNumber (money);
@@ -102,10 +114,17 @@ public class GameManager : MonoBehaviour
 			var doors = G.Sys.tilemap.getSpecialTiles (TileID.IN);
 			var door = doors [new UniformIntDistribution (doors.Count-1).Next (gen)];
 			var e = Instantiate (entities [dType.Next (gen)], door, new Quaternion ());
-			var d = G.Sys.tilemap.tilesOfTypeAt (door, TileID.IN) [0];
-			var tiles = d.connectedTiles;
-			if(tiles.Count != 0)
-				e.transform.rotation = Quaternion.LookRotation (tiles[new UniformIntDistribution(tiles.Count-1).Next(gen)].Second.toVector3 () - e.transform.position, Vector3.up);
+			var dir = new Vector3[]{ Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
+			var validDir = new List<Vector3> ();
+			foreach(var d in dir)
+			{
+				var tiles = G.Sys.tilemap.at (door + d);
+				if (tiles.Count == 0 && tiles [0].type == TileID.GROUND)
+					validDir.Add (door + d);
+			}
+		
+			if(validDir.Count != 0)
+				e.transform.rotation = Quaternion.LookRotation (validDir[new UniformIntDistribution(validDir.Count-1).Next(gen)] - e.transform.position, Vector3.up);
 		}
 	}
 }

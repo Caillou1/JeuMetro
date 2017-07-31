@@ -56,9 +56,9 @@ public class CameraController : MonoBehaviour {
 				if (PinchingCoroutine != null)
 					StopCoroutine (PinchingCoroutine);
 				pinching = true;
-				if (deltaMagnitudeDiff < 0) {
+				if (deltaMagnitudeDiff < 0f) {
 					G.Sys.menuManager.Zoom (4f);
-				} else if (deltaMagnitudeDiff > 0) {
+				} else if (deltaMagnitudeDiff > 0f) {
 					G.Sys.menuManager.Zoom (-4f);
 				}
 			}
@@ -113,9 +113,16 @@ public class CameraController : MonoBehaviour {
 
 			if (disposable != null && !IsSelecting) {
 				var dad = disposable.GetComponent<DragAndDrop> ();
-				var tile = disposable.GetComponent<ATile> ();
-				G.Sys.selectionManager.Show (dad);
-				tile.Unregister ();
+				if (dad != null) {
+					var tile = disposable.GetComponent<ATile> ();
+					G.Sys.selectionManager.Show (dad);
+					tile.Unregister ();
+				} else {
+					var dade = disposable.transform.parent.GetComponent<DragAndDropEntity> ();
+					if (dade != null) {
+						G.Sys.selectionManager.Show (dade, true);
+					}
+				}
 				IsSelecting = true;
 			}
 		}

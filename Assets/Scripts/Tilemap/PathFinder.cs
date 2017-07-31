@@ -30,7 +30,7 @@ public static class PathFinder
 	/// <param name="end">End.</param>
 	public static Pair<List<Vector3i>, bool> Path(Vector3i start, Vector3i end, Dictionary<TileID, float> weights = default(Dictionary<TileID, float>), int maxIteration = int.MaxValue)
 	{
-		if (weights == null)
+		/*if (weights == null)
 			weights = new Dictionary<TileID, float> ();
 		
 		if(start.Equals(end))
@@ -83,7 +83,8 @@ public static class PathFinder
 			}
 		}
 
-		return new Pair<List<Vector3i>, bool>(createNearestPath(visiteds, end, start), false);
+		return new Pair<List<Vector3i>, bool>(createNearestPath(visiteds, end, start), false);*/
+		return null;
 	}
 
 	private static float moveWeight(Vector3 dir, Vector3 pos, Dictionary<TileID, float> weights)

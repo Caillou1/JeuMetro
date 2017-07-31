@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class SelectionManager : MonoBehaviour {
 	private DragAndDrop obj;
+	private DragAndDropEntity ent;
 	private Transform tf;
 
 	private GameObject validate;
 	private GameObject rotate;
 	private GameObject delete;
 	private GameObject changeside;
-	private Text changeSideText;
 
 	void Awake() {
 		G.Sys.selectionManager = this;
@@ -21,7 +22,6 @@ public class SelectionManager : MonoBehaviour {
 		rotate = tf.Find ("rotate").gameObject;
 		delete = tf.Find ("delete").gameObject;
 		changeside = tf.Find ("changeside").gameObject;
-		changeSideText = changeside.transform.Find ("Text").GetComponent<Text>();
 	}
 
 	void Start() {
@@ -40,16 +40,51 @@ public class SelectionManager : MonoBehaviour {
 			var e = obj.GetComponent<EscalatorTile> ();
 			if (e != null) {
 				changeside.SetActive (true);
-				if (e.side == EscalatorSide.DOWN) {
-					changeSideText.text = "D";
-				} else {
-					changeSideText.text = "U";
-				}
 			}
 
 			obj.CanDrag = true;
 			G.Sys.cameraController.IsSelecting = true;
 			obj.DesactivateCollisions ();
+			obj.GetComponent<DragAndDrop> ().ToggleOutline (true);
+		}
+	}
+
+	public void Show(DragAndDropEntity e, bool StopMovement) {
+		if (e != null) {
+			ent = e;
+			ent.IsSelected = true;
+			tf.position = G.Sys.MainCamera.WorldToScreenPoint (ent.transform.position);
+			if(StopMovement)
+				ent.GetComponent<AEntity> ().SetIsStopped (true);
+			validate.SetActive (true);
+			delete.SetActive (true);
+
+			ent.CanDrag = true;
+			G.Sys.cameraController.IsSelecting = true;
+			//ent.DesactivateCollisions ();
+		}
+	}
+
+	public void Hide(bool register, bool isEntity, bool ResumeMovement) {
+		if (isEntity) {
+			//ent.ActivateCollisions ();
+			var e = ent.GetComponent<AEntity> ();
+			if (register) {
+				e.enabled = true;
+				G.Sys.cameraController.IsSelecting = false;
+				ent.IsSelected = false;
+			}
+			if(ResumeMovement) {
+				e.SetIsStopped (false);
+			}
+			ent = null;
+
+			validate.SetActive (false);
+			rotate.SetActive (false);
+			delete.SetActive (false);
+			changeside.SetActive (false);
+		} else {
+			Hide (register);
 		}
 	}
 
@@ -63,6 +98,7 @@ public class SelectionManager : MonoBehaviour {
 			if (register) {
 				obj.GetComponent<ATile> ().Register ();
 				G.Sys.cameraController.IsSelecting = false;
+				obj.GetComponent<DragAndDrop> ().ToggleOutline (false);
 			}
 		}
 		obj = null;
@@ -80,11 +116,16 @@ public class SelectionManager : MonoBehaviour {
 	public void ValidateNoReturn() {
 		if (obj != null)
 			obj.ValidateObject ();
+		if (ent != null)
+			ent.ValidateObject ();
 	}
 
 	public bool Validate() {
 		if (obj != null) {
 			return obj.ValidateObject ();
+		}
+		if (ent != null) {
+			return ent.ValidateObject ();
 		}
 		return false;
 	}
@@ -93,19 +134,21 @@ public class SelectionManager : MonoBehaviour {
 		G.Sys.cameraController.IsSelecting = false;
 		if (obj != null) {
 			obj.DeleteObject ();
+			Hide (false);
 		}
-		Hide (false);
+		if (ent != null) {
+			ent.DeleteObject ();
+			Hide (false, true, false);
+		}
 	}
 
 	public void ChangeSide() {
 		var e = obj.GetComponent<EscalatorTile> ();
 		if (e != null) {
 			if (e.side == EscalatorSide.DOWN) {
-				e.SetSide (EscalatorSide.UP);
-				changeSideText.text = "U";
+				e.side = EscalatorSide.UP;
 			} else {
-				e.SetSide (EscalatorSide.DOWN);
-				changeSideText.text = "D";
+				e.side = EscalatorSide.DOWN;
 			}
 		}
 	}
@@ -113,6 +156,9 @@ public class SelectionManager : MonoBehaviour {
 	void Update() {
 		if (obj != null) {
 			tf.position = G.Sys.MainCamera.WorldToScreenPoint (obj.transform.position);
+		}
+		if (ent != null) {
+			tf.position = G.Sys.MainCamera.WorldToScreenPoint (ent.transform.position);
 		}
 	}
 }

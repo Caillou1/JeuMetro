@@ -27,16 +27,20 @@ public class DragAndDrop : MonoBehaviour{
 
 	private Tweener rotTween;
 
+	private cakeslice.Outline[] outlines;
+
 	void Awake() {
+		tf = transform;
+		outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
 		IsWalled = false;
 		bought = true;
-		tf = transform;
 	}
 
 	void Start() {
-		isRotating = false;
 		CheckCanPlace ();
 		CheckRotation ();
+		ToggleOutline (false);
+		isRotating = false;
 	}
 
 	protected virtual void CheckCanPlace() {
@@ -147,9 +151,17 @@ public class DragAndDrop : MonoBehaviour{
 			CanDrag = false;
 			SendEvent ();
 			DeletePossibleEmptyWalls ();
+			StartCoroutine (eventCoroutine ());
 			return true;
 		}
 		return false;
+	}
+
+	IEnumerator eventCoroutine()
+	{
+		yield return new WaitForEndOfFrame ();
+		yield return new WaitForEndOfFrame ();
+		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 	}
 
 	protected virtual void DeletePossibleEmptyWalls () {}
@@ -186,5 +198,10 @@ public class DragAndDrop : MonoBehaviour{
 
 	protected void RotateObject(float desiredAngle) {
 		rotTween = tf.DORotate (new Vector3 (0, desiredAngle, 0), .3f, RotateMode.FastBeyond360);
+	}
+
+	public void ToggleOutline(bool b) {
+		foreach(var o in outlines)
+			o.enabled = b;
 	}
 }
