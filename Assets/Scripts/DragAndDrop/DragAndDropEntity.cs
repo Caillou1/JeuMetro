@@ -9,7 +9,6 @@ public class DragAndDropEntity : MonoBehaviour{
 	public int Price;
 
 	protected Transform tf;
-	protected Rigidbody rb;
 	protected bool canPlace;
 	[HideInInspector]
 	public bool CanDrag = false;
@@ -27,7 +26,6 @@ public class DragAndDropEntity : MonoBehaviour{
 	void Awake() {
 		bought = true;
 		tf = transform;
-		rb = GetComponent<Rigidbody> ();
 	}
 
 	void Start() {
@@ -65,8 +63,6 @@ public class DragAndDropEntity : MonoBehaviour{
 	}
 
 	void Update() {
-		if(IsSelected)
-			rb.velocity = Vector3.zero;
 		if (Dragging && CanDrag && !IsBought) {
 			Ray ray = G.Sys.MainCamera.ScreenPointToRay (Input.mousePosition);
 			RaycastHit[] hits;

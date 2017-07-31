@@ -8,6 +8,16 @@ public class WasteTile : ATile
 {
 	bool _bigWaste = false;
 	GameObject _bigWasteObject;
+	bool targetted = false;
+
+	public bool Targetted {
+		get {
+			return targetted;
+		}
+		set {
+			targetted = value;
+		}
+	}
 
 	public bool big
 	{
