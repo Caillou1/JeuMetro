@@ -34,8 +34,9 @@ public class Agent : AEntity
 
 	protected override void Check ()
 	{
-		
 	}
+
+
 
 	public void GoHelpTraveler(Traveler t) {
 		var pos = t.transform.position;

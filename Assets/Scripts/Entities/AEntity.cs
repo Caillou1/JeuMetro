@@ -33,6 +33,10 @@ public abstract class AEntity : MonoBehaviour
 		agent.enabled = true;
 	}
 
+	public void SetIsStopped(bool b) {
+		agent.isStopped = b;
+	}
+
 	protected virtual void OnStart()
 	{
 

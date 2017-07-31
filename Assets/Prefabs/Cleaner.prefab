@@ -46,7 +46,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4228750826863494
 Transform:
   m_ObjectHideFlags: 1
@@ -127,6 +127,7 @@ MonoBehaviour:
   stats:
     MovementSpeed: 5
     RotationSpeed: 0
+    WasteVisibilityRadius: 0
 --- !u!114 &114493059262654958
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -160,7 +161,7 @@ NavMeshAgent:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1772199070187468}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: -1923039037
   m_Radius: 0.3
   m_Speed: 3.5

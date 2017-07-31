@@ -56,7 +56,7 @@ public class DragAndDropEntity : MonoBehaviour{
 	public void StartDrag() {
 		GetComponent<AEntity> ().enabled = false;
 		if (!IsBought) {
-			G.Sys.selectionManager.Hide (false, true);
+			G.Sys.selectionManager.Hide (false, true, false);
 			G.Sys.cameraController.CanDrag = false;
 			Dragging = true;
 		}
@@ -92,7 +92,7 @@ public class DragAndDropEntity : MonoBehaviour{
 
 	public void OnMouseUp() {
 		if (CanDrag) {
-			G.Sys.selectionManager.Show (this);
+			G.Sys.selectionManager.Show (this, false);
 			G.Sys.cameraController.CanDrag = true;
 
 			Dragging = false;
@@ -112,11 +112,11 @@ public class DragAndDropEntity : MonoBehaviour{
 				G.Sys.gameManager.AddMoney (-Price);
 				IsBought = true;
 			}
-			G.Sys.selectionManager.Hide (true, true);
 			CanDrag = false;
 			var e = GetComponent<AEntity> ();
 			e.enabled = true;
 			e.EnableAgent ();
+			G.Sys.selectionManager.Hide (true, true, true);
 			return true;
 		}
 		return false;
