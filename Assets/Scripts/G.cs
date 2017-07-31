@@ -11,6 +11,7 @@ public sealed class G
 	public Tilemap tilemap = new Tilemap();
 	private List<Traveler> travelers = new List<Traveler> ();
 	private List<Agent> agents = new List<Agent> ();
+	private List<Cleaner> cleaners = new List<Cleaner> ();
 
 	private Camera _camera;
     private GameManager _gameManager;
@@ -83,6 +84,16 @@ public sealed class G
 
 	public bool removeAgent(Agent a) {
 		return agents.Remove (a);
+	}
+
+	public void registerCleaner(Cleaner c) {
+		if (!cleaners.Contains (c)) {
+			cleaners.Add (c);
+		}
+	}
+
+	public bool removeCleaner(Cleaner c) {
+		return cleaners.Remove (c);
 	}
 
 	public Agent GetNearestAgent(Vector3 pos) {

@@ -26,6 +26,12 @@ public class Cleaner : AEntity
 
 	}
 
+	public override void EnableAgent ()
+	{
+		base.EnableAgent ();
+		G.Sys.registerCleaner (this);
+	}
+
 	protected override void Check ()
 	{
 		CheckWaste ();
