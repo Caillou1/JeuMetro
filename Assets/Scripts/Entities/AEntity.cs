@@ -6,7 +6,7 @@ using System.Collections;
 public abstract class AEntity : MonoBehaviour 
 {
 	protected NavMeshAgent agent;
-	protected EntityPath path;
+	public EntityPath path;
 	protected Vector3 target = Vector3.zero;
 
 	void Awake()

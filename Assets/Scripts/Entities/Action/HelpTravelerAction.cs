@@ -1,12 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-public class HelpTraveler : AEntityAction<Agent>
+public class HelpTravelerAction : AEntityAction<Agent>
 {
 	Traveler traveler;
 	float time = 0;
 
-	public HelpTraveler (Agent a, Vector3 pos, Traveler t) : base(a, ActionType.HELP_TRAVELER, pos)
+	public HelpTravelerAction (Agent a, Vector3 pos, Traveler t) : base(a, ActionType.HELP_TRAVELER, pos)
 	{
 		traveler = t;
 	}

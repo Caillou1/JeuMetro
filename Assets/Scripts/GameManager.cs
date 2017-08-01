@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
 	void OnTravelerFaint(FaintEvent e) {
 		var a = G.Sys.GetNearestAgent (e.traveler.transform.position);
 		if (a != null) {
-			a.GoHelpTraveler (e.traveler);
+			a.GoHelpTravelerAction (e.traveler);
 		}
 	}
 

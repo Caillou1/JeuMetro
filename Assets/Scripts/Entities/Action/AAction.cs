@@ -13,6 +13,8 @@ public enum ActionType
 	CLEAN_WASTE,
 	CLEAN_BIN,
 	HELP_TRAVELER,
+	WAIT_ELEVATOR,
+
 }
 
 public abstract class AAction
