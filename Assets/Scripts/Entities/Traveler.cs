@@ -253,13 +253,13 @@ public class Traveler : AEntity
 
 	public void updateDatas(float time)
 	{
+		updateSpeed ();
+
 		if (!path.CanStartAction())
 			return;
 		updateLostness (time);
 		updateTiredness (time);
 		updateDirtiness (time);
-
-		updateSpeed ();
 	}
 
 	void updateSpeed()
