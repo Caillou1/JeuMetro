@@ -317,7 +317,7 @@ public class Traveler : AEntity
 		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
 		var d = new UniformVector3SphereDistribution (G.Sys.constants.travelerLostRadius);
 
-		for (int i = 0; i < 30; i++) {
+		for (int i = 0; i < 100; i++) {
 			var pos = transform.position + d.Next(gen);
 			if(G.Sys.tilemap.IsEmptyGround(pos)){
 				path.destnation = pos;

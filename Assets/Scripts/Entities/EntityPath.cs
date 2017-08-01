@@ -327,8 +327,6 @@ public class EntityPath
 		}
 		isOnOffMeshLink = true;
 
-		Debug.Log (_agent.currentOffMeshLinkData.endPos + " " + _agent.steeringTarget);
-
 		_behavior.StartCoroutine (onLinkCoroutine ());
 	}
 
