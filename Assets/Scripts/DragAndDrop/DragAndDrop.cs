@@ -27,8 +27,11 @@ public class DragAndDrop : MonoBehaviour{
 
 	private Tweener rotTween;
 
+	private cakeslice.Outline[] outlines;
+
 	void Awake() {
 		tf = transform;
+		outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
 		IsWalled = false;
 		bought = true;
 	}
@@ -198,6 +201,7 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void ToggleOutline(bool b) {
-		GetComponentInChildren<cakeslice.Outline> ().enabled = b;
+		foreach(var o in outlines)
+			o.enabled = b;
 	}
 }

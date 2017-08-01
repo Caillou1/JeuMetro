@@ -118,9 +118,9 @@ public class CameraController : MonoBehaviour {
 					G.Sys.selectionManager.Show (dad);
 					tile.Unregister ();
 				} else {
-					var dade = disposable.GetComponent<DragAndDropEntity> ();
+					var dade = disposable.transform.parent.GetComponent<DragAndDropEntity> ();
 					if (dade != null) {
-						G.Sys.selectionManager.Show (dade);
+						G.Sys.selectionManager.Show (dade, true);
 					}
 				}
 				IsSelecting = true;

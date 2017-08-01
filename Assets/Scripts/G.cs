@@ -8,8 +8,10 @@ public sealed class G
 {
     private static volatile G _instance;
 
-    public Tilemap tilemap = new Tilemap();
+	public Tilemap tilemap = new Tilemap();
 	private List<Traveler> travelers = new List<Traveler> ();
+	private List<Agent> agents = new List<Agent> ();
+	private List<Cleaner> cleaners = new List<Cleaner> ();
 
 	private Camera _camera;
     private GameManager _gameManager;
@@ -72,6 +74,41 @@ public sealed class G
 		var value = travelers.Remove (t);
 		_menuManager.SetTravelerNumber (travelerCount());
 		return value;
+	}
+
+	public void registerAgent(Agent a) {
+		if (!agents.Contains (a)) {
+			agents.Add (a);
+		}
+	}
+
+	public bool removeAgent(Agent a) {
+		return agents.Remove (a);
+	}
+
+	public void registerCleaner(Cleaner c) {
+		if (!cleaners.Contains (c)) {
+			cleaners.Add (c);
+		}
+	}
+
+	public bool removeCleaner(Cleaner c) {
+		return cleaners.Remove (c);
+	}
+
+	public Agent GetNearestAgent(Vector3 pos) {
+		Agent closest = null;
+		float minDist = float.MaxValue;
+
+		foreach (var a in agents) {
+			float dist = Vector3.Distance (pos, a.transform.position);
+			if (dist < minDist) {
+				minDist = dist;
+				closest = a;
+			}
+		}
+
+		return closest;
 	}
 
 	public int travelerCount()

@@ -17,10 +17,15 @@ public class GameManager : MonoBehaviour
 
 	private int money;
 
+	private SubscriberList subscriberList = new SubscriberList();
+
+	private List<Traveler> faintingTravelers;
+
     void Awake()
     {
         G.Sys.gameManager = this;
 		StartCoroutine (updateTravelersDatasCoroutine ());
+		faintingTravelers = new List<Traveler> ();
     }
 
 	void Start ()
@@ -31,6 +36,15 @@ public class GameManager : MonoBehaviour
 		StartCoroutine (spawnCoroutine ());
 		G.Sys.tilemap.UpdateGlobalBounds ();
 		InstantiateColliders ();
+		subscriberList.Add(new Event<FaintEvent>.Subscriber(OnTravelerFaint));
+		subscriberList.Subscribe ();
+	}
+
+	void OnTravelerFaint(FaintEvent e) {
+		var a = G.Sys.GetNearestAgent (e.traveler.transform.position);
+		if (a != null) {
+			a.GoHelpTravelerAction (e.traveler);
+		}
 	}
 
 	IEnumerator updateTravelersDatasCoroutine()

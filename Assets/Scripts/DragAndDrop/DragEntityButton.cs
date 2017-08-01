@@ -18,7 +18,7 @@ public class DragEntityButton : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 		if (!G.Sys.cameraController.IsSelecting) {
 			spawnedObject = Instantiate (EntityToSpawn, new Vector3i (G.Sys.MainCamera.ScreenToWorldPoint(Input.mousePosition)).toVector3 (), Quaternion.identity);
 			var dade = spawnedObject.GetComponent<DragAndDropEntity> ();
-			G.Sys.selectionManager.Show (dade);
+			G.Sys.selectionManager.Show (dade, false);
 		}
 	}
 
