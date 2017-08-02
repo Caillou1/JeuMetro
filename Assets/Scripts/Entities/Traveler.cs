@@ -300,9 +300,40 @@ public class Traveler : AEntity
 
 	void updateLostness(float time)
 	{
+		
 		var signs = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.INFOPANEL, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification).Count;
+		var sound = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.SPEAKER, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification).Count;
+		if (!SpeakerTile.isEmiting())
+			sound = 0;
+		if (stats.Type != TravelerType.BLIND) {
+			float coefSign = 1;
+			float coefSound = 1;
 
-		datas.Lostness = Mathf.Clamp(datas.Lostness + ((signs == 0 || signs > 3) ? 1 : -1) * stats.LostAbility * stats.LostAbility / 20000 * time, 0, 1);
+			if (stats.Deaf)
+				coefSound = 0;
+
+			if (stats.Malvoyant)
+				coefSign /= 2;
+			if (stats.Type == TravelerType.CLASSIC || stats.Type == TravelerType.WHEELCHAIR || stats.Type == TravelerType.WITH_BAG)
+				coefSound /= 2;
+			float total = signs * coefSign + sound * coefSound;
+
+			datas.Lostness = Mathf.Clamp (datas.Lostness + ((total <= 0.1f || signs > 3f) ? 1 : -1) * stats.LostAbility * stats.LostAbility / 20000 * time, 0, 1);
+		} else {
+			TileID[] validTile = new TileID[]{ TileID.PODOTACTILE, TileID.CONTROLELINE, TileID.ELEVATOR, TileID.ESCALATOR, TileID.IN, TileID.OUT, TileID.METRO};
+			bool isOn = false;
+			foreach (var t in validTile)
+				if (G.Sys.tilemap.GetTileOfTypeAt (transform.position, t) != null) {
+					isOn = true;
+					break;
+				}
+			if (isOn)
+				datas.Lostness = 0;
+			else if (sound == 0 || sound > 3)
+				datas.Lostness = 1;
+			else
+				datas.Lostness = 0;
+		}
 
 		if (datas.Lostness > 0.95f && !isLost) {
 			isLost = true;

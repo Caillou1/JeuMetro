@@ -39,6 +39,8 @@ public class TravelerStats {
 	[Range(0f,100f)]
 	public float LostAbility;
 	public float MovementSpeed;
+	public bool Malvoyant;
+	public bool Deaf;
 	[HideInInspector]
 	public float RotationSpeed;
 
@@ -56,5 +58,7 @@ public class TravelerStats {
 		LostAbility = stats.LostAbility;
 		MovementSpeed = stats.MovementSpeed;
 		RotationSpeed = stats.RotationSpeed;
+		Malvoyant = stats.Malvoyant;
+		Deaf = stats.Deaf;
 	}
 }
