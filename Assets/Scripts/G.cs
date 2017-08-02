@@ -96,13 +96,28 @@ public sealed class G
 		return cleaners.Remove (c);
 	}
 
-	public Agent GetNearestAgent(Vector3 pos) {
+	public Agent GetNearestAgent(Vector3 pos, float maxDist = float.MaxValue) {
 		Agent closest = null;
 		float minDist = float.MaxValue;
 
 		foreach (var a in agents) {
-			float dist = Vector3.Distance (pos, a.transform.position);
-			if (dist < minDist) {
+			float dist = (pos - a.transform.position).sqrMagnitude;
+			if (dist < minDist && dist < maxDist) {
+				minDist = dist;
+				closest = a;
+			}
+		}
+
+		return closest;
+	}
+
+	public Cleaner GetNearestCleaner(Vector3 pos, float maxDist = float.MaxValue) {
+		Cleaner closest = null;
+		float minDist = float.MaxValue;
+
+		foreach (var a in cleaners) {
+			float dist = (pos - a.transform.position).sqrMagnitude;
+			if (dist < minDist && dist < maxDist) {
 				minDist = dist;
 				closest = a;
 			}

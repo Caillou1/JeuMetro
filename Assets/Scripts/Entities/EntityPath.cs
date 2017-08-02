@@ -273,6 +273,8 @@ public class EntityPath
 
 	void checkAction()
 	{
+		if (!_agent.isOnNavMesh)
+			return;
 		if ((_agent.transform.position - _agent.destination).sqrMagnitude > (_agent.transform.position - _actions [0].pos).sqrMagnitude) {
 			_points.Insert (0, _agent.destination);
 			currentAction = _actions [0];
