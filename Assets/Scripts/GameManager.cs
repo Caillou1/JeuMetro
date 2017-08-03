@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 		tf = transform;
 		AddMoney (StartingMoney);
-		StartCoroutine (spawnCoroutine ());
+		//StartCoroutine (spawnCoroutine ());
 		G.Sys.tilemap.UpdateGlobalBounds ();
 		//PathCalculator = tf.Find ("PathCalculator");
 		InstantiateColliders ();

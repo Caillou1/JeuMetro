@@ -43,21 +43,13 @@ public class WaveManager : MonoBehaviour {
 			StartChrono (v);
 			yield return new WaitForSeconds (v.TimeBeforeWave - G.Sys.constants.MetroComeTime);
 
-			foreach (var e in v.Entrees) {
-				if (e.Type == EntranceType.Metro) {
-					e.Metro.CallMetro ();
-					DOVirtual.DelayedCall (G.Sys.constants.MetroComeTime, () => {
-						InstantiateWave (e.Vague, e.Entree.position);
-					});
-				}
-			}
+			for (int i = 0; i < G.Sys.metroCount(); i++)
+				G.Sys.metro (i).CallMetro();
 
 			yield return new WaitForSeconds (G.Sys.constants.MetroComeTime);
 
 			foreach (var e in v.Entrees) {
-				if (e.Type == EntranceType.Door) {
 					InstantiateWave (e.Vague, e.Entree.position);
-				}
 			}
 				
 			CurrentWaveIndex++;
@@ -69,7 +61,8 @@ public class WaveManager : MonoBehaviour {
 	}
 
 	void InstantiateWave(GameObject wave, Vector3 pos) {
-		Instantiate (wave, pos, Quaternion.identity, tf);
+		if(wave != null)
+			Instantiate (wave, pos, Quaternion.identity, tf);
 	}
 }
 
@@ -81,19 +74,11 @@ public enum EntranceType {
 [System.Serializable]
 public class Entrance {
 	public Transform Entree;
-	public EntranceType Type;
 	public GameObject Vague;
-	[ShowIf("IsMetro")]
-	public Metro Metro;
-
-
-	private bool IsMetro() {
-		return Type == EntranceType.Metro;
-	}
 }
 
 [System.Serializable]
 public class Wave {
-	public Entrance[] Entrees;
 	public float TimeBeforeWave;
+	public Entrance[] Entrees;
 }

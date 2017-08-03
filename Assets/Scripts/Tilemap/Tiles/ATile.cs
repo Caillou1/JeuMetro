@@ -24,6 +24,7 @@ public enum TileID
 	WASTE,
 	EMPTYWALL,
 	CONTROLELINE,
+	WAIT_ZONE,
 }
 
 public abstract class ATile : MonoBehaviour
