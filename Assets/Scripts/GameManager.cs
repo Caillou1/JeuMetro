@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
 
 	private int money;
 
+	private Transform PathCalculator;
+
 	private SubscriberList subscriberList = new SubscriberList();
 
 	private List<Traveler> faintingTravelers;
@@ -26,6 +28,9 @@ public class GameManager : MonoBehaviour
         G.Sys.gameManager = this;
 		StartCoroutine (updateTravelersDatasCoroutine ());
 		faintingTravelers = new List<Traveler> ();
+		subscriberList.Add(new Event<FaintEvent>.Subscriber(OnTravelerFaint));
+		subscriberList.Add(new Event<NavMeshBakedEvent>.Subscriber(OnNavMeshBaked));
+		subscriberList.Subscribe ();
     }
 
 	void Start ()
@@ -35,9 +40,16 @@ public class GameManager : MonoBehaviour
 		AddMoney (StartingMoney);
 		StartCoroutine (spawnCoroutine ());
 		G.Sys.tilemap.UpdateGlobalBounds ();
+		//PathCalculator = tf.Find ("PathCalculator");
 		InstantiateColliders ();
-		subscriberList.Add(new Event<FaintEvent>.Subscriber(OnTravelerFaint));
-		subscriberList.Subscribe ();
+	}
+
+	public void OnNavMeshBaked(NavMeshBakedEvent e) {
+		G.Sys.tilemap.CreateElevatorsConnections ();
+	}
+
+	void OnDestroy() {
+		subscriberList.Unsubscribe ();
 	}
 
 	void OnTravelerFaint(FaintEvent e) {
