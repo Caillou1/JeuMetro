@@ -487,8 +487,8 @@ public class Tilemap
 	private Dictionary<int, Dictionary<int, List<List<Pair<int, ElevatorTile>>>>> elevatorsConnections;
 
 	public void CreateElevatorsConnections() {
-		System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch ();
-		watch.Start ();
+		//System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch ();
+		//watch.Start ();
 
 		//INITIALISATION
 		elevatorsConnections = new Dictionary<int, Dictionary<int, List<List<Pair<int, ElevatorTile>>>>>();
@@ -552,13 +552,14 @@ public class Tilemap
 					if (connectedFloor.Value != null && connectedFloor.Value.Count > 0) {
 						foreach (var connectedFloorConnections in elevatorsConnections[connectedFloor.Key].ToList()) {
 							if (connectedFloorConnections.Value != null && connectedFloorConnections.Value.Count > 0) {
-								if (originFloorConnections.Value[connectedFloorConnections.Key] == null) {
+								if (originFloorConnections.Value [connectedFloorConnections.Key] == null || originFloorConnections.Value [connectedFloorConnections.Key].Count == 0) {
 									List<List<Pair<int, ElevatorTile>>> list = new List<List<Pair<int, ElevatorTile>>> ();
 
 									foreach (var el1 in connectedFloor.Value.ToList()) {
 										foreach (var el2 in connectedFloorConnections.Value.ToList()) {
 											var pos1 = el1.Last ().Second.GetWaitZone (el1.Last ().First);
 											var pos2 = el2.First ().Second.GetWaitZone (el1.Last ().First);
+
 											if (IsReachable (pos1, pos2)) {
 												var l = el1.Concat (el2).ToList ();
 												if (l [0].Second != l.Last ().Second) {
@@ -569,7 +570,29 @@ public class Tilemap
 										}
 									}
 
-									originFloorConnections.Value[connectedFloorConnections.Key] = list;
+									originFloorConnections.Value [connectedFloorConnections.Key] = list;
+								} else {
+									List<List<Pair<int, ElevatorTile>>> list = new List<List<Pair<int, ElevatorTile>>> ();
+
+									foreach (var el1 in connectedFloor.Value.ToList()) {
+										foreach (var el2 in connectedFloorConnections.Value.ToList()) {
+											var pos1 = el1.Last ().Second.GetWaitZone (el1.Last ().First);
+											var pos2 = el2.First ().Second.GetWaitZone (el1.Last ().First);
+
+											if (IsReachable (pos1, pos2)) {
+												var l = el1.Concat (el2).ToList ();
+												if (l [0].Second != l.Last ().Second) {
+													Debug.Log ("trouver condition");
+													if (false) {
+														list.Add (l);
+														HasChanged = true;
+													}
+												}
+											}
+										}
+									}
+
+									originFloorConnections.Value [connectedFloorConnections.Key] = originFloorConnections.Value [connectedFloorConnections.Key].Concat (list).ToList ();
 								}
 							}
 						}
@@ -578,9 +601,9 @@ public class Tilemap
 			}
 		}
 
-		//ShowConnections ();
-		Debug.Log ("CreateElevatorsConnections execution time : " + watch.ElapsedMilliseconds + " ms");
-		watch.Stop ();
+		ShowConnections ();
+		//Debug.Log ("CreateElevatorsConnections execution time : " + watch.ElapsedMilliseconds + " ms");
+		//watch.Stop ();
 	}
 
 	private void ShowConnections() {
