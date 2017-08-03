@@ -14,7 +14,10 @@ public class Metro : MonoBehaviour {
 	private Vector3 startPosition;
 	private Vector3 endPosition;
 
-	void Start () {
+	void Awake()
+	{
+		G.Sys.registerMetro (this);
+
 		tf = transform;
 		positionToReach = tf.position;
 		startPosition = tf.position - tf.forward * moveOffset;
@@ -23,14 +26,9 @@ public class Metro : MonoBehaviour {
 		tf.position = startPosition;
 	}
 
-	float time=15;
-	void Update()
+	void OnDestroy()
 	{
-		time += Time.deltaTime;
-		if (time > 20) {
-			CallMetro ();
-			time = 0;
-		}
+		G.Sys.removeMetro (this);
 	}
 
 	void ResetPos() {
@@ -39,7 +37,7 @@ public class Metro : MonoBehaviour {
 
 	public void CallMetro() {
 		ResetPos ();
-		tf.DOMove (positionToReach, G.Sys.constants.MetroComeTime).OnComplete(()=>{
+		tf.DOMove (positionToReach, G.Sys.constants.MetroComeTime).SetEase(Ease.OutQuad).OnComplete(()=>{
 			EnableTiles(true);
 			DOVirtual.DelayedCall(G.Sys.constants.MetroWaitTime, () => {
 				Leave();
@@ -49,7 +47,7 @@ public class Metro : MonoBehaviour {
 
 	public void Leave() {
 		EnableTiles (false);
-		tf.DOMove (endPosition, G.Sys.constants.MetroComeTime / 2f);
+		tf.DOMove (endPosition, G.Sys.constants.MetroComeTime).SetEase(Ease.InExpo);
 	}
 
 	void EnableTiles(bool value)

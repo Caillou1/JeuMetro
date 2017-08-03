@@ -12,6 +12,7 @@ public sealed class G
 	private List<Traveler> travelers = new List<Traveler> ();
 	private List<Agent> agents = new List<Agent> ();
 	private List<Cleaner> cleaners = new List<Cleaner> ();
+	private List<Metro> metros = new List<Metro> ();
 
 	private Camera _camera;
     private GameManager _gameManager;
@@ -135,10 +136,34 @@ public sealed class G
 	{
 		return travelers [index];
 	}
+
+	public void registerMetro(Metro t)
+	{
+		if (!metros.Contains (t))
+			metros.Add (t);
+	}
+
+	public bool removeMetro(Metro t)
+	{
+		return metros.Remove (t);
+	}
+
+	public int metroCount()
+	{
+		return metros.Count;
+	}
+
+	public Metro metro(int index)
+	{
+		return metros [index];
+	}
 		
 	public void clear()
 	{
 		travelers.Clear ();
+		agents.Clear ();
+		cleaners.Clear ();
+		metros.Clear ();
 	}
 
 	public AudioManager audioManager {
