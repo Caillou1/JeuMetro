@@ -6,6 +6,10 @@ using NRand;
 
 public class Traveler : AEntity
 {
+	enum ExitType{ DOOR, METRO }
+
+	ExitType exitType;
+
 	public TravelerStats stats = new TravelerStats ();
 
 	[SerializeField]
@@ -18,35 +22,54 @@ public class Traveler : AEntity
 	protected override void OnAwake ()
 	{
 		G.Sys.registerTraveler (this);
-		target = findExit (targetName);
+		var e = findExit (targetName);
+		target = e.First;
+		exitType = e.Second;
 		path.destnation = target;
 		initializeDatas();
 	}
 
 	protected override void OnUpdate ()
 	{
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.OUT, transform.position))
-			Destroy (gameObject);
+		checkOnExit ();
+
 	}
 
-	static Vector3 findExit(string name)
+	void checkOnExit()
 	{
-		List<Vector3> validTiles = new List<Vector3> ();
+		if (exitType == ExitType.DOOR && G.Sys.tilemap.haveSpecialTileAt (TileID.OUT, transform.position)) {
+			Destroy (gameObject);
+			return;
+		}
+		if (exitType == ExitType.METRO && !path.haveAction (ActionType.WAIT_METRO) && new Vector3i (transform.position).Equals (new Vector3i (target)) && G.Sys.tilemap.GetTileOfTypeAt (transform.position, TileID.WAIT_ZONE) != null) {
+			path.addAction (new WaitMetroAction (this, new Vector3i (transform.position).toVector3 ()));
+			return;
+		}
+	}
+
+	static Pair<Vector3, ExitType> findExit(string name)
+	{
+		List<Pair<Vector3, ExitType>> validTiles = new List<Pair<Vector3, ExitType>> ();
 		foreach (var m in G.Sys.tilemap.getSpecialTiles(TileID.OUT)) {
 			var t = G.Sys.tilemap.GetTileOfTypeAt (m, TileID.OUT) as ExitsTile;
 			if (t == null)
 				continue;
 			if (t.exitname == name)
-				validTiles.Add (m);
+				validTiles.Add (new Pair<Vector3, ExitType>(m, ExitType.DOOR));
 		}
 
-		foreach (var m in G.Sys.tilemap.getSpecialTiles(TileID.METRO)) {
-			var t = G.Sys.tilemap.GetTileOfTypeAt (m, TileID.METRO) as ExitsTile;
+		foreach (var m in G.Sys.tilemap.getSpecialTiles(TileID.WAIT_ZONE)) {
+			var t = G.Sys.tilemap.GetTileOfTypeAt (m, TileID.WAIT_ZONE) as WaitZoneTile;
 			if (t == null)
 				continue;
+			if (G.Sys.tilemap.GetTileOfTypeAt (m, TileID.GROUND) == null)
+				continue;
 			if (t.exitname == name)
-				validTiles.Add (m);
+				validTiles.Add (new Pair<Vector3, ExitType>(m, ExitType.METRO));
 		}
+
+		if (validTiles.Count == 0)
+			return new Pair<Vector3, ExitType> (Vector3.zero, ExitType.DOOR);
 
 		return validTiles [new UniformIntDistribution (validTiles.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())];
 	}

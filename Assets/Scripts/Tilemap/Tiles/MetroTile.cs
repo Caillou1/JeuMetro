@@ -21,7 +21,7 @@ public class MetroTile : ATile
 		G.Sys.tilemap.delTile (transform.position, this);
 	}
 
-	bool tileEnabled 
+	public bool tileEnabled 
 	{ 
 		get { return _enabled; } 
 		set { 

@@ -12,6 +12,12 @@ public class WaitZoneTile : ATile
 
 		G.Sys.tilemap.addTile (transform.position, this, Tilemap.EXITS_PRIORITY);
 		G.Sys.tilemap.addSpecialTile (type, transform.position);
+
+		if (string.IsNullOrEmpty (exitname)) {
+			var comp = OutMetroName.findInParent (transform);
+			if (comp != null)
+				exitname = comp.exitName;
+		}
 	}
 
 	protected override void OnDestroy()
