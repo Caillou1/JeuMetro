@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
 
 	public int StartingMoney = 0;
 
+	private float TotalTime = 0;
+	private int TravelersThatLeftStation = 0;
+
 	private int money;
 
 	private Transform PathCalculator;
@@ -42,7 +45,7 @@ public class GameManager : MonoBehaviour
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 		tf = transform;
 		AddMoney (StartingMoney);
-		//StartCoroutine (spawnCoroutine ());
+		StartCoroutine (spawnCoroutine ());
 		G.Sys.tilemap.UpdateGlobalBounds ();
 		//PathCalculator = tf.Find ("PathCalculator");
 		InstantiateColliders ();
@@ -118,6 +121,12 @@ public class GameManager : MonoBehaviour
 
 	public bool HaveEnoughMoney(int m) {
 		return money >= m;
+	}
+
+	public void AddTime(float t) {
+		TravelersThatLeftStation++;
+		TotalTime += t;
+		Debug.Log ("Temps Moyen : " + TotalTime / TravelersThatLeftStation);
 	}
 
 	IEnumerator spawnCoroutine()

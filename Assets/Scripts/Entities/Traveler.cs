@@ -20,6 +20,8 @@ public class Traveler : AEntity
 
 	bool isLost = false;
 
+	private float ArrivalTime;
+
 	protected override void OnAwake ()
 	{
 		G.Sys.registerTraveler (this);
@@ -28,6 +30,7 @@ public class Traveler : AEntity
 		exitType = e.Second;
 		path.destnation = target;
 		initializeDatas();
+		ArrivalTime = Time.time;
 	}
 
 	protected override void OnUpdate ()
@@ -78,6 +81,7 @@ public class Traveler : AEntity
 	void OnDestroy()
 	{
 		G.Sys.removeTraveler (this);
+		G.Sys.gameManager.AddTime (Time.time - ArrivalTime);
 	}
 
 	protected override void Check ()
