@@ -582,8 +582,20 @@ public class Tilemap
 											if (IsReachable (pos1, pos2)) {
 												var l = el1.Concat (el2).ToList ();
 												if (l [0].Second != l.Last ().Second) {
-													Debug.Log ("trouver condition");
-													if (false) {
+													bool canAdd = true;
+
+													foreach(var path in originFloorConnections.Value[l.Last().First]) {
+														var firstO = l.First ().Second.GetWaitZone (originFloorConnections.Key);
+														var firstD = path.First ().Second.GetWaitZone (originFloorConnections.Key);
+														var lastO = l.Last ().Second.GetWaitZone (l.Last ().First);
+														var lastD = path.Last ().Second.GetWaitZone (l.Last ().First);
+
+														if (IsReachable (firstO, firstD) && IsReachable (lastO, lastD)) {
+															canAdd = false;
+														}
+													}
+
+													if (canAdd) {
 														list.Add (l);
 														HasChanged = true;
 													}
@@ -601,7 +613,7 @@ public class Tilemap
 			}
 		}
 
-		ShowConnections ();
+		//ShowConnections ();
 		//Debug.Log ("CreateElevatorsConnections execution time : " + watch.ElapsedMilliseconds + " ms");
 		//watch.Stop ();
 	}

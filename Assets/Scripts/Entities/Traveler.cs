@@ -78,7 +78,6 @@ public class Traveler : AEntity
 
 					path.addAction (new WaitForElevatorAction (this, pos, tile, floor, priority));
 				}
-				Debug.Log ("COUCOU JE PREND TOUT LE TEMPS L'ASCENSEUR");
 			}
 		}
 	}

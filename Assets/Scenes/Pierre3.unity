@@ -5457,7 +5457,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1905464376800332, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_Name
-      value: Elevator (4)
+      value: F
       objectReference: {fileID: 0}
     - target: {fileID: 4499377141001474, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -8578,6 +8578,10 @@ Prefab:
       propertyPath: m_Name
       value: A
       objectReference: {fileID: 0}
+    - target: {fileID: 1905464376800332, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
   m_IsPrefabParent: 0
@@ -9011,7 +9015,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1905464376800332, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_Name
-      value: Elevator (1)
+      value: B
       objectReference: {fileID: 0}
     - target: {fileID: 1905464376800332, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_IsActive
@@ -12606,7 +12610,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1905464376800332, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_Name
-      value: Elevator (3)
+      value: E
       objectReference: {fileID: 0}
     - target: {fileID: 1905464376800332, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_IsActive
@@ -13042,7 +13046,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1905464376800332, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_Name
-      value: B
+      value: D
       objectReference: {fileID: 0}
     - target: {fileID: 4499377141001474, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -19208,7 +19212,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1905464376800332, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_Name
-      value: Elevator (2)
+      value: C
       objectReference: {fileID: 0}
     - target: {fileID: 4499377141001474, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -22336,11 +22340,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1905464376800332, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_Name
-      value: A (1)
+      value: G
       objectReference: {fileID: 0}
     - target: {fileID: 4499377141001474, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
       value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 1905464376800332, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
