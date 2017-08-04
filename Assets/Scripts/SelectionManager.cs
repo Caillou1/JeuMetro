@@ -39,7 +39,10 @@ public class SelectionManager : MonoBehaviour {
 
 			var e = obj.GetComponent<EscalatorTile> ();
 			if (e != null) {
+				rotate.transform.localPosition = Vector3.zero + Vector3.up * 50;
 				changeside.SetActive (true);
+			} else {
+				rotate.transform.localPosition = Vector3.zero;
 			}
 
 			obj.CanDrag = true;
