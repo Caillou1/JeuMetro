@@ -8,6 +8,8 @@ public class AudioManager : MonoBehaviour {
 
 	void Awake() {
 		G.Sys.audioManager = this;
+		musicVolume = PlayerPrefs.GetFloat ("musicVolume", 1f);
+		soundVolume = PlayerPrefs.GetFloat ("soundVolume", 1f);
 	}
 
 	public void SetSoundVolume(float v) {
@@ -16,5 +18,10 @@ public class AudioManager : MonoBehaviour {
 
 	public void SetMusicVolume(float v) {
 		musicVolume = v;
+	}
+
+	void OnDestroy() {
+		PlayerPrefs.SetFloat ("soundVolume", soundVolume);
+		PlayerPrefs.SetFloat ("musicVolume", musicVolume);
 	}
 }

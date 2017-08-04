@@ -37,6 +37,7 @@ public class GetInElevatorAction : AEntityAction<AEntity>
 	protected override void End ()
 	{
 		entity.GetComponent<NavMeshAgent> ().enabled = true;
+		elevatorTile.RemovePersonFromElevator ();
 	}
 }
 

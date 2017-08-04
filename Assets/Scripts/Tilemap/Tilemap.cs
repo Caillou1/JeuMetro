@@ -596,8 +596,18 @@ public class Tilemap
 													}
 
 													if (canAdd) {
-														list.Add (l);
-														HasChanged = true;
+														foreach (var pair in l) {
+															if(l.Exists(e => {
+																return (pair != e && e.Second == pair.Second);
+															})) {
+																canAdd = false;
+															}
+														}
+
+														if (canAdd) {
+															list.Add (l);
+															HasChanged = true;
+														}
 													}
 												}
 											}
@@ -613,7 +623,7 @@ public class Tilemap
 			}
 		}
 
-		//ShowConnections ();
+		ShowConnections ();
 		//Debug.Log ("CreateElevatorsConnections execution time : " + watch.ElapsedMilliseconds + " ms");
 		//watch.Stop ();
 	}
@@ -652,8 +662,9 @@ public class Tilemap
 				o.y = Destination.y;
 
 				if (IsReachable (Origin, d) && IsReachable (o, Destination)) {
-					list = path;
-					break;
+					if (list.Count == 0 || Vector3.Distance (Origin, d) < Vector3.Distance (Origin, path.First ().Second.GetWaitZone (Mathf.RoundToInt (Origin.y)))) {
+						list = path;
+					}
 				}
 			}
 		}

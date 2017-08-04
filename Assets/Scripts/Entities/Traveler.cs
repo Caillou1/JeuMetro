@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NRand;
+using UnityEngine.AI;
 
 public class Traveler : AEntity
 {
@@ -70,13 +71,26 @@ public class Traveler : AEntity
 		if (!path.haveAction (ActionType.WAIT_ELEVATOR)) {
 			var possiblePath = G.Sys.tilemap.GetElevatorsToFloor (transform.position, path.destnation);
 			if (possiblePath.Count > 0) {
-				for (int i = 0; i < possiblePath.Count; i++) {
-					Vector3 pos = (i == 0) ? possiblePath [i].Second.GetWaitZone (Mathf.RoundToInt (transform.position.y)) : possiblePath [i].Second.GetWaitZone (possiblePath [i - 1].First);
-					ElevatorTile tile = possiblePath [i].Second;
-					int floor = ((i + 1) < possiblePath.Count) ? Mathf.RoundToInt (possiblePath [i + 1].Second.GetWaitZone (possiblePath [i].First).y) : Mathf.RoundToInt (path.destnation.y);
-					int priority = (possiblePath.Count - i) * 2;
+				bool CanTakeElevator = false;
 
-					path.addAction (new WaitForElevatorAction (this, pos, tile, floor, priority));
+				if (stats.Type == TravelerType.WHEELCHAIR || (!possiblePath [0].Second.IsFull () && possiblePath [0].Second.IsOnFloor (Mathf.RoundToInt (transform.position.y)))) {
+					CanTakeElevator = true;
+				} else {
+					NavMeshPath p = new NavMeshPath ();
+					NavMesh.CalculatePath (transform.position, path.destnation, NavMesh.AllAreas, p);
+					if (p.status != NavMeshPathStatus.PathComplete)
+						CanTakeElevator = true;
+				}
+
+				if (CanTakeElevator) {
+					for (int i = 0; i < possiblePath.Count; i++) {
+						Vector3 pos = (i == 0) ? possiblePath [i].Second.GetWaitZone (Mathf.RoundToInt (transform.position.y)) : possiblePath [i].Second.GetWaitZone (possiblePath [i - 1].First);
+						ElevatorTile tile = possiblePath [i].Second;
+						int floor = ((i + 1) < possiblePath.Count) ? Mathf.RoundToInt (possiblePath [i + 1].Second.GetWaitZone (possiblePath [i].First).y) : Mathf.RoundToInt (path.destnation.y);
+						int priority = (possiblePath.Count - i) * 2;
+
+						path.addAction (new WaitForElevatorAction (this, pos, tile, floor, priority));
+					}
 				}
 			}
 		}
