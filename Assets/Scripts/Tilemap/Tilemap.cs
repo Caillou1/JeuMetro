@@ -623,7 +623,7 @@ public class Tilemap
 			}
 		}
 
-		ShowConnections ();
+		//ShowConnections ();
 		//Debug.Log ("CreateElevatorsConnections execution time : " + watch.ElapsedMilliseconds + " ms");
 		//watch.Stop ();
 	}
