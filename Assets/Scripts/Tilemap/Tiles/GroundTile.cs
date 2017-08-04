@@ -6,7 +6,6 @@ using UnityEngine;
 
 class GroundTile : ATile
 {
-
 	protected override void Awake()
     {
 		type = TileID.GROUND;

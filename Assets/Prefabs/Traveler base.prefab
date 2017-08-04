@@ -137,8 +137,10 @@ MonoBehaviour:
     FraudPercentage: 0
     LostAbility: 0
     MovementSpeed: 5
+    Malvoyant: 0
+    Deaf: 0
     RotationSpeed: 0
-  targetName: Exit
+  targetName: MetroA
 --- !u!136 &136956853394791184
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -165,7 +167,7 @@ NavMeshAgent:
   m_Acceleration: 50
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.2
   m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 0
   m_AutoRepath: 1

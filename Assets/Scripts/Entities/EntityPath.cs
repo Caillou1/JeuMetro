@@ -225,7 +225,8 @@ public class EntityPath
 		if (_points.Count == 0) {
 			currentAction = _actions [0];
 			_actions.RemoveAt (0);
-			_agent.SetDestination (currentAction.pos);
+			if(_agent.isOnNavMesh)
+				_agent.SetDestination (currentAction.pos);
 			return;
 		}
 
@@ -273,6 +274,8 @@ public class EntityPath
 
 	void checkAction()
 	{
+		if (!_agent.isOnNavMesh)
+			return;
 		if ((_agent.transform.position - _agent.destination).sqrMagnitude > (_agent.transform.position - _actions [0].pos).sqrMagnitude) {
 			_points.Insert (0, _agent.destination);
 			currentAction = _actions [0];

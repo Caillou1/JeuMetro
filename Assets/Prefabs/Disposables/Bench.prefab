@@ -116,7 +116,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1246725375100114}
-  m_Mesh: {fileID: 4300000, guid: c044b79f9cb3841f2a851ae64259ef13, type: 3}
+  m_Mesh: {fileID: 4300000, guid: 9db36ee04e8957646802ef8bf1214618, type: 3}
 --- !u!65 &65010976379501454
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -182,22 +182,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3236df722ca345d2b8993d6ae1eaba2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetOf: []
---- !u!114 &114391578430656588
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1246725375100114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_OverrideArea: 0
-  m_Area: 0
-  m_IgnoreFromBuild: 0
-  m_AffectedAgents: ffffffff
 --- !u!114 &114355231092289696
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -213,3 +197,18 @@ MonoBehaviour:
   eraseRenderer: 0
   originalLayer: 0
   originalMaterials: []
+--- !u!114 &114391578430656588
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1246725375100114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
