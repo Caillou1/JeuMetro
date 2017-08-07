@@ -88,7 +88,7 @@ public class SitState : ATravelerState
 		var benchs = G.Sys.tilemap.tilesOfTypeAt (benchPos, TileID.BENCH);
 		if (benchs.Count == 0)
 			yield return null;
-		var bench = benchs [0] as BenchTile;
+		//var bench = benchs [0] as BenchTile;
 		//bench.sit (bench.posToSide (benchPos), traveler);
 		
 		yield return new WaitForSeconds (1.0f);

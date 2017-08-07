@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NRand;
 using UnityEngine.SceneManagement;
+using Sirenix.OdinInspector;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,10 +13,18 @@ public class GameManager : MonoBehaviour
 	public float maxDelay;
 	public GameObject wastePrefab;
 	public GameObject emptyWall;
+	public bool SetMaxTravelers;
+	[ShowIf("SetMaxTravelers")]
+	public int MaxTravelers;
 
 	public int StartingMoney = 0;
 
+	private float TotalTime = 0;
+	private int TravelersThatLeftStation = 0;
+
 	private int money;
+
+	private Transform PathCalculator;
 
 	private SubscriberList subscriberList = new SubscriberList();
 
@@ -26,6 +35,9 @@ public class GameManager : MonoBehaviour
         G.Sys.gameManager = this;
 		StartCoroutine (updateTravelersDatasCoroutine ());
 		faintingTravelers = new List<Traveler> ();
+		subscriberList.Add(new Event<FaintEvent>.Subscriber(OnTravelerFaint));
+		subscriberList.Add(new Event<NavMeshBakedEvent>.Subscriber(OnNavMeshBaked));
+		subscriberList.Subscribe ();
     }
 
 	void Start ()
@@ -33,17 +45,26 @@ public class GameManager : MonoBehaviour
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 		tf = transform;
 		AddMoney (StartingMoney);
-		//StartCoroutine (spawnCoroutine ());
+		StartCoroutine (spawnCoroutine ());
 		G.Sys.tilemap.UpdateGlobalBounds ();
+		//PathCalculator = tf.Find ("PathCalculator");
 		InstantiateColliders ();
-		subscriberList.Add(new Event<FaintEvent>.Subscriber(OnTravelerFaint));
-		subscriberList.Subscribe ();
+	}
+
+	public void OnNavMeshBaked(NavMeshBakedEvent e) {
+		G.Sys.tilemap.CreateElevatorsConnections ();
+	}
+
+	void OnDestroy() {
+		subscriberList.Unsubscribe ();
 	}
 
 	void OnTravelerFaint(FaintEvent e) {
 		var a = G.Sys.GetNearestAgent (e.traveler.transform.position);
 		if (a != null) {
 			a.GoHelpTravelerAction (e.traveler);
+		} else {
+			faintingTravelers.Add (e.traveler);
 		}
 	}
 
@@ -102,6 +123,12 @@ public class GameManager : MonoBehaviour
 		return money >= m;
 	}
 
+	public void AddTime(float t) {
+		TravelersThatLeftStation++;
+		TotalTime += t;
+		Debug.Log ("Temps Moyen : " + TotalTime / TravelersThatLeftStation);
+	}
+
 	IEnumerator spawnCoroutine()
 	{
 		yield return new WaitForSeconds (5f);
@@ -111,20 +138,21 @@ public class GameManager : MonoBehaviour
 
 		while (true) {
 			yield return new WaitForSeconds (dDelta.Next (gen));
-			var doors = G.Sys.tilemap.getSpecialTiles (TileID.IN);
-			var door = doors [new UniformIntDistribution (doors.Count-1).Next (gen)];
-			var e = Instantiate (entities [dType.Next (gen)], door, new Quaternion ());
-			var dir = new Vector3[]{ Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
-			var validDir = new List<Vector3> ();
-			foreach(var d in dir)
-			{
-				var tiles = G.Sys.tilemap.at (door + d);
-				if (tiles.Count == 0 && tiles [0].type == TileID.GROUND)
-					validDir.Add (door + d);
+			if (!SetMaxTravelers || (SetMaxTravelers && G.Sys.travelerCount() < MaxTravelers)) {
+					var doors = G.Sys.tilemap.getSpecialTiles (TileID.IN);
+					var door = doors [new UniformIntDistribution (doors.Count - 1).Next (gen)];
+					var e = Instantiate (entities [dType.Next (gen)], door, new Quaternion ());
+					var dir = new Vector3[]{ Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
+					var validDir = new List<Vector3> ();
+					foreach (var d in dir) {
+						var tiles = G.Sys.tilemap.at (door + d);
+						if (tiles.Count == 0 && tiles [0].type == TileID.GROUND)
+							validDir.Add (door + d);
+					}
+			
+					if (validDir.Count != 0)
+						e.transform.rotation = Quaternion.LookRotation (validDir [new UniformIntDistribution (validDir.Count - 1).Next (gen)] - e.transform.position, Vector3.up);
 			}
-		
-			if(validDir.Count != 0)
-				e.transform.rotation = Quaternion.LookRotation (validDir[new UniformIntDistribution(validDir.Count-1).Next(gen)] - e.transform.position, Vector3.up);
 		}
 	}
 }

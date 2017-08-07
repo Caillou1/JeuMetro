@@ -8,7 +8,7 @@ public class GetInElevatorAction : AEntityAction<AEntity>
 	int destinationFloor;
 	bool wait = false;
 
-	public GetInElevatorAction (AEntity t, Vector3 pos, ElevatorTile tile, int destination) : base(t, ActionType.WAIT_ELEVATOR, pos)
+	public GetInElevatorAction (AEntity t, Vector3 pos, ElevatorTile tile, int destination, int priority) : base(t, ActionType.WAIT_ELEVATOR, pos, priority)
 	{
 		elevatorTile = tile;
 		destinationFloor = destination;
@@ -18,7 +18,6 @@ public class GetInElevatorAction : AEntityAction<AEntity>
 	{
 		elevatorTile.CallElevator (destinationFloor);
 
-		Debug.Log ("called to destination floor");
 		return false;
 	}
 
@@ -28,7 +27,8 @@ public class GetInElevatorAction : AEntityAction<AEntity>
 			return true;
 		if (elevatorTile.IsOnFloor (destinationFloor)) {
 			wait = true;
-			entity.transform.position = elevatorTile.GetWaitZone (destinationFloor);
+			var tf = entity.transform;
+			tf.position = new Vector3 (tf.position.x, tf.position.y + destinationFloor - Mathf.RoundToInt (tf.position.y), tf.position.z);
 			entity.GetComponent<NavMeshAgent> ().enabled = false;
 		}
 		return false;
@@ -37,6 +37,7 @@ public class GetInElevatorAction : AEntityAction<AEntity>
 	protected override void End ()
 	{
 		entity.GetComponent<NavMeshAgent> ().enabled = true;
+		elevatorTile.RemovePersonFromElevator ();
 	}
 }
 

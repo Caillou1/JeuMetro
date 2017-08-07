@@ -6,7 +6,7 @@ public class WaitForElevatorAction : AEntityAction<AEntity>
 	ElevatorTile elevatorTile;
 	int destinationFloor;
 
-	public WaitForElevatorAction (AEntity t, Vector3 pos, ElevatorTile tile, int destination) : base(t, ActionType.WAIT_ELEVATOR, pos)
+	public WaitForElevatorAction (AEntity t, Vector3 pos, ElevatorTile tile, int destination, int priority) : base(t, ActionType.WAIT_ELEVATOR, pos, priority)
 	{
 		elevatorTile = tile;
 		destinationFloor = destination;
@@ -20,12 +20,14 @@ public class WaitForElevatorAction : AEntityAction<AEntity>
 
 	protected override bool Update ()
 	{
-		return elevatorTile.IsOnFloor ((int)pos.y);
+		elevatorTile.CallElevator ((int)pos.y);
+		return !elevatorTile.IsFull() && elevatorTile.IsOnFloor (Mathf.RoundToInt(pos.y));
 	}
 
 	protected override void End ()
 	{
-		entity.path.addAction (new GetInElevatorAction (entity, new Vector3(elevatorTile.transform.position.x, entity.transform.position.y, elevatorTile.transform.position.z), elevatorTile, destinationFloor));
+		elevatorTile.AddPersonInElevator ();
+		entity.path.addAction (new GetInElevatorAction (entity, new Vector3(elevatorTile.transform.position.x - 1f, entity.transform.position.y, elevatorTile.transform.position.z), elevatorTile, destinationFloor, priority - 1));
 	}
 }
 

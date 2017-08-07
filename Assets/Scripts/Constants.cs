@@ -32,6 +32,8 @@ public class Constants : MonoBehaviour
 	public float ElevatorComeTime;
 	[Tooltip("Temps qu'attend un ascenseur à un étage s'il doit aller à un autre étage après")]
 	public float ElevatorWaitTime;
+	[Tooltip("Nombre de personnes maximum dans un ascenseur")]
+	public int ElevatorMaxPeople;
 	[Tooltip("Temps entre 2 emission par les éméteurs sonor")]
 	public float SpeakerWaitTime;
 	[Tooltip("Temps d'émission des éméteurs sonor")]

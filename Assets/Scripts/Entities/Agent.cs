@@ -32,23 +32,6 @@ public class Agent : AEntity
 		G.Sys.registerAgent (this);
 	}
 
-	protected override void Check ()
-	{
-		if (!path.haveAction(ActionType.WAIT_ELEVATOR) && agent.enabled && Mathf.RoundToInt(path.destnation.y) != Mathf.RoundToInt(transform.position.y)) {
-			var positions = G.Sys.tilemap.getSpecialTiles (TileID.ELEVATOR);
-
-
-			foreach (var pos in positions) {
-				if (Mathf.RoundToInt(pos.y) == Mathf.RoundToInt(transform.position.y)) {
-					var elevator = G.Sys.tilemap.GetTileOfTypeAt(pos, TileID.ELEVATOR) as ElevatorTile;
-					path.addAction (new WaitForElevatorAction (this, elevator.GetWaitZone (Mathf.RoundToInt(pos.y)), elevator, Mathf.RoundToInt(path.destnation.y)));
-
-					break;
-				}
-			}
-		}
-	}
-
 	public void GoHelpTravelerAction(Traveler t) {
 		var pos = t.transform.position;
 		var dir = Vector3.Normalize (pos - transform.position);

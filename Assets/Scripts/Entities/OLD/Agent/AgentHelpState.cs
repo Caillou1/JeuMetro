@@ -8,8 +8,8 @@ namespace V1
 {
 public class AgentHelpState : AAgentState
 {
-	Vector3 dest = new Vector3();
-	Vector3 wastePos = new Vector3 ();
+	//Vector3 dest = new Vector3();
+	//Vector3 wastePos = new Vector3 ();
 
 	public AgentHelpState (AgentEntity t) : base(t, StateType.AGENT_HELP)
 	{

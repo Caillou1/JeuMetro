@@ -13,6 +13,7 @@ public class NavMeshManager : MonoBehaviour
 	SubscriberList subscriberList = new SubscriberList();
 
 	bool needToBuild = false;
+	bool hasCreatedElevatorsConnections = false;
 
 	void Awake () 
 	{
@@ -44,6 +45,11 @@ public class NavMeshManager : MonoBehaviour
 				foreach (var n in navmesh) {
 					n.BuildNavMesh ();
 					yield return new WaitForEndOfFrame ();
+				}
+
+				if (!hasCreatedElevatorsConnections) {
+					Event<NavMeshBakedEvent>.Broadcast (new NavMeshBakedEvent ());
+					hasCreatedElevatorsConnections = true;
 				}
 			}
 		}
