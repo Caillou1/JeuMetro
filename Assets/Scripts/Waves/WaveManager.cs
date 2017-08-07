@@ -7,6 +7,7 @@ using DG.Tweening;
 using System.Linq;
 
 public class WaveManager : MonoBehaviour {
+	public Score score;
 
 	[BoxGroup("Waves")]
 	public int waveCounts;
@@ -101,6 +102,11 @@ public class WaveManager : MonoBehaviour {
 		}
 	}
 
+	void SendScore() {
+		score.SetValues(G.Sys.gameManager.GetAverageTime (), G.Sys.gameManager.GetMoney (), G.Sys.tilemap.CalculateFreeSpacePercentage ());
+		Event<WinGameEvent>.Broadcast (new WinGameEvent (score));
+	}
+
 	void Update()
 	{
 		if (ended)
@@ -112,6 +118,7 @@ public class WaveManager : MonoBehaviour {
 			if (currentWave >= waveCounts) {
 				ended = true;
 				G.Sys.menuManager.SetPieTime (1, 0);
+				SendScore ();
 				return;
 			}
 			chronoStartTime = Time.time;
@@ -169,6 +176,84 @@ public class WaveManager : MonoBehaviour {
 			return waveTimes [wave + 1];
 		return 0;
 	}
+}
+
+[System.Serializable]
+public class Score {
+	[BoxGroup("AverageTime")]
+	public float BronzeAverageTime;
+	[BoxGroup("AverageTime")]
+	public float SilverAverageTime;
+	[BoxGroup("AverageTime")]
+	public float GoldAverageTime;
+
+	[BoxGroup("MoneyLeft")]
+	public int BronzeMoneyLeft;
+	[BoxGroup("MoneyLeft")]
+	public int SilverMoneyLeft;
+	[BoxGroup("MoneyLeft")]
+	public int GoldMoneyLeft;
+
+	[BoxGroup("FreeSpace")]
+	public float BronzeFreeSpace;
+	[BoxGroup("FreeSpace")]
+	public float SilverFreeSpace;
+	[BoxGroup("FreeSpace")]
+	public float GoldFreeSpace;
+
+	[HideInInspector]
+	public float AverageTime;
+	[HideInInspector]
+	public MedalType MedalAverageTime;
+	[HideInInspector]
+	public int MoneyLeft;
+	[HideInInspector]
+	public MedalType MedalMoneyLeft;
+	[HideInInspector]
+	public float FreeSpacePercentage;
+	[HideInInspector]
+	public MedalType MedalFreeSpacePercentage;
+
+	public void SetValues(float avgT, int money, float freeSpace) {
+		AverageTime = avgT;
+		MoneyLeft = money;
+		FreeSpacePercentage = freeSpace;
+
+		if (AverageTime <= GoldAverageTime)
+			MedalAverageTime = MedalType.Gold;
+		else if (AverageTime <= SilverAverageTime)
+			MedalAverageTime = MedalType.Silver;
+		else if (AverageTime <= BronzeAverageTime)
+			MedalAverageTime = MedalType.Bronze;
+		else
+			MedalAverageTime = MedalType.None;
+
+		if (MoneyLeft >= GoldMoneyLeft)
+			MedalMoneyLeft = MedalType.Gold;
+		else if (MoneyLeft >= SilverMoneyLeft)
+			MedalMoneyLeft = MedalType.Silver;
+		else if (MoneyLeft >= BronzeMoneyLeft)
+			MedalMoneyLeft = MedalType.Bronze;
+		else
+			MedalMoneyLeft = MedalType.None;
+
+		if (FreeSpacePercentage >= GoldFreeSpace)
+			MedalFreeSpacePercentage = MedalType.Gold;
+		else if (FreeSpacePercentage >= SilverFreeSpace)
+			MedalFreeSpacePercentage = MedalType.Silver;
+		else if (FreeSpacePercentage >= BronzeFreeSpace)
+			MedalFreeSpacePercentage = MedalType.Bronze;
+		else
+			MedalFreeSpacePercentage = MedalType.None;
+	}
+}
+
+public enum MedalType {
+	None,
+	Bronze,
+	Silver,
+	Gold
+}
 
 	/*public Wave[] Vagues;
 
@@ -245,5 +330,5 @@ public class Entrance {
 [System.Serializable]
 public class Wave {
 	public float TimeBeforeWave;
-	public Entrance[] Entrees;*/
-}
+	public Entrance[] Entrees;
+}*/

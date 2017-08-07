@@ -10,6 +10,11 @@ public class DragAndDropSpeaker : DragAndDrop {
 	private GameObject WalledObject;
 	private GameObject NotWalledObject;
 
+	protected override void OnAwake ()
+	{
+		Space = 1;
+	}
+
 	void Start() {
 		HasToCheckWall = true;
 		tf = transform;

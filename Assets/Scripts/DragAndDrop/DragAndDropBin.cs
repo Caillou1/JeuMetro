@@ -22,6 +22,11 @@ public class DragAndDropBin : DragAndDrop {
 		//IsBought = true;
 	}
 
+	protected override void OnAwake ()
+	{
+		Space = 1;
+	}
+
 	protected override void CheckRotation() {
 		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
 		List<Orientation> PossibleOrientations = new List<Orientation> ();

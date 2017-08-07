@@ -6,6 +6,12 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class DragAndDropEscalator : DragAndDrop {
+
+	protected override void OnAwake ()
+	{
+		Space = 2;
+	}
+
 	protected bool hadWallAboveCenter;
 	protected bool hadWallAboveStart;
 	

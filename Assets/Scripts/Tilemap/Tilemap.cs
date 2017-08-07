@@ -700,5 +700,20 @@ public class Tilemap
 
 		return positions;
 	}
+
+	private int GroundTileNumber;
+	private int UsedTiles;
+
+	public float CalculateFreeSpacePercentage() {
+		return (1f - (UsedTiles / GroundTileNumber)) * 100;
+	}
+
+	public void AddGroundTile() {
+		GroundTileNumber++;
+	}
+
+	public void AddUsedTile(int x) {
+		UsedTiles += x;
+	}
 }
  
