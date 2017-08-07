@@ -51,22 +51,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56ec55402e21442249006d6a90ef5d69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Vagues:
-  - TimeBeforeWave: 10
-    Entrees:
-    - Entree: {fileID: 0}
-      Vague: {fileID: 1001903949469912, guid: 355eeb04206e84cf8ba4b69eef73b274, type: 2}
-    - Entree: {fileID: 0}
-      Vague: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c, type: 2}
-  - TimeBeforeWave: 10
-    Entrees:
-    - Entree: {fileID: 0}
-      Vague: {fileID: 0}
-    - Entree: {fileID: 0}
-      Vague: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c, type: 2}
-  - TimeBeforeWave: 30
-    Entrees:
-    - Entree: {fileID: 0}
-      Vague: {fileID: 1001903949469912, guid: 355eeb04206e84cf8ba4b69eef73b274, type: 2}
-    - Entree: {fileID: 0}
-      Vague: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c, type: 2}
+  waveCounts: 2
+  waveTimes:
+  - 10
+  - 20
+  - 10
+  inWaves:
+  - array: []
+  - array: []
+  metroWaves:
+  - array: []
+  - array: []
+  metrosDelay:
+  - MetroObject: {fileID: 0}
+    Delay: 1

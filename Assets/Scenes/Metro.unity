@@ -546,6 +546,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 21eb87c58a8c849668e25fa9880f155e, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &850027923 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114709476704625702, guid: 21eb87c58a8c849668e25fa9880f155e,
+    type: 2}
+  m_PrefabInternal: {fileID: 847797348}
+  m_Script: {fileID: 11500000, guid: c5a89511bcf0b4716aafe9f242dc2248, type: 3}
 --- !u!1 &856733582
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,11 +637,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 003417550dd0a4c60b1a72bb72c90d4a, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &1117124854 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4819418327898322, guid: 21eb87c58a8c849668e25fa9880f155e,
-    type: 2}
-  m_PrefabInternal: {fileID: 847797348}
 --- !u!4 &1208124397 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4506200549870986, guid: c090a8be31fc341fe862b5065a24dd6b,
@@ -750,7 +751,7 @@ Prefab:
     - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
       propertyPath: MetroWaitTime
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}
@@ -777,6 +778,26 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[0].array.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[0].array.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[1].array.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4972857456900274, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -811,43 +832,94 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
-      propertyPath: Vagues.Array.data[0].Entrees.Array.data[0].Entree
+      propertyPath: metrosDelay.Array.data[0].MetroObject
       value: 
-      objectReference: {fileID: 1117124854}
+      objectReference: {fileID: 850027923}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
-      propertyPath: Vagues.Array.data[0].Entrees.Array.data[1].Entree
-      value: 
-      objectReference: {fileID: 709982138}
-    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
-        type: 2}
-      propertyPath: Vagues.Array.data[1].Entrees.Array.data[0].Entree
-      value: 
-      objectReference: {fileID: 1117124854}
-    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
-        type: 2}
-      propertyPath: Vagues.Array.data[1].Entrees.Array.data[1].Entree
-      value: 
-      objectReference: {fileID: 709982138}
-    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
-        type: 2}
-      propertyPath: Vagues.Array.data[2].Entrees.Array.data[0].Entree
-      value: 
-      objectReference: {fileID: 1117124854}
-    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
-        type: 2}
-      propertyPath: Vagues.Array.data[2].Entrees.Array.data[1].Entree
-      value: 
-      objectReference: {fileID: 709982138}
-    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
-        type: 2}
-      propertyPath: Vagues.Array.data[1].TimeBeforeWave
-      value: 20
+      propertyPath: metrosDelay.Array.data[0].Delay
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
-      propertyPath: Vagues.Array.data[2].TimeBeforeWave
-      value: 20
+      propertyPath: inWaves.Array.data[0].array.Array.data[1].Delay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[0].array.Array.data[2].Delay
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[0].array.Array.data[0].Wave
+      value: 
+      objectReference: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[0].array.Array.data[1].Wave
+      value: 
+      objectReference: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[0].array.Array.data[2].Wave
+      value: 
+      objectReference: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.data[0].Wave
+      value: 
+      objectReference: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[0].array.Array.data[0].Entrance
+      value: 
+      objectReference: {fileID: 709982138}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[0].array.Array.data[1].Entrance
+      value: 
+      objectReference: {fileID: 709982138}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[0].array.Array.data[2].Entrance
+      value: 
+      objectReference: {fileID: 709982138}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.data[0].Entrance
+      value: 
+      objectReference: {fileID: 709982138}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[0].array.Array.data[0].MetroObject
+      value: 
+      objectReference: {fileID: 850027923}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[1].array.Array.data[0].MetroObject
+      value: 
+      objectReference: {fileID: 850027923}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[0].array.Array.data[0].Wave
+      value: 
+      objectReference: {fileID: 1001903949469912, guid: 355eeb04206e84cf8ba4b69eef73b274,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[1].array.Array.data[0].Wave
+      value: 
+      objectReference: {fileID: 1001903949469912, guid: 355eeb04206e84cf8ba4b69eef73b274,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: waveTimes.Array.data[1]
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
