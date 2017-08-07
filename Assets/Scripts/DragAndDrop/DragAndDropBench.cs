@@ -6,7 +6,12 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class DragAndDropBench : DragAndDrop {
-	
+
+	protected override void OnAwake ()
+	{
+		Space = 2;
+	}
+
 	protected override void CheckCanPlace() {
 		canPlace = true;
 		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);

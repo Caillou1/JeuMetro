@@ -6,6 +6,12 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class DragAndDropDistrib : DragAndDrop {
+
+	protected override void OnAwake ()
+	{
+		Space = 1;
+	}
+
 	protected override void CheckCanPlace ()
 	{
 		canPlace = true;

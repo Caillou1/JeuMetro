@@ -126,7 +126,10 @@ public class GameManager : MonoBehaviour
 	public void AddTime(float t) {
 		TravelersThatLeftStation++;
 		TotalTime += t;
-		Debug.Log ("Temps Moyen : " + TotalTime / TravelersThatLeftStation);
+	}
+
+	public float GetAverageTime() {
+		return TotalTime / TravelersThatLeftStation;
 	}
 
 	IEnumerator spawnCoroutine()
