@@ -45,7 +45,8 @@ public class MenuManager : MonoBehaviour {
 	private GameObject SGPUI;
 	private GameObject FadeUI;
 	private GameObject LevelSelectionUI;
-	//private List<GameObject> LevelButtons;
+    //private List<GameObject> LevelButtons;
+    private GameObject WinEndGameUI;
 
 	private Image TimePie;
 	private Text TimeTxt;
@@ -78,6 +79,7 @@ public class MenuManager : MonoBehaviour {
 		ScoreUI = tf.Find ("ScoresUI").gameObject;
 		GameUI = tf.Find ("GameUI").gameObject;
 		LevelSelectionUI = tf.Find ("LevelSelectionUI").gameObject;
+        WinEndGameUI = tf.Find("WinEndGameUI").gameObject;
 
 		//LevelButtons = new List<GameObject> ();
 		for (int i = 0; i < LevelSelectionUI.transform.childCount; i++) {
@@ -121,6 +123,7 @@ public class MenuManager : MonoBehaviour {
 		ShopUI.SetActive (false);
 		PersonnelUI.SetActive (false);
 		SGPUI.SetActive (false);
+        WinEndGameUI.SetActive(false);
 		var obj = GetCorrespondantUI (CurrentMenu);
 		if (obj != null)
 			obj.SetActive (true);
