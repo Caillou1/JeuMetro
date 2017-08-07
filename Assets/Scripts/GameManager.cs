@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NRand;
@@ -23,8 +23,6 @@ public class GameManager : MonoBehaviour
 	private int TravelersThatLeftStation = 0;
 
 	private int money;
-
-	private Transform PathCalculator;
 
 	private SubscriberList subscriberList = new SubscriberList();
 

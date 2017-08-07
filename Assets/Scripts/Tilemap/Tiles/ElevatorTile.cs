@@ -10,7 +10,6 @@ public class ElevatorTile : ATile
 {
 	private List<int> FloorsToVisit;
 	private Transform tf;
-	private float OriginFloor;
 	private int CurrentFloor;
 	private int[] Floors;
 	private Dictionary<int, Vector3> WaitZones;

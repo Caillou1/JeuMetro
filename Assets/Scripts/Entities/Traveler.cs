@@ -14,7 +14,7 @@ public class Traveler : AEntity
 	public TravelerStats stats = new TravelerStats ();
 
 	[SerializeField]
-	string targetName;
+	string targetName = "";
 	[HideInInspector]
 	public TravelerDatas datas = new TravelerDatas ();
 

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using V1;
-
 public sealed class G
 {
     private static volatile G _instance;
