@@ -21,6 +21,7 @@ public class Traveler : AEntity
 	bool isLost = false;
 
 	private float ArrivalTime;
+    private SubscriberList subscriberList = new SubscriberList();
 
 	protected override void OnAwake ()
 	{
@@ -31,6 +32,8 @@ public class Traveler : AEntity
 		path.destnation = target;
 		initializeDatas();
 		ArrivalTime = Time.time;
+        subscriberList.Add(new Event<CollectTravelerTimeEvent>.Subscriber(onCollectTime));
+        subscriberList.Subscribe();
 	}
 
 	protected override void OnUpdate ()
@@ -82,6 +85,7 @@ public class Traveler : AEntity
 	{
 		G.Sys.removeTraveler (this);
 		G.Sys.gameManager.AddTime (Time.time - ArrivalTime);
+        subscriberList.Unsubscribe();
 	}
 
 	protected override void Check ()
@@ -435,4 +439,9 @@ public class Traveler : AEntity
 		}
 		path.destnation = transform.position + d.Next (gen);
 	}
+
+    void onCollectTime(CollectTravelerTimeEvent e)
+    {
+        G.Sys.gameManager.AddTime(Time.time - ArrivalTime, false);
+    }
 }

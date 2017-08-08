@@ -11,8 +11,6 @@ class GroundTile : ATile
 		type = TileID.GROUND;
 
 		G.Sys.tilemap.addTile (transform.position, this, Tilemap.GROUND_PRIORITY);
-
-		G.Sys.tilemap.AddGroundTile ();
     }
 
 	protected override void OnDestroy()

@@ -423,9 +423,9 @@ public class MenuManager : MonoBehaviour {
     {
         public WinMenuDatas(GameObject parent)
         {
-            medalTime = new Medals(parent.transform.Find("MedalTime").gameObject);
-            medalMoney = new Medals(parent.transform.Find("MedalMoney").gameObject);
-            medalSurface = new Medals(parent.transform.Find("MedalSurface").gameObject);
+            medalTime = parent.transform.Find("GoldTime").gameObject;
+            medalMoney = parent.transform.Find("GoldMoney").gameObject;
+            medalSurface = parent.transform.Find("GoldSurface").gameObject;
 
             bubble = parent.transform.Find("Bubble").gameObject;
             bubble.SetActive(false);
@@ -433,39 +433,42 @@ public class MenuManager : MonoBehaviour {
             var moneyObj = bubble.transform.Find("Money");
             var surfaceObj = bubble.transform.Find("Surface");
 
-            bubbleTime = new Medals(timeObj.Find("Medal").gameObject);
             currentTime = timeObj.Find("Value").GetComponent<Text>();
             targetTime = timeObj.Find("Target").GetComponent<Text>();
 
-			bubbleMoney = new Medals(moneyObj.Find("Medal").gameObject);
 			currentMoney = moneyObj.Find("Value").GetComponent<Text>();
 			targetMoney = moneyObj.Find("Target").GetComponent<Text>();
 
-			bubbleSurface = new Medals(surfaceObj.Find("Medal").gameObject);
 			currentSurface = surfaceObj.Find("Value").GetComponent<Text>();
 			targetSurface = surfaceObj.Find("Target").GetComponent<Text>();
+
+            score = parent.transform.Find("Score").GetComponent<Text>();
+            bestScore = parent.transform.Find("Best").GetComponent<Text>();
         }
 
         public void set(Score s)
         {
-            medalTime.show(s.MedalAverageTime);
-            medalMoney.show(s.MedalMoneyLeft);
-            medalSurface.show(s.MedalFreeSpacePercentage);
-
-            bubbleTime.show(s.nextMedal(s.MedalAverageTime));
-            bubbleMoney.show(s.nextMedal(s.MedalMoneyLeft));
-            bubbleSurface.show(s.nextMedal(s.MedalFreeSpacePercentage));
+            medalTime.SetActive(s.HaveTimeMedal);
+            medalMoney.SetActive(s.HaveMoneyMedal);
+            medalSurface.SetActive(s.HaveSurfaceMedal);
 
             currentTime.text = s.AverageTime.ToString("F");
             currentMoney.text = s.MoneyLeft.ToString();
-            currentSurface.text = s.FreeSpacePercentage.ToString("F");
+            currentSurface.text = s.SpaceUsed.ToString();
 
-            targetTime.gameObject.SetActive(s.nextMedal(s.MedalAverageTime) != MedalType.None);
-            targetTime.text = s.nextTimeMedalValue().ToString("F");
-            targetMoney.gameObject.SetActive(s.nextMedal(s.MedalMoneyLeft) != MedalType.None);
-            targetMoney.text = s.nextMoneyMedalValue().ToString();
-            targetSurface.gameObject.SetActive(s.nextMedal(s.MedalFreeSpacePercentage) != MedalType.None);
-            targetSurface.text = s.nextSpaceMedalValue().ToString("F");
+            targetTime.text = s.GoldAverageTime.ToString("F");
+            targetMoney.text = s.GoldMoneyLeft.ToString();
+            targetSurface.text = s.GoldSurface.ToString();
+
+            score.text = s.ScoreValue.ToString();
+            int best = PlayerPrefs.GetInt("Level" + G.Sys.levelIndex, 0);
+            if(best < s.ScoreValue)
+            {
+                best = s.ScoreValue;
+                PlayerPrefs.SetInt("Level" + G.Sys.levelIndex, best);
+                PlayerPrefs.Save();
+            }
+            bestScore.text = best.ToString();
         }
 
         public void toggleBubble()
@@ -473,13 +476,9 @@ public class MenuManager : MonoBehaviour {
             bubble.SetActive(!bubble.activeSelf);
         }
 
-        Medals medalTime;
-        Medals medalMoney;
-        Medals medalSurface;
-
-        Medals bubbleTime;
-        Medals bubbleMoney;
-        Medals bubbleSurface;
+        GameObject medalTime;
+        GameObject medalMoney;
+        GameObject medalSurface;
 
         Text currentTime;
         Text targetTime;
@@ -488,47 +487,9 @@ public class MenuManager : MonoBehaviour {
         Text currentSurface;
         Text targetSurface;
 
+        Text score;
+        Text bestScore;
+
         GameObject bubble;
-    }
-
-    class Medals
-    {
-        public Medals(GameObject parent)
-        {
-            gold = parent.transform.Find("Gold").gameObject;
-            silver = parent.transform.Find("Silver").gameObject;
-            bronze = parent.transform.Find("Bronze").gameObject;
-        }
-
-        public void show(MedalType type)
-        {
-            switch(type)
-            {
-                case MedalType.Gold:
-                    gold.SetActive(true);
-                    silver.SetActive(false);
-                    bronze.SetActive(false);
-                    break;
-                case MedalType.Silver:
-                    gold.SetActive(false);
-                    silver.SetActive(true);
-                    bronze.SetActive(false);
-                    break;
-                case MedalType.Bronze:
-                    gold.SetActive(false);
-                    silver.SetActive(false);
-                    bronze.SetActive(true);
-                    break;
-                default: //MedalType.None
-                    gold.SetActive(false);
-                    silver.SetActive(false);
-                    bronze.SetActive(false);
-                    break;
-            }
-        }
-
-        GameObject gold;
-        GameObject silver;
-        GameObject bronze;
     }
 }

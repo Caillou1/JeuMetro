@@ -103,7 +103,14 @@ public class WaveManager : MonoBehaviour {
 	}
 
 	void SendScore() {
-		score.SetValues(G.Sys.gameManager.GetAverageTime (), G.Sys.gameManager.GetMoney (), G.Sys.tilemap.CalculateFreeSpacePercentage ());
+        Event<CollectTravelerTimeEvent>.Broadcast(new CollectTravelerTimeEvent());
+        score.SetValues(G.Sys.gameManager.GetAverageTime (), G.Sys.gameManager.GetEarnedMoney (), G.Sys.tilemap.getMaxUsedSpace (), 0);
+        float totalScore = 0;
+        totalScore += 1/(score.AverageTime / score.GoldAverageTime) * 1000;
+        totalScore += score.MoneyLeft / (float)score.GoldMoneyLeft * 1000;
+        totalScore += 1 / ((1f + score.SpaceUsed) / (1f + score.GoldSurface)) * 1000;
+        score.ScoreValue = (int)totalScore;
+
 		Event<WinGameEvent>.Broadcast (new WinGameEvent (score));
 	}
 
@@ -180,125 +187,33 @@ public class WaveManager : MonoBehaviour {
 
 [System.Serializable]
 public class Score {
-	[BoxGroup("AverageTime")]
-	public float BronzeAverageTime;
-	[BoxGroup("AverageTime")]
-	public float SilverAverageTime;
-	[BoxGroup("AverageTime")]
 	public float GoldAverageTime;
-
-	[BoxGroup("MoneyLeft")]
-	public int BronzeMoneyLeft;
-	[BoxGroup("MoneyLeft")]
-	public int SilverMoneyLeft;
-	[BoxGroup("MoneyLeft")]
 	public int GoldMoneyLeft;
-
-	[BoxGroup("FreeSpace")]
-	public float BronzeFreeSpace;
-	[BoxGroup("FreeSpace")]
-	public float SilverFreeSpace;
-	[BoxGroup("FreeSpace")]
-	public float GoldFreeSpace;
+    public int GoldSurface;
 
 	[HideInInspector]
 	public float AverageTime;
+    [HideInInspector]
+    public bool HaveTimeMedal;
 	[HideInInspector]
-	public MedalType MedalAverageTime;
+	public int MoneyLeft;
 	[HideInInspector]
-	public int MoneyLeft; 
+	public bool HaveMoneyMedal; 
 	[HideInInspector]
-	public MedalType MedalMoneyLeft;
-	[HideInInspector]
-	public float FreeSpacePercentage;
-	[HideInInspector]
-	public MedalType MedalFreeSpacePercentage;
+	public int SpaceUsed;
+    [HideInInspector]
+    public bool HaveSurfaceMedal;
+    [HideInInspector]
+    public int ScoreValue;
 
-	public void SetValues(float avgT, int money, float freeSpace) {
+	public void SetValues(float avgT, int money, int spaceUsed, int score) {
 		AverageTime = avgT;
 		MoneyLeft = money;
-		FreeSpacePercentage = freeSpace;
+        SpaceUsed = spaceUsed;
+        ScoreValue = score;
 
-		if (AverageTime <= GoldAverageTime)
-			MedalAverageTime = MedalType.Gold;
-		else if (AverageTime <= SilverAverageTime)
-			MedalAverageTime = MedalType.Silver;
-		else if (AverageTime <= BronzeAverageTime)
-			MedalAverageTime = MedalType.Bronze;
-		else
-			MedalAverageTime = MedalType.None;
-
-		if (MoneyLeft >= GoldMoneyLeft)
-			MedalMoneyLeft = MedalType.Gold;
-		else if (MoneyLeft >= SilverMoneyLeft)
-			MedalMoneyLeft = MedalType.Silver;
-		else if (MoneyLeft >= BronzeMoneyLeft)
-			MedalMoneyLeft = MedalType.Bronze;
-		else
-			MedalMoneyLeft = MedalType.None;
-
-		if (FreeSpacePercentage >= GoldFreeSpace)
-			MedalFreeSpacePercentage = MedalType.Gold;
-		else if (FreeSpacePercentage >= SilverFreeSpace)
-			MedalFreeSpacePercentage = MedalType.Silver;
-		else if (FreeSpacePercentage >= BronzeFreeSpace)
-			MedalFreeSpacePercentage = MedalType.Bronze;
-		else
-			MedalFreeSpacePercentage = MedalType.None;
+        HaveTimeMedal = AverageTime <= GoldAverageTime;
+        HaveMoneyMedal = MoneyLeft >= GoldMoneyLeft;
+        HaveSurfaceMedal = spaceUsed <= GoldSurface;
 	}
-
-    public float nextTimeMedalValue()
-    {
-        if (AverageTime <= GoldAverageTime)
-            return 0;
-        if (AverageTime <= SilverAverageTime)
-            return GoldAverageTime;
-        if (AverageTime <= BronzeAverageTime)
-            return SilverAverageTime;
-        return BronzeAverageTime;
-    }
-
-    public int nextMoneyMedalValue()
-    {
-        if (MoneyLeft >= GoldMoneyLeft)
-            return 0;
-        if (MoneyLeft >= SilverMoneyLeft)
-            return GoldMoneyLeft;
-        if (MoneyLeft >= BronzeMoneyLeft)
-            return SilverMoneyLeft;
-        return BronzeMoneyLeft;
-    }
-
-    public float nextSpaceMedalValue()
-    {
-        if (FreeSpacePercentage >= GoldFreeSpace)
-            return 0;
-        if (FreeSpacePercentage >= SilverFreeSpace)
-            return GoldFreeSpace;
-        if (FreeSpacePercentage >= BronzeFreeSpace)
-            return SilverFreeSpace;
-        return BronzeFreeSpace;
-    }
-
-    public MedalType nextMedal(MedalType m)
-    {
-        switch(m)
-        {
-            case MedalType.Bronze:
-                return MedalType.Silver;
-            case MedalType.Silver:
-                return MedalType.Gold;
-            case MedalType.Gold:
-                return MedalType.None;
-            default: //MedalType.None
-                return MedalType.Bronze;
-        }
-    }
-}
-
-public enum MedalType {
-	None,
-	Bronze,
-	Silver,
-	Gold
 }
