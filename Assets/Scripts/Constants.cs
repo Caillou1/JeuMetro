@@ -38,6 +38,8 @@ public class Constants : MonoBehaviour
 	public float SpeakerWaitTime;
 	[Tooltip("Temps d'émission des éméteurs sonor")]
 	public float SpeakerEmissionTime;
+	[Tooltip("Chance de 0 à 100 qu'un voyageur a de tomber dans les escaliers s'il n'est pas aveugle ou malvoyant")]
+	public float FallChance;
 
 	void Awake()
 	{

@@ -35,7 +35,7 @@ public class Agent : AEntity
 	public void GoHelpTravelerAction(Traveler t) {
 		var pos = t.transform.position;
 		var dir = Vector3.Normalize (pos - transform.position);
-		path.addAction(new HelpTravelerAction(this, pos - new Vector3(dir.x, 0, dir.y), t));
+		path.addAction(new HelpTravelerAction(this, pos - new Vector3(dir.x, 0, dir.y)*.5f, t));
 	}
 
 	void initializeDatas()

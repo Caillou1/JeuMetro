@@ -1,4 +1,4 @@
-﻿﻿using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NRand;
@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
 		G.Sys.tilemap.UpdateGlobalBounds ();
 		//PathCalculator = tf.Find ("PathCalculator");
 		InstantiateColliders ();
+		StartCoroutine (checkFaintingTravelers ());
 	}
 
 	public void OnNavMeshBaked(NavMeshBakedEvent e) {
@@ -62,7 +63,9 @@ public class GameManager : MonoBehaviour
 		if (a != null) {
 			a.GoHelpTravelerAction (e.traveler);
 		} else {
-			faintingTravelers.Add (e.traveler);
+			if (!faintingTravelers.Contains (e.traveler)) {
+				faintingTravelers.Add (e.traveler);
+			}
 		}
 	}
 
@@ -73,6 +76,20 @@ public class GameManager : MonoBehaviour
 			for(int i = 0 ; i < G.Sys.travelerCount() ; i++)
 				G.Sys.traveler(i).updateDatas (time);
 			yield return new WaitForSeconds (time);
+		}
+	}
+
+	IEnumerator checkFaintingTravelers() {
+		while (true) {
+			if (faintingTravelers.Count > 0) {
+				var a = G.Sys.GetNearestAgent (faintingTravelers[0].transform.position);
+				if (a != null) {
+					a.GoHelpTravelerAction (faintingTravelers[0]);
+					faintingTravelers.RemoveAt (0);
+				}
+			}
+
+			yield return new WaitForSeconds (.5f);
 		}
 	}
 

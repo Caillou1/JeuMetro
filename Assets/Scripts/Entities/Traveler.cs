@@ -20,6 +20,8 @@ public class Traveler : AEntity
 
 	bool isLost = false;
 
+	private bool CanFall = true;
+
 	private float ArrivalTime;
 
 	protected override void OnAwake ()
@@ -92,6 +94,7 @@ public class Traveler : AEntity
 		checkHunger ();
 		checkTicket ();
 		checkElevators ();
+		checkStairs ();
 	}
 
 	void checkElevators() {
@@ -142,9 +145,53 @@ public class Traveler : AEntity
 		}
 	}
 
+	void checkStairs() {
+		if (CanFall) {
+			var tiles = G.Sys.tilemap.at (transform.position);
+			var tilesFront = G.Sys.tilemap.at (transform.position + transform.forward);
+			var stairs = tilesFront.Find (x => x.type == TileID.STAIRS) as StairsTile;
+
+			if (stairs != null && !stairs.HasPodotactileOnFloor(Mathf.RoundToInt(transform.position.y))) {
+				float fallChance = G.Sys.constants.FallChance;
+
+				if (stats.Malvoyant)
+					fallChance += 50;
+
+				if (stats.Type == TravelerType.BLIND)
+					fallChance = 100;
+
+				var chance = new UniformFloatDistribution (0f, 100f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());
+
+				if (chance <= fallChance && !path.haveAction (ActionType.FAINT)) {
+					datas.Tiredness = 1f;
+					path.addAction (new StairsFallAction (this, stairs));
+					CanFall = false;
+				}
+			}
+		}
+	}
+
+	public void GetUp() {
+		StartCoroutine (CanFallDelay ());
+	}
+		
+	IEnumerator CanFallDelay() {
+		yield return new WaitForSeconds (3f);
+		CanFall = true;
+	}
+
 	void checkTiredness()
 	{
 		if (datas.Tiredness > 0.95f && !path.haveAction(ActionType.FAINT)) {
+			var tiles = G.Sys.tilemap.at (new Vector3i (transform.position + transform.forward));
+
+			foreach (var tile in tiles) {
+				if (tile.type == TileID.STAIRS) {
+					path.addAction (new StairsFallAction (this, tile as StairsTile));
+					return;
+				}
+			}
+
 			path.addAction (new FaintAction (this));
 			return;
 		}

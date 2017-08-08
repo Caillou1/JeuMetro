@@ -30,4 +30,23 @@ public class StairsTile : ATile
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up + dir, this);
 	}
+
+	public Vector3 GetDownOfStairs() {
+		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+
+		return (transform.position + dir * 2);
+	}
+
+	public bool HasPodotactileOnFloor(int floor) {
+		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+		Vector3 posToCheck;
+
+		if (floor == Mathf.RoundToInt (transform.position.y)) {
+			posToCheck = transform.position + dir * 2;
+		} else {
+			posToCheck = transform.position + Vector3.up * 2 - dir;
+		}
+			
+		return G.Sys.tilemap.at (posToCheck).Exists (x => x.type == TileID.PODOTACTILE);
+	}
 }
