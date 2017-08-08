@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 	}
 
 	void OnTravelerFaint(FaintEvent e) {
-		var a = G.Sys.GetNearestAgent (e.traveler.transform.position);
+		var a = G.Sys.GetNearestFreeAgent (e.traveler.transform.position);
 		if (a != null) {
 			a.GoHelpTravelerAction (e.traveler);
 		} else {
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
 	IEnumerator checkFaintingTravelers() {
 		while (true) {
 			if (faintingTravelers.Count > 0) {
-				var a = G.Sys.GetNearestAgent (faintingTravelers[0].transform.position);
+				var a = G.Sys.GetNearestFreeAgent (faintingTravelers[0].transform.position);
 				if (a != null) {
 					a.GoHelpTravelerAction (faintingTravelers[0]);
 					faintingTravelers.RemoveAt (0);

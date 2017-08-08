@@ -15,7 +15,7 @@ public class FaintAction : AEntityAction<Traveler>
 		if (entity.datas.Tiredness <= 0.95f)
 			return true;
 		entity.GetComponent<NavMeshAgent> ().enabled = false;
-		entity.transform.DORotate (new Vector3(90, entity.transform.rotation.eulerAngles.y, 0), 0.5f, RotateMode.Fast);
+		//entity.transform.DORotate (new Vector3(90, entity.transform.rotation.eulerAngles.y, 0), 0.5f, RotateMode.Fast);
 		Event<FaintEvent>.Broadcast (new FaintEvent (traveler));
 		G.Sys.audioManager.PlayFaint ();
 		return false;
@@ -28,8 +28,9 @@ public class FaintAction : AEntityAction<Traveler>
 
 	protected override void End ()
 	{
-		entity.transform.DORotate (new Vector3(0, entity.transform.rotation.eulerAngles.y, 0), 0.5f, RotateMode.Fast);
-		//entity.GetComponent<NavMeshAgent> ().enabled = true;
+		//entity.transform.DORotate (new Vector3(0, entity.transform.rotation.eulerAngles.y, 0), 0.5f, RotateMode.Fast);
+		entity.GetUp ();
+		entity.GetComponent<NavMeshAgent> ().enabled = true;
 	}
 
 	Traveler traveler;

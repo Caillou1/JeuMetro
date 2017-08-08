@@ -24,6 +24,10 @@ public class Traveler : AEntity
 
 	private float ArrivalTime;
 
+	private Animator anim;
+
+	private Vector3 lastPos;
+
 	protected override void OnAwake ()
 	{
 		G.Sys.registerTraveler (this);
@@ -33,15 +37,27 @@ public class Traveler : AEntity
 		path.destnation = target;
 		initializeDatas();
 		ArrivalTime = Time.time;
+		anim = GetComponentInChildren<Animator> ();
 
-		if(G.Sys.constants.TravelerColors.Count > 0)
-			GetComponentInChildren<MeshRenderer> ().material.color = G.Sys.constants.TravelerColors[(new UniformIntDistribution (G.Sys.constants.TravelerColors.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ()))];
+		if (G.Sys.constants.TravelerColors.Count > 0)
+			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = G.Sys.constants.TravelerColors [(new UniformIntDistribution (G.Sys.constants.TravelerColors.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ()))];
+		else
+			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = Color.HSVToRGB ((new UniformFloatDistribution (0f, 1f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())), 1f, 1f);
 	}
 
 	protected override void OnUpdate ()
 	{
 		checkOnExit ();
 
+		anim.SetFloat ("MovementSpeed", agent.velocity.magnitude);
+
+		if ((lastPos - transform.position).magnitude >= .001f) {
+			anim.SetBool ("Walking", true);
+		} else {
+			anim.SetBool ("Walking", false);
+		}
+
+		lastPos = transform.position;
 	}
 
 	void checkOnExit()
@@ -167,6 +183,7 @@ public class Traveler : AEntity
 
 				if (chance <= fallChance && !path.haveAction (ActionType.FAINT)) {
 					datas.Tiredness = 1f;
+					anim.SetBool ("Falling", true);
 					path.addAction (new StairsFallAction (this, stairs));
 					CanFall = false;
 				}
@@ -176,6 +193,7 @@ public class Traveler : AEntity
 
 	public void GetUp() {
 		StartCoroutine (CanFallDelay ());
+		anim.SetBool ("Falling", false);
 	}
 		
 	IEnumerator CanFallDelay() {
@@ -191,10 +209,12 @@ public class Traveler : AEntity
 			foreach (var tile in tiles) {
 				if (tile.type == TileID.STAIRS) {
 					path.addAction (new StairsFallAction (this, tile as StairsTile));
+					anim.SetBool ("Falling", true);
 					return;
 				}
 			}
 
+			anim.SetBool ("Falling", true);
 			path.addAction (new FaintAction (this));
 			return;
 		}

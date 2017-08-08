@@ -10,6 +10,12 @@ public class Agent : AEntity
 	[HideInInspector]
 	public AgentDatas datas = new AgentDatas ();
 
+	public bool IsHelping {
+		get {
+			return path.haveAction (ActionType.HELP_TRAVELER);
+		}
+	}
+
 	protected override void OnAwake ()
 	{
 		//path.lostness = 0.5f;

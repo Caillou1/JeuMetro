@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using NRand;
 
 public class StairsTile : ATile
 {
@@ -33,8 +34,11 @@ public class StairsTile : ATile
 
 	public Vector3 GetDownOfStairs() {
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+		float randomX, randomZ;
+		randomX = (new UniformFloatDistribution (-.5f, .5f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ()));
+		randomZ = (new UniformFloatDistribution (-.5f, .5f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ()));
 
-		return (transform.position + dir * 2);
+		return (transform.position + dir * 2 + new Vector3(randomX, 0, randomZ));
 	}
 
 	public bool HasPodotactileOnFloor(int floor) {
