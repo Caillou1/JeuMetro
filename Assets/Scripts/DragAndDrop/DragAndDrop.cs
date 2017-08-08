@@ -160,6 +160,7 @@ public class DragAndDrop : MonoBehaviour{
 			SendEvent ();
 			DeletePossibleEmptyWalls ();
 			StartCoroutine (eventCoroutine ());
+			G.Sys.audioManager.PlayConstruct ();
 			return true;
 		}
 		return false;

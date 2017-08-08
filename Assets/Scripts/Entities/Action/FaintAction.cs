@@ -15,6 +15,7 @@ public class FaintAction : AEntityAction<Traveler>
 			return true;
 		entity.transform.DORotate (new Vector3(90, entity.transform.rotation.eulerAngles.y, 0), 0.5f, RotateMode.Fast);
 		Event<FaintEvent>.Broadcast (new FaintEvent (traveler));
+		G.Sys.audioManager.PlayFaint ();
 		return false;
 	}
 

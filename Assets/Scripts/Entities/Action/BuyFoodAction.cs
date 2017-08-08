@@ -32,5 +32,6 @@ public class BuyFoodAction : AEntityAction<Traveler>
 		entity.datas.Tiredness = 0;
 		foodDistrib.queue--;
 		G.Sys.gameManager.AddMoney (foodDistrib.price);
+		G.Sys.audioManager.PlayBuyFood ();
 	}
 }

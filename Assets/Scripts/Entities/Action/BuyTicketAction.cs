@@ -32,5 +32,6 @@ public class BuyTicketAction : AEntityAction<Traveler>
 		entity.datas.HasTicket = true;
 		ticketDistrib.queue--;
 		G.Sys.gameManager.AddMoney (ticketDistrib.price);
+		G.Sys.audioManager.PlayBuyTicket ();
 	}
 }

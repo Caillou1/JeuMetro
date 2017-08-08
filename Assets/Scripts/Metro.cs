@@ -37,6 +37,7 @@ public class Metro : MonoBehaviour {
 
 	public void CallMetro() {
 		ResetPos ();
+		G.Sys.audioManager.PlayTrainStop ();
 		tf.DOMove (positionToReach, G.Sys.constants.MetroComeTime).SetEase(Ease.OutQuad).OnComplete(()=>{
 			EnableTiles(true);
 			DOVirtual.DelayedCall(G.Sys.constants.MetroWaitTime, () => {
@@ -47,6 +48,7 @@ public class Metro : MonoBehaviour {
 
 	public void Leave() {
 		EnableTiles (false);
+		G.Sys.audioManager.PlayTrainStart ();
 		tf.DOMove (endPosition, G.Sys.constants.MetroComeTime).SetEase(Ease.InExpo);
 	}
 
