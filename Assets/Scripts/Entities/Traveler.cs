@@ -33,6 +33,8 @@ public class Traveler : AEntity
 		path.destnation = target;
 		initializeDatas();
 		ArrivalTime = Time.time;
+
+		GetComponentInChildren<MeshRenderer> ().material.color = G.Sys.constants.TravelerColors[(new UniformIntDistribution (G.Sys.constants.TravelerColors.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ()))];
 	}
 
 	protected override void OnUpdate ()

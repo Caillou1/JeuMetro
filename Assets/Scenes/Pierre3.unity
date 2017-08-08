@@ -27632,6 +27632,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: TravelerColors.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4581421795220398, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -27664,10 +27669,65 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
-      propertyPath: MaxTravelers
-      value: 10
+      propertyPath: TravelerColors.Array.data[0].r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: TravelerColors.Array.data[0].g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: TravelerColors.Array.data[0].b
+      value: 0.33793116
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: TravelerColors.Array.data[1].r
+      value: 0.9117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: TravelerColors.Array.data[1].g
+      value: 0.06704153
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: TravelerColors.Array.data[1].b
+      value: 0.06704153
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: TravelerColors.Array.data[2].r
+      value: 0.37099913
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: TravelerColors.Array.data[2].g
+      value: 0.3997046
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: TravelerColors.Array.data[2].b
+      value: 0.6911765
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: TravelerColors.Array.data[3].r
+      value: 0.69872314
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: TravelerColors.Array.data[3].g
+      value: 0.18166092
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: TravelerColors.Array.data[3].b
+      value: 0.88235295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}

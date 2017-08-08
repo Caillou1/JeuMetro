@@ -40,6 +40,7 @@ public class Constants : MonoBehaviour
 	public float SpeakerEmissionTime;
 	[Tooltip("Chance de 0 à 100 qu'un voyageur a de tomber dans les escaliers s'il n'est pas aveugle ou malvoyant")]
 	public float FallChance;
+	public List<Color> TravelerColors;
 
 	void Awake()
 	{
