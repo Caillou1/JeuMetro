@@ -206,7 +206,7 @@ public class Score {
 	[HideInInspector]
 	public MedalType MedalAverageTime;
 	[HideInInspector]
-	public int MoneyLeft;
+	public int MoneyLeft; 
 	[HideInInspector]
 	public MedalType MedalMoneyLeft;
 	[HideInInspector]
@@ -247,7 +247,40 @@ public class Score {
 			MedalFreeSpacePercentage = MedalType.None;
 	}
 
-    public static MedalType nextMedal(MedalType m)
+    public float nextTimeMedalValue()
+    {
+        if (AverageTime <= GoldAverageTime)
+            return 0;
+        if (AverageTime <= SilverAverageTime)
+            return GoldAverageTime;
+        if (AverageTime <= BronzeAverageTime)
+            return SilverAverageTime;
+        return BronzeAverageTime;
+    }
+
+    public int nextMoneyMedalValue()
+    {
+        if (MoneyLeft >= GoldMoneyLeft)
+            return 0;
+        if (MoneyLeft >= SilverMoneyLeft)
+            return GoldMoneyLeft;
+        if (MoneyLeft >= BronzeMoneyLeft)
+            return SilverMoneyLeft;
+        return BronzeMoneyLeft;
+    }
+
+    public float nextSpaceMedalValue()
+    {
+        if (FreeSpacePercentage >= GoldFreeSpace)
+            return 0;
+        if (FreeSpacePercentage >= SilverFreeSpace)
+            return GoldFreeSpace;
+        if (FreeSpacePercentage >= BronzeFreeSpace)
+            return SilverFreeSpace;
+        return BronzeFreeSpace;
+    }
+
+    public MedalType nextMedal(MedalType m)
     {
         switch(m)
         {

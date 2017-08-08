@@ -63,7 +63,14 @@ public class MenuManager : MonoBehaviour {
 
 	private int ShopIndex = 0;
 
+    private WinMenuDatas winMenuDatas;
+
+    private SubscriberList substriberList = new SubscriberList();
+
 	void Awake() {
+        substriberList.Add(new Event<WinGameEvent>.Subscriber(onWinGameEvent));
+        substriberList.Subscribe();
+
 		Time.timeScale = 1f;
 		G.Sys.menuManager = this;
 
@@ -80,6 +87,7 @@ public class MenuManager : MonoBehaviour {
 		GameUI = tf.Find ("GameUI").gameObject;
 		LevelSelectionUI = tf.Find ("LevelSelectionUI").gameObject;
         WinEndGameUI = tf.Find("WinEndGameUI").gameObject;
+        winMenuDatas = new WinMenuDatas(WinEndGameUI);
 
 		//LevelButtons = new List<GameObject> ();
 		for (int i = 0; i < LevelSelectionUI.transform.childCount; i++) {
@@ -141,7 +149,12 @@ public class MenuManager : MonoBehaviour {
 		UpdateShopUI ();
 	}
 
-	GameObject GetCorrespondantUI(Menu menu) {
+    private void OnDestroy()
+    {
+        substriberList.Unsubscribe();
+    }
+
+    GameObject GetCorrespondantUI(Menu menu) {
 		switch (menu) {
 		case Menu.Main:
 			return MainUI;
@@ -271,6 +284,7 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Play(int i) {
+        G.Sys.levelIndex = i;
 		if (i == 0) {
 			LevelSelection ();
 		} else {
@@ -373,4 +387,148 @@ public class MenuManager : MonoBehaviour {
 	public void SetFullscreen(bool b) {
 		Screen.fullScreen = b;
 	}
+
+    void onWinGameEvent(WinGameEvent e)
+    {
+        FadeUI.SetActive(true);
+        WinEndGameUI.SetActive(true);
+        winMenuDatas.set(e.score);
+        Time.timeScale = 0;
+    }
+
+    public void OnWinInfosClick()
+    {
+        winMenuDatas.toggleBubble();
+    }
+
+    public void OnWinRetryClick()
+    {
+        Time.timeScale = 1;
+        Play(G.Sys.levelIndex);
+    }
+
+    public void OnWinHomeClick()
+    {
+
+        Time.timeScale = 1;
+        MainMenu();
+    }
+
+    public void OnWinNextClick()
+    {
+        Play(G.Sys.levelIndex + 1);
+    }
+
+    class WinMenuDatas
+    {
+        public WinMenuDatas(GameObject parent)
+        {
+            medalTime = new Medals(parent.transform.Find("MedalTime").gameObject);
+            medalMoney = new Medals(parent.transform.Find("MedalMoney").gameObject);
+            medalSurface = new Medals(parent.transform.Find("MedalSurface").gameObject);
+
+            bubble = parent.transform.Find("Bubble").gameObject;
+            bubble.SetActive(false);
+            var timeObj = bubble.transform.Find("Time");
+            var moneyObj = bubble.transform.Find("Money");
+            var surfaceObj = bubble.transform.Find("Surface");
+
+            bubbleTime = new Medals(timeObj.Find("Medal").gameObject);
+            currentTime = timeObj.Find("Value").GetComponent<Text>();
+            targetTime = timeObj.Find("Target").GetComponent<Text>();
+
+			bubbleMoney = new Medals(moneyObj.Find("Medal").gameObject);
+			currentMoney = moneyObj.Find("Value").GetComponent<Text>();
+			targetMoney = moneyObj.Find("Target").GetComponent<Text>();
+
+			bubbleSurface = new Medals(surfaceObj.Find("Medal").gameObject);
+			currentSurface = surfaceObj.Find("Value").GetComponent<Text>();
+			targetSurface = surfaceObj.Find("Target").GetComponent<Text>();
+        }
+
+        public void set(Score s)
+        {
+            medalTime.show(s.MedalAverageTime);
+            medalMoney.show(s.MedalMoneyLeft);
+            medalSurface.show(s.MedalFreeSpacePercentage);
+
+            bubbleTime.show(s.nextMedal(s.MedalAverageTime));
+            bubbleMoney.show(s.nextMedal(s.MedalMoneyLeft));
+            bubbleSurface.show(s.nextMedal(s.MedalFreeSpacePercentage));
+
+            currentTime.text = s.AverageTime.ToString("F");
+            currentMoney.text = s.MoneyLeft.ToString();
+            currentSurface.text = s.FreeSpacePercentage.ToString("F");
+
+            targetTime.gameObject.SetActive(s.nextMedal(s.MedalAverageTime) != MedalType.None);
+            targetTime.text = s.nextTimeMedalValue().ToString("F");
+            targetMoney.gameObject.SetActive(s.nextMedal(s.MedalMoneyLeft) != MedalType.None);
+            targetMoney.text = s.nextMoneyMedalValue().ToString();
+            targetSurface.gameObject.SetActive(s.nextMedal(s.MedalFreeSpacePercentage) != MedalType.None);
+            targetSurface.text = s.nextSpaceMedalValue().ToString("F");
+        }
+
+        public void toggleBubble()
+        {
+            bubble.SetActive(!bubble.activeSelf);
+        }
+
+        Medals medalTime;
+        Medals medalMoney;
+        Medals medalSurface;
+
+        Medals bubbleTime;
+        Medals bubbleMoney;
+        Medals bubbleSurface;
+
+        Text currentTime;
+        Text targetTime;
+        Text currentMoney;
+        Text targetMoney;
+        Text currentSurface;
+        Text targetSurface;
+
+        GameObject bubble;
+    }
+
+    class Medals
+    {
+        public Medals(GameObject parent)
+        {
+            gold = parent.transform.Find("Gold").gameObject;
+            silver = parent.transform.Find("Silver").gameObject;
+            bronze = parent.transform.Find("Bronze").gameObject;
+        }
+
+        public void show(MedalType type)
+        {
+            switch(type)
+            {
+                case MedalType.Gold:
+                    gold.SetActive(true);
+                    silver.SetActive(false);
+                    bronze.SetActive(false);
+                    break;
+                case MedalType.Silver:
+                    gold.SetActive(false);
+                    silver.SetActive(true);
+                    bronze.SetActive(false);
+                    break;
+                case MedalType.Bronze:
+                    gold.SetActive(false);
+                    silver.SetActive(false);
+                    bronze.SetActive(true);
+                    break;
+                default: //MedalType.None
+                    gold.SetActive(false);
+                    silver.SetActive(false);
+                    bronze.SetActive(false);
+                    break;
+            }
+        }
+
+        GameObject gold;
+        GameObject silver;
+        GameObject bronze;
+    }
 }
