@@ -149,21 +149,17 @@ public class MenuManager : MonoBehaviour {
 		UpdateShopUI ();
 	}
 
-<<<<<<< HEAD
 	void Start() {
 		ParametersUI.transform.Find("MusicSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("musicVolume", 1f);
 		ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("soundVolume", 1f);
 	}
 
-	GameObject GetCorrespondantUI(Menu menu) {
-=======
     private void OnDestroy()
     {
         substriberList.Unsubscribe();
     }
 
     GameObject GetCorrespondantUI(Menu menu) {
->>>>>>> Navmesh
 		switch (menu) {
 		case Menu.Main:
 			return MainUI;
