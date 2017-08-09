@@ -129,6 +129,7 @@ public class DragAndDrop : MonoBehaviour{
 	public void DeleteObject() {
 		G.Sys.tilemap.AddUsedTile (-Space);
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
+        G.Sys.tilemap.addSpaceUsed(-Space);
 		Destroy (gameObject);
 	}
 
@@ -150,7 +151,7 @@ public class DragAndDrop : MonoBehaviour{
 		if ((canPlace && !IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)) || IsBought && canPlace) {
 			G.Sys.cameraController.IsSelecting = false;
 			if (!IsBought) {
-				G.Sys.tilemap.AddUsedTile (Space);
+                G.Sys.tilemap.addSpaceUsed(Space);
 				G.Sys.gameManager.AddMoney (-Price);
 				IsBought = true;
 				var tile = GetComponent<ATile> ();

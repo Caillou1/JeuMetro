@@ -30,6 +30,9 @@ public class Traveler : AEntity
 
 	private Vector3 lastPos;
 
+	private float ArrivalTime;
+    private SubscriberList subscriberList = new SubscriberList();
+
 	protected override void OnAwake ()
 	{
 		G.Sys.registerTraveler (this);
@@ -50,6 +53,8 @@ public class Traveler : AEntity
         subscriberList.Add(new Event<CollectTravelerTimeEvent>.Subscriber(onCollectTime));
         subscriberList.Subscribe();
 >>>>>>> Navmesh
+        subscriberList.Add(new Event<CollectTravelerTimeEvent>.Subscriber(onCollectTime));
+        subscriberList.Subscribe();
 	}
 
 	protected override void OnUpdate ()
