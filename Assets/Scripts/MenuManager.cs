@@ -63,7 +63,14 @@ public class MenuManager : MonoBehaviour {
 
 	private int ShopIndex = 0;
 
+    private WinMenuDatas winMenuDatas;
+
+    private SubscriberList substriberList = new SubscriberList();
+
 	void Awake() {
+        substriberList.Add(new Event<WinGameEvent>.Subscriber(onWinGameEvent));
+        substriberList.Subscribe();
+
 		Time.timeScale = 1f;
 		G.Sys.menuManager = this;
 
@@ -80,6 +87,7 @@ public class MenuManager : MonoBehaviour {
 		GameUI = tf.Find ("GameUI").gameObject;
 		LevelSelectionUI = tf.Find ("LevelSelectionUI").gameObject;
         WinEndGameUI = tf.Find("WinEndGameUI").gameObject;
+        winMenuDatas = new WinMenuDatas(WinEndGameUI);
 
 		//LevelButtons = new List<GameObject> ();
 		for (int i = 0; i < LevelSelectionUI.transform.childCount; i++) {
@@ -141,12 +149,21 @@ public class MenuManager : MonoBehaviour {
 		UpdateShopUI ();
 	}
 
+<<<<<<< HEAD
 	void Start() {
 		ParametersUI.transform.Find("MusicSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("musicVolume", 1f);
 		ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("soundVolume", 1f);
 	}
 
 	GameObject GetCorrespondantUI(Menu menu) {
+=======
+    private void OnDestroy()
+    {
+        substriberList.Unsubscribe();
+    }
+
+    GameObject GetCorrespondantUI(Menu menu) {
+>>>>>>> Navmesh
 		switch (menu) {
 		case Menu.Main:
 			return MainUI;
@@ -276,6 +293,7 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Play(int i) {
+        G.Sys.levelIndex = i;
 		if (i == 0) {
 			LevelSelection ();
 		} else {
@@ -378,4 +396,109 @@ public class MenuManager : MonoBehaviour {
 	public void SetFullscreen(bool b) {
 		Screen.fullScreen = b;
 	}
+
+    void onWinGameEvent(WinGameEvent e)
+    {
+        FadeUI.SetActive(true);
+        WinEndGameUI.SetActive(true);
+        winMenuDatas.set(e.score);
+        Time.timeScale = 0;
+    }
+
+    public void OnWinInfosClick()
+    {
+        winMenuDatas.toggleBubble();
+    }
+
+    public void OnWinRetryClick()
+    {
+        Time.timeScale = 1;
+        Play(G.Sys.levelIndex);
+    }
+
+    public void OnWinHomeClick()
+    {
+
+        Time.timeScale = 1;
+        MainMenu();
+    }
+
+    public void OnWinNextClick()
+    {
+        Play(G.Sys.levelIndex + 1);
+    }
+
+    class WinMenuDatas
+    {
+        public WinMenuDatas(GameObject parent)
+        {
+            medalTime = parent.transform.Find("GoldTime").gameObject;
+            medalMoney = parent.transform.Find("GoldMoney").gameObject;
+            medalSurface = parent.transform.Find("GoldSurface").gameObject;
+
+            bubble = parent.transform.Find("Bubble").gameObject;
+            bubble.SetActive(false);
+            var timeObj = bubble.transform.Find("Time");
+            var moneyObj = bubble.transform.Find("Money");
+            var surfaceObj = bubble.transform.Find("Surface");
+
+            currentTime = timeObj.Find("Value").GetComponent<Text>();
+            targetTime = timeObj.Find("Target").GetComponent<Text>();
+
+			currentMoney = moneyObj.Find("Value").GetComponent<Text>();
+			targetMoney = moneyObj.Find("Target").GetComponent<Text>();
+
+			currentSurface = surfaceObj.Find("Value").GetComponent<Text>();
+			targetSurface = surfaceObj.Find("Target").GetComponent<Text>();
+
+            score = parent.transform.Find("Score").GetComponent<Text>();
+            bestScore = parent.transform.Find("Best").GetComponent<Text>();
+        }
+
+        public void set(Score s)
+        {
+            medalTime.SetActive(s.HaveTimeMedal);
+            medalMoney.SetActive(s.HaveMoneyMedal);
+            medalSurface.SetActive(s.HaveSurfaceMedal);
+
+            currentTime.text = s.AverageTime.ToString("F");
+            currentMoney.text = s.MoneyLeft.ToString();
+            currentSurface.text = s.SpaceUsed.ToString();
+
+            targetTime.text = s.GoldAverageTime.ToString("F");
+            targetMoney.text = s.GoldMoneyLeft.ToString();
+            targetSurface.text = s.GoldSurface.ToString();
+
+            score.text = s.ScoreValue.ToString();
+            int best = PlayerPrefs.GetInt("Level" + G.Sys.levelIndex, 0);
+            if(best < s.ScoreValue)
+            {
+                best = s.ScoreValue;
+                PlayerPrefs.SetInt("Level" + G.Sys.levelIndex, best);
+                PlayerPrefs.Save();
+            }
+            bestScore.text = best.ToString();
+        }
+
+        public void toggleBubble()
+        {
+            bubble.SetActive(!bubble.activeSelf);
+        }
+
+        GameObject medalTime;
+        GameObject medalMoney;
+        GameObject medalSurface;
+
+        Text currentTime;
+        Text targetTime;
+        Text currentMoney;
+        Text targetMoney;
+        Text currentSurface;
+        Text targetSurface;
+
+        Text score;
+        Text bestScore;
+
+        GameObject bubble;
+    }
 }

@@ -51,17 +51,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56ec55402e21442249006d6a90ef5d69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  score:
+    GoldAverageTime: 2
+    GoldMoneyLeft: 100
+    GoldSurface: 10
+    AverageTime: 0
+    HaveTimeMedal: 0
+    MoneyLeft: 0
+    HaveMoneyMedal: 0
+    SpaceUsed: 0
+    HaveSurfaceMedal: 0
+    ScoreValue: 0
   waveCounts: 2
   waveTimes:
   - 10
-  - 20
+  - 8
   - 10
   inWaves:
-  - array: []
-  - array: []
+  - array:
+    - Entrance: {fileID: 0}
+      Wave: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c, type: 2}
+      Delay: 0
+    - Entrance: {fileID: 0}
+      Wave: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c, type: 2}
+      Delay: 1
+    - Entrance: {fileID: 0}
+      Wave: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c, type: 2}
+      Delay: 2
+  - array:
+    - Entrance: {fileID: 0}
+      Wave: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c, type: 2}
+      Delay: 0
   metroWaves:
-  - array: []
-  - array: []
+  - array:
+    - MetroObject: {fileID: 0}
+      Wave: {fileID: 1001903949469912, guid: 355eeb04206e84cf8ba4b69eef73b274, type: 2}
+  - array:
+    - MetroObject: {fileID: 0}
+      Wave: {fileID: 1001903949469912, guid: 355eeb04206e84cf8ba4b69eef73b274, type: 2}
   metrosDelay:
   - MetroObject: {fileID: 0}
-    Delay: 1
+    Delay: 5

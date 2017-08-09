@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 	private int TravelersThatLeftStation = 0;
 
 	private int money;
+    private int earnedMoney = 0;
 
 	private SubscriberList subscriberList = new SubscriberList();
 
@@ -126,6 +127,8 @@ public class GameManager : MonoBehaviour
 
 	public void AddMoney(int m) {
 		money += m;
+        if(m > 0)
+            earnedMoney += m;
 		G.Sys.menuManager.SetMoneyNumber (money);
 		G.Sys.menuManager.ShowMoneyAdded (m);
 	}
@@ -134,12 +137,18 @@ public class GameManager : MonoBehaviour
 		return money;
 	}
 
+    public int GetEarnedMoney()
+    {
+        return earnedMoney - StartingMoney;
+    }
+
 	public bool HaveEnoughMoney(int m) {
 		return money >= m;
 	}
 
-	public void AddTime(float t) {
-		TravelersThatLeftStation++;
+    public void AddTime(float t, bool addTraveler = true) {
+		if (addTraveler) 
+            TravelersThatLeftStation++;
 		TotalTime += t;
 	}
 
