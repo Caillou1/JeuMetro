@@ -422,7 +422,7 @@ public class Traveler : AEntity
 	protected override void OnPathFinished ()
 	{
 		
-		if (!isLost && path.canPassControl) {
+        if (!isLost && !path.isLastPathNeedPassControl()) {
 			path.destnation = target;
 			return;
 		}
