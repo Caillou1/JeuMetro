@@ -19,14 +19,19 @@ public class Traveler : AEntity
 	public TravelerDatas datas = new TravelerDatas ();
 
 	bool isLost = false;
+    bool isTicketLost = false;
 
 	private bool CanFall = true;
 
 	private float ArrivalTime;
+    private SubscriberList subscriberList = new SubscriberList();
 
 	private Animator anim;
 
 	private Vector3 lastPos;
+
+	private float ArrivalTime;
+    private SubscriberList subscriberList = new SubscriberList();
 
 	protected override void OnAwake ()
 	{
@@ -37,12 +42,19 @@ public class Traveler : AEntity
 		path.destnation = target;
 		initializeDatas();
 		ArrivalTime = Time.time;
+<<<<<<< HEAD
 		anim = GetComponentInChildren<Animator> ();
 
 		if (G.Sys.constants.TravelerColors.Count > 0)
 			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = G.Sys.constants.TravelerColors [(new UniformIntDistribution (G.Sys.constants.TravelerColors.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ()))];
 		else
 			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = Color.HSVToRGB ((new UniformFloatDistribution (0f, 1f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())), 1f, 1f);
+=======
+        subscriberList.Add(new Event<CollectTravelerTimeEvent>.Subscriber(onCollectTime));
+        subscriberList.Subscribe();
+>>>>>>> Navmesh
+        subscriberList.Add(new Event<CollectTravelerTimeEvent>.Subscriber(onCollectTime));
+        subscriberList.Subscribe();
 	}
 
 	protected override void OnUpdate ()
@@ -103,6 +115,7 @@ public class Traveler : AEntity
 	{
 		G.Sys.removeTraveler (this);
 		G.Sys.gameManager.AddTime (Time.time - ArrivalTime);
+        subscriberList.Unsubscribe();
 	}
 
 	protected override void Check ()
@@ -422,6 +435,9 @@ public class Traveler : AEntity
 		} else
 			agent.speed = datas.Speed;
 
+        if (datas.HasTicket && isTicketLost)
+            isTicketLost = false;
+
 		if ((datas.HasTicket || datas.Fraud) && !path.canPassControl)
 			path.canPassControl = true;
 	}
@@ -488,10 +504,13 @@ public class Traveler : AEntity
 	protected override void OnPathFinished ()
 	{
 		
-		if (!isLost && path.canPassControl) {
+        if (!isLost && !path.isLastPathNeedPassControl() && !isTicketLost) {
 			path.destnation = target;
 			return;
 		}
+
+        if (path.isLastPathNeedPassControl())
+            isTicketLost = true;
 
 		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
 		var d = new UniformVector3SphereDistribution (G.Sys.constants.travelerLostRadius);
@@ -505,4 +524,9 @@ public class Traveler : AEntity
 		}
 		path.destnation = transform.position + d.Next (gen);
 	}
+
+    void onCollectTime(CollectTravelerTimeEvent e)
+    {
+        G.Sys.gameManager.AddTime(Time.time - ArrivalTime, false);
+    }
 }

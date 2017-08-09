@@ -192,6 +192,8 @@ public class Tilemap
 	{
 		tiles.Clear ();
 		specialTiles.Clear ();
+        currentUsedSpace = 0;
+        maxUsedSpace = 0;
 	}
 
 	/// <summary>
@@ -701,19 +703,17 @@ public class Tilemap
 		return positions;
 	}
 
-	private int GroundTileNumber;
-	private int UsedTiles;
-
-	public float CalculateFreeSpacePercentage() {
-		return (1f - (UsedTiles / GroundTileNumber)) * 100;
-	}
-
-	public void AddGroundTile() {
-		GroundTileNumber++;
-	}
-
-	public void AddUsedTile(int x) {
-		UsedTiles += x;
-	}
+    private int maxUsedSpace;
+    private int currentUsedSpace;
+    public void addSpaceUsed(int value)
+    {
+        currentUsedSpace += value;
+        if (currentUsedSpace > maxUsedSpace)
+            maxUsedSpace = currentUsedSpace;
+    }
+    public int getMaxUsedSpace()
+    {
+        return maxUsedSpace;
+    }
 }
  
