@@ -19,6 +19,7 @@ public class Traveler : AEntity
 	public TravelerDatas datas = new TravelerDatas ();
 
 	bool isLost = false;
+    bool isTicketLost = false;
 
 	private float ArrivalTime;
     private SubscriberList subscriberList = new SubscriberList();
@@ -356,6 +357,9 @@ public class Traveler : AEntity
 		} else
 			agent.speed = datas.Speed;
 
+        if (datas.HasTicket && isTicketLost)
+            isTicketLost = false;
+
 		if ((datas.HasTicket || datas.Fraud) && !path.canPassControl)
 			path.canPassControl = true;
 	}
@@ -422,10 +426,13 @@ public class Traveler : AEntity
 	protected override void OnPathFinished ()
 	{
 		
-        if (!isLost && !path.isLastPathNeedPassControl()) {
+        if (!isLost && !path.isLastPathNeedPassControl() && !isTicketLost) {
 			path.destnation = target;
 			return;
 		}
+
+        if (path.isLastPathNeedPassControl())
+            isTicketLost = true;
 
 		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
 		var d = new UniformVector3SphereDistribution (G.Sys.constants.travelerLostRadius);

@@ -167,7 +167,6 @@ public class EntityPath
 					else _destination = (corners [i - 1] - corners [i]).normalized + corners [i];
 					corners.RemoveRange (i, corners.Count - i);
 					_lastPathBrokePassControl = true;
-                    Debug.Log("Poop");
 					break;
 				}
 			}
