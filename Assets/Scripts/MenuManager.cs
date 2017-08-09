@@ -14,12 +14,20 @@ public enum Menu {
 	Game,
 	SGP,
 	Shop,
-	NONE
+	LevelSelection,
+	NONE,
+}
+
+[System.Serializable]
+public class LevelUnlock {
+	public int Level;
+	public List<int> UnlockedLevels;
 }
 
 public class MenuManager : MonoBehaviour {
 	public Menu CurrentMenu = Menu.NONE;
 	public float[] ZoomLevels;
+	public LevelUnlock[] LevelUnlocks;
 	private Vector3 cameraOrigin;
 
 	private int CurrentZoomLevel;
@@ -36,6 +44,9 @@ public class MenuManager : MonoBehaviour {
 	private GameObject PersonnelUI;
 	private GameObject SGPUI;
 	private GameObject FadeUI;
+	private GameObject LevelSelectionUI;
+    //private List<GameObject> LevelButtons;
+    private GameObject WinEndGameUI;
 
 	private Image TimePie;
 	private Text TimeTxt;
@@ -67,6 +78,22 @@ public class MenuManager : MonoBehaviour {
 		PauseUI = tf.Find ("PauseUI").gameObject;
 		ScoreUI = tf.Find ("ScoresUI").gameObject;
 		GameUI = tf.Find ("GameUI").gameObject;
+		LevelSelectionUI = tf.Find ("LevelSelectionUI").gameObject;
+        WinEndGameUI = tf.Find("WinEndGameUI").gameObject;
+
+		//LevelButtons = new List<GameObject> ();
+		for (int i = 0; i < LevelSelectionUI.transform.childCount; i++) {
+			var c = LevelSelectionUI.transform.GetChild (i);
+			if (c.name.ToLower ().Contains ("level")) {
+				if (c.name.Remove (0, 5) != "1") {
+					bool isUnlocked = PlayerPrefs.GetInt (c.name + "Unlocked", 0) == 1;
+					c.GetComponent<Button> ().interactable = isUnlocked;
+					if(!isUnlocked)
+						c.Find ("Number").GetComponent<Image> ().color = new Color (100f / 255f, 100f / 255f, 100f / 255f);
+					c.Find ("Lock").GetComponent<Image> ().enabled = !isUnlocked;
+				}
+			}
+		}
 
 		var menuTf = GameUI.transform.Find ("Menu");
 		ShopUI = menuTf.Find ("ShopUI").gameObject;
@@ -86,6 +113,7 @@ public class MenuManager : MonoBehaviour {
 		CurrentZoomLevel = 0;
 
 		FadeUI.SetActive (false);
+		LevelSelectionUI.SetActive (false);
 		MainUI.SetActive (false);
 		ParametersUI.SetActive (false);
 		CreditsUI.SetActive (false);
@@ -95,6 +123,7 @@ public class MenuManager : MonoBehaviour {
 		ShopUI.SetActive (false);
 		PersonnelUI.SetActive (false);
 		SGPUI.SetActive (false);
+        WinEndGameUI.SetActive(false);
 		var obj = GetCorrespondantUI (CurrentMenu);
 		if (obj != null)
 			obj.SetActive (true);
@@ -110,6 +139,11 @@ public class MenuManager : MonoBehaviour {
 		ShopButtons [7] = ShopUI.transform.Find ("Podotactile").gameObject;
 
 		UpdateShopUI ();
+	}
+
+	void Start() {
+		ParametersUI.transform.Find("MusicSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("musicVolume", 1f);
+		ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("soundVolume", 1f);
 	}
 
 	GameObject GetCorrespondantUI(Menu menu) {
@@ -130,6 +164,8 @@ public class MenuManager : MonoBehaviour {
 			return SGPUI;
 		case Menu.Shop:
 			return ShopUI;
+		case Menu.LevelSelection:
+			return LevelSelectionUI;
 		default:
 			return null;
 		}
@@ -232,8 +268,19 @@ public class MenuManager : MonoBehaviour {
 		return (cameraTransform.position.y - cameraOrigin.y) / (cameraOrigin - cameraTransform.forward * ZoomLevels [ZoomLevels.Length - 1]).y + .1f;
 	}
 
-	public void Play() {
-		SceneManager.LoadScene ("Pierre2");
+	public void LevelSelection() {
+		FadeUI.SetActive (true);
+		LevelSelectionUI.SetActive (true);
+		LastMenu = CurrentMenu;
+		CurrentMenu = Menu.LevelSelection;
+	}
+
+	public void Play(int i) {
+		if (i == 0) {
+			LevelSelection ();
+		} else {
+			SceneManager.LoadScene ("Level" + i);
+		}
 	}
 
 	public void MainMenu() {
@@ -310,6 +357,9 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Back() {
+		if (CurrentMenu == Menu.LevelSelection) {
+			FadeUI.SetActive (false);
+		}
 		var tmp = LastMenu;
 		GetCorrespondantUI (LastMenu).SetActive (true);
 		GetCorrespondantUI (CurrentMenu).SetActive (false);
@@ -318,11 +368,11 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void SetSoundVolume(float v) {
-		//G.Sys.audioManager.SetSoundVolume (v);
+		G.Sys.audioManager.SetSoundVolume (v);
 	}
 
 	public void SetMusicVolume(float v) {
-		//G.Sys.audioManager.SetMusicVolume (v);
+		G.Sys.audioManager.SetMusicVolume (v);
 	}
 
 	public void SetFullscreen(bool b) {

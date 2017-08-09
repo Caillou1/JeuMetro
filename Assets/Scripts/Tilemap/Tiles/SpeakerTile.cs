@@ -21,4 +21,12 @@ public class SpeakerTile : ATile
 
 		G.Sys.tilemap.delSpecialTile (type, transform.position);
 	}
+		
+	public static bool isEmiting()
+	{
+		if (G.Sys.constants == null)
+			return false;
+		var t = Time.time % G.Sys.constants.SpeakerWaitTime;
+		return t < G.Sys.constants.SpeakerEmissionTime;
+	}
 }

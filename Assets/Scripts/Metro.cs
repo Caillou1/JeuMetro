@@ -4,47 +4,42 @@ using UnityEngine;
 using DG.Tweening;
 
 public class Metro : MonoBehaviour {
+
+	public List<MetroTile> OutTiles;
+	[Tooltip("Déplacement du metro quand il arrive et part")]
+	public float moveOffset = 12.5f;
+
 	private Transform tf;
 	private Vector3 positionToReach;
 	private Vector3 startPosition;
-	private Material mat;
-	private ExitsTile[] exitsTiles;
+	private Vector3 endPosition;
 
-	void Start () {
-		tf = transform.Find("Mesh");
-		mat = transform.Find("Mesh").GetComponent<MeshRenderer> ().material;
-		mat.color = new Color (mat.color.r, mat.color.g, mat.color.b, 0f);
+	void Awake()
+	{
+		G.Sys.registerMetro (this);
+
+		tf = transform;
 		positionToReach = tf.position;
-		startPosition = tf.position - tf.right * 15f;
-		exitsTiles = GetComponentsInChildren<ExitsTile> ();
-		foreach (var et in exitsTiles) {
-			et.Unregister ();
-		}
+		startPosition = tf.position - tf.forward * moveOffset;
+		endPosition = tf.position + tf.forward * moveOffset;
+
+		tf.position = startPosition;
+	}
+
+	void OnDestroy()
+	{
+		G.Sys.removeMetro (this);
 	}
 
 	void ResetPos() {
 		tf.position = startPosition;
 	}
 
-	void Disappear() {
-		DOVirtual.Float (1f, 0f, 2f, (float a) => {
-			mat.color = new Color (mat.color.r, mat.color.g, mat.color.b, a);
-		});
-	}
-
-	void Reappear () {
-		DOVirtual.Float (0f, 1f, 2f, (float a) => {
-			mat.color = new Color (mat.color.r, mat.color.g, mat.color.b, a);
-		});
-	}
-
 	public void CallMetro() {
 		ResetPos ();
-		Reappear ();
-		tf.DOMove (positionToReach, G.Sys.constants.MetroComeTime).OnComplete(()=>{
-			foreach (var et in exitsTiles) {
-				et.Register ();
-			}
+		G.Sys.audioManager.PlayTrainStop ();
+		tf.DOMove (positionToReach, G.Sys.constants.MetroComeTime).SetEase(Ease.OutQuad).OnComplete(()=>{
+			EnableTiles(true);
 			DOVirtual.DelayedCall(G.Sys.constants.MetroWaitTime, () => {
 				Leave();
 			});
@@ -52,10 +47,14 @@ public class Metro : MonoBehaviour {
 	}
 
 	public void Leave() {
-		foreach (var et in exitsTiles) {
-			et.Unregister ();
-		}
-		Disappear ();
-		tf.DOMove (tf.position + tf.right * 15f, G.Sys.constants.MetroComeTime / 2f);
+		EnableTiles (false);
+		G.Sys.audioManager.PlayTrainStart ();
+		tf.DOMove (endPosition, G.Sys.constants.MetroComeTime).SetEase(Ease.InExpo);
+	}
+
+	void EnableTiles(bool value)
+	{
+		foreach(var t in OutTiles)
+			t.tileEnabled = value;
 	}
 }

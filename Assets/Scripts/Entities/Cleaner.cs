@@ -10,19 +10,38 @@ public class Cleaner : AEntity
 	[HideInInspector]
 	public CleanerDatas datas = new CleanerDatas ();
 
+	private Animator anim;
+	private Vector3 lastPos;
+
 	protected override void OnAwake ()
 	{
 		//path.lostness = 0.5f;
 		initializeDatas();
+		agent.enabled = false;
+		anim = GetComponentInChildren<Animator> ();
 	}
 
 	protected override void OnUpdate ()
 	{
-		
+		anim.SetFloat ("MovementSpeed", agent.velocity.magnitude);
+
+		if ((lastPos - transform.position).magnitude >= .001f) {
+			anim.SetBool ("Walking", true);
+		} else {
+			anim.SetBool ("Walking", false);
+		}
+
+		lastPos = transform.position;
 	}
 
 	void OnDestroy() {
+		G.Sys.removeCleaner (this);
+	}
 
+	public override void EnableAgent ()
+	{
+		base.EnableAgent ();
+		G.Sys.registerCleaner (this);
 	}
 
 	protected override void Check ()

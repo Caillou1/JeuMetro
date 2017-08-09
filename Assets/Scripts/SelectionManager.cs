@@ -39,7 +39,10 @@ public class SelectionManager : MonoBehaviour {
 
 			var e = obj.GetComponent<EscalatorTile> ();
 			if (e != null) {
+				rotate.transform.localPosition = Vector3.zero + Vector3.up * 50;
 				changeside.SetActive (true);
+			} else {
+				rotate.transform.localPosition = Vector3.zero;
 			}
 
 			obj.CanDrag = true;
@@ -49,12 +52,13 @@ public class SelectionManager : MonoBehaviour {
 		}
 	}
 
-	public void Show(DragAndDropEntity e) {
+	public void Show(DragAndDropEntity e, bool StopMovement) {
 		if (e != null) {
 			ent = e;
 			ent.IsSelected = true;
 			tf.position = G.Sys.MainCamera.WorldToScreenPoint (ent.transform.position);
-
+			if(StopMovement)
+				ent.GetComponent<AEntity> ().SetIsStopped (true);
 			validate.SetActive (true);
 			delete.SetActive (true);
 
@@ -64,15 +68,18 @@ public class SelectionManager : MonoBehaviour {
 		}
 	}
 
-	public void Hide(bool register, bool isEntity) {
+	public void Hide(bool register, bool isEntity, bool ResumeMovement) {
 		if (isEntity) {
 			//ent.ActivateCollisions ();
+			var e = ent.GetComponent<AEntity> ();
 			if (register) {
-				ent.GetComponent<AEntity> ().enabled = true;
+				e.enabled = true;
 				G.Sys.cameraController.IsSelecting = false;
 				ent.IsSelected = false;
 			}
-
+			if(ResumeMovement) {
+				e.SetIsStopped (false);
+			}
 			ent = null;
 
 			validate.SetActive (false);
@@ -134,7 +141,7 @@ public class SelectionManager : MonoBehaviour {
 		}
 		if (ent != null) {
 			ent.DeleteObject ();
-			Hide (false, true);
+			Hide (false, true, false);
 		}
 	}
 

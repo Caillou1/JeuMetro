@@ -10,4 +10,5 @@ public struct TravelerDatas
 	public float Hunger;
 	public bool HasTicket;
 	public bool Fraud;
+	public bool LostNoTicket;
 }

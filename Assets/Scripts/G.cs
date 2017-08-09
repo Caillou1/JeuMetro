@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using V1;
-
 public sealed class G
 {
     private static volatile G _instance;
@@ -11,6 +9,8 @@ public sealed class G
 	public Tilemap tilemap = new Tilemap();
 	private List<Traveler> travelers = new List<Traveler> ();
 	private List<Agent> agents = new List<Agent> ();
+	private List<Cleaner> cleaners = new List<Cleaner> ();
+	private List<Metro> metros = new List<Metro> ();
 
 	private Camera _camera;
     private GameManager _gameManager;
@@ -85,13 +85,53 @@ public sealed class G
 		return agents.Remove (a);
 	}
 
-	public Agent GetNearestAgent(Vector3 pos) {
+	public void registerCleaner(Cleaner c) {
+		if (!cleaners.Contains (c)) {
+			cleaners.Add (c);
+		}
+	}
+
+	public bool removeCleaner(Cleaner c) {
+		return cleaners.Remove (c);
+	}
+
+	public Agent GetNearestAgent(Vector3 pos, float maxDist = float.MaxValue) {
 		Agent closest = null;
 		float minDist = float.MaxValue;
 
 		foreach (var a in agents) {
-			float dist = Vector3.Distance (pos, a.transform.position);
-			if (dist < minDist) {
+			float dist = (pos - a.transform.position).sqrMagnitude;
+			if (dist < minDist && dist < maxDist) {
+				minDist = dist;
+				closest = a;
+			}
+		}
+
+		return closest;
+	}
+
+	public Agent GetNearestFreeAgent(Vector3 pos, float maxDist = float.MaxValue) {
+		Agent closest = null;
+		float minDist = float.MaxValue;
+
+		foreach (var a in agents) {
+			float dist = (pos - a.transform.position).sqrMagnitude;
+			if (dist < minDist && dist < maxDist && !a.IsHelping) {
+				minDist = dist;
+				closest = a;
+			}
+		}
+
+		return closest;
+	}
+
+	public Cleaner GetNearestCleaner(Vector3 pos, float maxDist = float.MaxValue) {
+		Cleaner closest = null;
+		float minDist = float.MaxValue;
+
+		foreach (var a in cleaners) {
+			float dist = (pos - a.transform.position).sqrMagnitude;
+			if (dist < minDist && dist < maxDist) {
 				minDist = dist;
 				closest = a;
 			}
@@ -109,10 +149,34 @@ public sealed class G
 	{
 		return travelers [index];
 	}
+
+	public void registerMetro(Metro t)
+	{
+		if (!metros.Contains (t))
+			metros.Add (t);
+	}
+
+	public bool removeMetro(Metro t)
+	{
+		return metros.Remove (t);
+	}
+
+	public int metroCount()
+	{
+		return metros.Count;
+	}
+
+	public Metro metro(int index)
+	{
+		return metros [index];
+	}
 		
 	public void clear()
 	{
 		travelers.Clear ();
+		agents.Clear ();
+		cleaners.Clear ();
+		metros.Clear ();
 	}
 
 	public AudioManager audioManager {

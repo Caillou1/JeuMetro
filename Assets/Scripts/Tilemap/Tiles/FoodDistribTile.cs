@@ -7,6 +7,8 @@ using UnityEngine;
 public class FoodDistribTile : ATile
 {
 	public int price = 1;
+	[HideInInspector]
+	public int queue = 0;
 
 	protected override void Awake()
 	{

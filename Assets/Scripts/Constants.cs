@@ -28,6 +28,19 @@ public class Constants : MonoBehaviour
 	public float MetroComeTime;
 	[Tooltip("Temps qu'attend un métro à quai")]
 	public float MetroWaitTime;
+	[Tooltip("Temps que met un ascenseur pour arriver à un étage")]
+	public float ElevatorComeTime;
+	[Tooltip("Temps qu'attend un ascenseur à un étage s'il doit aller à un autre étage après")]
+	public float ElevatorWaitTime;
+	[Tooltip("Nombre de personnes maximum dans un ascenseur")]
+	public int ElevatorMaxPeople;
+	[Tooltip("Temps entre 2 emission par les éméteurs sonor")]
+	public float SpeakerWaitTime;
+	[Tooltip("Temps d'émission des éméteurs sonor")]
+	public float SpeakerEmissionTime;
+	[Tooltip("Chance de 0 à 100 qu'un voyageur a de tomber dans les escaliers s'il n'est pas aveugle ou malvoyant")]
+	public float FallChance;
+	public List<Color> TravelerColors;
 
 	void Awake()
 	{

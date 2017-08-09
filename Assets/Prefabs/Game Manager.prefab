@@ -34,8 +34,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1402080086129936}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.31543, y: -0.09277344, z: 8.439453}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -54,11 +54,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entities:
   - {fileID: 1427005143703886, guid: c18e31107d19d445e9ad33af39ca5d8a, type: 2}
-  minDelay: 0.5
-  maxDelay: 0.5
+  minDelay: 0
+  maxDelay: 0
   wastePrefab: {fileID: 1381118464472966, guid: 4ae148e65d2824332b0aca19f299cb60,
     type: 2}
   emptyWall: {fileID: 1572546173586764, guid: 87199dbc9c9304da49ae5eb0d3c2c6ef, type: 2}
+  SetMaxTravelers: 1
+  MaxTravelers: 100
   StartingMoney: 100000
 --- !u!114 &114708820167919978
 MonoBehaviour:
@@ -77,6 +79,22 @@ MonoBehaviour:
   WasteCleanTime: 1
   BinCleanTime: 1
   EscalatorSpeed: 2
-  StairsSpeedMultiplier: 0.75
+  StairsSpeedMultiplier: 0.5
   travelerLostRadius: 6
   travelerLostVariance: 3
+  HelpTime: 5
+  MetroComeTime: 5
+  MetroWaitTime: 10
+  ElevatorComeTime: 2
+  ElevatorWaitTime: 5
+  ElevatorMaxPeople: 10
+  SpeakerWaitTime: 0
+  SpeakerEmissionTime: 0
+  FallChance: 0.5
+  TravelerColors:
+  - {r: 1, g: 0, b: 0.84827566, a: 0}
+  - {r: 0.53103447, g: 0, b: 1, a: 0}
+  - {r: 0, g: 0.751724, b: 1, a: 0}
+  - {r: 0, g: 1, b: 0.21379304, a: 0}
+  - {r: 1, g: 1, b: 0, a: 0}
+  - {r: 1, g: 0.622, b: 0, a: 0}

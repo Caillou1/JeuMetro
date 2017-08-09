@@ -10,29 +10,50 @@ public class Agent : AEntity
 	[HideInInspector]
 	public AgentDatas datas = new AgentDatas ();
 
+	private Animator anim;
+	private Vector3 lastPos;
+
+	public bool IsHelping {
+		get {
+			return path.haveAction (ActionType.HELP_TRAVELER);
+		}
+	}
+
 	protected override void OnAwake ()
 	{
 		//path.lostness = 0.5f;
 		initializeDatas();
-		G.Sys.registerAgent (this);
+		agent.enabled = false;
+		anim = GetComponentInChildren<Animator> ();
 	}
 
 	protected override void OnUpdate ()
 	{
-		
+		anim.SetFloat ("MovementSpeed", agent.velocity.magnitude);
+
+		if ((lastPos - transform.position).magnitude >= .001f) {
+			anim.SetBool ("Walking", true);
+		} else {
+			anim.SetBool ("Walking", false);
+		}
+
+		lastPos = transform.position;
 	}
 
 	void OnDestroy() {
 		G.Sys.removeAgent (this);
 	}
 
-	protected override void Check ()
+	public override void EnableAgent ()
 	{
-		
+		base.EnableAgent ();
+		G.Sys.registerAgent (this);
 	}
 
-	public void GoHelpTraveler(Traveler t) {
-		path.addAction(new HelpTraveler(this, t.transform.position, t));
+	public void GoHelpTravelerAction(Traveler t) {
+		var pos = t.transform.position;
+		var dir = Vector3.Normalize (pos - transform.position);
+		path.addAction(new HelpTravelerAction(this, pos - new Vector3(dir.x, 0, dir.y)*.5f, t));
 	}
 
 	void initializeDatas()

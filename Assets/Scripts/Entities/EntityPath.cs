@@ -17,6 +17,9 @@ public class EntityPath
 	float _lostness = 0;
 	float _oldLostness = 0;
 
+	bool _canPassControl = true;
+	bool _lastPathBrokePassControl = false;
+
 	Vector3 _destination;
 
 	List<Vector3> _points = new List<Vector3> ();
@@ -66,6 +69,19 @@ public class EntityPath
 				updatePath ();
 			}
 		}
+	}
+
+	public bool canPassControl {
+		set {
+			_canPassControl = value;
+			updatePath ();
+		}
+		get{ return _canPassControl; }
+	}
+
+	public bool isLastPathNeedPassControl()
+	{
+		return _lastPathBrokePassControl;
 	}
 
 	public void addAction(AAction action)
@@ -123,51 +139,73 @@ public class EntityPath
 
 	void onPathCreated()
 	{
+		_lastPathBrokePassControl = false;
 		pathPending = false;
 		_points.Clear ();
 
 		if (!_agent.hasPath)
 			return;
 
-		float distBetweenPoints = G.Sys.constants.travelerLostVariance / lostness;
+		if (lostness < 0.05f && _canPassControl) {
+			_points.Add (_destination);
+			updateAgentPath ();
+			return;
+		}
 
-		if (lostness != 0) {
-			var path = _agent.path;
-			float dist = 0;
-			float lastCornerDist = 0;
-			float lastPoint = 0;
-			Vector3 lastpoint = _agent.transform.position;
-			var corners = path.corners.ToList ();
-			corners.Add (_destination);
-
-			var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
-			var d = new UniformVector2CircleDistribution (G.Sys.constants.travelerLostVariance);
-
-			foreach (var pos in corners) {
-				lastCornerDist = (lastpoint - pos).magnitude;
-				while (dist + lastCornerDist - lastPoint >= distBetweenPoints) {
-					float pointOnCorner = lastPoint - dist + distBetweenPoints;
-					float distOnCorner = pointOnCorner / lastCornerDist;
-					var p = lastpoint * distOnCorner + pos * (1 - distOnCorner);
-					for (int i = 0; i < 10; i++) {
-						var dPos = d.Next (gen);
-						var target = p + new Vector3(dPos.x, 0, dPos.y);
-						var tiles = G.Sys.tilemap.at (target);
-						if (tiles.Count == 1 && tiles [0].type == TileID.GROUND) {
-							_points.Add (target);
-							break;
-						}
-					}
-					lastPoint = dist + pointOnCorner;
+		float distBetweenPoints = G.Sys.constants.travelerLostVariance / lostness;		
+		var path = _agent.path;
+		float dist = 0;
+		float lastCornerDist = 0;
+		float lastPoint = 0;
+		Vector3 lastpoint = _agent.transform.position;
+		var corners = path.corners.ToList ();
+		if (!canPassControl) {
+			for (int i = 0; i < corners.Count - 1; i++) {
+				if (haveControleLineBetween (corners [i], corners [i + 1])) {
+					if (i == 0)
+						_destination = _agent.transform.position;
+					else _destination = (corners [i - 1] - corners [i]).normalized + corners [i];
+					corners.RemoveRange (i, corners.Count - i);
+					_lastPathBrokePassControl = true;
+					break;
 				}
-				dist += lastCornerDist;
-				lastpoint = pos;
 			}
+		}
+			
+		corners.Add (_destination);
+
+		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
+		var d = new UniformVector2CircleDistribution (G.Sys.constants.travelerLostVariance);
+
+		foreach (var pos in corners) {
+			lastCornerDist = (lastpoint - pos).magnitude;
+			while (dist + lastCornerDist - lastPoint >= distBetweenPoints) {
+				float pointOnCorner = lastPoint - dist + distBetweenPoints;
+				float distOnCorner = pointOnCorner / lastCornerDist;
+				var p = lastpoint * distOnCorner + pos * (1 - distOnCorner);
+				for (int i = 0; i < 10; i++) {
+					var dPos = d.Next (gen);
+					var target = p + new Vector3(dPos.x, 0, dPos.y);
+					var tiles = G.Sys.tilemap.at (target);
+					if (tiles.Count == 1 && tiles [0].type == TileID.GROUND) {
+						_points.Add (target);
+						break;
+					}
+				}
+				lastPoint = dist + pointOnCorner;
+			}
+			dist += lastCornerDist;
+			lastpoint = pos;
 		}
 
 		_points.Add (_destination);
 
 		updateAgentPath ();
+	}
+
+	bool haveControleLineBetween(Vector3 pos1, Vector3 pos2)
+	{
+		return G.Sys.tilemap.GetTileOfTypeAt ((pos1 + pos2) / 2, TileID.CONTROLELINE);
 	}
 
 	void updateAgentPath()
@@ -187,7 +225,8 @@ public class EntityPath
 		if (_points.Count == 0) {
 			currentAction = _actions [0];
 			_actions.RemoveAt (0);
-			_agent.SetDestination (currentAction.pos);
+			if(_agent.isOnNavMesh)
+				_agent.SetDestination (currentAction.pos);
 			return;
 		}
 
@@ -235,6 +274,8 @@ public class EntityPath
 
 	void checkAction()
 	{
+		if (!_agent.isOnNavMesh)
+			return;
 		if ((_agent.transform.position - _agent.destination).sqrMagnitude > (_agent.transform.position - _actions [0].pos).sqrMagnitude) {
 			_points.Insert (0, _agent.destination);
 			currentAction = _actions [0];
@@ -245,20 +286,25 @@ public class EntityPath
 
 	void debugPath()
 	{
-		for (int i = 0; i <= _points.Count; i++) {
+		/*for (int i = 0; i <= _points.Count; i++) {
 			var oldPoint = i == 0 ? _agent.transform.position : i == 1 ? _agent.destination : _points [i - 2];
 			var point = i == 0 ? _agent.destination : _points [i - 1];
 			Debug.DrawLine(oldPoint, point, Color.red);
+		}*/
+		Vector3 pos = _agent.transform.position;
+		foreach (var p in _agent.path.corners)
+		{
+			Debug.DrawLine (pos, p, Color.red);
+			pos = p;
 		}
 		if (currentAction != null)
 			Debug.DrawLine (_agent.transform.position, currentAction.pos, Color.magenta);
-		if (onAction)
-			Debug.DrawRay (_agent.transform.position, Vector3.up, Color.cyan);
+		Debug.DrawLine (_agent.transform.position, destnation, Color.cyan);
 	}
 
 	public bool Finished()
 	{
-		return finished;
+		return finished && !isOnOffMeshLink;
 	}
 
 	public bool IsOnAction()
@@ -318,11 +364,19 @@ public class EntityPath
 			_agent.nextPosition = _agent.transform.position;
 			float dist = Time.deltaTime * _agent.speed;
 			time += dist / norm;
+			if (G.Sys.tilemap.GetTileOfTypeAt (_agent.transform.position, TileID.CONTROLELINE) != null) {
+				_canPassControl = true;
+				_lastPathBrokePassControl = false;
+			}
+			
 			yield return new WaitForFixedUpdate ();
 		}
-		
-		_agent.updatePosition = true;
+
 		_agent.transform.position = endPos;
+		_agent.updatePosition = true;
+		_agent.enabled = false;
+		yield return new WaitForEndOfFrame ();
+		_agent.enabled = true;
 		isOnOffMeshLink = false;
 	}
 
