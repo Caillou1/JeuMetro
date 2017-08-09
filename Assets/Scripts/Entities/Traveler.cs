@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -54,6 +54,7 @@ public class Traveler : AEntity
 	protected override void OnUpdate ()
 	{
 		checkOnExit ();
+        checkOnControleLine();
 
 		anim.SetFloat ("MovementSpeed", agent.velocity.magnitude);
 
@@ -77,6 +78,17 @@ public class Traveler : AEntity
 			return;
 		}
 	}
+
+    void checkOnControleLine()
+    {
+		if (G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.CONTROLELINE) != null)
+		{
+			isTicketLost = false;
+			datas.HasTicket = true;
+			path.canPassControl = true;
+			path.lostness = 0;
+		}
+    }
 
 	static Pair<Vector3, ExitType> findExit(string name)
 	{
