@@ -30,9 +30,6 @@ public class Traveler : AEntity
 
 	private Vector3 lastPos;
 
-	private float ArrivalTime;
-    private SubscriberList subscriberList = new SubscriberList();
-
 	protected override void OnAwake ()
 	{
 		G.Sys.registerTraveler (this);
@@ -42,17 +39,14 @@ public class Traveler : AEntity
 		path.destnation = target;
 		initializeDatas();
 		ArrivalTime = Time.time;
-<<<<<<< HEAD
 		anim = GetComponentInChildren<Animator> ();
 
 		if (G.Sys.constants.TravelerColors.Count > 0)
 			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = G.Sys.constants.TravelerColors [(new UniformIntDistribution (G.Sys.constants.TravelerColors.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ()))];
 		else
 			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = Color.HSVToRGB ((new UniformFloatDistribution (0f, 1f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())), 1f, 1f);
-=======
         subscriberList.Add(new Event<CollectTravelerTimeEvent>.Subscriber(onCollectTime));
         subscriberList.Subscribe();
->>>>>>> Navmesh
         subscriberList.Add(new Event<CollectTravelerTimeEvent>.Subscriber(onCollectTime));
         subscriberList.Subscribe();
 	}
@@ -179,7 +173,6 @@ public class Traveler : AEntity
 
 	void checkStairs() {
 		if (CanFall) {
-			var tiles = G.Sys.tilemap.at (transform.position);
 			var tilesFront = G.Sys.tilemap.at (transform.position + transform.forward);
 			var stairs = tilesFront.Find (x => x.type == TileID.STAIRS) as StairsTile;
 

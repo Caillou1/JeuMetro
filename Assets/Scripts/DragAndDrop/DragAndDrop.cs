@@ -127,7 +127,6 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void DeleteObject() {
-		G.Sys.tilemap.AddUsedTile (-Space);
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
         G.Sys.tilemap.addSpaceUsed(-Space);
 		Destroy (gameObject);
