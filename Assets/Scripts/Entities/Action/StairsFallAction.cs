@@ -21,7 +21,7 @@ public class StairsFallAction : AEntityAction<Traveler>
 		entity.transform.DOMove (stairsTile.GetDownOfStairs (), .75f).SetEase (Ease.Linear).OnComplete(() => {
 			Event<FaintEvent>.Broadcast (new FaintEvent (traveler));
 		});
-		G.Sys.audioManager.PlayFaint ();
+		G.Sys.audioManager.PlayStairsFall ();
 		return false;
 	}
 
