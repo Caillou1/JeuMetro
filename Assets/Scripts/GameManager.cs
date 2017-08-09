@@ -29,6 +29,9 @@ public class GameManager : MonoBehaviour
 
 	private List<Traveler> faintingTravelers;
 
+    [HideInInspector]
+    public bool FireAlert = false;
+
     void Awake()
     {
         G.Sys.gameManager = this;

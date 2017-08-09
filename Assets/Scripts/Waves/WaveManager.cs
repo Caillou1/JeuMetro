@@ -22,6 +22,12 @@ public class WaveManager : MonoBehaviour {
 	[BoxGroup("Metros")]
 	public MetroDelay[] metrosDelay = new MetroDelay[]{ };
 
+    [BoxGroup("Waves")]
+    public bool EndWithFireAlert = false;
+    [BoxGroup("Waves")]
+    [ShowIf("EndWithFireAlert")]
+    public float FireAlertTime = 0;
+
 	void OnValidate()
 	{
 		if (waveTimes.Length != waveCounts + 1)
@@ -118,29 +124,46 @@ public class WaveManager : MonoBehaviour {
 	{
 		if (ended)
 			return;
-		
-		if (Time.time - chronoStartTime > WaveTime (currentWave)) {
+
+        if (currentWave >= waveCounts)
+        {
+            
+        }
+		else if (Time.time - chronoStartTime > WaveTime(currentWave))
+		{
 			currentWave++;
-			G.Sys.menuManager.SetWaveNumber (currentWave + 1, waveCounts);
-			if (currentWave >= waveCounts) {
-				ended = true;
-				G.Sys.menuManager.SetPieTime (1, 0);
-				SendScore ();
-				return;
+			G.Sys.menuManager.SetWaveNumber(currentWave + 1, waveCounts);
+            if (currentWave >= waveCounts)
+			{
+                if (!EndWithFireAlert)
+                {
+                    ended = true;
+                    G.Sys.menuManager.SetPieTime(1, 0);
+                    SendScore();
+                    return;
+                }
+                else
+                {
+                    G.Sys.gameManager.FireAlert = true;
+                    Event<StartFireAlertEvent>.Broadcast(new StartFireAlertEvent());
+                }
 			}
 			chronoStartTime = Time.time;
 		}
 
 		G.Sys.menuManager.SetPieTime ((Time.time - chronoStartTime) / WaveTime (currentWave), Mathf.RoundToInt(WaveTime (currentWave) - (Time.time - chronoStartTime)));
 
-		float currentTime = Time.time - chronoStartTime;
-		float lastTime = chronoLastTime - chronoStartTime;
-		if(currentWave >= 0)
-			SpawnInWave (currentWave, lastTime, currentTime - lastTime);
-		if (currentWave < waveCounts - 1)
-			SpawnInWave (currentWave + 1, lastTime - WaveTime (currentWave), currentTime - lastTime);
+        if (!G.Sys.gameManager.FireAlert)
+        {
+            float currentTime = Time.time - chronoStartTime;
+            float lastTime = chronoLastTime - chronoStartTime;
+            if (currentWave >= 0)
+                SpawnInWave(currentWave, lastTime, currentTime - lastTime);
+            if (currentWave < waveCounts - 1)
+                SpawnInWave(currentWave + 1, lastTime - WaveTime(currentWave), currentTime - lastTime);
 
-		chronoLastTime = Time.time;
+            chronoLastTime = Time.time;
+        }
 	}
 
 	void SpawnInWave(int wave, float time, float dt)
@@ -181,7 +204,7 @@ public class WaveManager : MonoBehaviour {
 	{
 		if (wave < waveCounts)
 			return waveTimes [wave + 1];
-		return 0;
+        return FireAlertTime;
 	}
 }
 
