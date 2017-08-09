@@ -97,7 +97,7 @@ public class MenuManager : MonoBehaviour {
 					bool isUnlocked = PlayerPrefs.GetInt (c.name + "Unlocked", 0) == 1;
 					c.GetComponent<Button> ().interactable = isUnlocked;
 					if(!isUnlocked)
-						c.Find ("Text").GetComponent<Text> ().color = new Color (100f / 255f, 100f / 255f, 100f / 255f);
+						c.Find ("Text").GetComponent<Image> ().color = new Color (100f / 255f, 100f / 255f, 100f / 255f);
 					c.Find ("Lock").GetComponent<Image> ().enabled = !isUnlocked;
 				}
 			}
@@ -147,6 +147,11 @@ public class MenuManager : MonoBehaviour {
 		ShopButtons [7] = ShopUI.transform.Find ("Podotactile").gameObject;
 
 		UpdateShopUI ();
+	}
+
+	void Start() {
+		ParametersUI.transform.Find("MusicSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("musicVolume", 1f);
+		ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("soundVolume", 1f);
 	}
 
     private void OnDestroy()

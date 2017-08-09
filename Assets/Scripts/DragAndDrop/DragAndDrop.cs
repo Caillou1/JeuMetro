@@ -127,6 +127,7 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void DeleteObject() {
+		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
         G.Sys.tilemap.addSpaceUsed(-Space);
 		Destroy (gameObject);
 	}
@@ -160,6 +161,7 @@ public class DragAndDrop : MonoBehaviour{
 			SendEvent ();
 			DeletePossibleEmptyWalls ();
 			StartCoroutine (eventCoroutine ());
+			G.Sys.audioManager.PlayConstruct ();
 			return true;
 		}
 		return false;
