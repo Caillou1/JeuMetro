@@ -15,7 +15,7 @@ public class BuyFoodAction : AEntityAction<Traveler>
 	protected override bool Start ()
 	{
 		foodDistrib.queue++;
-		maxTime = foodDistrib.queue * 2;
+        maxTime = foodDistrib.queue * G.Sys.constants.BuyTime;
 		return false;
 	}
 

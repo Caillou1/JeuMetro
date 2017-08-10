@@ -1205,21 +1205,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     Type: 0
-    ElevatorAttraction: 0
-    EscalatorAttraction: 0
-    StairsAttraction: 0
     RestPlaceAttraction: 0
-    VisualComprehension: 0
-    AudioComprehension: 0
-    TouchComprehension: 0
     Cleanliness: 100
     FaintnessPercentage: 0
     FraudPercentage: 0
     LostAbility: 0
+    Hunger: 0
+    wastes: 0
     MovementSpeed: 5
-    Malvoyant: 0
-    Deaf: 0
-    RotationSpeed: 0
+    Malvoyant: 1
+    Deaf: 1
+    HaveTicket: 0
+    IgnoreBin: 0
   targetName: Exit
 --- !u!136 &136030902708359128
 CapsuleCollider:

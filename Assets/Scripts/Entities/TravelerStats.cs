@@ -13,23 +13,8 @@ public enum TravelerType
 [System.Serializable]
 public class TravelerStats {
 	public TravelerType Type;
-	[HideInInspector]
-	[Range(-100f,100f)]
-	public float ElevatorAttraction;
-	[HideInInspector]
-	[Range(-100f,100f)]
-	public float EscalatorAttraction;
-	[HideInInspector]
-	[Range(-100f,100f)]
-	public float StairsAttraction;
-	[Range(-100f,100f)]
+	[Range(0f,100f)]
 	public float RestPlaceAttraction;
-	[Range(-100f,100f)]
-	public float VisualComprehension;
-	[Range(-100f,100f)]
-	public float AudioComprehension;
-	[Range(-100f,100f)]
-	public float TouchComprehension;
 	[Range(0f,100f)]
 	public float Cleanliness;
 	[Range(0f,100f)]
@@ -38,27 +23,27 @@ public class TravelerStats {
 	public float FraudPercentage;
 	[Range(0f,100f)]
 	public float LostAbility;
+    [Range(0f, 100f)]
+	public float Hunger;
+	[Range(0f, 100f)]
+	public float wastes;
 	public float MovementSpeed;
 	public bool Malvoyant;
 	public bool Deaf;
-	[HideInInspector]
-	public float RotationSpeed;
+    public bool HaveTicket;
+    public bool IgnoreBin;
 
 	public void SetStats(TravelerStats stats) {
 		Type = stats.Type;
-		ElevatorAttraction = stats.ElevatorAttraction;
-		EscalatorAttraction = stats.EscalatorAttraction;
-		StairsAttraction = stats.StairsAttraction;
 		RestPlaceAttraction = stats.RestPlaceAttraction;
 		Cleanliness = stats.Cleanliness;
-		VisualComprehension = stats.VisualComprehension;
-		AudioComprehension = stats.AudioComprehension;
-		TouchComprehension = stats.TouchComprehension;
 		FaintnessPercentage = stats.FaintnessPercentage;
 		LostAbility = stats.LostAbility;
 		MovementSpeed = stats.MovementSpeed;
-		RotationSpeed = stats.RotationSpeed;
 		Malvoyant = stats.Malvoyant;
 		Deaf = stats.Deaf;
+        Hunger = stats.Hunger;
+        HaveTicket = stats.HaveTicket;
+        wastes = stats.wastes;
 	}
 }

@@ -20,7 +20,7 @@ public class ThrowInGroundAction : AEntityAction<Traveler>
 	protected override bool Update ()
 	{
 		time += Time.deltaTime;
-		return time >= 2;
+        return time >= G.Sys.constants.WasteGroundTime;
 	}
 
 	protected override void End ()

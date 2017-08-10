@@ -14,10 +14,10 @@ public class BuyTicketAction : AEntityAction<Traveler>
 
 	protected override bool Start ()
 	{
-		bool canRun = entity.datas.HasTicket || entity.datas.Fraud;
+		bool canRun = entity.stats.HaveTicket || entity.datas.Fraud;
 		if (!canRun)
 			ticketDistrib.queue++;
-		maxTime = ticketDistrib.queue * 2;
+        maxTime = ticketDistrib.queue * G.Sys.constants.BuyTime;
 		return canRun;
 	}
 
@@ -29,7 +29,7 @@ public class BuyTicketAction : AEntityAction<Traveler>
 
 	protected override void End ()
 	{
-		entity.datas.HasTicket = true;
+        entity.stats.HaveTicket = true;
 		ticketDistrib.queue--;
 		G.Sys.gameManager.AddMoney (ticketDistrib.price);
 		G.Sys.audioManager.PlayBuyTicket ();
