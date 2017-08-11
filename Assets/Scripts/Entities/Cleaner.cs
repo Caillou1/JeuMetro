@@ -40,6 +40,7 @@ public class Cleaner : AEntity
 
 	public override void EnableAgent ()
 	{
+        Debug.Log("poop");
 		base.EnableAgent ();
 		G.Sys.registerCleaner (this);
 	}
