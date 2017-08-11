@@ -8,7 +8,6 @@ public struct TravelerDatas
 	public float Waste;
 	public float Speed;
 	public float Hunger;
-	public bool HasTicket;
 	public bool Fraud;
 	public bool LostNoTicket;
 }

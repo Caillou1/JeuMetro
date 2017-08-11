@@ -19,7 +19,7 @@ public class ThrowInBinAction : AEntityAction<Traveler>
 	protected override bool Update ()
 	{
 		time += Time.deltaTime;
-		return time >= 2;
+        return time >= G.Sys.constants.WasteBinTime;
 	}
 
 	protected override void End ()

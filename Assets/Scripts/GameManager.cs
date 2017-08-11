@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 	public float maxDelay;
 	public GameObject wastePrefab;
 	public GameObject emptyWall;
+	public bool enableTravelers;
 	public bool SetMaxTravelers;
 	[ShowIf("SetMaxTravelers")]
 	public int MaxTravelers;
@@ -29,6 +30,9 @@ public class GameManager : MonoBehaviour
 
 	private List<Traveler> faintingTravelers;
 
+    [HideInInspector]
+    public bool FireAlert = false;
+
     void Awake()
     {
         G.Sys.gameManager = this;
@@ -43,8 +47,9 @@ public class GameManager : MonoBehaviour
     {
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 		tf = transform;
-		AddMoney (StartingMoney);
-		StartCoroutine (spawnCoroutine ());
+		AddMoney(StartingMoney);
+		if (enableTravelers)
+		    StartCoroutine (spawnCoroutine ());
 		G.Sys.tilemap.UpdateGlobalBounds ();
 		//PathCalculator = tf.Find ("PathCalculator");
 		InstantiateColliders ();

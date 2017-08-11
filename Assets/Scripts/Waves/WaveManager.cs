@@ -19,8 +19,14 @@ public class WaveManager : MonoBehaviour {
 	[BoxGroup("Waves")]
 	public MetroWaveArray[] metroWaves = new MetroWaveArray[]{ };
 
-	[BoxGroup("Metros")]
-	public MetroDelay[] metrosDelay = new MetroDelay[]{ };
+	//[BoxGroup("Metros")]
+	//public MetroDelay[] metrosDelay = new MetroDelay[]{ };
+
+    [BoxGroup("Waves")]
+    public bool EndWithFireAlert = false;
+    [BoxGroup("Waves")]
+    [ShowIf("EndWithFireAlert")]
+    public float FireAlertTime = 0;
 
 	void OnValidate()
 	{
@@ -56,13 +62,16 @@ public class WaveManager : MonoBehaviour {
 	[System.Serializable]
 	public class MetroWave
 	{
+        public MetroWave(){}
+        public MetroWave(Metro metroObject) { MetroObject = metroObject; }
 		public Metro MetroObject;
 		public GameObject Wave;
+        public float delay;
 	}
 
-	[System.Serializable]
-	public class MetroWaveArray
-	{
+    [System.Serializable]
+    public class MetroWaveArray
+    {
 		public MetroWave[] array = new MetroWave[]{ };
 	}
 
@@ -80,7 +89,8 @@ public class WaveManager : MonoBehaviour {
 	float chronoLastTime;
 	bool ended = false;
 
-	List<MetroDelay> realMetroDelays = new List<MetroDelay>();
+    //List<MetroDelay> realMetroDelays = new List<MetroDelay>();
+    List<List<MetroWave>> realMetroWave = new List<List<MetroWave>>();
 
 	void Start()
 	{
@@ -90,7 +100,24 @@ public class WaveManager : MonoBehaviour {
 
 		G.Sys.menuManager.SetWaveNumber (currentWave + 1, waveCounts);
 
-		for (int i = 0; i < G.Sys.metroCount(); i++) {
+        foreach(var m in metroWaves)
+        {
+            List<MetroWave> tempWave = new List<MetroWave>();
+
+            for (int i = 0; i < G.Sys.metroCount(); i++)
+            {
+                MetroWave obj = null;
+                foreach(var w in m.array)
+                    if (w.MetroObject == G.Sys.metro(i))
+                        obj = w;
+                if (obj == null)
+                    obj = new MetroWave(G.Sys.metro(i));
+                tempWave.Add(obj);
+            }
+            realMetroWave.Add(tempWave);
+        }
+
+		/*for (int i = 0; i < G.Sys.metroCount(); i++) {
 			MetroDelay obj = null;
 			foreach (var m in metrosDelay)
 				if (m.MetroObject == G.Sys.metro (i))
@@ -99,7 +126,7 @@ public class WaveManager : MonoBehaviour {
 				realMetroDelays.Add (new MetroDelay (G.Sys.metro (i), 0));
 			else
 				realMetroDelays.Add (obj);
-		}
+		}*/
 	}
 
 	void SendScore() {
@@ -118,29 +145,46 @@ public class WaveManager : MonoBehaviour {
 	{
 		if (ended)
 			return;
-		
-		if (Time.time - chronoStartTime > WaveTime (currentWave)) {
+
+        if (currentWave >= waveCounts)
+        {
+            
+        }
+		else if (Time.time - chronoStartTime > WaveTime(currentWave))
+		{
 			currentWave++;
-			G.Sys.menuManager.SetWaveNumber (currentWave + 1, waveCounts);
-			if (currentWave >= waveCounts) {
-				ended = true;
-				G.Sys.menuManager.SetPieTime (1, 0);
-				SendScore ();
-				return;
+			G.Sys.menuManager.SetWaveNumber(currentWave + 1, waveCounts);
+            if (currentWave >= waveCounts)
+			{
+                if (!EndWithFireAlert)
+                {
+                    ended = true;
+                    G.Sys.menuManager.SetPieTime(1, 0);
+                    SendScore();
+                    return;
+                }
+                else
+                {
+                    G.Sys.gameManager.FireAlert = true;
+                    Event<StartFireAlertEvent>.Broadcast(new StartFireAlertEvent());
+                }
 			}
 			chronoStartTime = Time.time;
 		}
 
 		G.Sys.menuManager.SetPieTime ((Time.time - chronoStartTime) / WaveTime (currentWave), Mathf.RoundToInt(WaveTime (currentWave) - (Time.time - chronoStartTime)));
 
-		float currentTime = Time.time - chronoStartTime;
-		float lastTime = chronoLastTime - chronoStartTime;
-		if(currentWave >= 0)
-			SpawnInWave (currentWave, lastTime, currentTime - lastTime);
-		if (currentWave < waveCounts - 1)
-			SpawnInWave (currentWave + 1, lastTime - WaveTime (currentWave), currentTime - lastTime);
+        if (!G.Sys.gameManager.FireAlert)
+        {
+            float currentTime = Time.time - chronoStartTime;
+            float lastTime = chronoLastTime - chronoStartTime;
+            if (currentWave >= 0)
+                SpawnInWave(currentWave, lastTime, currentTime - lastTime);
+            if (currentWave < waveCounts - 1)
+                SpawnInWave(currentWave + 1, lastTime - WaveTime(currentWave), currentTime - lastTime);
 
-		chronoLastTime = Time.time;
+            chronoLastTime = Time.time;
+        }
 	}
 
 	void SpawnInWave(int wave, float time, float dt)
@@ -149,25 +193,21 @@ public class WaveManager : MonoBehaviour {
 			if (v.Delay > time && v.Delay <= time + dt)
 				Spawn (v.Entrance.position, v.Wave);
 
-		foreach (var m in realMetroDelays) {
-			float startTime = m.Delay - G.Sys.constants.MetroComeTime;
-			if (startTime > time && startTime <= time + dt) {
-				m.MetroObject.CallMetro ();
-			}
-		}
-
 		foreach (var v in metroWaves[wave].array) {
-			var d = getMetroDelay (v.MetroObject);
+            float startTime = v.delay - G.Sys.constants.MetroComeTime;
+            if (startTime > time && startTime <= time + dt)
+                v.MetroObject.CallMetro();
+            var d = getMetroDelay (v.MetroObject, wave);
 			if (d > time && d < time + dt)
 				Spawn (v.MetroObject.transform.position, v.Wave);
 		}
 	}
 
-	float getMetroDelay(Metro metro)
+	float getMetroDelay(Metro metro, int wave)
 	{
-		foreach (var m in metrosDelay)
+        foreach (var m in realMetroWave[wave])
 			if (m.MetroObject == metro)
-				return m.Delay;
+                return m.delay;
 		return 0;
 	}
 
@@ -181,7 +221,7 @@ public class WaveManager : MonoBehaviour {
 	{
 		if (wave < waveCounts)
 			return waveTimes [wave + 1];
-		return 0;
+        return FireAlertTime;
 	}
 }
 

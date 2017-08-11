@@ -21,7 +21,7 @@ public class SitAction : AEntityAction<Traveler>
 	protected override bool Update ()
 	{
 		time += Time.deltaTime;
-		return time > 5;
+        return time > G.Sys.constants.SitTime;
 	}
 
 	protected override void End ()
