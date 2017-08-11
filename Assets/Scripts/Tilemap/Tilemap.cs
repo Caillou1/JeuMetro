@@ -564,6 +564,7 @@ public class Tilemap
 
 											if (IsReachable (pos1, pos2)) {
 												var l = el1.Concat (el2).ToList ();
+
 												if (l [0].Second != l.Last ().Second) {
 													list.Add (l);
 													HasChanged = true;
@@ -575,7 +576,6 @@ public class Tilemap
 									originFloorConnections.Value [connectedFloorConnections.Key] = list;
 								} else {
 									List<List<Pair<int, ElevatorTile>>> list = new List<List<Pair<int, ElevatorTile>>> ();
-
 									foreach (var el1 in connectedFloor.Value.ToList()) {
 										foreach (var el2 in connectedFloorConnections.Value.ToList()) {
 											var pos1 = el1.Last ().Second.GetWaitZone (el1.Last ().First);
@@ -583,6 +583,7 @@ public class Tilemap
 
 											if (IsReachable (pos1, pos2)) {
 												var l = el1.Concat (el2).ToList ();
+													
 												if (l [0].Second != l.Last ().Second) {
 													bool canAdd = true;
 
@@ -657,13 +658,14 @@ public class Tilemap
 
 			foreach (var path in potentialList) {
 				Vector3 o, d;
-				d = path [0].Second.transform.position;
-				d.y = Origin.y;
+				d = path [0].Second.GetWaitZone(Mathf.RoundToInt(Origin.y));
 
-				o = path.Last ().Second.transform.position;
-				o.y = Destination.y;
+				o = path.Last ().Second.GetWaitZone(Mathf.RoundToInt(Destination.y));
 
-				if (IsReachable (Origin, d) && IsReachable (o, Destination)) {
+				bool b1 = IsReachable (Origin, d);
+				bool b2 = IsReachable (o, Destination);
+
+				if (b1 && b2) {
 					if (list.Count == 0 || Vector3.Distance (Origin, d) < Vector3.Distance (Origin, path.First ().Second.GetWaitZone (Mathf.RoundToInt (Origin.y)))) {
 						list = path;
 					}
@@ -678,6 +680,13 @@ public class Tilemap
 	}
 
 	private bool IsReachable(Vector3 origin, Vector3 destination) {
+		origin.x = Mathf.RoundToInt (origin.x);
+		origin.y = Mathf.RoundToInt (origin.y);
+		origin.z = Mathf.RoundToInt (origin.z);
+		destination.x = Mathf.RoundToInt (destination.x);
+		destination.y = Mathf.RoundToInt (destination.y);
+		destination.z = Mathf.RoundToInt (destination.z);
+
 		NavMeshPath path = new NavMeshPath();
 		if (NavMesh.CalculatePath (origin, destination, NavMesh.AllAreas, path)) {
 			foreach (var c in path.corners) {
