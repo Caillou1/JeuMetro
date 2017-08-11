@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 195554813297849262}
   - component: {fileID: 114445066840918858}
   m_Layer: 0
-  m_Name: Traveler sal
+  m_Name: Traveler Classic sale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1207,7 +1207,9 @@ MonoBehaviour:
     Type: 0
     RestPlaceAttraction: 30
     Cleanliness: 100
+    DeltaCleanliness: 0
     FaintnessPercentage: 12
+    DeltaFainteness: 0
     FraudPercentage: 20
     LostAbility: 50
     Hunger: 20
