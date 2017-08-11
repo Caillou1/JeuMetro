@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 195554813297849262}
   - component: {fileID: 114445066840918858}
   m_Layer: 0
-  m_Name: Traveler Blind
+  m_Name: Traveler Classic 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1204,16 +1204,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats:
-    Type: 3
-    RestPlaceAttraction: 24.8
+    Type: 0
+    RestPlaceAttraction: 30
     Cleanliness: 100
     FaintnessPercentage: 20
     FraudPercentage: 20
-    LostAbility: 100
+    LostAbility: 45
     Hunger: 20
     wastes: 50
-    MovementSpeed: 3
-    Malvoyant: 1
+    MovementSpeed: 3.5
+    Malvoyant: 0
     Deaf: 0
     HaveTicket: 0
     IgnoreBin: 0
