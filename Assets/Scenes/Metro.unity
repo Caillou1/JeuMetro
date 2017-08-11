@@ -1059,11 +1059,16 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: metroWaves.Array.data[0].array.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: metroWaves.Array.data[1].array.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[0].delays.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4972857456900274, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
@@ -1166,7 +1171,7 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: FireAlertTime
-      value: 30
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -1211,14 +1216,12 @@ Prefab:
         type: 2}
       propertyPath: metroWaves.Array.data[0].array.Array.data[0].Wave
       value: 
-      objectReference: {fileID: 1001903949469912, guid: 355eeb04206e84cf8ba4b69eef73b274,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: metroWaves.Array.data[1].array.Array.data[0].Wave
       value: 
-      objectReference: {fileID: 1001903949469912, guid: 355eeb04206e84cf8ba4b69eef73b274,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: waveCounts
@@ -1232,6 +1235,26 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: metrosDelay.Array.data[0].Delay
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: waveTimes.Array.data[1]
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: waveTimes.Array.data[0]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[0].array.Array.data[0].delay
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[1].array.Array.data[0].delay
       value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
