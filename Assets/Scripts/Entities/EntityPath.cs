@@ -49,7 +49,7 @@ public class EntityPath
 	public Vector3 destnation {
 		get{ return _destination; }
 		set {
-			_destination = value;
+            _destination = new Vector3i(value).toVector3();
 			updatePath ();
 		}
 	}
@@ -130,11 +130,10 @@ public class EntityPath
 	void updatePath()
 	{
 		finished = false;
-		_agent.SetDestination (_destination);
-		if (_agent.pathPending)
-			pathPending = true;
-		else
-			onPathCreated ();
+        NavMeshPath aPath = new NavMeshPath();
+        _agent.CalculatePath(_destination, aPath);
+        _agent.SetPath(aPath);
+        onPathCreated();
 	}
 
 	void onPathCreated()
@@ -210,8 +209,11 @@ public class EntityPath
 
 	void updateAgentPath()
 	{
+		NavMeshPath aPath = new NavMeshPath();
+
 		if (currentAction != null) {
-			_agent.destination = currentAction.pos;
+	        _agent.CalculatePath(currentAction.pos, aPath);
+	        _agent.SetPath(aPath);
 			return;
 		}
 		
@@ -225,13 +227,16 @@ public class EntityPath
 		if (_points.Count == 0) {
 			currentAction = _actions [0];
 			_actions.RemoveAt (0);
-			if(_agent.isOnNavMesh)
-				_agent.SetDestination (currentAction.pos);
+            if (_agent.isOnNavMesh)
+            {
+				_agent.CalculatePath(currentAction.pos, aPath);
+				_agent.SetPath(aPath);
+            }
 			return;
 		}
 
 		currentAction = null;
-		_agent.SetDestination (_points [0]);
+		_agent.CalculatePath(_points[0], aPath);
 		_points.RemoveAt (0);
 	}
 
