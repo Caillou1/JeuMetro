@@ -89,7 +89,6 @@ public class WaveManager : MonoBehaviour {
 	float chronoLastTime;
 	bool ended = false;
 
-    //List<MetroDelay> realMetroDelays = new List<MetroDelay>();
     List<List<MetroWave>> realMetroWave = new List<List<MetroWave>>();
 
 	void Start()
@@ -116,17 +115,6 @@ public class WaveManager : MonoBehaviour {
             }
             realMetroWave.Add(tempWave);
         }
-
-		/*for (int i = 0; i < G.Sys.metroCount(); i++) {
-			MetroDelay obj = null;
-			foreach (var m in metrosDelay)
-				if (m.MetroObject == G.Sys.metro (i))
-					obj = m;
-			if (obj == null)
-				realMetroDelays.Add (new MetroDelay (G.Sys.metro (i), 0));
-			else
-				realMetroDelays.Add (obj);
-		}*/
 	}
 
 	void SendScore() {
@@ -146,15 +134,18 @@ public class WaveManager : MonoBehaviour {
 		if (ended)
 			return;
 
-        if (currentWave >= waveCounts)
-        {
-            
-        }
-		else if (Time.time - chronoStartTime > WaveTime(currentWave))
+        if (Time.time - chronoStartTime > WaveTime(currentWave))
 		{
 			currentWave++;
-			G.Sys.menuManager.SetWaveNumber(currentWave + 1, waveCounts);
-            if (currentWave >= waveCounts)
+            G.Sys.menuManager.SetWaveNumber(Mathf.Min(currentWave + 1, waveCounts), waveCounts);
+			if (currentWave >= waveCounts + 1)
+			{
+				ended = true;
+				G.Sys.menuManager.SetPieTime(1, 0);
+				SendScore();
+				return;
+			}
+			else if (currentWave >= waveCounts)
 			{
                 if (!EndWithFireAlert)
                 {

@@ -406,11 +406,14 @@ public class Traveler : AEntity
 
 	void initializeDatas()
 	{
-		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
+		var gen = new StaticRandomGenerator<DefaultRandomGenerator>();
+        stats.FaintnessPercentage += new UniformFloatDistribution(-stats.DeltaFainteness, stats.DeltaFainteness).Next(gen);
+        stats.Cleanliness += new UniformFloatDistribution(-stats.DeltaCleanliness, stats.DeltaCleanliness).Next(gen);
+
 		datas.Speed = stats.MovementSpeed;
 		datas.Lostness = stats.LostAbility / 100;
-		datas.Tiredness = stats.FaintnessPercentage / 100;
-		datas.Dirtiness = 1 - (stats.Cleanliness / 100);
+        datas.Tiredness = stats.FaintnessPercentage / 100;
+        datas.Dirtiness = 1 - (stats.Cleanliness / 100);
         datas.Waste = stats.wastes/100;
         datas.Hunger = stats.Hunger/100;
 		datas.Fraud = new BernoulliDistribution (stats.FraudPercentage / 100).Next (gen);
