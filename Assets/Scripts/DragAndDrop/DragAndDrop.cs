@@ -9,6 +9,7 @@ public class DragAndDrop : MonoBehaviour{
 	public int Price;
 	protected bool IsWalled;
 	protected bool HasToCheckWall;
+	protected int Space;
 
 	protected Transform tf;
 	protected int Rotations = 0;
@@ -34,6 +35,11 @@ public class DragAndDrop : MonoBehaviour{
 		outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
 		IsWalled = false;
 		bought = true;
+		OnAwake ();
+	}
+
+	protected virtual void OnAwake() {
+		Space = 1;
 	}
 
 	void Start() {
@@ -121,6 +127,8 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void DeleteObject() {
+		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
+        G.Sys.tilemap.addSpaceUsed(-Space);
 		Destroy (gameObject);
 	}
 
@@ -142,6 +150,7 @@ public class DragAndDrop : MonoBehaviour{
 		if ((canPlace && !IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)) || IsBought && canPlace) {
 			G.Sys.cameraController.IsSelecting = false;
 			if (!IsBought) {
+                G.Sys.tilemap.addSpaceUsed(Space);
 				G.Sys.gameManager.AddMoney (-Price);
 				IsBought = true;
 				var tile = GetComponent<ATile> ();
@@ -152,6 +161,7 @@ public class DragAndDrop : MonoBehaviour{
 			SendEvent ();
 			DeletePossibleEmptyWalls ();
 			StartCoroutine (eventCoroutine ());
+			G.Sys.audioManager.PlayConstruct ();
 			return true;
 		}
 		return false;

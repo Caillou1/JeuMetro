@@ -20,11 +20,13 @@ public class WaitForElevatorAction : AEntityAction<AEntity>
 
 	protected override bool Update ()
 	{
-		return elevatorTile.IsOnFloor ((int)pos.y);
+		elevatorTile.CallElevator ((int)pos.y);
+		return !elevatorTile.IsFull() && elevatorTile.IsOnFloor (Mathf.RoundToInt(pos.y));
 	}
 
 	protected override void End ()
 	{
+		elevatorTile.AddPersonInElevator ();
 		entity.path.addAction (new GetInElevatorAction (entity, new Vector3(elevatorTile.transform.position.x - 1f, entity.transform.position.y, elevatorTile.transform.position.z), elevatorTile, destinationFloor, priority - 1));
 	}
 }

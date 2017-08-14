@@ -20,7 +20,7 @@ public class ThrowInGroundAction : AEntityAction<Traveler>
 	protected override bool Update ()
 	{
 		time += Time.deltaTime;
-		return time >= 2;
+        return time >= G.Sys.constants.WasteGroundTime;
 	}
 
 	protected override void End ()
@@ -38,6 +38,7 @@ public class ThrowInGroundAction : AEntityAction<Traveler>
 			GameObject.Instantiate(G.Sys.gameManager.wastePrefab, new Vector3i(entity.transform.position).toVector3(), Quaternion.Euler(0, new UniformIntDistribution(3).Next(new StaticRandomGenerator<DefaultRandomGenerator>()) * 90, 0));
 		entity.datas.Dirtiness = 1 - (entity.stats.Cleanliness / 100);
 		entity.datas.Waste = 0;
+		G.Sys.audioManager.PlayTrash ();
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 	}
 }

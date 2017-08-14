@@ -14,7 +14,7 @@ public class SignAction : AEntityAction<Traveler>
 	protected override bool Update ()
 	{
 		time += Time.deltaTime;
-		return time > 0;
+        return time > G.Sys.constants.ReadSignTime;
 	}
 
 	protected override void End ()

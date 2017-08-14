@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using NRand;
 using UnityEngine.SceneManagement;
+using Sirenix.OdinInspector;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,16 +13,25 @@ public class GameManager : MonoBehaviour
 	public float maxDelay;
 	public GameObject wastePrefab;
 	public GameObject emptyWall;
+	public bool enableTravelers;
+	public bool SetMaxTravelers;
+	[ShowIf("SetMaxTravelers")]
+	public int MaxTravelers;
 
 	public int StartingMoney = 0;
 
-	private int money;
+	private float TotalTime = 0;
+	private int TravelersThatLeftStation = 0;
 
-	private Transform PathCalculator;
+	private int money;
+    private int earnedMoney = 0;
 
 	private SubscriberList subscriberList = new SubscriberList();
 
 	private List<Traveler> faintingTravelers;
+
+    [HideInInspector]
+    public bool FireAlert = false;
 
     void Awake()
     {
@@ -37,11 +47,13 @@ public class GameManager : MonoBehaviour
     {
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 		tf = transform;
-		AddMoney (StartingMoney);
-		//StartCoroutine (spawnCoroutine ());
+		AddMoney(StartingMoney);
+		if (enableTravelers)
+		    StartCoroutine (spawnCoroutine ());
 		G.Sys.tilemap.UpdateGlobalBounds ();
 		//PathCalculator = tf.Find ("PathCalculator");
 		InstantiateColliders ();
+		StartCoroutine (checkFaintingTravelers ());
 	}
 
 	public void OnNavMeshBaked(NavMeshBakedEvent e) {
@@ -53,9 +65,13 @@ public class GameManager : MonoBehaviour
 	}
 
 	void OnTravelerFaint(FaintEvent e) {
-		var a = G.Sys.GetNearestAgent (e.traveler.transform.position);
+		var a = G.Sys.GetNearestFreeAgent (e.traveler.transform.position);
 		if (a != null) {
 			a.GoHelpTravelerAction (e.traveler);
+		} else {
+			if (!faintingTravelers.Contains (e.traveler)) {
+				faintingTravelers.Add (e.traveler);
+			}
 		}
 	}
 
@@ -66,6 +82,20 @@ public class GameManager : MonoBehaviour
 			for(int i = 0 ; i < G.Sys.travelerCount() ; i++)
 				G.Sys.traveler(i).updateDatas (time);
 			yield return new WaitForSeconds (time);
+		}
+	}
+
+	IEnumerator checkFaintingTravelers() {
+		while (true) {
+			if (faintingTravelers.Count > 0) {
+				var a = G.Sys.GetNearestFreeAgent (faintingTravelers[0].transform.position);
+				if (a != null) {
+					a.GoHelpTravelerAction (faintingTravelers[0]);
+					faintingTravelers.RemoveAt (0);
+				}
+			}
+
+			yield return new WaitForSeconds (.5f);
 		}
 	}
 
@@ -102,6 +132,8 @@ public class GameManager : MonoBehaviour
 
 	public void AddMoney(int m) {
 		money += m;
+        if(m > 0)
+            earnedMoney += m;
 		G.Sys.menuManager.SetMoneyNumber (money);
 		G.Sys.menuManager.ShowMoneyAdded (m);
 	}
@@ -110,8 +142,23 @@ public class GameManager : MonoBehaviour
 		return money;
 	}
 
+    public int GetEarnedMoney()
+    {
+        return earnedMoney - StartingMoney;
+    }
+
 	public bool HaveEnoughMoney(int m) {
 		return money >= m;
+	}
+
+    public void AddTime(float t, bool addTraveler = true) {
+		if (addTraveler) 
+            TravelersThatLeftStation++;
+		TotalTime += t;
+	}
+
+	public float GetAverageTime() {
+		return TotalTime / TravelersThatLeftStation;
 	}
 
 	IEnumerator spawnCoroutine()
@@ -123,20 +170,21 @@ public class GameManager : MonoBehaviour
 
 		while (true) {
 			yield return new WaitForSeconds (dDelta.Next (gen));
-			var doors = G.Sys.tilemap.getSpecialTiles (TileID.IN);
-			var door = doors [new UniformIntDistribution (doors.Count-1).Next (gen)];
-			var e = Instantiate (entities [dType.Next (gen)], door, new Quaternion ());
-			var dir = new Vector3[]{ Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
-			var validDir = new List<Vector3> ();
-			foreach(var d in dir)
-			{
-				var tiles = G.Sys.tilemap.at (door + d);
-				if (tiles.Count == 0 && tiles [0].type == TileID.GROUND)
-					validDir.Add (door + d);
+			if (!SetMaxTravelers || (SetMaxTravelers && G.Sys.travelerCount() < MaxTravelers)) {
+					var doors = G.Sys.tilemap.getSpecialTiles (TileID.IN);
+					var door = doors [new UniformIntDistribution (doors.Count - 1).Next (gen)];
+					var e = Instantiate (entities [dType.Next (gen)], door, new Quaternion ());
+					var dir = new Vector3[]{ Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
+					var validDir = new List<Vector3> ();
+					foreach (var d in dir) {
+						var tiles = G.Sys.tilemap.at (door + d);
+						if (tiles.Count == 0 && tiles [0].type == TileID.GROUND)
+							validDir.Add (door + d);
+					}
+			
+					if (validDir.Count != 0)
+						e.transform.rotation = Quaternion.LookRotation (validDir [new UniformIntDistribution (validDir.Count - 1).Next (gen)] - e.transform.position, Vector3.up);
 			}
-		
-			if(validDir.Count != 0)
-				e.transform.rotation = Quaternion.LookRotation (validDir[new UniformIntDistribution(validDir.Count-1).Next(gen)] - e.transform.position, Vector3.up);
 		}
 	}
 }

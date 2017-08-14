@@ -23,19 +23,39 @@ public class Constants : MonoBehaviour
 	[Tooltip("Utilisé pour définir un chemin chaotique lorsqu'un voyageur est un peut perdu")]
 	public float travelerLostVariance = 3;
 	[Tooltip("Temps que met un agent pour aider un voyageur ayant fait un malaise")]
-	public float HelpTime;
+	public float HelpTime =5;
 	[Tooltip("Temps que met un métro pour arriver à quai")]
-	public float MetroComeTime;
+	public float MetroComeTime = 3;
 	[Tooltip("Temps qu'attend un métro à quai")]
-	public float MetroWaitTime;
+	public float MetroWaitTime = 5;
 	[Tooltip("Temps que met un ascenseur pour arriver à un étage")]
-	public float ElevatorComeTime;
+	public float ElevatorComeTime = 2;
 	[Tooltip("Temps qu'attend un ascenseur à un étage s'il doit aller à un autre étage après")]
-	public float ElevatorWaitTime;
+	public float ElevatorWaitTime = 4;
+	[Tooltip("Nombre de personnes maximum dans un ascenseur")]
+	public int ElevatorMaxPeople = 10;
 	[Tooltip("Temps entre 2 emission par les éméteurs sonor")]
-	public float SpeakerWaitTime;
+	public float SpeakerWaitTime = 5;
 	[Tooltip("Temps d'émission des éméteurs sonor")]
-	public float SpeakerEmissionTime;
+	public float SpeakerEmissionTime = 2;
+    [Tooltip("Chance de 0 à 100 qu'un voyageur a de tomber dans les escaliers s'il n'est pas aveugle ou malvoyant")]
+    public float FallChance = 0.5f;
+    [Tooltip("Chance de 0 à 100 qu'un voyageur aveugle a de tomber dans les escaliers si il n'y a pas de bande podotactile")]
+    public float BlindFallChance = 80;
+    [Tooltip("Chance de 0 à 100 qu'un voyageur malvoyant a de tomber dans les escaliers s'il n'y a pas de bande podotactile")]
+    public float PartialyBlindFallChance = 40;
+    [Tooltip("Temps que met un voyageur pour acheter de la nouriture ou un ticket")]
+    public float BuyTime = 2;
+    [Tooltip("Temps que met un voyageur pour lire un panneau d'information")]
+    public float ReadSignTime = 2;
+    [Tooltip("Temps d'assoyage des voyageurs")]
+    public float SitTime = 3;
+    [Tooltip("Temps pour jeuter un déchet au sol")]
+    public float WasteGroundTime = 1;
+    [Tooltip("Temps pour jeuter un dechet dans une poubelle")]
+    public float WasteBinTime = 1;
+
+	public List<Color> TravelerColors;
 
 	void Awake()
 	{

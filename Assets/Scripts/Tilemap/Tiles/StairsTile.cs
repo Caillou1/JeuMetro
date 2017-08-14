@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using NRand;
 
 public class StairsTile : ATile
 {
@@ -29,5 +30,27 @@ public class StairsTile : ATile
 		G.Sys.tilemap.delTile (transform.position + Vector3.up + dir, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up + dir, this);
+	}
+
+	public Vector3 GetDownOfStairs() {
+		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+		float randomX, randomZ;
+		randomX = (new UniformFloatDistribution (-.5f, .5f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ()));
+		randomZ = (new UniformFloatDistribution (-.5f, .5f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ()));
+
+		return (transform.position + dir * 2 + new Vector3(randomX, 0, randomZ));
+	}
+
+	public bool HasPodotactileOnFloor(int floor) {
+		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+		Vector3 posToCheck;
+
+		if (floor == Mathf.RoundToInt (transform.position.y)) {
+			posToCheck = transform.position + dir * 2;
+		} else {
+			posToCheck = transform.position + Vector3.up * 2 - dir;
+		}
+			
+		return G.Sys.tilemap.at (posToCheck).Exists (x => x.type == TileID.PODOTACTILE);
 	}
 }

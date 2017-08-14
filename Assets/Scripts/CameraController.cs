@@ -10,7 +10,6 @@ public class CameraController : MonoBehaviour {
 	[HideInInspector]
 	public bool IsSelecting;
 
-	private float CurrentDragSpeed;
 	private Vector3 dragOrigin;
 	private Transform cameraTransform;
 	private bool canSelect;

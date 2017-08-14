@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NRand;
+using UnityEngine.AI;
 
 public class Traveler : AEntity
 {
@@ -13,11 +14,21 @@ public class Traveler : AEntity
 	public TravelerStats stats = new TravelerStats ();
 
 	[SerializeField]
-	string targetName;
+	string targetName = "";
 	[HideInInspector]
 	public TravelerDatas datas = new TravelerDatas ();
 
 	bool isLost = false;
+    bool isTicketLost = false;
+
+	private bool CanFall = true;
+
+	private float ArrivalTime;
+    private SubscriberList subscriberList = new SubscriberList();
+
+	private Animator anim;
+
+	private Vector3 lastPos;
 
 	protected override void OnAwake ()
 	{
@@ -27,12 +38,31 @@ public class Traveler : AEntity
 		exitType = e.Second;
 		path.destnation = target;
 		initializeDatas();
+		ArrivalTime = Time.time;
+		anim = GetComponentInChildren<Animator> ();
+
+		if (G.Sys.constants.TravelerColors.Count > 0)
+			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = G.Sys.constants.TravelerColors [(new UniformIntDistribution (G.Sys.constants.TravelerColors.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ()))];
+		else
+			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = Color.HSVToRGB ((new UniformFloatDistribution (0f, 1f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())), 1f, 1f);
+        subscriberList.Add(new Event<CollectTravelerTimeEvent>.Subscriber(onCollectTime));
+        subscriberList.Subscribe();
 	}
 
 	protected override void OnUpdate ()
 	{
 		checkOnExit ();
+        checkOnControleLine();
 
+		anim.SetFloat ("MovementSpeed", agent.velocity.magnitude);
+
+		if ((lastPos - transform.position).magnitude >= .001f) {
+			anim.SetBool ("Walking", true);
+		} else {
+			anim.SetBool ("Walking", false);
+		}
+
+		lastPos = transform.position;
 	}
 
 	void checkOnExit()
@@ -46,6 +76,17 @@ public class Traveler : AEntity
 			return;
 		}
 	}
+
+    void checkOnControleLine()
+    {
+		if (G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.CONTROLELINE) != null)
+		{
+			isTicketLost = false;
+            stats.HaveTicket = true;
+			path.canPassControl = true;
+			path.lostness = 0;
+		}
+    }
 
 	static Pair<Vector3, ExitType> findExit(string name)
 	{
@@ -77,6 +118,8 @@ public class Traveler : AEntity
 	void OnDestroy()
 	{
 		G.Sys.removeTraveler (this);
+		G.Sys.gameManager.AddTime (Time.time - ArrivalTime);
+        subscriberList.Unsubscribe();
 	}
 
 	protected override void Check ()
@@ -87,21 +130,34 @@ public class Traveler : AEntity
 		checkHunger ();
 		checkTicket ();
 		checkElevators ();
+		checkStairs ();
 	}
 
 	void checkElevators() {
 		if (!path.haveAction (ActionType.WAIT_ELEVATOR)) {
 			var possiblePath = G.Sys.tilemap.GetElevatorsToFloor (transform.position, path.destnation);
 			if (possiblePath.Count > 0) {
-				for (int i = 0; i < possiblePath.Count; i++) {
-					Vector3 pos = (i == 0) ? possiblePath [i].Second.GetWaitZone (Mathf.RoundToInt (transform.position.y)) : possiblePath [i].Second.GetWaitZone (possiblePath [i - 1].First);
-					ElevatorTile tile = possiblePath [i].Second;
-					int floor = ((i + 1) < possiblePath.Count) ? Mathf.RoundToInt (possiblePath [i + 1].Second.GetWaitZone (possiblePath [i].First).y) : Mathf.RoundToInt (path.destnation.y);
-					int priority = (possiblePath.Count - i) * 2;
+				bool CanTakeElevator = false;
 
-					path.addAction (new WaitForElevatorAction (this, pos, tile, floor, priority));
+				if (stats.Type == TravelerType.WHEELCHAIR || (!possiblePath [0].Second.IsFull () && possiblePath [0].Second.IsOnFloor (Mathf.RoundToInt (transform.position.y)))) {
+					CanTakeElevator = true;
+				} else {
+					NavMeshPath p = new NavMeshPath ();
+					NavMesh.CalculatePath (transform.position, path.destnation, NavMesh.AllAreas, p);
+					if (p.status != NavMeshPathStatus.PathComplete)
+						CanTakeElevator = true;
 				}
-				Debug.Log ("COUCOU JE PREND TOUT LE TEMPS L'ASCENSEUR");
+
+				if (CanTakeElevator) {
+					for (int i = 0; i < possiblePath.Count; i++) {
+						Vector3 pos = (i == 0) ? possiblePath [i].Second.GetWaitZone (Mathf.RoundToInt (transform.position.y)) : possiblePath [i].Second.GetWaitZone (possiblePath [i - 1].First);
+						ElevatorTile tile = possiblePath [i].Second;
+						int floor = ((i + 1) < possiblePath.Count) ? Mathf.RoundToInt (possiblePath [i + 1].Second.GetWaitZone (possiblePath [i].First).y) : Mathf.RoundToInt (path.destnation.y);
+						int priority = (possiblePath.Count - i) * 2;
+
+						path.addAction (new WaitForElevatorAction (this, pos, tile, floor, priority));
+					}
+				}
 			}
 		}
 	}
@@ -125,13 +181,60 @@ public class Traveler : AEntity
 		}
 	}
 
+	void checkStairs() {
+		if (CanFall) {
+			var tilesFront = G.Sys.tilemap.at (transform.position + transform.forward);
+			var stairs = tilesFront.Find (x => x.type == TileID.STAIRS) as StairsTile;
+
+			if (stairs != null && !stairs.HasPodotactileOnFloor(Mathf.RoundToInt(transform.position.y))) {
+				float fallChance = G.Sys.constants.FallChance;
+
+                if (stats.Malvoyant)
+                    fallChance = G.Sys.constants.PartialyBlindFallChance;
+
+				if (stats.Type == TravelerType.BLIND)
+                    fallChance = G.Sys.constants.BlindFallChance;
+
+                var chance = new BernoulliDistribution(fallChance / 100f).Next(new StaticRandomGenerator<DefaultRandomGenerator>());
+
+				if (chance && !path.haveAction (ActionType.FAINT)) {
+					datas.Tiredness = 1f;
+					anim.SetBool ("Falling", true);
+					path.addAction (new StairsFallAction (this, stairs));
+					CanFall = false;
+				}
+			}
+		}
+	}
+
+	public void GetUp() {
+		StartCoroutine (CanFallDelay ());
+		anim.SetBool ("Falling", false);
+	}
+		
+	IEnumerator CanFallDelay() {
+		yield return new WaitForSeconds (3f);
+		CanFall = true;
+	}
+
 	void checkTiredness()
 	{
 		if (datas.Tiredness > 0.95f && !path.haveAction(ActionType.FAINT)) {
+			var tiles = G.Sys.tilemap.at (new Vector3i (transform.position + transform.forward));
+
+			foreach (var tile in tiles) {
+				if (tile.type == TileID.STAIRS) {
+					path.addAction (new StairsFallAction (this, tile as StairsTile));
+					anim.SetBool ("Falling", true);
+					return;
+				}
+			}
+
+			anim.SetBool ("Falling", true);
 			path.addAction (new FaintAction (this));
 			return;
 		}
-		if (datas.Tiredness < (0.5f - stats.RestPlaceAttraction / 200) || path.haveAction (ActionType.SIT))
+		if (datas.Tiredness < (1f - stats.RestPlaceAttraction / 100f) || path.haveAction (ActionType.SIT))
 			return;
 		var benchs = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.BENCH, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification);
 
@@ -159,62 +262,66 @@ public class Traveler : AEntity
 		if (datas.Waste < 0.01f || path.haveAction(ActionType.THROW_IN_BIN) || path.haveAction(ActionType.THROW_IN_GROUND))
 			return;
 
-		if (datas.Dirtiness > 0.95f) {
-			if (G.Sys.GetNearestCleaner (transform.position, G.Sys.constants.TravelerDetectionRadius) != null) {
-				
-				List<Pair<Vector3, ATile>> surrondingTiles = new List<Pair<Vector3, ATile>> ();
-				surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position, G.Sys.tilemap.GetTileOfTypeAt (transform.position, TileID.WASTE)));
-				surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position + Vector3.left, G.Sys.tilemap.GetTileOfTypeAt (transform.position + Vector3.left, TileID.WASTE)));
-				surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position + Vector3.right, G.Sys.tilemap.GetTileOfTypeAt (transform.position + Vector3.right, TileID.WASTE)));
-				surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position + Vector3.forward, G.Sys.tilemap.GetTileOfTypeAt (transform.position + Vector3.forward, TileID.WASTE)));
-				surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position + Vector3.back, G.Sys.tilemap.GetTileOfTypeAt (transform.position + Vector3.back, TileID.WASTE)));
-				if (surrondingTiles [0].Second == null)
-					path.addAction (new ThrowInGroundAction (this, transform.position, false));
-				else if (surrondingTiles.FindIndex (t => t.Second == null) < 0) {
-					path.addAction (new ThrowInGroundAction (this, transform.position, true));
-					return;
-				}
-				else {
-					List<Vector3> freeTiles = new List<Vector3> ();
-					foreach (var t in surrondingTiles)
-						if (t.Second == null)
-							freeTiles.Add (t.First);
-					path.addAction (new ThrowInGroundAction (this, freeTiles [new UniformIntDistribution (freeTiles.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())], true));
-					return;
-				}
+        bool haveAgentNearby = G.Sys.GetNearestCleaner(transform.position, G.Sys.constants.TravelerDetectionRadius) != null;
+
+        if (datas.Dirtiness > 0.95f && !haveAgentNearby) {
+			List<Pair<Vector3, ATile>> surrondingTiles = new List<Pair<Vector3, ATile>> ();
+			surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position, G.Sys.tilemap.GetTileOfTypeAt (transform.position, TileID.WASTE)));
+			surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position + Vector3.left, G.Sys.tilemap.GetTileOfTypeAt (transform.position + Vector3.left, TileID.WASTE)));
+			surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position + Vector3.right, G.Sys.tilemap.GetTileOfTypeAt (transform.position + Vector3.right, TileID.WASTE)));
+			surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position + Vector3.forward, G.Sys.tilemap.GetTileOfTypeAt (transform.position + Vector3.forward, TileID.WASTE)));
+			surrondingTiles.Add (new Pair<Vector3, ATile> (transform.position + Vector3.back, G.Sys.tilemap.GetTileOfTypeAt (transform.position + Vector3.back, TileID.WASTE)));
+			if (surrondingTiles [0].Second == null)
+				path.addAction (new ThrowInGroundAction (this, transform.position, false));
+			else if (surrondingTiles.FindIndex (t => t.Second == null) < 0) {
+				path.addAction (new ThrowInGroundAction (this, transform.position, true));
+				return;
+			}
+			else {
+				List<Vector3> freeTiles = new List<Vector3> ();
+				foreach (var t in surrondingTiles)
+					if (t.Second == null)
+						freeTiles.Add (t.First);
+				path.addAction (new ThrowInGroundAction (this, freeTiles [new UniformIntDistribution (freeTiles.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())], true));
+				return;
 			}
 		}
 
-		var bins = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.BIN, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification);
+        if (!stats.IgnoreBin || haveAgentNearby)
+        {
+            var bins = G.Sys.tilemap.getSurrondingSpecialTile(transform.position, TileID.BIN, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification);
 
-		BinTile bestBin = null;
-		float bestDistance = float.MaxValue;
-		foreach (var binPos in bins) {
-			var bin = G.Sys.tilemap.GetTileOfTypeAt (binPos, TileID.BIN) as BinTile;
-			if (bin.isFull())
-				continue;
-			var d = (transform.position - binPos).sqrMagnitude;
-			if (d < bestDistance) {
-				bestDistance = d;
-				bestBin = bin;
-			}
-		}
+            BinTile bestBin = null;
+            float bestDistance = float.MaxValue;
+            foreach (var binPos in bins)
+            {
+                var bin = G.Sys.tilemap.GetTileOfTypeAt(binPos, TileID.BIN) as BinTile;
+                if (bin.isFull())
+                    continue;
+                var d = (transform.position - binPos).sqrMagnitude;
+                if (d < bestDistance)
+                {
+                    bestDistance = d;
+                    bestBin = bin;
+                }
+            }
 
-		if (bestBin == null)
-			return;
+            if (bestBin == null)
+                return;
 
-		List<Vector3> validPos = new List<Vector3>();
-		var pos = bestBin.transform.position;
-		if (G.Sys.tilemap.IsEmptyGround (pos + Vector3.forward))
-			validPos.Add (pos + Vector3.forward);
-		if (G.Sys.tilemap.IsEmptyGround (pos + Vector3.back))
-			validPos.Add (pos + Vector3.back);
-		if (G.Sys.tilemap.IsEmptyGround (pos + Vector3.left))
-			validPos.Add (pos + Vector3.left);
-		if (G.Sys.tilemap.IsEmptyGround (pos + Vector3.right))
-			validPos.Add (pos + Vector3.right);
-		
-		path.addAction(new ThrowInBinAction(this, validPos[new UniformIntDistribution(validPos.Count-1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())], bestBin));
+            List<Vector3> validPos = new List<Vector3>();
+            var pos = bestBin.transform.position;
+            if (G.Sys.tilemap.IsEmptyGround(pos + Vector3.forward))
+                validPos.Add(pos + Vector3.forward);
+            if (G.Sys.tilemap.IsEmptyGround(pos + Vector3.back))
+                validPos.Add(pos + Vector3.back);
+            if (G.Sys.tilemap.IsEmptyGround(pos + Vector3.left))
+                validPos.Add(pos + Vector3.left);
+            if (G.Sys.tilemap.IsEmptyGround(pos + Vector3.right))
+                validPos.Add(pos + Vector3.right);
+
+            path.addAction(new ThrowInBinAction(this, validPos[new UniformIntDistribution(validPos.Count - 1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())], bestBin));
+        }
 	}
 
 	void checkHunger()
@@ -259,7 +366,7 @@ public class Traveler : AEntity
 
 	void checkTicket ()
 	{
-		if (datas.HasTicket || (datas.Fraud && !G.Sys.GetNearestAgent(transform.position, G.Sys.constants.TravelerDetectionRadius)) ||path.haveAction(ActionType.BUY_TICKET))
+		if (stats.HaveTicket || (datas.Fraud && !G.Sys.GetNearestAgent(transform.position, G.Sys.constants.TravelerDetectionRadius)) ||path.haveAction(ActionType.BUY_TICKET))
 			return;
 
 		var tiles = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.TICKETDISTRIBUTEUR, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification);
@@ -304,12 +411,11 @@ public class Traveler : AEntity
 		datas.Lostness = stats.LostAbility / 100;
 		datas.Tiredness = stats.FaintnessPercentage / 100;
 		datas.Dirtiness = 1 - (stats.Cleanliness / 100);
-		datas.Waste = new BernoulliDistribution().Next(gen) ? new UniformFloatDistribution (0.25f).Next (gen) : 0;
-		datas.Hunger = new UniformFloatDistribution (0.5f).Next (gen);
-		datas.HasTicket = new BernoulliDistribution ().Next (gen);
+        datas.Waste = stats.wastes/100;
+        datas.Hunger = stats.Hunger/100;
 		datas.Fraud = new BernoulliDistribution (stats.FraudPercentage / 100).Next (gen);
 		datas.LostNoTicket = false;
-		path.canPassControl = datas.HasTicket || datas.Fraud;
+		path.canPassControl = stats.HaveTicket || datas.Fraud;
 	}
 
 	public void updateDatas(float time)
@@ -335,7 +441,10 @@ public class Traveler : AEntity
 		} else
 			agent.speed = datas.Speed;
 
-		if ((datas.HasTicket || datas.Fraud) && !path.canPassControl)
+        if (stats.HaveTicket && isTicketLost)
+            isTicketLost = false;
+
+		if ((stats.HaveTicket || datas.Fraud) && !path.canPassControl)
 			path.canPassControl = true;
 	}
 
@@ -401,10 +510,13 @@ public class Traveler : AEntity
 	protected override void OnPathFinished ()
 	{
 		
-		if (!isLost && path.canPassControl) {
+        if (!isLost && !path.isLastPathNeedPassControl() && !isTicketLost) {
 			path.destnation = target;
 			return;
 		}
+
+        if (path.isLastPathNeedPassControl())
+            isTicketLost = true;
 
 		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
 		var d = new UniformVector3SphereDistribution (G.Sys.constants.travelerLostRadius);
@@ -418,4 +530,9 @@ public class Traveler : AEntity
 		}
 		path.destnation = transform.position + d.Next (gen);
 	}
+
+    void onCollectTime(CollectTravelerTimeEvent e)
+    {
+        G.Sys.gameManager.AddTime(Time.time - ArrivalTime, false);
+    }
 }

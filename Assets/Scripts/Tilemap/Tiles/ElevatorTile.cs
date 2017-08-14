@@ -9,12 +9,11 @@ using DG.Tweening;
 public class ElevatorTile : ATile
 {
 	private List<int> FloorsToVisit;
-	private bool isMoving = false;
 	private Transform tf;
-	private float OriginFloor;
 	private int CurrentFloor;
 	private int[] Floors;
 	private Dictionary<int, Vector3> WaitZones;
+	private int peopleInElevator;
 
 	protected override void Awake()
 	{
@@ -97,7 +96,9 @@ public class ElevatorTile : ATile
 			if (FloorsToVisit.Count == 0) {
 				yield return new WaitForEndOfFrame ();
 			} else {
-				yield return new WaitForSeconds (G.Sys.constants.ElevatorComeTime * Mathf.Abs (CurrentFloor - FloorsToVisit [0]) / 2f);
+				float time = G.Sys.constants.ElevatorComeTime * Mathf.Abs (CurrentFloor - FloorsToVisit [0]) / 2f;
+				CurrentFloor = int.MinValue;
+				yield return new WaitForSeconds (time);
 
 				CurrentFloor = FloorsToVisit [0];
 				FloorsToVisit.RemoveAt (0);
@@ -109,5 +110,17 @@ public class ElevatorTile : ATile
 
 	public List<int> GetFloors() {
 		return Floors.ToList ();
+	}
+
+	public void AddPersonInElevator() {
+		peopleInElevator++;
+	}
+
+	public void RemovePersonFromElevator() {
+		peopleInElevator--;
+	}
+
+	public bool IsFull() {
+		return peopleInElevator >= G.Sys.constants.ElevatorMaxPeople;
 	}
 }

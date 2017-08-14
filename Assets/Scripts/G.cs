@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using V1;
-
 public sealed class G
 {
     private static volatile G _instance;
 
 	public Tilemap tilemap = new Tilemap();
+    public int levelIndex = 0;
 	private List<Traveler> travelers = new List<Traveler> ();
 	private List<Agent> agents = new List<Agent> ();
 	private List<Cleaner> cleaners = new List<Cleaner> ();
@@ -104,6 +103,21 @@ public sealed class G
 		foreach (var a in agents) {
 			float dist = (pos - a.transform.position).sqrMagnitude;
 			if (dist < minDist && dist < maxDist) {
+				minDist = dist;
+				closest = a;
+			}
+		}
+
+		return closest;
+	}
+
+	public Agent GetNearestFreeAgent(Vector3 pos, float maxDist = float.MaxValue) {
+		Agent closest = null;
+		float minDist = float.MaxValue;
+
+		foreach (var a in agents) {
+			float dist = (pos - a.transform.position).sqrMagnitude;
+			if (dist < minDist && dist < maxDist && !a.IsHelping) {
 				minDist = dist;
 				closest = a;
 			}
