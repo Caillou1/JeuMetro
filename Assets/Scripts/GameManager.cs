@@ -158,6 +158,8 @@ public class GameManager : MonoBehaviour
 	}
 
 	public float GetAverageTime() {
+        if (TravelersThatLeftStation == 0)
+            return float.MaxValue;
 		return TotalTime / TravelersThatLeftStation;
 	}
 
