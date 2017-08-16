@@ -1204,16 +1204,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats:
-    Type: 3
-    RestPlaceAttraction: 24.8
+    Type: 0
+    RestPlaceAttraction: 30
     Cleanliness: 100
+    DeltaCleanliness: 0
     FaintnessPercentage: 20
+    DeltaFainteness: 0
     FraudPercentage: 20
-    LostAbility: 100
+    LostAbility: 45
     Hunger: 20
     wastes: 50
-    MovementSpeed: 3
-    Malvoyant: 1
+    MovementSpeed: 3.5
+    Malvoyant: 0
     Deaf: 0
     HaveTicket: 0
     IgnoreBin: 0

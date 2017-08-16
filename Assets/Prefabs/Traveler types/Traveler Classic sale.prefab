@@ -1205,18 +1205,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
     Type: 0
-    RestPlaceAttraction: 36
-    Cleanliness: 65.7
+    RestPlaceAttraction: 30
+    Cleanliness: 100
+    DeltaCleanliness: 0
     FaintnessPercentage: 12
+    DeltaFainteness: 0
     FraudPercentage: 20
-    LostAbility: 45
-    Hunger: 100
-    wastes: 100
+    LostAbility: 50
+    Hunger: 20
+    wastes: 50
     MovementSpeed: 3.5
     Malvoyant: 0
     Deaf: 0
     HaveTicket: 0
-    IgnoreBin: 1
+    IgnoreBin: 0
   targetName: Exit
 --- !u!136 &136402998197167842
 CapsuleCollider:
