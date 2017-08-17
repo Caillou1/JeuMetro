@@ -76,4 +76,9 @@ public abstract class AEntity : MonoBehaviour
 	{
 
 	}
+
+    public NavMeshAgent getNavMeshAgent()
+    {
+        return agent;
+    }
 }
