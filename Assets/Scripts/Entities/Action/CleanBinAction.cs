@@ -13,6 +13,9 @@ public class CleanBinAction : AEntityAction<Cleaner>
 
 	protected override bool Update ()
 	{
+        if (binTile == null)
+            return true;
+        
 		time += Time.deltaTime;
 		return time > G.Sys.constants.BinCleanTime;
 	}

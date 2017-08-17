@@ -4,15 +4,18 @@ using UnityEngine;
 public class SignAction : AEntityAction<Traveler>
 {
 	float time = 0;
-	Vector3 signPos = new Vector3();
+    InfoPanelTile sign;
 
-	public SignAction (Traveler t, Vector3 pos, Vector3 sign) : base(t, ActionType.SIGN, pos)
+    public SignAction (Traveler t, Vector3 pos, InfoPanelTile tile) : base(t, ActionType.SIGN, pos)
 	{
-		signPos = sign;
+        sign = tile;
 	}
 
 	protected override bool Update ()
 	{
+        if (sign == null)
+            return true;
+        
 		time += Time.deltaTime;
         return time > G.Sys.constants.ReadSignTime;
 	}
