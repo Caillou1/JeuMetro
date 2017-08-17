@@ -20,6 +20,9 @@ public class SitAction : AEntityAction<Traveler>
 
 	protected override bool Update ()
 	{
+        if (bench == null)
+            return true;
+        
 		time += Time.deltaTime;
         return time > G.Sys.constants.SitTime;
 	}

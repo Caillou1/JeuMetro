@@ -176,7 +176,7 @@ public class Traveler : AEntity
 					validPos.Add (sign.First + Vector3.forward);
 				if (G.Sys.tilemap.IsEmptyGround (sign.First + Vector3.back))
 					validPos.Add (sign.First + Vector3.back);
-				path.addAction (new SignAction (this, validPos[new UniformIntDistribution(validPos.Count-1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())], sign.First));
+                path.addAction (new SignAction (this, validPos[new UniformIntDistribution(validPos.Count - 1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())], G.Sys.tilemap.GetTileOfTypeAt(sign.First, TileID.INFOPANEL) as InfoPanelTile));
 			}
 		}
 	}
