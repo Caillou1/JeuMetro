@@ -46,6 +46,7 @@ public class Traveler : AEntity
 		else
 			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = Color.HSVToRGB ((new UniformFloatDistribution (0f, 1f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())), 1f, 1f);
         subscriberList.Add(new Event<CollectTravelerTimeEvent>.Subscriber(onCollectTime));
+        subscriberList.Add(new Event<StartFireAlertEvent>.Subscriber(onFireAlertStart));
         subscriberList.Subscribe();
 	}
 
@@ -538,5 +539,10 @@ public class Traveler : AEntity
     void onCollectTime(CollectTravelerTimeEvent e)
     {
         G.Sys.gameManager.AddTime(Time.time - ArrivalTime, false);
+    }
+
+    void onFireAlertStart(StartFireAlertEvent e)
+    {
+        
     }
 }
