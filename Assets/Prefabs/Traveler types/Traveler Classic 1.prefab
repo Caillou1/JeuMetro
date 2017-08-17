@@ -1207,11 +1207,9 @@ MonoBehaviour:
     Type: 0
     RestPlaceAttraction: 50
     Cleanliness: 75
-    DeltaCleanliness: 0
     FaintnessPercentage: 35
-    DeltaFainteness: 0
-    FraudPercentage: 0
-    LostAbility: 45
+    FraudPercentage: 100
+    LostAbility: 0
     Hunger: 50
     wastes: 40
     MovementSpeed: 3
@@ -1219,7 +1217,7 @@ MonoBehaviour:
     Deaf: 0
     HaveTicket: 0
     IgnoreBin: 0
-  targetName: Exit
+  targetName: Exit 2
 --- !u!136 &136402998197167842
 CapsuleCollider:
   m_ObjectHideFlags: 1
