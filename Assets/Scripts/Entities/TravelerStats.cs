@@ -17,12 +17,8 @@ public class TravelerStats {
 	public float RestPlaceAttraction;
 	[Range(0f,100f)]
 	public float Cleanliness;
-    [Range(0f, 100f)]
-    public float DeltaCleanliness;
 	[Range(0f,100f)]
 	public float FaintnessPercentage;
-    [Range(0f, 100f)]
-    public float DeltaFainteness;
 	[Range(0f,100f)]
 	public float FraudPercentage;
 	[Range(0f,100f)]
@@ -49,7 +45,5 @@ public class TravelerStats {
         Hunger = stats.Hunger;
         HaveTicket = stats.HaveTicket;
         wastes = stats.wastes;
-        DeltaFainteness = stats.DeltaFainteness;
-        DeltaCleanliness = stats.DeltaCleanliness;
 	}
 }
