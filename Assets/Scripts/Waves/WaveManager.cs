@@ -193,7 +193,7 @@ public class WaveManager : MonoBehaviour {
 			if (v.Delay > time && v.Delay <= time + dt)
 				Spawn (v.Entrance.position, v.Wave);
 
-		foreach (var v in metroWaves[wave].array) {
+        foreach (var v in realMetroWave[wave]) {
             float startTime = v.delay - G.Sys.constants.MetroComeTime;
             if (startTime > time && startTime <= time + dt)
                 v.MetroObject.CallMetro();
