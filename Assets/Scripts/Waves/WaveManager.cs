@@ -92,7 +92,7 @@ public class WaveManager : MonoBehaviour {
     //List<MetroDelay> realMetroDelays = new List<MetroDelay>();
     List<List<MetroWave>> realMetroWave = new List<List<MetroWave>>();
 
-	void Start()
+    void Start()
 	{
 		currentWave = -1;
 		chronoLastTime = Time.time;
