@@ -86,7 +86,7 @@ public class CameraController : MonoBehaviour {
 			}
 
 			float dist = Vector3.Distance (Input.mousePosition, dragOrigin);
-			if (!pinching && (Input.GetMouseButton (0) || Input.GetMouseButton(2)) &&  dist > 0f /*&& dist <= 500f && !isOnUI*/ && CanDrag && Input.touchCount <= 1) {
+			if (!pinching && (Input.GetMouseButton (0) || Input.GetMouseButton(2)) && !IsOnUI() && dist > 0f && CanDrag && Input.touchCount <= 1) {
 				if (canSelect) {
 					canSelect = false;
 					if(SelectCoroutine != null)
@@ -112,6 +112,15 @@ public class CameraController : MonoBehaviour {
 				dragOrigin = Input.mousePosition;
 			}
 		}
+	}
+
+	bool IsOnUI() {
+		List<RaycastResult> raycastResults = new List<RaycastResult> ();
+		PointerEventData ped = new PointerEventData (EventSystem.current);
+		ped.position = Input.mousePosition;
+		EventSystem.current.RaycastAll (ped, raycastResults);
+
+		return raycastResults.Count > 0;
 	}
 
 	RaycastHit GetBackgroundHit(RaycastHit[] hits) {

@@ -29,22 +29,37 @@ public class DragAndDropBin : DragAndDrop {
 
 	protected override void CheckRotation() {
 		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
-		List<Orientation> PossibleOrientations = new List<Orientation> ();
+		List<Pair<Orientation, bool>> PossibleOrientations = new List<Pair<Orientation, bool>> ();
 
-		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.forward, TileID.WALL) != null)
-			PossibleOrientations.Add (Orientation.LEFT);
-		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.back, TileID.WALL) != null)
-			PossibleOrientations.Add (Orientation.RIGHT);
-		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.right, TileID.WALL) != null)
-			PossibleOrientations.Add (Orientation.UP);
-		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.left, TileID.WALL) != null)
-			PossibleOrientations.Add (Orientation.DOWN);
+		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.forward, TileID.WALL) != null) {
+			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.LEFT, true));
+		} else if(G.Sys.tilemap.HasEmptyWallAt (tf.position + Vector3.forward)) {
+			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.LEFT, false));
+		}
 
-		if (PossibleOrientations.Count > 0 && (!PossibleOrientations.Contains(or) || !IsWalled))
+		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.back, TileID.WALL) != null) {
+			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.RIGHT, true));
+		} else if (G.Sys.tilemap.HasEmptyWallAt (tf.position + Vector3.back)) {
+			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.RIGHT, false));
+		}
+
+		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.right, TileID.WALL) != null) {
+			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.UP, true));
+		} else if(G.Sys.tilemap.HasEmptyWallAt (tf.position + Vector3.right)) {
+			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.UP, false));
+		}
+
+		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.left, TileID.WALL) != null) {
+			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.DOWN, true));
+		} else if(G.Sys.tilemap.HasEmptyWallAt (tf.position + Vector3.left)) {
+			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.DOWN, false));
+		}
+
+		if (PossibleOrientations.Count > 0 && (!PossibleOrientations.Exists(x => { return x.First == or; }) || !IsWalled))
 		{
-			float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0]);
+			float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0].First);
 
-			if (!IsWalled || NotWalledObject.activeInHierarchy)
+			if ((!IsWalled || NotWalledObject.activeInHierarchy) && PossibleOrientations[0].Second)
 			{
 				IsWalled = true;
 				WalledObject.SetActive (true);
