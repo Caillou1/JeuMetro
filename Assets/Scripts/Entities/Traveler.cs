@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -68,11 +68,11 @@ public class Traveler : AEntity
 
 	void checkOnExit()
 	{
-		if (exitType == ExitType.DOOR && G.Sys.tilemap.haveSpecialTileAt (TileID.OUT, transform.position)) {
+        if (exitType == ExitType.DOOR && G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.OUT) != null) {
 			Destroy (gameObject);
 			return;
 		}
-		if (exitType == ExitType.METRO && !path.haveAction (ActionType.WAIT_METRO) && new Vector3i (transform.position).Equals (new Vector3i (target)) && G.Sys.tilemap.GetTileOfTypeAt (transform.position, TileID.WAIT_ZONE) != null) {
+        if (exitType == ExitType.METRO && !path.haveAction (ActionType.WAIT_METRO) && !path.haveAction(ActionType.GO_TO_METRO) && new Vector3i (transform.position).Equals (new Vector3i (target)) && G.Sys.tilemap.GetTileOfTypeAt (transform.position, TileID.WAIT_ZONE) != null) {
 			path.addAction (new WaitMetroAction (this, new Vector3i (transform.position).toVector3 ()));
 			return;
 		}
@@ -263,7 +263,8 @@ public class Traveler : AEntity
 		if (datas.Waste < 0.01f || path.haveAction(ActionType.THROW_IN_BIN) || path.haveAction(ActionType.THROW_IN_GROUND))
 			return;
 
-        bool haveAgentNearby = G.Sys.GetNearestCleaner(transform.position, G.Sys.constants.TravelerDetectionRadius) != null;
+        bool haveAgentNearby = G.Sys.GetNearestCleaner(transform.position, G.Sys.constants.TravelerDetectionRadius) != null ||
+                                G.Sys.GetNearestAgent(transform.position, G.Sys.constants.TravelerDetectionRadius) != null;
 
         if (datas.Dirtiness > 0.95f && !haveAgentNearby) {
 			List<Pair<Vector3, ATile>> surrondingTiles = new List<Pair<Vector3, ATile>> ();
@@ -407,11 +408,14 @@ public class Traveler : AEntity
 
 	void initializeDatas()
 	{
-		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
+		var gen = new StaticRandomGenerator<DefaultRandomGenerator>();
+        stats.FaintnessPercentage += new UniformFloatDistribution(-stats.DeltaFainteness, stats.DeltaFainteness).Next(gen);
+        stats.Cleanliness += new UniformFloatDistribution(-stats.DeltaCleanliness, stats.DeltaCleanliness).Next(gen);
+
 		datas.Speed = stats.MovementSpeed;
 		datas.Lostness = stats.LostAbility / 100;
-		datas.Tiredness = stats.FaintnessPercentage / 100;
-		datas.Dirtiness = 1 - (stats.Cleanliness / 100);
+        datas.Tiredness = stats.FaintnessPercentage / 100;
+        datas.Dirtiness = 1 - (stats.Cleanliness / 100);
         datas.Waste = stats.wastes/100;
         datas.Hunger = stats.Hunger/100;
 		datas.Fraud = new BernoulliDistribution (stats.FraudPercentage / 100).Next (gen);
