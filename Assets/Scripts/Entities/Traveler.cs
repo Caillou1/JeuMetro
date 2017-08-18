@@ -351,7 +351,7 @@ public class Traveler : AEntity
 		if (bestTile == null)
 			return;
 
-		if (bestTile.queue > 5) {
+        if (bestTile.queue > G.Sys.constants.QueueMax) {
 			foreach (var value in G.Sys.tilemap.getSurrondingSpecialTile(bestTile.transform.position, TileID.FOODDISTRIBUTEUR, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification)) {
 				var v = G.Sys.tilemap.GetTileOfTypeAt(value, TileID.FOODDISTRIBUTEUR) as FoodDistribTile;
 				if (v == null)
@@ -391,7 +391,7 @@ public class Traveler : AEntity
 		if (bestTile == null)
 			return;
 
-		if (bestTile.queue > 5) {
+        if (bestTile.queue > G.Sys.constants.QueueMax) {
 			foreach (var value in G.Sys.tilemap.getSurrondingSpecialTile(bestTile.transform.position, TileID.TICKETDISTRIBUTEUR, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification)) {
 				var v = G.Sys.tilemap.GetTileOfTypeAt (value, TileID.TICKETDISTRIBUTEUR) as TicketDistribTile;
 				if (v == null)
@@ -417,7 +417,7 @@ public class Traveler : AEntity
         datas.Tiredness = stats.FaintnessPercentage / 100;
         datas.Dirtiness = 1 - (stats.Cleanliness / 100);
         datas.Waste = stats.wastes/100;
-        datas.Hunger = stats.Hunger/100;
+        datas.Hunger = new BernoulliDistribution(stats.Hunger / 100).Next(gen) ? 1 : 0;
 		datas.Fraud = new BernoulliDistribution (stats.FraudPercentage / 100).Next (gen);
 		datas.LostNoTicket = false;
 		path.canPassControl = stats.HaveTicket || datas.Fraud;
