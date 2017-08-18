@@ -99,14 +99,14 @@ public class WaveManager : MonoBehaviour {
 
 		G.Sys.menuManager.SetWaveNumber (currentWave + 1, waveCounts);
 
-        foreach(var m in metroWaves)
+        foreach (var m in metroWaves)
         {
             List<MetroWave> tempWave = new List<MetroWave>();
 
             for (int i = 0; i < G.Sys.metroCount(); i++)
             {
                 MetroWave obj = null;
-                foreach(var w in m.array)
+                foreach (var w in m.array)
                     if (w.MetroObject == G.Sys.metro(i))
                         obj = w;
                 if (obj == null)
@@ -188,8 +188,8 @@ public class WaveManager : MonoBehaviour {
             float startTime = v.delay - G.Sys.constants.MetroComeTime;
             if (startTime > time && startTime <= time + dt)
                 v.MetroObject.CallMetro();
-            var d = getMetroDelay (v.MetroObject, wave);
-			if (d > time && d < time + dt)
+            var d = v.delay;
+			if (d > time && d <= time + dt)
 				Spawn (v.MetroObject.transform.position, v.Wave);
 		}
 	}
