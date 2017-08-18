@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
 public class CameraController : MonoBehaviour {
 	public float DragSpeed;
@@ -14,6 +15,8 @@ public class CameraController : MonoBehaviour {
 	private Transform cameraTransform;
 	private bool canSelect;
 	public bool pinching = false;
+
+	private Tweener dragCameraTweener;
 
 	IEnumerator PinchingCoroutine;
 	IEnumerator SelectCoroutine;
@@ -83,18 +86,49 @@ public class CameraController : MonoBehaviour {
 			}
 
 			float dist = Vector3.Distance (Input.mousePosition, dragOrigin);
-			if (!pinching && (Input.GetMouseButton (0) || Input.GetMouseButton(2)) &&  dist > 10f /*&& dist <= 500f && !isOnUI*/ && CanDrag && Input.touchCount <= 1) {
+			if (!pinching && (Input.GetMouseButton (0) || Input.GetMouseButton(2)) && !IsOnUI() && dist > 0f && CanDrag && Input.touchCount <= 1) {
 				if (canSelect) {
 					canSelect = false;
 					if(SelectCoroutine != null)
 						StopCoroutine (SelectCoroutine);
 				}
 				var bounds = G.Sys.tilemap.GlobalBounds ();
-				cameraTransform.Translate(new Vector3 (-Input.GetAxis ("Mouse X") * Time.deltaTime * DragSpeed * G.Sys.menuManager.GetZoomRatio(), 0, -Input.GetAxis ("Mouse Y") * Time.deltaTime * DragSpeed * G.Sys.menuManager.GetZoomRatio()));
+
+				var originRay = G.Sys.MainCamera.ScreenPointToRay (dragOrigin);
+				var currentRay = G.Sys.MainCamera.ScreenPointToRay (Input.mousePosition);
+
+				var hit1 = GetBackgroundHit (Physics.RaycastAll (originRay));
+				var hit2 = GetBackgroundHit (Physics.RaycastAll (currentRay));
+
+				Vector3 vec = hit1.point - hit2.point;
+				vec.y = 0;
+
+				if (dragCameraTweener != null)
+					dragCameraTweener.Pause ();
+				dragCameraTweener = cameraTransform.DOMove(cameraTransform.position + vec, Time.deltaTime);
+
 				cameraTransform.position = new Vector3 (Mathf.Clamp(cameraTransform.position.x, bounds.center.x - bounds.extents.x, bounds.center.x + bounds.extents.x), cameraTransform.position.y, Mathf.Clamp(cameraTransform.position.z, bounds.center.z - bounds.extents.z, bounds.center.z + bounds.extents.z));
+
 				dragOrigin = Input.mousePosition;
 			}
 		}
+	}
+
+	bool IsOnUI() {
+		List<RaycastResult> raycastResults = new List<RaycastResult> ();
+		PointerEventData ped = new PointerEventData (EventSystem.current);
+		ped.position = Input.mousePosition;
+		EventSystem.current.RaycastAll (ped, raycastResults);
+
+		return raycastResults.Count > 0;
+	}
+
+	RaycastHit GetBackgroundHit(RaycastHit[] hits) {
+		foreach (var h in hits)
+			if (h.transform.CompareTag ("UNDERGROUND"))
+				return h;
+
+		return new RaycastHit();
 	}
 
 	IEnumerator DelayedPinch() {
