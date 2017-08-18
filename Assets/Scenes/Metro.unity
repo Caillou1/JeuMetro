@@ -1035,12 +1035,12 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: metroWaves.Array.data[0].array.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: metroWaves.Array.data[1].array.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -1197,7 +1197,8 @@ Prefab:
         type: 2}
       propertyPath: metroWaves.Array.data[1].array.Array.data[0].Wave
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1984995104227444, guid: 6d6875ddc24434c40a77f716f7300b62,
+        type: 2}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: waveCounts
@@ -1226,7 +1227,7 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: metroWaves.Array.data[0].array.Array.data[0].delay
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}

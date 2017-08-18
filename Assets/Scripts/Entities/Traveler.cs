@@ -68,7 +68,7 @@ public class Traveler : AEntity
 
 	void checkOnExit()
 	{
-		if (exitType == ExitType.DOOR && G.Sys.tilemap.haveSpecialTileAt (TileID.OUT, transform.position)) {
+        if (exitType == ExitType.DOOR && G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.OUT) != null) {
 			Destroy (gameObject);
 			return;
 		}
