@@ -67,77 +67,111 @@ public class AudioManager : MonoBehaviour {
 	[Range(0f, 1f)]
 	public float TrashVolume = 1f;
 
+	[BoxGroup("LevelSelected")]
+	public AudioClip LevelSelectedClip;
+	[BoxGroup("LevelSelected")]
+	[Range(0f, 1f)]
+	public float LevelSelectedVolume = 1f;
+
+	[BoxGroup("Accept")]
+	public AudioClip AcceptClip;
+	[BoxGroup("Accept")]
+	[Range(0f, 1f)]
+	public float AcceptVolume = 1f;
+
+	[BoxGroup("Cancel")]
+	public AudioClip CancelClip;
+	[BoxGroup("Cancel")]
+	[Range(0f, 1f)]
+	public float CancelVolume = 1f;
+
 	private float musicVolume;
 	private float soundVolume;
 
-	private AudioSource source;
+	private AudioSource soundSource;
+	private AudioSource musicSource;
 
 	void Awake() {
 		G.Sys.audioManager = this;
-		source = GetComponent<AudioSource> ();
+		soundSource = GetComponent<AudioSource> ();
+		musicSource = transform.GetChild (0).GetComponent<AudioSource> ();
 		musicVolume = PlayerPrefs.GetFloat ("musicVolume", 1f);
 		soundVolume = PlayerPrefs.GetFloat ("soundVolume", 1f);
-		source.volume = musicVolume;
+		musicSource.volume = musicVolume;
+		soundSource.volume = soundVolume;
 
 		if (PlayTitle) {
-			source.clip = TitleMusic;
-			source.loop = true;
-			source.Play ();
+			musicSource.clip = TitleMusic;
+			musicSource.loop = true;
+			musicSource.Play ();
 		} else {
-			source.clip = MusicStart;
-			source.Play ();
+			musicSource.clip = MusicStart;
+			musicSource.Play ();
 			StartCoroutine (WaitForEndOfStart ());
 		}
 	}
 
 	IEnumerator WaitForEndOfStart() {
 		yield return new WaitUntil (() => {
-			return source.time >= MusicStart.length-0.01f;
+			return musicSource.time >= MusicStart.length-0.01f;
 		});
-		source.clip = MusicLoop;
-		source.loop = true;
-		source.Play ();
+		musicSource.clip = MusicLoop;
+		musicSource.loop = true;
+		musicSource.Play ();
 	}
 
 	public void SetSoundVolume(float v) {
 		soundVolume = v;
+		soundSource.volume = soundVolume;
 	}
 
 	public void SetMusicVolume(float v) {
 		musicVolume = v;
-		source.volume = musicVolume;
+		musicSource.volume = musicVolume;
 	}
 
 	public void PlayBuyFood() {
-		source.PlayOneShot (BuyFoodClip, BuyFoodVolume * soundVolume / musicVolume);
+		soundSource.PlayOneShot (BuyFoodClip, BuyFoodVolume);
 	}
 
 	public void PlayBuyTicket() {
-		source.PlayOneShot (BuyTicketClip, BuyTicketVolume * soundVolume / musicVolume);
+		soundSource.PlayOneShot (BuyTicketClip, BuyTicketVolume);
 	}
 
 	public void PlayConstruct() {
-		source.PlayOneShot (ConstructClip, ConstructVolume * soundVolume / musicVolume);
+		soundSource.PlayOneShot (ConstructClip, ConstructVolume);
 	}
 
 	public void PlayFaint() {
-		source.PlayOneShot (FaintClip, FaintVolume * soundVolume / musicVolume);
+		soundSource.PlayOneShot (FaintClip, FaintVolume);
 	}
 
 	public void PlayStairsFall() {
-		source.PlayOneShot (StairsFallClip, StairsFallVolume * soundVolume / musicVolume);
+		soundSource.PlayOneShot (StairsFallClip, StairsFallVolume);
 	}
 
 	public void PlayTrainStart() {
-		source.PlayOneShot (TrainStartClip, TrainStartVolume * soundVolume / musicVolume);
+		soundSource.PlayOneShot (TrainStartClip, TrainStartVolume);
 	}
 
 	public void PlayTrainStop() {
-		source.PlayOneShot (TrainStopClip, TrainStopVolume * soundVolume / musicVolume);
+		soundSource.PlayOneShot (TrainStopClip, TrainStopVolume);
 	}
 
 	public void PlayTrash() {
-		source.PlayOneShot (TrashClip, TrashVolume * soundVolume / musicVolume);
+		soundSource.PlayOneShot (TrashClip, TrashVolume);
+	}
+
+	public void PlayAccept() {
+		soundSource.PlayOneShot (AcceptClip, AcceptVolume);
+	}
+
+	public void PlayCancel() {
+		soundSource.PlayOneShot (CancelClip, CancelVolume);
+	}
+
+	public void PlayLevelSelected() {
+		soundSource.PlayOneShot (LevelSelectedClip, LevelSelectedVolume);
 	}
 
 	void OnDestroy() {
