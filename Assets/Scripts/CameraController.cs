@@ -112,9 +112,9 @@ public class CameraController : MonoBehaviour {
 				oldX = cameraTransform.position.x;
 				oldZ = cameraTransform.position.z;
 
-				newX = Mathf.Clamp (oldX, bounds.center.x - bounds.extents.x, bounds.center.x + bounds.extents.x);
+				newX = Mathf.Clamp (oldX, bounds.min.x, bounds.max.x);
 				newY = cameraTransform.position.y;
-				newZ = Mathf.Clamp(oldZ, bounds.center.z - bounds.extents.z, bounds.center.z + bounds.extents.z);
+				newZ = Mathf.Clamp (oldZ, bounds.min.z, bounds.max.z);
 
 				if (newX != oldX || newZ != oldZ)
 					dragCameraTweener.Pause ();
