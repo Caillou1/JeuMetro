@@ -132,24 +132,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58566d1922e7c4009bb2a6673a459a97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayTitle: 0
-  TitleMusic: {fileID: 0}
+  PlayTitle: 1
+  TitleMusic: {fileID: 8300000, guid: 0d915bbf1aa7b4213a2e43b5133be1a4, type: 3}
   MusicStart: {fileID: 8300000, guid: 444649480eb38449e8345c69e13c5af9, type: 3}
   MusicLoop: {fileID: 8300000, guid: 88af9e69c79764625893eedde0e96b71, type: 3}
   MusicVolume: 1
   BuyFoodClip: {fileID: 8300000, guid: 340eeaef182d04ec19529817c4b19c76, type: 3}
-  BuyFoodVolume: 1
+  BuyFoodVolume: 0.7
   BuyTicketClip: {fileID: 8300000, guid: 34e60636cb10c492e89ad2bd6cc9eaaf, type: 3}
-  BuyTicketVolume: 1
+  BuyTicketVolume: 0.7
   ConstructClip: {fileID: 8300000, guid: ffb355a0d75ea4b3da740096aac7ec8e, type: 3}
   ConstructVolume: 1
   FaintClip: {fileID: 8300000, guid: e74ee2201c9d541d0b4b1db61d95c0a1, type: 3}
-  FaintVolume: 1
+  FaintVolume: 0.8
   StairsFallClip: {fileID: 8300000, guid: 6de82e67ae0fe4365a15bf203c4d326f, type: 3}
-  StairsFallVolume: 1
+  StairsFallVolume: 0.8
   TrainStartClip: {fileID: 8300000, guid: 239ccc0989c3d42a092270a7534ae021, type: 3}
   TrainStartVolume: 1
   TrainStopClip: {fileID: 8300000, guid: 0dec6556509c044f5a98ea7550caa190, type: 3}
   TrainStopVolume: 1
   TrashClip: {fileID: 8300000, guid: 77925bf7e6dab422ba1f8f79fbe5ef47, type: 3}
-  TrashVolume: 1
+  TrashVolume: 0.8

@@ -669,6 +669,16 @@ Prefab:
       propertyPath: DragSpeed
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 114689265075685876, guid: 6f291861566d840feafdf9edcf6a9472,
+        type: 2}
+      propertyPath: sourceCamera
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114689265075685876, guid: 6f291861566d840feafdf9edcf6a9472,
+        type: 2}
+      propertyPath: outlineCamera
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6f291861566d840feafdf9edcf6a9472, type: 2}
   m_IsPrefabParent: 0
@@ -7068,18 +7078,18 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 0.855
     m_Bias: 0
-    m_NormalBias: 0
+    m_NormalBias: 0.85
     m_NearPlane: 0.1
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
