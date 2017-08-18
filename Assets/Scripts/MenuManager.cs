@@ -282,6 +282,7 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void LevelSelection() {
+		G.Sys.audioManager.PlayAccept ();
 		FadeUI.SetActive (true);
 		LevelSelectionUI.SetActive (true);
 		LastMenu = CurrentMenu;
@@ -293,6 +294,7 @@ public class MenuManager : MonoBehaviour {
 		if (i == 0) {
 			LevelSelection ();
 		} else {
+			G.Sys.audioManager.PlayLevelSelected ();
 			SceneManager.LoadScene ("Level" + i);
 		}
 	}

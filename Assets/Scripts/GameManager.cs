@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 	public float maxDelay;
 	public GameObject wastePrefab;
 	public GameObject emptyWall;
+	public GameObject underground;
 	public bool enableTravelers;
 	public bool SetMaxTravelers;
 	[ShowIf("SetMaxTravelers")]
@@ -124,6 +125,8 @@ public class GameManager : MonoBehaviour
 				}
 			}
 		}
+
+		Instantiate (underground, new Vector3 (0, bounds.min.y, 0), Quaternion.identity, tf);
 	}
 
 	public void InstantiateEmptyWallAt(Vector3 pos) {

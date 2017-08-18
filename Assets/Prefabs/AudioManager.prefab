@@ -28,6 +28,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1862615679261712
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4756874142348244}
+  - component: {fileID: 82921357568292350}
+  m_Layer: 0
+  m_Name: MusicSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4756874142348244
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862615679261712}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4827771329649698}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4827771329649698
 Transform:
   m_ObjectHideFlags: 1
@@ -37,7 +66,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4756874142348244}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -47,6 +77,86 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1447652705653042}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!82 &82921357568292350
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862615679261712}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -133,23 +243,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayTitle: 0
-  TitleMusic: {fileID: 0}
+  TitleMusic: {fileID: 8300000, guid: 0c3db80a9e5e841129c5f8b7d5b806e6, type: 3}
   MusicStart: {fileID: 8300000, guid: 444649480eb38449e8345c69e13c5af9, type: 3}
   MusicLoop: {fileID: 8300000, guid: 88af9e69c79764625893eedde0e96b71, type: 3}
   MusicVolume: 1
   BuyFoodClip: {fileID: 8300000, guid: 340eeaef182d04ec19529817c4b19c76, type: 3}
-  BuyFoodVolume: 1
+  BuyFoodVolume: 0.7
   BuyTicketClip: {fileID: 8300000, guid: 34e60636cb10c492e89ad2bd6cc9eaaf, type: 3}
-  BuyTicketVolume: 1
+  BuyTicketVolume: 0.7
   ConstructClip: {fileID: 8300000, guid: ffb355a0d75ea4b3da740096aac7ec8e, type: 3}
   ConstructVolume: 1
   FaintClip: {fileID: 8300000, guid: e74ee2201c9d541d0b4b1db61d95c0a1, type: 3}
-  FaintVolume: 1
+  FaintVolume: 0.8
   StairsFallClip: {fileID: 8300000, guid: 6de82e67ae0fe4365a15bf203c4d326f, type: 3}
-  StairsFallVolume: 1
+  StairsFallVolume: 0.8
   TrainStartClip: {fileID: 8300000, guid: 239ccc0989c3d42a092270a7534ae021, type: 3}
   TrainStartVolume: 1
   TrainStopClip: {fileID: 8300000, guid: 0dec6556509c044f5a98ea7550caa190, type: 3}
   TrainStopVolume: 1
   TrashClip: {fileID: 8300000, guid: 77925bf7e6dab422ba1f8f79fbe5ef47, type: 3}
   TrashVolume: 1
+  LevelSelectedClip: {fileID: 8300000, guid: ddcfbfaccb815496e87a0f1c40c30631, type: 3}
+  LevelSelectedVolume: 1
+  AcceptClip: {fileID: 8300000, guid: c4c7360cc638048acaa45c894b6cceaa, type: 3}
+  AcceptVolume: 1
+  CancelClip: {fileID: 8300000, guid: 5a49e9982f734414da3cc6518d508842, type: 3}
+  CancelVolume: 1

@@ -53,15 +53,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entities:
-  - {fileID: 1427005143703886, guid: c18e31107d19d445e9ad33af39ca5d8a, type: 2}
-  minDelay: 0
-  maxDelay: 0
+  - {fileID: 1334154850759218, guid: 4de308da13e43be45950b09ca5ad40e1, type: 2}
+  minDelay: 999
+  maxDelay: 999
   wastePrefab: {fileID: 1381118464472966, guid: 4ae148e65d2824332b0aca19f299cb60,
     type: 2}
   emptyWall: {fileID: 1572546173586764, guid: 87199dbc9c9304da49ae5eb0d3c2c6ef, type: 2}
-  SetMaxTravelers: 1
-  MaxTravelers: 100
+  underground: {fileID: 1498021405372690, guid: 4cea186ef1c614b05b4a3ba5bee1431a,
+    type: 2}
+  enableTravelers: 1
+  SetMaxTravelers: 0
+  MaxTravelers: 50
   StartingMoney: 100000
+  FireAlert: 0
 --- !u!114 &114708820167919978
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -91,6 +95,13 @@ MonoBehaviour:
   SpeakerWaitTime: 0
   SpeakerEmissionTime: 0
   FallChance: 0.5
+  BlindFallChance: 80
+  PartialyBlindFallChance: 40
+  BuyTime: 2
+  ReadSignTime: 2
+  SitTime: 3
+  WasteGroundTime: 1
+  WasteBinTime: 1
   TravelerColors:
   - {r: 1, g: 0, b: 0.84827566, a: 0}
   - {r: 0.53103447, g: 0, b: 1, a: 0}
