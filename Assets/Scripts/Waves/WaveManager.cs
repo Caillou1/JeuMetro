@@ -188,7 +188,7 @@ public class WaveManager : MonoBehaviour {
             float startTime = v.delay - G.Sys.constants.MetroComeTime;
             if (startTime > time && startTime <= time + dt)
                 v.MetroObject.CallMetro();
-            var d = v.delay;
+            var d = v.delay + 0.2f;
 			if (d > time && d <= time + dt)
 				Spawn (v.MetroObject.transform.position, v.Wave);
 		}
