@@ -23,6 +23,9 @@ public class BuyTicketAction : AEntityAction<Traveler>
 
 	protected override bool Update ()
 	{
+        if (ticketDistrib == null)
+            return true;
+        
 		time += Time.deltaTime;
 		return time > maxTime;
 	}

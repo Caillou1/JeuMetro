@@ -21,6 +21,9 @@ public class BuyFoodAction : AEntityAction<Traveler>
 
 	protected override bool Update ()
 	{
+        if (foodDistrib == null)
+            return true;
+        
 		time += Time.deltaTime;
 		return time > maxTime;
 	}

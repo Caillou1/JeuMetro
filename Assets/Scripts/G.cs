@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public sealed class G
 {
@@ -116,11 +117,20 @@ public sealed class G
 		float minDist = float.MaxValue;
 
 		foreach (var a in agents) {
+            if (a.IsHelping)
+                continue;
+
 			float dist = (pos - a.transform.position).sqrMagnitude;
-			if (dist < minDist && dist < maxDist && !a.IsHelping) {
-				minDist = dist;
-				closest = a;
-			}
+            if (dist > maxDist || dist >= minDist)
+				continue;
+            
+			NavMeshPath p = new NavMeshPath();
+            a.getNavMeshAgent().CalculatePath(pos, p);
+            if (p.status != NavMeshPathStatus.PathComplete)
+                continue;
+
+			minDist = dist;
+			closest = a;
 		}
 
 		return closest;

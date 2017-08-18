@@ -25,7 +25,6 @@ public class EntityPath
 	List<Vector3> _points = new List<Vector3> ();
 	List<AAction> _actions = new List<AAction> ();
 
-	bool pathPending = false;
 	AAction currentAction = null;
 	bool onAction = false;
 	bool isOnOffMeshLink = false;
@@ -136,10 +135,20 @@ public class EntityPath
         onPathCreated();
 	}
 
+    void abortAllAndActiveActionElse(ActionType[] actions)
+    {
+        if (currentAction != null && !actions.Contains(currentAction.type))
+            currentAction = null;
+        List<AAction> newActions = new List<AAction>();
+        foreach(var a in _actions)
+            if (actions.Contains(a.type))
+                newActions.Add(a);
+        _actions = newActions;
+    }
+
 	void onPathCreated()
 	{
 		_lastPathBrokePassControl = false;
-		pathPending = false;
 		_points.Clear ();
 
 		if (!_agent.hasPath)
@@ -247,9 +256,6 @@ public class EntityPath
 		if (_agent.isOnOffMeshLink && !isOnOffMeshLink)
 			onLink ();
 
-		if (pathPending && !_agent.pathPending)
-			onPathCreated();
-		
 		if (currentAction == null && _actions.Count > 0)
 			checkAction ();
 		

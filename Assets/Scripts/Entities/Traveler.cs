@@ -46,6 +46,7 @@ public class Traveler : AEntity
 		else
 			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = Color.HSVToRGB ((new UniformFloatDistribution (0f, 1f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())), 1f, 1f);
         subscriberList.Add(new Event<CollectTravelerTimeEvent>.Subscriber(onCollectTime));
+        subscriberList.Add(new Event<StartFireAlertEvent>.Subscriber(onFireAlertStart));
         subscriberList.Subscribe();
 	}
 
@@ -176,7 +177,7 @@ public class Traveler : AEntity
 					validPos.Add (sign.First + Vector3.forward);
 				if (G.Sys.tilemap.IsEmptyGround (sign.First + Vector3.back))
 					validPos.Add (sign.First + Vector3.back);
-				path.addAction (new SignAction (this, validPos[new UniformIntDistribution(validPos.Count-1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())], sign.First));
+                path.addAction (new SignAction (this, validPos[new UniformIntDistribution(validPos.Count - 1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())], G.Sys.tilemap.GetTileOfTypeAt(sign.First, TileID.INFOPANEL) as InfoPanelTile));
 			}
 		}
 	}
@@ -534,5 +535,10 @@ public class Traveler : AEntity
     void onCollectTime(CollectTravelerTimeEvent e)
     {
         G.Sys.gameManager.AddTime(Time.time - ArrivalTime, false);
+    }
+
+    void onFireAlertStart(StartFireAlertEvent e)
+    {
+        
     }
 }
