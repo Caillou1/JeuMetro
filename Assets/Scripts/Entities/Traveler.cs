@@ -15,7 +15,7 @@ public class Traveler : AEntity
 
 	[SerializeField]
 	string targetName = "";
-	[HideInInspector]
+	//[HideInInspector]
 	public TravelerDatas datas = new TravelerDatas ();
 
 	bool isLost = false;
