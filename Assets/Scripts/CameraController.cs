@@ -116,10 +116,9 @@ public class CameraController : MonoBehaviour {
 
 	RaycastHit GetBackgroundHit(RaycastHit[] hits) {
 		foreach (var h in hits)
-			if (h.transform.CompareTag ("BACKGROUND"))
+			if (h.transform.CompareTag ("UNDERGROUND"))
 				return h;
 
-		Debug.Log ("caca");
 		return new RaycastHit();
 	}
 
