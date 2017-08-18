@@ -72,7 +72,7 @@ public class Traveler : AEntity
 			Destroy (gameObject);
 			return;
 		}
-		if (exitType == ExitType.METRO && !path.haveAction (ActionType.WAIT_METRO) && new Vector3i (transform.position).Equals (new Vector3i (target)) && G.Sys.tilemap.GetTileOfTypeAt (transform.position, TileID.WAIT_ZONE) != null) {
+        if (exitType == ExitType.METRO && !path.haveAction (ActionType.WAIT_METRO) && !path.haveAction(ActionType.GO_TO_METRO) && new Vector3i (transform.position).Equals (new Vector3i (target)) && G.Sys.tilemap.GetTileOfTypeAt (transform.position, TileID.WAIT_ZONE) != null) {
 			path.addAction (new WaitMetroAction (this, new Vector3i (transform.position).toVector3 ()));
 			return;
 		}

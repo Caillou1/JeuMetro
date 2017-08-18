@@ -4,6 +4,7 @@ using UnityEngine;
 public class WaitMetroAction : AEntityAction<Traveler>
 {
 	WaitZoneTile tile;
+    int frames = 0;
 
 	public WaitMetroAction(Traveler t, Vector3 pos) : base(t, ActionType.WAIT_METRO, pos)
 	{
@@ -18,7 +19,7 @@ public class WaitMetroAction : AEntityAction<Traveler>
 
 	protected override bool Update ()
 	{
-		return tile.metro.tileEnabled;
+        return tile.metro.tileEnabled && frames ++ > 6;
 	}
 
 	protected override void End ()
