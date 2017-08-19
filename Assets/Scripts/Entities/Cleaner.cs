@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using NRand;
+using UnityEngine.AI;
 
 public class Cleaner : AEntity
 {
@@ -47,57 +48,64 @@ public class Cleaner : AEntity
 
 	protected override void Check ()
 	{
-		CheckWaste ();
-		CheckBin ();
+        if (!path.haveAction(ActionType.CLEAN_WASTE) && !path.haveAction(ActionType.CLEAN_BIN))
+        {
+            CheckWaste();
+            CheckBin();
+        }
 	}
 
-	void CheckWaste() {
-		if (!path.haveAction (ActionType.CLEAN_WASTE)) {
-			var wastes = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.WASTE, stats.WasteVisibilityRadius, G.Sys.constants.VerticalAmplification);
-			Vector3 wastePos = Vector3.zero;
-			WasteTile wasteTile = null;
+    void CheckWaste()
+    {
+        WasteTile wasteTile = null;
 
-			bool trouve = false;
+        foreach(var w in G.Sys.tilemap.getSurrondingSpecialTile(transform.position, TileID.WASTE, stats.WasteVisibilityRadius, G.Sys.constants.VerticalAmplification))
+        {
+            var waste = G.Sys.tilemap.GetTileOfTypeAt(w, TileID.WASTE) as WasteTile;
+            if (waste.Targetted)
+                continue;
 
-			while (!trouve && wastes.Count > 0) {
-				wastePos = wastes [new UniformIntDistribution (wastes.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())];
-				wasteTile = G.Sys.tilemap.GetTileOfTypeAt (wastePos, TileID.WASTE) as WasteTile;
-				if (wasteTile.Targetted) {
-					wastes.Remove (wastePos);
-				} else {
-					wasteTile.Targetted = true;
-					trouve = true;
-				}
-			}
+			NavMeshPath p = new NavMeshPath();
+            agent.CalculatePath(w, p);
+			if (p.status != NavMeshPathStatus.PathComplete)
+				continue;
 
-			if(trouve)
-				path.addAction (new CleanWasteAction (this, wastePos, wasteTile));
+            wasteTile = waste;
+            break;
+        }
+
+        if (wasteTile == null)
+            return;
+
+        wasteTile.Targetted = true;
+        path.addAction(new CleanWasteAction(this, wasteTile.transform.position, wasteTile));
+    }
+
+    void CheckBin()
+    {
+        BinTile binTile = null;
+
+        foreach (var w in G.Sys.tilemap.getSurrondingSpecialTile(transform.position, TileID.BIN, stats.WasteVisibilityRadius, G.Sys.constants.VerticalAmplification))
+		{
+            var bin = G.Sys.tilemap.GetTileOfTypeAt(w, TileID.BIN) as BinTile;
+            if (bin.Targetted || bin.waste < 0.5f)
+				continue;
+
+			NavMeshPath p = new NavMeshPath();
+			agent.CalculatePath(w, p);
+			if (p.status != NavMeshPathStatus.PathComplete)
+				continue;
+
+			binTile = bin;
+			break;
 		}
-	}
 
-	void CheckBin() {
-		if (!path.haveAction (ActionType.CLEAN_BIN)) {
-			var bins = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.BIN, stats.WasteVisibilityRadius, G.Sys.constants.VerticalAmplification);
-			Vector3 binPos = Vector3.zero;
-			BinTile binTile = null;
+		if (binTile == null)
+			return;
 
-			bool trouve = false;
-
-			while (!trouve && bins.Count > 0) {
-				binPos = bins [new UniformIntDistribution (bins.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())];
-				binTile = G.Sys.tilemap.GetTileOfTypeAt (binPos, TileID.BIN) as BinTile;
-				if (binTile.Targetted || binTile.waste < .5f) {
-					bins.Remove (binPos);
-				} else if(!binTile.Targetted && binTile.waste >= .5f) {
-					binTile.Targetted = true;
-					trouve = true;
-				}
-			}
-
-			if(trouve)
-				path.addAction (new CleanBinAction (this, binPos, binTile));
-		}
-	}
+		binTile.Targetted = true;
+        path.addAction(new CleanBinAction(this, binTile.transform.position, binTile));
+    }
 
 	void initializeDatas()
 	{
