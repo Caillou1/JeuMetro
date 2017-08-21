@@ -54,6 +54,8 @@ public class Constants : MonoBehaviour
     public float WasteGroundTime = 1;
     [Tooltip("Temps pour jeuter un dechet dans une poubelle")]
     public float WasteBinTime = 1;
+    [Tooltip("Taille max de queue avant de rechercher un autre distributeur")]
+    public int QueueMax = 5;
 
 	public List<Color> TravelerColors;
 
