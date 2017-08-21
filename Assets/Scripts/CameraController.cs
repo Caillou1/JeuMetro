@@ -107,7 +107,19 @@ public class CameraController : MonoBehaviour {
 					dragCameraTweener.Pause ();
 				dragCameraTweener = cameraTransform.DOMove(cameraTransform.position + vec, Time.deltaTime);
 
-				cameraTransform.position = new Vector3 (Mathf.Clamp(cameraTransform.position.x, bounds.center.x - bounds.extents.x, bounds.center.x + bounds.extents.x), cameraTransform.position.y, Mathf.Clamp(cameraTransform.position.z, bounds.center.z - bounds.extents.z, bounds.center.z + bounds.extents.z));
+				float oldX, oldZ, newX, newY, newZ;
+
+				oldX = cameraTransform.position.x;
+				oldZ = cameraTransform.position.z;
+
+				newX = Mathf.Clamp (oldX, bounds.min.x, bounds.max.x);
+				newY = cameraTransform.position.y;
+				newZ = Mathf.Clamp (oldZ, bounds.min.z, bounds.max.z);
+
+				if (newX != oldX || newZ != oldZ)
+					dragCameraTweener.Pause ();
+
+				cameraTransform.position = new Vector3 (newX, newY, newZ);
 
 				dragOrigin = Input.mousePosition;
 			}
