@@ -56,6 +56,7 @@ public class Constants : MonoBehaviour
     public float WasteBinTime = 1;
     [Tooltip("Taille max de queue avant de rechercher un autre distributeur")]
     public int QueueMax = 5;
+	public float ElevatorAttraction = .1f;
 
 	public List<Color> TravelerColors;
 

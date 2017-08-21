@@ -4,6 +4,7 @@ using UnityEngine;
 using NRand;
 using UnityEngine.SceneManagement;
 using Sirenix.OdinInspector;
+using UnityEngine.AI;
 
 public class GameManager : MonoBehaviour
 {
@@ -91,8 +92,11 @@ public class GameManager : MonoBehaviour
 
 						foreach (var potentialTraveler in faintingTravelers.ToArray()) {
 							float potentialDist = Vector3.Distance (a.position, potentialTraveler.position);
+							var path = new NavMeshPath ();
+							a.getNavMeshAgent ().CalculatePath (potentialTraveler.position, path);
+							bool PathIsValid = path.status == NavMeshPathStatus.PathComplete;
 
-							if (potentialDist < minDist || t == null) {
+							if ((potentialDist < minDist && PathIsValid) || t == null) {
 								minDist = potentialDist;
 								t = potentialTraveler;
 							}

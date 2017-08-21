@@ -152,12 +152,28 @@ public class MenuManager : MonoBehaviour {
 	void Start() {
 		ParametersUI.transform.Find("MusicSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("musicVolume", 1f);
 		ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("soundVolume", 1f);
+
+		for (int i = 0; i < ZoomLevels.Length-1; i++) {
+			Zoom ();
+		}
 	}
 
     private void OnDestroy()
     {
         substriberList.Unsubscribe();
     }
+
+	public void ShowMessages(List<string> messages) {
+
+	}
+
+	public void ShowObjectives(List<Objectif> objectives) {
+
+	}
+
+	public bool AreAllMessagesRead() {
+		return true;
+	}
 
     GameObject GetCorrespondantUI(Menu menu) {
 		switch (menu) {
