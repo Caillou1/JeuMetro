@@ -49,7 +49,11 @@ public class Objectif {
 	public int Amount;
 
 	private int startAmount;
-
+	public int StartAmount {
+		get{
+			return startAmount;
+		}
+	}
 	public Objectif(ObjectifType t, int amount) {
 		Type = t;
 		Amount = amount;
@@ -81,8 +85,27 @@ public static class ObjectifChecker {
 	public static bool Check(Objectif o) {
 		switch (o.Type) {
 		case ObjectifType.NONE:
-			return false;
-
+			return true;
+		case ObjectifType.DROP_AGENT:
+			return (G.Sys.agentsCount - o.StartAmount) >= o.Amount;
+		case ObjectifType.DROP_BENCH:
+			return (G.Sys.GetDisposableCount (TileID.BENCH) - o.StartAmount) >= o.Amount;
+		case ObjectifType.DROP_BIN:
+			return (G.Sys.GetDisposableCount (TileID.BIN) - o.StartAmount) >= o.Amount;
+		case ObjectifType.DROP_CLEANER:
+			return (G.Sys.cleanerCount - o.StartAmount) >= o.Amount;
+		case ObjectifType.DROP_ESCALATOR:
+			return (G.Sys.GetDisposableCount (TileID.ESCALATOR) - o.StartAmount) >= o.Amount;
+		case ObjectifType.DROP_FOODDISTRIB:
+			return (G.Sys.GetDisposableCount (TileID.FOODDISTRIBUTEUR) - o.StartAmount) >= o.Amount;
+		case ObjectifType.DROP_INFOPANEL:
+			return (G.Sys.GetDisposableCount (TileID.INFOPANEL) - o.StartAmount) >= o.Amount;
+		case ObjectifType.DROP_PODOTACTILE:
+			return (G.Sys.GetDisposableCount (TileID.PODOTACTILE) - o.StartAmount) >= o.Amount;
+		case ObjectifType.DROP_SPEAKER:
+			return (G.Sys.GetDisposableCount (TileID.SPEAKER) - o.StartAmount) >= o.Amount;
+		case ObjectifType.DROP_TICKETDISTRIB:
+			return (G.Sys.GetDisposableCount (TileID.TICKETDISTRIBUTEUR) - o.StartAmount) >= o.Amount;
 		default:
 			return true;
 		}
