@@ -543,6 +543,6 @@ public class Traveler : AEntity
 
     void onFireAlertStart(StartFireAlertEvent e)
     {
-        
+        stats.MovementSpeed *= 2;
     }
 }
