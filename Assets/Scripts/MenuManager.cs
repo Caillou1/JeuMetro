@@ -163,6 +163,18 @@ public class MenuManager : MonoBehaviour {
         substriberList.Unsubscribe();
     }
 
+	public void ShowMessages(List<string> messages) {
+
+	}
+
+	public void ShowObjectives(List<Objectif> objectives) {
+
+	}
+
+	public bool AreAllMessagesRead() {
+		return true;
+	}
+
     GameObject GetCorrespondantUI(Menu menu) {
 		switch (menu) {
 		case Menu.Main:

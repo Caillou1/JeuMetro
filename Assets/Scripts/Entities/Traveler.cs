@@ -172,7 +172,7 @@ public class Traveler : AEntity
 
 	IEnumerator DelayedElevator() {
 		yield return new WaitForSeconds (3f);
-		bool CanLookForElevator = true;
+		CanLookForElevator = true;
 	}
 
 	void checkSigns()

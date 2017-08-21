@@ -70,7 +70,6 @@ public class CameraController : MonoBehaviour {
 				StartCoroutine (PinchingCoroutine);
 			}
 			if (CanDrag && Input.touchCount <= 1) {
-				List<RaycastResult> raycastResults = new List<RaycastResult> ();
 				if (Input.GetMouseButtonDown (0) || Input.GetMouseButtonDown(2)) {
 					if (!IsOnUI()) {
 						dragOrigin = Input.mousePosition;
