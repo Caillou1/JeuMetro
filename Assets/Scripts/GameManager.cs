@@ -66,13 +66,8 @@ public class GameManager : MonoBehaviour
 	}
 
 	void OnTravelerFaint(FaintEvent e) {
-		var a = G.Sys.GetNearestFreeAgent (e.traveler.transform.position);
-		if (a != null) {
-			a.GoHelpTravelerAction (e.traveler);
-		} else {
-			if (!faintingTravelers.Contains (e.traveler)) {
-				faintingTravelers.Add (e.traveler);
-			}
+		if (!faintingTravelers.Contains (e.traveler)) {
+			faintingTravelers.Add (e.traveler);
 		}
 	}
 
@@ -89,10 +84,25 @@ public class GameManager : MonoBehaviour
 	IEnumerator checkFaintingTravelers() {
 		while (true) {
 			if (faintingTravelers.Count > 0) {
-				var a = G.Sys.GetNearestFreeAgent (faintingTravelers[0].transform.position);
-				if (a != null) {
-					a.GoHelpTravelerAction (faintingTravelers[0]);
-					faintingTravelers.RemoveAt (0);
+				foreach (var a in G.Sys.agentsList) {
+					if (!a.IsHelping) {
+						Traveler t = null;
+						float minDist = float.MaxValue;
+
+						foreach (var potentialTraveler in faintingTravelers.ToArray()) {
+							float potentialDist = Vector3.Distance (a.position, potentialTraveler.position);
+
+							if (potentialDist < minDist || t == null) {
+								minDist = potentialDist;
+								t = potentialTraveler;
+							}
+						}
+
+						if (t != null) {
+							a.GoHelpTravelerAction (t);
+							faintingTravelers.Remove (t);
+						}
+					}
 				}
 			}
 

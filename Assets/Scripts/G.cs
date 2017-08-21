@@ -23,6 +23,11 @@ public sealed class G
 	private MenuManager _menuManager;
 	private Constants _constants;
 
+	public List<Agent> agentsList { 
+		get {
+			return agents;
+		}
+	}
 
     public static G Sys
     {
