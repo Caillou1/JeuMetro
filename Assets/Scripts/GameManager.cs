@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
 							a.getNavMeshAgent ().CalculatePath (potentialTraveler.position, path);
 							bool PathIsValid = path.status == NavMeshPathStatus.PathComplete;
 
-							if ((potentialDist < minDist && PathIsValid) || t == null) {
+                            if (potentialDist < minDist && PathIsValid) {
 								minDist = potentialDist;
 								t = potentialTraveler;
 							}
