@@ -158,6 +158,7 @@ public class WaveManager : MonoBehaviour {
                 {
                     G.Sys.gameManager.FireAlert = true;
                     Event<StartFireAlertEvent>.Broadcast(new StartFireAlertEvent());
+                    Event<BakeNavMeshEvent>.Broadcast(new BakeNavMeshEvent());
                 }
 			}
 			chronoStartTime = Time.time;

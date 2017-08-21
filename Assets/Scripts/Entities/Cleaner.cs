@@ -41,7 +41,6 @@ public class Cleaner : AEntity
 
 	public override void EnableAgent ()
 	{
-        Debug.Log("poop");
 		base.EnableAgent ();
 		G.Sys.registerCleaner (this);
 	}
@@ -58,8 +57,7 @@ public class Cleaner : AEntity
     void CheckWaste()
     {
         WasteTile wasteTile = null;
-
-        foreach(var w in G.Sys.tilemap.getSurrondingSpecialTile(transform.position, TileID.WASTE, stats.WasteVisibilityRadius, G.Sys.constants.VerticalAmplification))
+        foreach(var w in G.Sys.tilemap.getSurrondingSpecialTile(transform.position, TileID.WASTE, G.Sys.constants.WorkerDetectionRadius, G.Sys.constants.VerticalAmplification))
         {
             var waste = G.Sys.tilemap.GetTileOfTypeAt(w, TileID.WASTE) as WasteTile;
             if (waste.Targetted)
@@ -85,7 +83,7 @@ public class Cleaner : AEntity
     {
         BinTile binTile = null;
 
-        foreach (var w in G.Sys.tilemap.getSurrondingSpecialTile(transform.position, TileID.BIN, stats.WasteVisibilityRadius, G.Sys.constants.VerticalAmplification))
+        foreach (var w in G.Sys.tilemap.getSurrondingSpecialTile(transform.position, TileID.BIN, G.Sys.constants.WorkerDetectionRadius, G.Sys.constants.VerticalAmplification))
 		{
             var bin = G.Sys.tilemap.GetTileOfTypeAt(w, TileID.BIN) as BinTile;
             if (bin.Targetted || bin.waste < 0.5f)
