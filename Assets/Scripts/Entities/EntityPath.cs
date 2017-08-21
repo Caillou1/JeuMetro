@@ -395,4 +395,50 @@ public class EntityPath
 	{
 		return !isOnOffMeshLink && G.Sys.tilemap.IsEmptyGround (_agent.transform.position) && !onAction;
 	}
+
+    public bool HaveTileOnPath(TileID id, float minChunkLenght = 0.5f)
+    {
+        if (finished)
+            return false;
+        
+        float minChunk = minChunkLenght * minChunkLenght;
+        var corners = _agent.path.corners.ToList();
+        corners.Insert(0, _agent.transform.position);
+        foreach (var c in corners)
+            if (G.Sys.tilemap.GetTileOfTypeAt(c, id)!=null)
+                return true;
+        List<Pair<Vector3, Vector3>> segments = new List<Pair<Vector3, Vector3>>();
+        for (int i = 0; i < corners.Count()-1; i++)
+        {
+            segments.Add(new Pair<Vector3, Vector3>(corners[i], corners[i+1]));
+        }
+
+        int it = 0;
+        while(segments.Count() > 0)
+        {
+            for (int i = 0; i < segments.Count(); i++)
+            {
+                var segment = segments[i];
+                int chunkCount = 1 << it;
+                var chunk = (segment.Second - segment.First) / (chunkCount << 1);
+                for (int j = 0; j < chunkCount; j++)
+                {
+                    var pos = segment.First + chunk * (j + 0.5f);
+					if (G.Sys.tilemap.GetTileOfTypeAt(pos, id) != null)
+						return true;
+                }
+
+                if(chunk.sqrMagnitude <= minChunk)
+                {
+                    segments.RemoveAt(i);
+                    i--;
+                    if (segments.Count() == 0)
+                        break;
+                }
+            }
+            it++;
+        }
+
+        return false;
+    }
 }
