@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class DragAndDropDistrib : DragAndDrop {
+	public bool isTicket;
 
 	protected override void OnAwake ()
 	{
@@ -57,5 +58,10 @@ public class DragAndDropDistrib : DragAndDrop {
 		list.Add (tf.position);
 
 		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+	}
+
+	protected override void OnBuy ()
+	{
+		G.Sys.AddDisposable (isTicket ? TileID.TICKETDISTRIBUTEUR : TileID.FOODDISTRIBUTEUR);
 	}
 }

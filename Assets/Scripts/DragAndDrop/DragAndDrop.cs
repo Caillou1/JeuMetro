@@ -167,6 +167,10 @@ public class DragAndDrop : MonoBehaviour{
 		return false;
 	}
 
+	protected virtual void OnBuy() {
+		G.Sys.AddDisposable (TileID.PODOTACTILE);
+	}
+
 	IEnumerator eventCoroutine()
 	{
 		yield return new WaitForEndOfFrame ();

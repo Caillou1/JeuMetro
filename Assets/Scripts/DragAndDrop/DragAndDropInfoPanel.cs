@@ -70,4 +70,9 @@ public class DragAndDropInfoPanel : DragAndDrop {
 
 		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
 	}
+
+	protected override void OnBuy ()
+	{
+		G.Sys.AddDisposable (TileID.INFOPANEL);
+	}
 }
