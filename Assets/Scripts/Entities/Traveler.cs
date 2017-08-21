@@ -71,8 +71,10 @@ public class Traveler : AEntity
 
 	void checkOnExit()
 	{
-        if (exitType == ExitType.DOOR && G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.OUT) != null) {
-			Destroy (gameObject);
+        if (exitType == ExitType.DOOR) {
+            var tile = G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.OUT) as ExitsTile;
+            if (tile != null && tile.name == targetName) 
+			    Destroy (gameObject);
 			return;
 		}
         if (exitType == ExitType.METRO && !path.haveAction (ActionType.WAIT_METRO) && !path.haveAction(ActionType.GO_TO_METRO) && new Vector3i (transform.position).Equals (new Vector3i (target)) && G.Sys.tilemap.GetTileOfTypeAt (transform.position, TileID.WAIT_ZONE) != null) {
@@ -487,7 +489,7 @@ public class Traveler : AEntity
 
 			datas.Lostness = Mathf.Clamp (datas.Lostness + ((total <= 0.1f || signs > 3f) ? 1 : -1) * stats.LostAbility * stats.LostAbility / 20000 * time, 0, 1);
 		} else {
-			TileID[] validTile = new TileID[]{ TileID.PODOTACTILE, TileID.CONTROLELINE, TileID.ELEVATOR, TileID.ESCALATOR, TileID.IN, TileID.OUT, TileID.METRO};
+			TileID[] validTile = new TileID[]{ TileID.PODOTACTILE, TileID.CONTROLELINE, TileID.ELEVATOR, TileID.ESCALATOR, TileID.OUT, TileID.METRO};
 			bool isOn = false;
 			foreach (var t in validTile)
 				if (G.Sys.tilemap.GetTileOfTypeAt (transform.position, t) != null) {
@@ -555,6 +557,25 @@ public class Traveler : AEntity
 
     void onFireAlertStart(StartFireAlertEvent e)
     {
-        stats.MovementSpeed *= 2;
+        stats.MovementSpeed *= G.Sys.constants.fireAlertSpeedMultiplier;
+        if(stats.Type != TravelerType.WHEELCHAIR)
+            path.abortAllAndActiveActionElse(new ActionType[] { ActionType.FAINT, ActionType.SIGN });
+        else 
+            path.abortAllAndActiveActionElse(new ActionType[] { ActionType.FAINT, ActionType.SIGN, ActionType.WAIT_ELEVATOR });
+
+        float bestDist = float.MaxValue;
+        Vector3 posDoor = Vector3.zero;
+        foreach (var d in G.Sys.tilemap.getSpecialTiles(TileID.OUT))
+        {
+            float dist = (d - transform.position).sqrMagnitude;
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                posDoor = d;
+            }
+        }
+
+        target = posDoor;
+        exitType = ExitType.DOOR;
     }
 }

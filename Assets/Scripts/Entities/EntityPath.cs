@@ -135,7 +135,7 @@ public class EntityPath
         onPathCreated();
 	}
 
-    void abortAllAndActiveActionElse(ActionType[] actions)
+    public void abortAllAndActiveActionElse(ActionType[] actions)
     {
         if (currentAction != null && !actions.Contains(currentAction.type))
             currentAction = null;

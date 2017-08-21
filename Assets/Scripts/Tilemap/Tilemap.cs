@@ -439,7 +439,7 @@ public class Tilemap
 		var tiles = at (pos);
 
 		foreach (var tile in tiles) {
-			if (tile.type == TileID.GROUND || tile.type == TileID.IN || tile.type == TileID.OUT)
+			if (tile.type == TileID.GROUND || tile.type == TileID.OUT)
 				return true;
 		}
 
