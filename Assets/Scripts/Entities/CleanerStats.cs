@@ -7,7 +7,6 @@ public class CleanerStats {
 	public float MovementSpeed;
 	[HideInInspector]
 	public float RotationSpeed;
-	public float WasteVisibilityRadius;
 
 	public void SetStats(CleanerStats stats) {
 		MovementSpeed = stats.MovementSpeed;
