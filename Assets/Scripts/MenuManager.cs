@@ -152,6 +152,10 @@ public class MenuManager : MonoBehaviour {
 	void Start() {
 		ParametersUI.transform.Find("MusicSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("musicVolume", 1f);
 		ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("soundVolume", 1f);
+
+		for (int i = 0; i < ZoomLevels.Length-1; i++) {
+			Zoom ();
+		}
 	}
 
     private void OnDestroy()
