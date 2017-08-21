@@ -8,7 +8,7 @@ public abstract class AEntity : MonoBehaviour
 	protected NavMeshAgent agent;
 	public EntityPath path;
 	protected Vector3 target = Vector3.zero;
-	private Transform tf;
+	protected Transform tf;
 
 	void Awake()
 	{

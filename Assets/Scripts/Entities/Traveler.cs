@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,8 +30,11 @@ public class Traveler : AEntity
 
 	private Vector3 lastPos;
 
+	private bool CanLookForElevator;
+
 	protected override void OnAwake ()
 	{
+		CanLookForElevator = true;
 		G.Sys.registerTraveler (this);
 		var e = findExit (targetName);
 		target = e.First;
@@ -135,14 +138,16 @@ public class Traveler : AEntity
 	}
 
 	void checkElevators() {
-		if (!path.haveAction (ActionType.WAIT_ELEVATOR)) {
+		if (CanLookForElevator && !path.haveAction (ActionType.WAIT_ELEVATOR)) {
 			var possiblePath = G.Sys.tilemap.GetElevatorsToFloor (transform.position, path.destnation);
 			if (possiblePath.Count > 0) {
 				bool CanTakeElevator = false;
 
-				if (stats.Type == TravelerType.WHEELCHAIR || (!possiblePath [0].Second.IsFull () && possiblePath [0].Second.IsOnFloor (Mathf.RoundToInt (transform.position.y)))) {
+				if (stats.Type == TravelerType.WHEELCHAIR) { // Si chaise roulante
 					CanTakeElevator = true;
-				} else {
+				} else if (path.HaveTileOnPath(TileID.STAIRS) && (new BernoulliDistribution (G.Sys.constants.ElevatorAttraction).Next (new DefaultRandomGenerator ()))) { // Si il y a un escalier calcule proba
+					CanTakeElevator = true;
+				} else { // Si pas d'autres choix
 					NavMeshPath p = new NavMeshPath ();
 					NavMesh.CalculatePath (transform.position, path.destnation, NavMesh.AllAreas, p);
 					if (p.status != NavMeshPathStatus.PathComplete)
@@ -155,12 +160,19 @@ public class Traveler : AEntity
 						ElevatorTile tile = possiblePath [i].Second;
 						int floor = ((i + 1) < possiblePath.Count) ? Mathf.RoundToInt (possiblePath [i + 1].Second.GetWaitZone (possiblePath [i].First).y) : Mathf.RoundToInt (path.destnation.y);
 						int priority = (possiblePath.Count - i) * 2;
-
 						path.addAction (new WaitForElevatorAction (this, pos, tile, floor, priority));
 					}
+				} else {
+					CanLookForElevator = false;
+					StartCoroutine(DelayedElevator());
 				}
 			}
 		}
+	}
+
+	IEnumerator DelayedElevator() {
+		yield return new WaitForSeconds (3f);
+		bool CanLookForElevator = true;
 	}
 
 	void checkSigns()
