@@ -435,7 +435,9 @@ public class Traveler : AEntity
 	{
 		var gen = new StaticRandomGenerator<DefaultRandomGenerator>();
         stats.FaintnessPercentage += new UniformFloatDistribution(-stats.DeltaFainteness, stats.DeltaFainteness).Next(gen);
+        stats.FaintnessPercentage = Mathf.Clamp(stats.FaintnessPercentage, 0, 100);
         stats.Cleanliness += new UniformFloatDistribution(-stats.DeltaCleanliness, stats.DeltaCleanliness).Next(gen);
+        stats.Cleanliness = Mathf.Clamp(stats.Cleanliness, 0, 100);
 
 		datas.Speed = stats.MovementSpeed;
 		datas.Lostness = stats.LostAbility / 100;
@@ -498,7 +500,7 @@ public class Traveler : AEntity
 				coefSound /= 2;
 			float total = signs * coefSign + sound * coefSound;
 
-			datas.Lostness = Mathf.Clamp (datas.Lostness + ((total <= 0.1f || signs > 3f) ? 1 : -1) * stats.LostAbility * stats.LostAbility / 20000 * time, 0, 1);
+            datas.Lostness = Mathf.Clamp (datas.Lostness + ((total <= 0.1f || signs > 3f) ? 1 : -1) * stats.LostAbility * stats.LostAbility / 20000 * time * G.Sys.constants.lostMultiplier, 0, 1);
 		} else {
 			TileID[] validTile = new TileID[]{ TileID.PODOTACTILE, TileID.CONTROLELINE, TileID.ELEVATOR, TileID.ESCALATOR, TileID.OUT, TileID.METRO};
 			bool isOn = false;
@@ -591,5 +593,9 @@ public class Traveler : AEntity
         var door = G.Sys.tilemap.GetTileOfTypeAt(posDoor, TileID.OUT) as ExitsTile;
         if (door != null)
             targetName = door.exitname;
+
+        stats.HaveTicket = true;
+        isTicketLost = false;
+        path.canPassControl = true;
     }
 }

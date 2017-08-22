@@ -59,6 +59,8 @@ public class Constants : MonoBehaviour
 	public float ElevatorAttraction = .1f;
     [Tooltip("Multiplieur de vitesse lors de l'alerte incendie pour les voyageurs et agents")]
     public float fireAlertSpeedMultiplier = 2;
+    [Tooltip("Change la vitesse de perte de tous les voyageurs")]
+    public float lostMultiplier = 1;
 
 	public List<Color> TravelerColors;
 

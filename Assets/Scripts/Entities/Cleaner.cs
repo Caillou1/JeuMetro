@@ -33,6 +33,12 @@ public class Cleaner : AEntity
 		}
 
 		lastPos = transform.position;
+
+        if (G.Sys.gameManager.FireAlert && G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.OUT))
+        {
+            Destroy(gameObject);
+            return;
+        }
 	}
 
 	void OnDestroy() {
