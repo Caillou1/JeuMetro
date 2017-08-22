@@ -594,5 +594,9 @@ public class Traveler : AEntity
         var door = G.Sys.tilemap.GetTileOfTypeAt(posDoor, TileID.OUT) as ExitsTile;
         if (door != null)
             targetName = door.exitname;
+
+        stats.HaveTicket = true;
+        isTicketLost = false;
+        path.canPassControl = true;
     }
 }
