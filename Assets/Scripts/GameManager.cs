@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 	public GameObject wastePrefab;
 	public GameObject emptyWall;
 	public GameObject underground;
+	public GameObject podotactile;
 	public bool enableTravelers;
 	public bool SetMaxTravelers;
 	[ShowIf("SetMaxTravelers")]

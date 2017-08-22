@@ -15,11 +15,26 @@ public class SelectionManager : MonoBehaviour {
 	private GameObject changeside;
 	private Button validateButton;
 
+	private GameObject gameCanvas;
+	private GameObject leftButton;
+	private GameObject rightButton;
+	private GameObject forwardButton;
+	private GameObject backButton;
+
+	private bool showArrows;
+
 	private int Price = -1;
 
 	void Awake() {
 		G.Sys.selectionManager = this;
 		tf = transform;
+
+		gameCanvas = GameObject.Find ("GameCanvas").gameObject;
+		leftButton = gameCanvas.transform.Find ("Left").gameObject;
+		rightButton = gameCanvas.transform.Find ("Right").gameObject;
+		forwardButton = gameCanvas.transform.Find ("Forward").gameObject;
+		backButton = gameCanvas.transform.Find ("Back").gameObject;
+		gameCanvas.SetActive (false);
 
 		validate = tf.Find ("validate").gameObject;
 		rotate = tf.Find ("rotate").gameObject;
@@ -33,8 +48,57 @@ public class SelectionManager : MonoBehaviour {
 		Hide (false);
 	}
 
+	void ShowArrows() {
+		showArrows = true;
+		var objTf = obj.transform;
+
+		gameCanvas.SetActive (true);
+		gameCanvas.transform.position = objTf.position + Vector3.up * .1f;
+
+		leftButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.left));
+		rightButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.right));
+		forwardButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.forward));
+		backButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.back));
+	}
+
+	void HideArrows() {
+		showArrows = false;
+		gameCanvas.SetActive (false);
+	}
+
+	public void Left() {
+		SpawnPodotactile (obj.transform.position + Vector3.left);
+	}
+
+	public void Right() {
+		SpawnPodotactile (obj.transform.position + Vector3.right);
+	}
+
+	public void Forward() {
+		SpawnPodotactile (obj.transform.position + Vector3.forward);
+	}
+
+	public void Back() {
+		SpawnPodotactile (obj.transform.position + Vector3.back);
+	}
+
+	public void SpawnPodotactile(Vector3 pos) {
+		obj.ValidateObject ();
+		Hide (true);
+		var o = Instantiate (G.Sys.gameManager.podotactile, new Vector3i (pos).toVector3 (), Quaternion.identity);
+		var dad = o.GetComponent<DragAndDrop> ();
+		dad.IsBought = false;
+		Show (dad);
+		o.GetComponent<PodotactileTile> ().Connect (true);
+	}
+
 	public void Show(DragAndDrop o) {
 		if (o != null) {
+			var tile = o.GetComponent<ATile> ();
+			tile.Unregister ();
+			G.Sys.cameraController.IsSelecting = true;
+
+			o.IsSelected = true;
 			Price = o.Price;
 			obj = o;
 			tf.position = G.Sys.MainCamera.WorldToScreenPoint (obj.transform.position);
@@ -44,11 +108,15 @@ public class SelectionManager : MonoBehaviour {
 			delete.SetActive (true);
 
 			var e = obj.GetComponent<EscalatorTile> ();
+			var p = obj.GetComponent<PodotactileTile> ();
 			if (e != null) {
-				rotate.transform.localPosition = Vector3.zero - Vector3.up * 50;
+				rotate.transform.localPosition = Vector3.zero - Vector3.up * 150;
 				changeside.SetActive (true);
+			} else if (p != null) {
+				rotate.transform.localPosition = Vector3.zero - Vector3.up * 200;
+				ShowArrows ();
 			} else {
-				rotate.transform.localPosition = Vector3.zero - Vector3.up * 100;
+				rotate.transform.localPosition = Vector3.zero - Vector3.up * 200;
 			}
 
 			obj.CanDrag = true;
@@ -60,8 +128,10 @@ public class SelectionManager : MonoBehaviour {
 
 	public void Show(DragAndDropEntity e, bool StopMovement) {
 		if (e != null) {
+			G.Sys.cameraController.IsSelecting = true;
 			ent = e;
 			ent.IsSelected = true;
+			Price = e.Price;
 			tf.position = G.Sys.MainCamera.WorldToScreenPoint (ent.transform.position);
 			if(StopMovement)
 				ent.GetComponent<AEntity> ().SetIsStopped (true);
@@ -105,6 +175,7 @@ public class SelectionManager : MonoBehaviour {
 		if (obj != null) {
 			obj.ActivateCollisions ();
 			if (register) {
+				obj.IsSelected = false;
 				obj.GetComponent<ATile> ().Register ();
 				G.Sys.cameraController.IsSelecting = false;
 				obj.GetComponent<DragAndDrop> ().ToggleOutline (false);
@@ -112,6 +183,7 @@ public class SelectionManager : MonoBehaviour {
 		}
 		obj = null;
 
+		HideArrows ();
 		validate.SetActive (false);
 		rotate.SetActive (false);
 		delete.SetActive (false);
@@ -171,7 +243,25 @@ public class SelectionManager : MonoBehaviour {
 		}
 
 		if (Price > -1) {
-			validateButton.interactable = G.Sys.gameManager.GetMoney () >= Price;
+			bool b = G.Sys.gameManager.GetMoney () >= Price;
+			validateButton.interactable = b;
+
+			if(showArrows) {
+				leftButton.GetComponent<Button> ().interactable = b;
+				rightButton.GetComponent<Button> ().interactable = b;
+				forwardButton.GetComponent<Button> ().interactable = b;
+				backButton.GetComponent<Button> ().interactable = b;
+			}
+		}
+
+		if (showArrows && obj != null) {
+			var objTf = obj.transform;
+			gameCanvas.transform.position = objTf.position + Vector3.up * .1f;
+
+			leftButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.left));
+			rightButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.right));
+			forwardButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.forward));
+			backButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.back));
 		}
 	}
 }
