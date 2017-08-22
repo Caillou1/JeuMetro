@@ -30,6 +30,8 @@ public class Traveler : AEntity
 
 	private Vector3 lastPos;
 
+	private bool isFallen = false;
+
 	private bool CanLookForElevator;
 
 	protected override void OnAwake ()
@@ -59,6 +61,7 @@ public class Traveler : AEntity
         checkOnControleLine();
 
 		anim.SetFloat ("MovementSpeed", agent.velocity.magnitude);
+		anim.SetBool ("Falling", isFallen);
 
 		if ((lastPos - transform.position).magnitude >= .001f) {
 			anim.SetBool ("Walking", true);
@@ -212,7 +215,7 @@ public class Traveler : AEntity
 
 				if (chance && !path.haveAction (ActionType.FAINT)) {
 					datas.Tiredness = 1f;
-					anim.SetBool ("Falling", true);
+					isFallen = true;
 					path.addAction (new StairsFallAction (this, stairs));
 					CanFall = false;
 				}
@@ -222,7 +225,7 @@ public class Traveler : AEntity
 
 	public void GetUp() {
 		StartCoroutine (CanFallDelay ());
-		anim.SetBool ("Falling", false);
+		isFallen = false;
 	}
 		
 	IEnumerator CanFallDelay() {
@@ -238,12 +241,12 @@ public class Traveler : AEntity
 			foreach (var tile in tiles) {
 				if (tile.type == TileID.STAIRS) {
 					path.addAction (new StairsFallAction (this, tile as StairsTile));
-					anim.SetBool ("Falling", true);
+					isFallen = true;
 					return;
 				}
 			}
 
-			anim.SetBool ("Falling", true);
+			isFallen = true;
 			path.addAction (new FaintAction (this));
 			return;
 		}
