@@ -909,6 +909,26 @@ Prefab:
       propertyPath: caca
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114689265075685876, guid: 6f291861566d840feafdf9edcf6a9472,
+        type: 2}
+      propertyPath: lineColor0.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114689265075685876, guid: 6f291861566d840feafdf9edcf6a9472,
+        type: 2}
+      propertyPath: sourceCamera
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114689265075685876, guid: 6f291861566d840feafdf9edcf6a9472,
+        type: 2}
+      propertyPath: outlineCamera
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114689265075685876, guid: 6f291861566d840feafdf9edcf6a9472,
+        type: 2}
+      propertyPath: lineColor0.g
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6f291861566d840feafdf9edcf6a9472, type: 2}
   m_IsPrefabParent: 0
@@ -1353,6 +1373,44 @@ Prefab:
         type: 2}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1436935498312770, guid: c39d285f690f14e74927f54d61e731f4, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138914984701986, guid: c39d285f690f14e74927f54d61e731f4, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114937208274726036, guid: c39d285f690f14e74927f54d61e731f4,
+        type: 2}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114937208274726036, guid: c39d285f690f14e74927f54d61e731f4,
+        type: 2}
+      propertyPath: m_Transition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114937208274726036, guid: c39d285f690f14e74927f54d61e731f4,
+        type: 2}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 114937208274726036, guid: c39d285f690f14e74927f54d61e731f4,
+        type: 2}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 114937208274726036, guid: c39d285f690f14e74927f54d61e731f4,
+        type: 2}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 0.78431374
+      objectReference: {fileID: 0}
+    - target: {fileID: 114937208274726036, guid: c39d285f690f14e74927f54d61e731f4,
+        type: 2}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 0.785
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c39d285f690f14e74927f54d61e731f4, type: 2}
@@ -13984,6 +14042,11 @@ Prefab:
         type: 2}
       propertyPath: ElevatorAttraction
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: StartingMoney
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}

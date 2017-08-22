@@ -27,11 +27,12 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	private Tweener rotTween;
-
+	private Vector3 originalScale;
 	private cakeslice.Outline[] outlines;
 
 	void Awake() {
 		tf = transform;
+		originalScale = tf.localScale;
 		outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
 		IsWalled = false;
 		bought = true;
@@ -45,7 +46,7 @@ public class DragAndDrop : MonoBehaviour{
 	void Start() {
 		CheckCanPlace ();
 		CheckRotation ();
-		ToggleOutline (false);
+		//ToggleOutline (false);
 		isRotating = false;
 	}
 
@@ -82,6 +83,7 @@ public class DragAndDrop : MonoBehaviour{
 
 	public void StartDrag() {
 		if (!IsBought) {
+			ToggleOutline (true);
 			G.Sys.selectionManager.Hide (false);
 			G.Sys.cameraController.CanDrag = false;
 			Dragging = true;
@@ -95,16 +97,39 @@ public class DragAndDrop : MonoBehaviour{
 			hits = Physics.RaycastAll (ray);
 			RaycastHit hit = FindGround (hits);
 
-			if (hit.transform != null) {
+			if (hit.transform != null && !G.Sys.cameraController.IsOnUI ()) {
 				Vector3 objPos = hit.transform.position;
 				tf.position = new Vector3 (Mathf.RoundToInt (objPos.x), Mathf.RoundToInt (objPos.y), Mathf.RoundToInt (objPos.z));
+			} else if (hit.transform != null) {
+				Vector3 objPos = hit.point;
+				tf.position = new Vector3 (objPos.x, Mathf.RoundToInt (objPos.y), objPos.z);
 			} else {
 				Vector3 pos = ray.origin + (ray.direction * 1000);
-				tf.position = new Vector3 (Mathf.RoundToInt (pos.x), Mathf.RoundToInt (pos.y), Mathf.RoundToInt (pos.z));
+				tf.position = new Vector3 (pos.x, Mathf.RoundToInt (pos.y), pos.z);
 			}
 
-			CheckCanPlace ();
 			CheckRotation ();
+			CheckCanPlace ();
+
+			if (canPlace && !G.Sys.cameraController.IsOnUI ()) {
+				cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
+			} else {
+				cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
+			}
+
+			if (G.Sys.cameraController.IsOnUI ()) {
+				tf.localScale = originalScale / 2;
+			} else {
+				tf.localScale = originalScale;
+			}
+		} else {
+			CheckCanPlace ();
+
+			if (canPlace) {
+				cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
+			} else {
+				cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
+			}
 		}
 	}
 
