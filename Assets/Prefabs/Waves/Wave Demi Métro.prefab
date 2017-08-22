@@ -4781,8 +4781,8 @@ MonoBehaviour:
   stats:
     Type: 0
     RestPlaceAttraction: 20
-    Cleanliness: 80
-    DeltaCleanliness: 30
+    Cleanliness: 90
+    DeltaCleanliness: 10
     FaintnessPercentage: 6
     DeltaFainteness: 25.1
     FraudPercentage: 40
@@ -4804,6 +4804,7 @@ MonoBehaviour:
     Hunger: 0
     Fraud: 0
     LostNoTicket: 0
+  anim: {fileID: 0}
 --- !u!114 &114710972938776158
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4818,8 +4819,8 @@ MonoBehaviour:
   stats:
     Type: 0
     RestPlaceAttraction: 20
-    Cleanliness: 80
-    DeltaCleanliness: 30
+    Cleanliness: 90
+    DeltaCleanliness: 10
     FaintnessPercentage: 6
     DeltaFainteness: 25.1
     FraudPercentage: 40
@@ -4841,6 +4842,7 @@ MonoBehaviour:
     Hunger: 0
     Fraud: 0
     LostNoTicket: 0
+  anim: {fileID: 0}
 --- !u!114 &114765159234190358
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4855,8 +4857,8 @@ MonoBehaviour:
   stats:
     Type: 0
     RestPlaceAttraction: 20
-    Cleanliness: 80
-    DeltaCleanliness: 30
+    Cleanliness: 90
+    DeltaCleanliness: 10
     FaintnessPercentage: 6
     DeltaFainteness: 25.1
     FraudPercentage: 40
@@ -4878,6 +4880,7 @@ MonoBehaviour:
     Hunger: 0
     Fraud: 0
     LostNoTicket: 0
+  anim: {fileID: 0}
 --- !u!114 &114767974915134202
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4892,8 +4895,8 @@ MonoBehaviour:
   stats:
     Type: 0
     RestPlaceAttraction: 25
-    Cleanliness: 80
-    DeltaCleanliness: 30
+    Cleanliness: 20
+    DeltaCleanliness: 50
     FaintnessPercentage: 6
     DeltaFainteness: 25.1
     FraudPercentage: 80
@@ -4915,6 +4918,7 @@ MonoBehaviour:
     Hunger: 0
     Fraud: 0
     LostNoTicket: 0
+  anim: {fileID: 0}
 --- !u!136 &136242772140639228
 CapsuleCollider:
   m_ObjectHideFlags: 1

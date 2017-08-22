@@ -3342,12 +3342,42 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
       propertyPath: metroWaves.Array.data[0].array.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: metroWaves.Array.data[1].array.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[2].array.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[3].array.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[4].array.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4972857456900274, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
@@ -3380,7 +3410,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4972857456900274, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -3521,6 +3551,273 @@ Prefab:
       propertyPath: metroWaves.Array.data[1].array.Array.data[1].Wave
       value: 
       objectReference: {fileID: 1904513924341212, guid: cc7542a098f38d849a58d78762850658,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[2].array.Array.data[0].MetroObject
+      value: 
+      objectReference: {fileID: 2072934331}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[2].array.Array.data[1].MetroObject
+      value: 
+      objectReference: {fileID: 1157956401}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.data[3].Wave
+      value: 
+      objectReference: {fileID: 1427005143703886, guid: 64e4020c1ebb68144a3dbc3ce04da6e4,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.data[3].Delay
+      value: 10.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.data[4].Wave
+      value: 
+      objectReference: {fileID: 1427005143703886, guid: 85a0113c9ee97d744937cb59431c42c6,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.data[4].Delay
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.data[3].Entrance
+      value: 
+      objectReference: {fileID: 1221302364}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.data[4].Entrance
+      value: 
+      objectReference: {fileID: 1221302364}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[0].array.Array.data[0].Wave
+      value: 
+      objectReference: {fileID: 1116144661974192, guid: 7e25f361276e7be4787df6b8981303f6,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[0].array.Array.data[1].Wave
+      value: 
+      objectReference: {fileID: 1131179153181814, guid: 2a06ec4477e01044cb9622c8f397cf39,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.data[1].Wave
+      value: 
+      objectReference: {fileID: 1131179153181814, guid: 2a06ec4477e01044cb9622c8f397cf39,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.data[2].Wave
+      value: 
+      objectReference: {fileID: 1131179153181814, guid: 2a06ec4477e01044cb9622c8f397cf39,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.data[1].Delay
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.data[0].Wave
+      value: 
+      objectReference: {fileID: 1116144661974192, guid: 7e25f361276e7be4787df6b8981303f6,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.data[5].Wave
+      value: 
+      objectReference: {fileID: 1131179153181814, guid: 2a06ec4477e01044cb9622c8f397cf39,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[1].array.Array.data[0].delay
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[2].array.Array.data[0].delay
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.data[7].Entrance
+      value: 
+      objectReference: {fileID: 1164156842}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.data[8].Entrance
+      value: 
+      objectReference: {fileID: 1005052168}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.data[7].Wave
+      value: 
+      objectReference: {fileID: 1427005143703886, guid: 64e4020c1ebb68144a3dbc3ce04da6e4,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.data[8].Wave
+      value: 
+      objectReference: {fileID: 1427005143703886, guid: ca71d3952bbb2374586f4292795eaa2b,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.data[7].Delay
+      value: 15.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.data[8].Delay
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.data[9].Wave
+      value: 
+      objectReference: {fileID: 1131179153181814, guid: 2a06ec4477e01044cb9622c8f397cf39,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.data[9].Entrance
+      value: 
+      objectReference: {fileID: 1005052168}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[3].Wave
+      value: 
+      objectReference: {fileID: 1427005143703886, guid: 5422691bf868b364ab93023674217b31,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[4].Wave
+      value: 
+      objectReference: {fileID: 1427005143703886, guid: ca56a0338a3f02348b216c662f8c33ed,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[5].Wave
+      value: 
+      objectReference: {fileID: 1427005143703886, guid: 70dd836eefd90bd4db8297fc8ea824f8,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[3].Delay
+      value: 5.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[4].Delay
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[5].Delay
+      value: 5.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[6].Wave
+      value: 
+      objectReference: {fileID: 1131179153181814, guid: 2a06ec4477e01044cb9622c8f397cf39,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[7].Wave
+      value: 
+      objectReference: {fileID: 1131179153181814, guid: 2a06ec4477e01044cb9622c8f397cf39,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[3].Entrance
+      value: 
+      objectReference: {fileID: 1164156842}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[6].Entrance
+      value: 
+      objectReference: {fileID: 1164156842}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[7].Entrance
+      value: 
+      objectReference: {fileID: 1005052168}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[5].Entrance
+      value: 
+      objectReference: {fileID: 1005052168}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[3].array.Array.data[4].Entrance
+      value: 
+      objectReference: {fileID: 1164156842}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[2].array.Array.data[0].Wave
+      value: 
+      objectReference: {fileID: 1515202955301000, guid: b51e352169a291141ab893cadf35e016,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[2].array.Array.data[1].Wave
+      value: 
+      objectReference: {fileID: 1904513924341212, guid: cc7542a098f38d849a58d78762850658,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[3].array.Array.data[0].MetroObject
+      value: 
+      objectReference: {fileID: 2072934331}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[3].array.Array.data[1].MetroObject
+      value: 
+      objectReference: {fileID: 1157956401}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[3].array.Array.data[1].Wave
+      value: 
+      objectReference: {fileID: 1515202955301000, guid: b51e352169a291141ab893cadf35e016,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[3].array.Array.data[0].Wave
+      value: 
+      objectReference: {fileID: 1515202955301000, guid: b51e352169a291141ab893cadf35e016,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[3].array.Array.data[1].delay
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[4].array.Array.data[0].MetroObject
+      value: 
+      objectReference: {fileID: 2072934331}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[4].array.Array.data[1].MetroObject
+      value: 
+      objectReference: {fileID: 1157956401}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[4].array.Array.data[1].Wave
+      value: 
+      objectReference: {fileID: 1291282371005216, guid: 7e2653c2d24e9474083f589d306efdf9,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[4].array.Array.data[0].Wave
+      value: 
+      objectReference: {fileID: 1515202955301000, guid: b51e352169a291141ab893cadf35e016,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
