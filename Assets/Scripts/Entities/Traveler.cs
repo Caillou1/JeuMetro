@@ -577,8 +577,8 @@ public class Traveler : AEntity
 
         target = posDoor;
         exitType = ExitType.DOOR;
-        var d = G.Sys.tilemap.GetTileOfTypeAt(posDoor, TileID.OUT) as ExitsTile;
-        if (d != null)
-            targetName = d.exitname;
+        var door = G.Sys.tilemap.GetTileOfTypeAt(posDoor, TileID.OUT) as ExitsTile;
+        if (door != null)
+            targetName = door.exitname;
     }
 }
