@@ -26,11 +26,10 @@ public class Traveler : AEntity
 	private float ArrivalTime;
     private SubscriberList subscriberList = new SubscriberList();
 
-	private Animator anim;
+	[HideInInspector]
+	public Animator anim;
 
 	private Vector3 lastPos;
-
-	private bool isFallen = false;
 
 	private bool CanLookForElevator;
 
@@ -61,7 +60,7 @@ public class Traveler : AEntity
         checkOnControleLine();
 
 		anim.SetFloat ("MovementSpeed", agent.velocity.magnitude);
-		anim.SetBool ("Falling", isFallen);
+		anim.SetBool ("Falling", datas.Tiredness > 0.95f);
 
 		if ((lastPos - transform.position).magnitude >= .001f) {
 			anim.SetBool ("Walking", true);
@@ -209,7 +208,7 @@ public class Traveler : AEntity
 			var tilesFront = G.Sys.tilemap.at (transform.position + transform.forward);
 			var stairs = tilesFront.Find (x => x.type == TileID.STAIRS) as StairsTile;
 
-			if (stairs != null && !stairs.HasPodotactileOnFloor(Mathf.RoundToInt(transform.position.y))) {
+			if (stairs != null && stairs.IsOnStairsPath(new Vector3i(tf.position)) && !stairs.HasPodotactileOnFloor(Mathf.RoundToInt(transform.position.y))) {
 				float fallChance = G.Sys.constants.FallChance;
 
                 if (stats.Malvoyant)
@@ -222,7 +221,6 @@ public class Traveler : AEntity
 
 				if (chance && !path.haveAction (ActionType.FAINT)) {
 					datas.Tiredness = 1f;
-					isFallen = true;
 					path.addAction (new StairsFallAction (this, stairs));
 					CanFall = false;
 				}
@@ -232,7 +230,6 @@ public class Traveler : AEntity
 
 	public void GetUp() {
 		StartCoroutine (CanFallDelay ());
-		isFallen = false;
 	}
 		
 	IEnumerator CanFallDelay() {
@@ -248,12 +245,10 @@ public class Traveler : AEntity
 			foreach (var tile in tiles) {
 				if (tile.type == TileID.STAIRS) {
 					path.addAction (new StairsFallAction (this, tile as StairsTile));
-					isFallen = true;
 					return;
 				}
 			}
 
-			isFallen = true;
 			path.addAction (new FaintAction (this));
 			return;
 		}
