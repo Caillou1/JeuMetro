@@ -85,6 +85,9 @@ public class Traveler : AEntity
 
     void checkOnControleLine()
     {
+        if (G.Sys.gameManager.FireAlert)
+            return;
+        
 		if (G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.CONTROLELINE) != null)
 		{
 			isTicketLost = false;
@@ -155,6 +158,8 @@ public class Traveler : AEntity
 					if (p.status != NavMeshPathStatus.PathComplete)
 						CanTakeElevator = true;
 				}
+                if (stats.Type != TravelerType.WHEELCHAIR && G.Sys.gameManager.FireAlert)
+                    CanTakeElevator = false;
 
 				if (CanTakeElevator) {
 					for (int i = 0; i < possiblePath.Count; i++) {
@@ -249,7 +254,7 @@ public class Traveler : AEntity
 			path.addAction (new FaintAction (this));
 			return;
 		}
-		if (datas.Tiredness < (1f - stats.RestPlaceAttraction / 100f) || path.haveAction (ActionType.SIT))
+        if (datas.Tiredness < (1f - stats.RestPlaceAttraction / 100f) || path.haveAction(ActionType.SIT) || G.Sys.gameManager.FireAlert)
 			return;
 		var benchs = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.BENCH, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification);
 
@@ -274,6 +279,9 @@ public class Traveler : AEntity
 
 	void checkWaste()
 	{
+		if (G.Sys.gameManager.FireAlert)
+			return;
+        
 		if (datas.Waste < 0.01f || path.haveAction(ActionType.THROW_IN_BIN) || path.haveAction(ActionType.THROW_IN_GROUND))
 			return;
 
@@ -342,6 +350,9 @@ public class Traveler : AEntity
 
 	void checkHunger()
 	{
+		if (G.Sys.gameManager.FireAlert)
+			return;
+        
 		if (datas.Hunger < 0.95f || path.haveAction(ActionType.BUY_FOOD))
 			return;
 
@@ -382,6 +393,9 @@ public class Traveler : AEntity
 
 	void checkTicket ()
 	{
+		if (G.Sys.gameManager.FireAlert)
+			return;
+        
 		if (stats.HaveTicket || (datas.Fraud && !G.Sys.GetNearestAgent(transform.position, G.Sys.constants.TravelerDetectionRadius)) ||path.haveAction(ActionType.BUY_TICKET))
 			return;
 
@@ -577,8 +591,8 @@ public class Traveler : AEntity
 
         target = posDoor;
         exitType = ExitType.DOOR;
-        var d = G.Sys.tilemap.GetTileOfTypeAt(posDoor, TileID.OUT) as ExitsTile;
-        if (d != null)
-            targetName = d.exitname;
+        var door = G.Sys.tilemap.GetTileOfTypeAt(posDoor, TileID.OUT) as ExitsTile;
+        if (door != null)
+            targetName = door.exitname;
     }
 }

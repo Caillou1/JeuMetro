@@ -18,6 +18,8 @@ public class EscalatorTile : ATile
 	private List<NavMeshLink> linksUp = new List<NavMeshLink> ();
 	private List<NavMeshLink> linksDown = new List<NavMeshLink> ();
 
+    SubscriberList subscriberlist = new SubscriberList();
+
     public EscalatorSide side
     {
         set
@@ -63,6 +65,9 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up + dir, this, Tilemap.STAIRS_PRIORITY);
 
 		side = _side;
+
+        subscriberlist.Add(new Event<StartFireAlertEvent>.Subscriber(onfireAlert));
+        subscriberlist.Subscribe();
     }
 
 	void Start() {
@@ -82,5 +87,21 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.delTile (transform.position + Vector3.up + dir, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up + dir, this);
+
+        subscriberlist.Unsubscribe();
 	}
+
+	public bool IsOnEscalatorPath(Vector3i pos) {
+		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+
+		Vector3i v1 = new Vector3i (transform.position + dir * 2);
+		Vector3i v2 = new Vector3i (transform.position - dir + Vector3.up * 2);
+
+		return (pos.equal (v1) || pos.equal (v2));
+	}
+
+    void onfireAlert(StartFireAlertEvent e)
+    {
+        
+    }
 }
