@@ -3098,7 +3098,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4499377141001474, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -4
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 4499377141001474, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_LocalPosition.z
@@ -4301,7 +4301,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4506200549870986, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -11.5
+      value: -11
       objectReference: {fileID: 0}
     - target: {fileID: 4506200549870986, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
       propertyPath: m_LocalPosition.y
@@ -8728,7 +8728,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4499377141001474, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -4
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 4499377141001474, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_LocalPosition.z
@@ -11098,6 +11098,11 @@ Prefab:
       propertyPath: WorkerDetectionRadius
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: ElevatorAttraction
+      value: 0.4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}
   m_IsPrefabParent: 0
@@ -11838,7 +11843,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4506200549870986, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -20.5
+      value: -21
       objectReference: {fileID: 0}
     - target: {fileID: 4506200549870986, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
       propertyPath: m_LocalRotation.x
