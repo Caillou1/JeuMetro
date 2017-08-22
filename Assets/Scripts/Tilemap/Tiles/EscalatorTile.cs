@@ -18,6 +18,10 @@ public class EscalatorTile : ATile
 	private List<NavMeshLink> linksUp = new List<NavMeshLink> ();
 	private List<NavMeshLink> linksDown = new List<NavMeshLink> ();
 
+    private GameObject wall1;
+    private GameObject wall2;
+    private GameObject ground;
+
     SubscriberList subscriberlist = new SubscriberList();
 
     public EscalatorSide side
@@ -25,7 +29,8 @@ public class EscalatorTile : ATile
         set
         {
 			_side = value;
-			anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
+            if(!G.Sys.gameManager.FireAlert)
+			    anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
 
 			foreach (var l in linksUp)
 				l.enabled = _side == EscalatorSide.UP;
@@ -51,6 +56,11 @@ public class EscalatorTile : ATile
 				linksUp.Add (l);
 		}
 
+        wall1 = transform.Find("W1").gameObject;
+        wall2 = transform.Find("W2").gameObject;
+        ground = transform.Find("Quad").gameObject;
+        ground.SetActive(false);
+
 		anim = transform.Find ("mesh").GetComponent<Animator> ();
 
 		type = TileID.ESCALATOR;
@@ -71,9 +81,9 @@ public class EscalatorTile : ATile
     }
 
 	void Start() {
-		anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
-
-		Invoke ("Stop", 5f);
+        if (!G.Sys.gameManager.FireAlert)
+            anim.SetBool("Reverse", _side == EscalatorSide.DOWN);
+        else onfireAlert(new StartFireAlertEvent());
 	}
 
 	protected override void OnDestroy()
@@ -102,6 +112,13 @@ public class EscalatorTile : ATile
 
     void onfireAlert(StartFireAlertEvent e)
     {
-        
+        Stop();
+        ground.SetActive(true);
+        wall1.SetActive(false);
+        wall2.SetActive(false);
+        foreach (var l in linksUp)
+            l.enabled = false;
+        foreach (var l in linksDown)
+            l.enabled = false;
     }
 }
