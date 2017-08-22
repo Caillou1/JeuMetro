@@ -168,7 +168,7 @@ public class Traveler : AEntity
 						ElevatorTile tile = possiblePath [i].Second;
 						int floor = ((i + 1) < possiblePath.Count) ? Mathf.RoundToInt (possiblePath [i + 1].Second.GetWaitZone (possiblePath [i].First).y) : Mathf.RoundToInt (path.destnation.y);
 						int priority = (possiblePath.Count - i) * 2;
-						path.addAction (new WaitForElevatorAction (this, pos, tile, floor, priority));
+						path.addAction (new WaitForElevatorAction (this, pos, tile, floor, priority, stats.Type != TravelerType.WHEELCHAIR));
 					}
 				} else {
 					CanLookForElevator = false;
