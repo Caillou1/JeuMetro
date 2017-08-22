@@ -18,6 +18,8 @@ public class EscalatorTile : ATile
 	private List<NavMeshLink> linksUp = new List<NavMeshLink> ();
 	private List<NavMeshLink> linksDown = new List<NavMeshLink> ();
 
+    SubscriberList subscriberlist = new SubscriberList();
+
     public EscalatorSide side
     {
         set
@@ -59,6 +61,9 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up + dir, this, Tilemap.STAIRS_PRIORITY);
 
 		side = _side;
+
+        subscriberlist.Add(new Event<StartFireAlertEvent>.Subscriber(onfireAlert));
+        subscriberlist.Subscribe();
     }
 
 	void Start() {
@@ -76,5 +81,12 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.delTile (transform.position + Vector3.up + dir, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up + dir, this);
+
+        subscriberlist.Unsubscribe();
 	}
+
+    void onfireAlert(StartFireAlertEvent e)
+    {
+        
+    }
 }
