@@ -60,7 +60,6 @@ public class Traveler : AEntity
         checkOnControleLine();
 
 		anim.SetFloat ("MovementSpeed", agent.velocity.magnitude);
-		anim.SetBool ("Falling", datas.Tiredness > 0.95f);
 
 		if ((lastPos - transform.position).magnitude >= .001f) {
 			anim.SetBool ("Walking", true);
