@@ -68,18 +68,22 @@ public class SelectionManager : MonoBehaviour {
 
 	public void Left() {
 		SpawnPodotactile (obj.transform.position + Vector3.left);
+		G.Sys.cameraController.Move (Vector3.left);
 	}
 
 	public void Right() {
 		SpawnPodotactile (obj.transform.position + Vector3.right);
+		G.Sys.cameraController.Move (Vector3.right);
 	}
 
 	public void Forward() {
 		SpawnPodotactile (obj.transform.position + Vector3.forward);
+		G.Sys.cameraController.Move (Vector3.forward);
 	}
 
 	public void Back() {
 		SpawnPodotactile (obj.transform.position + Vector3.back);
+		G.Sys.cameraController.Move (Vector3.back);
 	}
 
 	public void SpawnPodotactile(Vector3 pos) {

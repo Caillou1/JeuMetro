@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
 		InstantiateColliders ();
 		StartCoroutine (checkFaintingTravelers ());
 		StartCoroutine (WaitForLose ());
+		G.Sys.menuManager.SetTravelerNumber (0, MaxTravelerBeforeLose);
 	}
 
 	IEnumerator WaitForLose() {

@@ -213,9 +213,9 @@ public class MenuManager : MonoBehaviour {
 			WaveNumber.text = wave + "/" + maxWave;
 	}
 
-	public void SetTravelerNumber(int traveler) {
+	public void SetTravelerNumber(int traveler, int maxTraveler) {
 		if(TravelerNumber != null)
-			TravelerNumber.text = traveler + "";
+			TravelerNumber.text = traveler + "/" + maxTraveler;
 	}
 
 	public void SetMoneyNumber(int money) {

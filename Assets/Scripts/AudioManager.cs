@@ -88,7 +88,6 @@ public class AudioManager : MonoBehaviour {
 	private AudioSource musicSource;
 
 	void Awake() {
-		G.Sys.audioManager = this;
 		soundSource = GetComponent<AudioSource> ();
 		musicSource = transform.GetChild (0).GetComponent<AudioSource> ();
 		musicVolume = PlayerPrefs.GetFloat ("musicVolume", 1f);
@@ -110,7 +109,10 @@ public class AudioManager : MonoBehaviour {
 			StartCoroutine (WaitForEndOfStart ());
 		}
 
-		DontDestroyOnLoad (gameObject);
+		if (G.Sys.audioManager == null) {
+			G.Sys.audioManager = this;
+			DontDestroyOnLoad (gameObject);
+		}
 	}
 
 	IEnumerator WaitForEndOfStart() {
