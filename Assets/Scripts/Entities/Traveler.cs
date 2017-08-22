@@ -73,7 +73,7 @@ public class Traveler : AEntity
 	{
         if (exitType == ExitType.DOOR) {
             var tile = G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.OUT) as ExitsTile;
-            if (tile != null && tile.name == targetName) 
+            if (tile != null && tile.exitname == targetName) 
 			    Destroy (gameObject);
 			return;
 		}
@@ -577,5 +577,8 @@ public class Traveler : AEntity
 
         target = posDoor;
         exitType = ExitType.DOOR;
+        var d = G.Sys.tilemap.GetTileOfTypeAt(posDoor, TileID.OUT) as ExitsTile;
+        if (d != null)
+            targetName = d.exitname;
     }
 }
