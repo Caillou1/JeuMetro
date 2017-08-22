@@ -134,6 +134,7 @@ public class MenuManager : MonoBehaviour {
 		PersonnelUI.SetActive (false);
 		SGPUI.SetActive (false);
         WinEndGameUI.SetActive(false);
+		LoseEndGameUI.SetActive (false);
 		var obj = GetCorrespondantUI (CurrentMenu);
 		if (obj != null)
 			obj.SetActive (true);
