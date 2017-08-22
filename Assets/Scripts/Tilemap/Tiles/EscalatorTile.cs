@@ -83,4 +83,13 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up + dir, this);
 	}
+
+	public bool IsOnEscalatorPath(Vector3i pos) {
+		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+
+		Vector3i v1 = new Vector3i (transform.position + dir * 2);
+		Vector3i v2 = new Vector3i (transform.position - dir + Vector3.up * 2);
+
+		return (pos.equal (v1) || pos.equal (v2));
+	}
 }
