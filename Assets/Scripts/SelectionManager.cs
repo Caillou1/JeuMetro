@@ -13,6 +13,9 @@ public class SelectionManager : MonoBehaviour {
 	private GameObject rotate;
 	private GameObject delete;
 	private GameObject changeside;
+	private Button validateButton;
+
+	private int Price = -1;
 
 	void Awake() {
 		G.Sys.selectionManager = this;
@@ -22,6 +25,8 @@ public class SelectionManager : MonoBehaviour {
 		rotate = tf.Find ("rotate").gameObject;
 		delete = tf.Find ("delete").gameObject;
 		changeside = tf.Find ("changeside").gameObject;
+
+		validateButton = validate.GetComponent<Button> ();
 	}
 
 	void Start() {
@@ -30,6 +35,7 @@ public class SelectionManager : MonoBehaviour {
 
 	public void Show(DragAndDrop o) {
 		if (o != null) {
+			Price = o.Price;
 			obj = o;
 			tf.position = G.Sys.MainCamera.WorldToScreenPoint (obj.transform.position);
 
@@ -162,6 +168,10 @@ public class SelectionManager : MonoBehaviour {
 		}
 		if (ent != null) {
 			tf.position = G.Sys.MainCamera.WorldToScreenPoint (ent.transform.position);
+		}
+
+		if (Price > -1) {
+			validateButton.interactable = G.Sys.gameManager.GetMoney () >= Price;
 		}
 	}
 }

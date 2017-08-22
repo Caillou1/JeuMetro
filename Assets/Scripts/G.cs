@@ -13,6 +13,7 @@ public sealed class G
 	private List<Agent> agents = new List<Agent> ();
 	private List<Cleaner> cleaners = new List<Cleaner> ();
 	private List<Metro> metros = new List<Metro> ();
+	private Dictionary<TileID, int> disposablesCount;
 
 	private Camera _camera;
     private GameManager _gameManager;
@@ -195,6 +196,25 @@ public sealed class G
 		metros.Clear ();
 	}
 
+	public void AddDisposable(TileID id) {
+		if (disposablesCount == null)
+			disposablesCount = new Dictionary<TileID, int> ();
+		
+		if (disposablesCount.ContainsKey (id)) {
+			disposablesCount [id]++;
+		} else {
+			disposablesCount.Add (id, 1);
+		}
+	}
+
+	public int GetDisposableCount(TileID id) {
+		if (disposablesCount.ContainsKey (id)) {
+			return disposablesCount [id];
+		} else {
+			return 0;
+		}
+	}
+
 	public AudioManager audioManager {
 		get { return _audioManager; }
 		set {
@@ -237,6 +257,18 @@ public sealed class G
 			if (_constants != null)
 				Debug.Log ("2 constants instanciated !");
 			_constants = value;
+		}
+	}
+
+	public int agentsCount {
+		get {
+			return agents.Count;
+		}
+	}
+
+	public int cleanerCount {
+		get {
+			return cleaners.Count;
 		}
 	}
 }

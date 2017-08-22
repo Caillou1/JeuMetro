@@ -42,7 +42,7 @@ public class StairsTile : ATile
 	}
 
 	public bool HasPodotactileOnFloor(int floor) {
-		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+		var dir = Orienter.orientationToDir3 (Orienter.angleToOrientation (transform.rotation.eulerAngles.y));
 		Vector3 posToCheck;
 
 		if (floor == Mathf.RoundToInt (transform.position.y)) {
@@ -52,5 +52,14 @@ public class StairsTile : ATile
 		}
 			
 		return G.Sys.tilemap.at (posToCheck).Exists (x => x.type == TileID.PODOTACTILE);
+	}
+
+	public bool IsOnStairsPath(Vector3i pos) {
+		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+
+		Vector3i v1 = new Vector3i (transform.position + dir * 2);
+		Vector3i v2 = new Vector3i (transform.position - dir + Vector3.up * 2);
+
+		return (pos.equal (v1) || pos.equal (v2));
 	}
 }

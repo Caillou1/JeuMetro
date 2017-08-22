@@ -36,6 +36,10 @@ public class EscalatorTile : ATile
         get { return _side; }
     }
 
+	public void Stop() {
+		anim.SetBool ("Stop", true);
+	}
+
 	protected override void Awake()
 	{
 		foreach (var l in GetComponents<NavMeshLink>()) {
@@ -68,6 +72,8 @@ public class EscalatorTile : ATile
 
 	void Start() {
 		anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
+
+		Invoke ("Stop", 5f);
 	}
 
 	protected override void OnDestroy()
@@ -83,6 +89,15 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up + dir, this);
 
         subscriberlist.Unsubscribe();
+	}
+
+	public bool IsOnEscalatorPath(Vector3i pos) {
+		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+
+		Vector3i v1 = new Vector3i (transform.position + dir * 2);
+		Vector3i v2 = new Vector3i (transform.position - dir + Vector3.up * 2);
+
+		return (pos.equal (v1) || pos.equal (v2));
 	}
 
     void onfireAlert(StartFireAlertEvent e)

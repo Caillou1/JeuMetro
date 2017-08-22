@@ -124,7 +124,7 @@ public class CameraController : MonoBehaviour {
 		}
 	}
 
-	bool IsOnUI() {
+	public bool IsOnUI() {
 		List<RaycastResult> raycastResults = new List<RaycastResult> ();
 		PointerEventData ped = new PointerEventData (EventSystem.current);
 		ped.position = Input.mousePosition;
