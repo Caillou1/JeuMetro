@@ -54,7 +54,7 @@ public class DragAndDrop : MonoBehaviour{
 
 		var v = G.Sys.tilemap.at (tf.position);
 		var p = GetComponent<PodotactileTile> ();
-		if (v.Count == 0 && ((p!=null && v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.ESCALATOR) && !HasTileOfType(v, TileID.STAIRS) && !HasTileOfType(v, TileID.WAIT_ZONE)) || (p==null && v[0].type != TileID.GROUND)))
+		if (v.Count == 0 || ((p!=null && v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.ESCALATOR) && !HasTileOfType(v, TileID.STAIRS) && !HasTileOfType(v, TileID.WAIT_ZONE)) || (p==null && v[0].type != TileID.GROUND)))
 			canPlace = false;
 	}
 
@@ -165,6 +165,10 @@ public class DragAndDrop : MonoBehaviour{
 			return true;
 		}
 		return false;
+	}
+
+	protected virtual void OnBuy() {
+		G.Sys.AddDisposable (TileID.PODOTACTILE);
 	}
 
 	IEnumerator eventCoroutine()

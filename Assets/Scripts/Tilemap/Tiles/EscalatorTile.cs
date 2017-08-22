@@ -34,6 +34,10 @@ public class EscalatorTile : ATile
         get { return _side; }
     }
 
+	public void Stop() {
+		anim.SetBool ("Stop", true);
+	}
+
 	protected override void Awake()
 	{
 		foreach (var l in GetComponents<NavMeshLink>()) {
@@ -63,6 +67,8 @@ public class EscalatorTile : ATile
 
 	void Start() {
 		anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
+
+		Invoke ("Stop", 5f);
 	}
 
 	protected override void OnDestroy()

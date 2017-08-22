@@ -59,9 +59,9 @@ public class CameraController : MonoBehaviour {
 					StopCoroutine (PinchingCoroutine);
 				pinching = true;
 				if (deltaMagnitudeDiff < 0f) {
-					G.Sys.menuManager.Zoom (4f);
+					G.Sys.menuManager.Zoom (2f);
 				} else if (deltaMagnitudeDiff > 0f) {
-					G.Sys.menuManager.Zoom (-4f);
+					G.Sys.menuManager.Zoom (-2f);
 				}
 			}
 		} else {
@@ -70,23 +70,21 @@ public class CameraController : MonoBehaviour {
 				StartCoroutine (PinchingCoroutine);
 			}
 			if (CanDrag && Input.touchCount <= 1) {
-				List<RaycastResult> raycastResults = new List<RaycastResult> ();
-				if (Input.GetMouseButtonDown (0)) {
-					PointerEventData ped = new PointerEventData (EventSystem.current);
-					ped.position = Input.mousePosition;
-					EventSystem.current.RaycastAll (ped, raycastResults);
-
-					if (raycastResults.Count == 0) {
+				if (Input.GetMouseButtonDown (0) || Input.GetMouseButtonDown(2)) {
+					if (!IsOnUI()) {
 						dragOrigin = Input.mousePosition;
-						canSelect = true;
-						SelectCoroutine = Select ();
-						StartCoroutine (SelectCoroutine);
+						if (Input.GetMouseButtonDown (0)) {
+							canSelect = true;
+							SelectCoroutine = Select ();
+							StartCoroutine (SelectCoroutine);
+						}
 					}
 				}
 			}
 
 			float dist = Vector3.Distance (Input.mousePosition, dragOrigin);
-			if (!pinching && (Input.GetMouseButton (0) || Input.GetMouseButton(2)) && !IsOnUI() && dist > 0f && CanDrag && Input.touchCount <= 1) {
+
+			if ((Input.GetMouseButton (0) || Input.GetMouseButton(2)) && !pinching && !IsOnUI() && dist > 0 && CanDrag && Input.touchCount <= 1) {
 				if (canSelect) {
 					canSelect = false;
 					if(SelectCoroutine != null)

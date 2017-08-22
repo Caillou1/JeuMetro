@@ -87,4 +87,9 @@ public class DragAndDropSpeaker : DragAndDrop {
 
 		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
 	}
+
+	protected override void OnBuy ()
+	{
+		G.Sys.AddDisposable (TileID.SPEAKER);
+	}
 }

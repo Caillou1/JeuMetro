@@ -41,7 +41,7 @@ public class PodotactileTile : ATile
 		List<ATile> list = new List<ATile> ();
 		List<Orientation> neighbors = new List<Orientation> ();
 
-		if (!isStop) {
+		if (!isStop || true) {
 			var l = G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.PODOTACTILE);
 			l = l.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.STAIRS))
 			.Concat (G.Sys.tilemap.tilesOfTypeAt (pos + new Vector3i (Vector3.forward), TileID.ESCALATOR))
@@ -203,9 +203,15 @@ public class PodotactileTile : ATile
 			
 				TwoBranchesStraight.SetActive (false);
 				TwoBranchesAngle.SetActive (false);
-				ThreeBranches.SetActive (true);
+				ThreeBranches.SetActive (!isStop);
 				FourBranches.SetActive (false);
-				Stop.SetActive (false);
+				Stop.SetActive (isStop);
+
+				if (isStop) {
+					var rot = tf.rotation.eulerAngles;
+					rot.y += 90;
+					tf.rotation = Quaternion.Euler (rot);
+				}
 				break;
 
 			case 4:
