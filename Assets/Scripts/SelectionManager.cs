@@ -89,7 +89,6 @@ public class SelectionManager : MonoBehaviour {
 		var dad = o.GetComponent<DragAndDrop> ();
 		dad.IsBought = false;
 		Show (dad);
-		o.GetComponent<PodotactileTile> ().Connect (true);
 	}
 
 	public void Show(DragAndDrop o) {
