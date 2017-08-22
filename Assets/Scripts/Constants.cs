@@ -57,6 +57,8 @@ public class Constants : MonoBehaviour
     [Tooltip("Taille max de queue avant de rechercher un autre distributeur")]
     public int QueueMax = 5;
 	public float ElevatorAttraction = .1f;
+    [Tooltip("Multiplieur de vitesse lors de l'alerte incendie pour les voyageurs et agents")]
+    public float fireAlertSpeedMultiplier = 2;
 
 	public List<Color> TravelerColors;
 

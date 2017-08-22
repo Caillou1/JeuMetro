@@ -18,12 +18,19 @@ public class EscalatorTile : ATile
 	private List<NavMeshLink> linksUp = new List<NavMeshLink> ();
 	private List<NavMeshLink> linksDown = new List<NavMeshLink> ();
 
+    private GameObject wall1;
+    private GameObject wall2;
+    private GameObject ground;
+
+    SubscriberList subscriberlist = new SubscriberList();
+
     public EscalatorSide side
     {
         set
         {
 			_side = value;
-			anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
+            if(!G.Sys.gameManager.FireAlert)
+			    anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
 
 			foreach (var l in linksUp)
 				l.enabled = _side == EscalatorSide.UP;
@@ -49,6 +56,11 @@ public class EscalatorTile : ATile
 				linksUp.Add (l);
 		}
 
+        wall1 = transform.Find("W1").gameObject;
+        wall2 = transform.Find("W2").gameObject;
+        ground = transform.Find("Quad").gameObject;
+        ground.SetActive(false);
+
 		anim = transform.Find ("mesh").GetComponent<Animator> ();
 
 		type = TileID.ESCALATOR;
@@ -63,12 +75,15 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.addTile (transform.position + 2 * Vector3.up + dir, this, Tilemap.STAIRS_PRIORITY);
 
 		side = _side;
+
+        subscriberlist.Add(new Event<StartFireAlertEvent>.Subscriber(onfireAlert));
+        subscriberlist.Subscribe();
     }
 
 	void Start() {
-		anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
-
-		Invoke ("Stop", 5f);
+        if (!G.Sys.gameManager.FireAlert)
+            anim.SetBool("Reverse", _side == EscalatorSide.DOWN);
+        else onfireAlert(new StartFireAlertEvent());
 	}
 
 	protected override void OnDestroy()
@@ -82,6 +97,8 @@ public class EscalatorTile : ATile
 		G.Sys.tilemap.delTile (transform.position + Vector3.up + dir, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up, this);
 		G.Sys.tilemap.delTile (transform.position + 2 * Vector3.up + dir, this);
+
+        subscriberlist.Unsubscribe();
 	}
 
 	public bool IsOnEscalatorPath(Vector3i pos) {
@@ -92,4 +109,16 @@ public class EscalatorTile : ATile
 
 		return (pos.equal (v1) || pos.equal (v2));
 	}
+
+    void onfireAlert(StartFireAlertEvent e)
+    {
+        Stop();
+        ground.SetActive(true);
+        wall1.SetActive(false);
+        wall2.SetActive(false);
+        foreach (var l in linksUp)
+            l.enabled = false;
+        foreach (var l in linksDown)
+            l.enabled = false;
+    }
 }

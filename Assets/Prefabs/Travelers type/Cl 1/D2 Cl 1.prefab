@@ -1212,14 +1212,23 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 50
+    Hunger: 30
     wastes: 20.2
-    MovementSpeed: 3.5
+    MovementSpeed: 3.4
     Malvoyant: 0
     Deaf: 0
     HaveTicket: 0
     IgnoreBin: 0
-  targetName: Door 2
+  targetName: Exit 2
+  datas:
+    Lostness: 0
+    Tiredness: 0
+    Dirtiness: 0
+    Waste: 0
+    Speed: 0
+    Hunger: 0
+    Fraud: 0
+    LostNoTicket: 0
 --- !u!136 &136030902708359128
 CapsuleCollider:
   m_ObjectHideFlags: 1

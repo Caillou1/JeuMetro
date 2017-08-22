@@ -183,7 +183,7 @@ public class WaveManager : MonoBehaviour {
 	{
 		foreach (var v in inWaves[wave].array)
 			if (v.Delay > time && v.Delay <= time + dt)
-				Spawn (v.Entrance.position, v.Wave);
+                Spawn (v.Entrance.position, v.Wave, v.Entrance.transform.rotation);
 
         foreach (var v in realMetroWave[wave]) {
             float startTime = v.delay - G.Sys.constants.MetroComeTime;
@@ -191,7 +191,7 @@ public class WaveManager : MonoBehaviour {
                 v.MetroObject.CallMetro();
             var d = v.delay + 0.2f;
 			if (d > time && d <= time + dt)
-				Spawn (v.MetroObject.transform.position, v.Wave);
+                Spawn (v.MetroObject.transform.position, v.Wave, v.MetroObject.transform.rotation);
 		}
 	}
 
@@ -203,10 +203,10 @@ public class WaveManager : MonoBehaviour {
 		return 0;
 	}
 
-	void Spawn(Vector3 pos, GameObject prefab)
+    void Spawn(Vector3 pos, GameObject prefab, Quaternion rot)
 	{
 		if(prefab != null)
-			Instantiate (prefab, pos, Quaternion.identity);
+            Instantiate (prefab, pos, rot);
 	}
 
 	float WaveTime(int wave)

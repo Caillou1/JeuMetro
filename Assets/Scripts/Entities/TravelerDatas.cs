@@ -1,5 +1,5 @@
 ﻿using System;
-
+[System.Serializable]
 public struct TravelerDatas
 {
 	public float Lostness;

@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
 							a.getNavMeshAgent ().CalculatePath (potentialTraveler.position, path);
 							bool PathIsValid = path.status == NavMeshPathStatus.PathComplete;
 
-							if ((potentialDist < minDist && PathIsValid) || t == null) {
+                            if (potentialDist < minDist && PathIsValid) {
 								minDist = potentialDist;
 								t = potentialTraveler;
 							}
@@ -199,20 +199,32 @@ public class GameManager : MonoBehaviour
 
 		while (true) {
 			yield return new WaitForSeconds (dDelta.Next (gen));
-			if (!SetMaxTravelers || (SetMaxTravelers && G.Sys.travelerCount() < MaxTravelers)) {
-					var doors = G.Sys.tilemap.getSpecialTiles (TileID.IN);
-					var door = doors [new UniformIntDistribution (doors.Count - 1).Next (gen)];
-					var e = Instantiate (entities [dType.Next (gen)], door, new Quaternion ());
-					var dir = new Vector3[]{ Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
-					var validDir = new List<Vector3> ();
-					foreach (var d in dir) {
-						var tiles = G.Sys.tilemap.at (door + d);
-						if (tiles.Count == 0 && tiles [0].type == TileID.GROUND)
-							validDir.Add (door + d);
-					}
-			
-					if (validDir.Count != 0)
-						e.transform.rotation = Quaternion.LookRotation (validDir [new UniformIntDistribution (validDir.Count - 1).Next (gen)] - e.transform.position, Vector3.up);
+			if (!SetMaxTravelers || (SetMaxTravelers && G.Sys.travelerCount() < MaxTravelers)) 
+            {
+                var doors = G.Sys.tilemap.getSpecialTiles(TileID.OUT);
+                List<Vector3> validDoors = new List<Vector3>();
+                foreach(var d in doors)
+                {
+                    var dObj = G.Sys.tilemap.GetTileOfTypeAt(d, TileID.OUT) as ExitsTile;
+                    if (dObj != null && dObj.isInForFlux)
+                        validDoors.Add(d);
+                }
+                if (validDoors.Count != 0)
+                {
+                    var door = validDoors[new UniformIntDistribution(validDoors.Count - 1).Next(gen)];
+                    var e = Instantiate(entities[dType.Next(gen)], door, new Quaternion());
+                    var dir = new Vector3[] { Vector3.left, Vector3.right, Vector3.forward, Vector3.back };
+                    var validDir = new List<Vector3>();
+                    foreach (var d in dir)
+                    {
+                        var tiles = G.Sys.tilemap.at(door + d);
+                        if (tiles.Count == 0 && tiles[0].type == TileID.GROUND)
+                            validDir.Add(door + d);
+                    }
+
+                    if (validDir.Count != 0)
+                        e.transform.rotation = Quaternion.LookRotation(validDir[new UniformIntDistribution(validDir.Count - 1).Next(gen)] - e.transform.position, Vector3.up);
+                }
 			}
 		}
 	}

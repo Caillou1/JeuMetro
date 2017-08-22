@@ -15,7 +15,7 @@ public class Traveler : AEntity
 
 	[SerializeField]
 	string targetName = "";
-	[HideInInspector]
+	//[HideInInspector]
 	public TravelerDatas datas = new TravelerDatas ();
 
 	bool isLost = false;
@@ -72,8 +72,10 @@ public class Traveler : AEntity
 
 	void checkOnExit()
 	{
-        if (exitType == ExitType.DOOR && G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.OUT) != null) {
-			Destroy (gameObject);
+        if (exitType == ExitType.DOOR) {
+            var tile = G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.OUT) as ExitsTile;
+            if (tile != null && tile.exitname == targetName) 
+			    Destroy (gameObject);
 			return;
 		}
         if (exitType == ExitType.METRO && !path.haveAction (ActionType.WAIT_METRO) && !path.haveAction(ActionType.GO_TO_METRO) && new Vector3i (transform.position).Equals (new Vector3i (target)) && G.Sys.tilemap.GetTileOfTypeAt (transform.position, TileID.WAIT_ZONE) != null) {
@@ -84,6 +86,9 @@ public class Traveler : AEntity
 
     void checkOnControleLine()
     {
+        if (G.Sys.gameManager.FireAlert)
+            return;
+        
 		if (G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.CONTROLELINE) != null)
 		{
 			isTicketLost = false;
@@ -154,6 +159,8 @@ public class Traveler : AEntity
 					if (p.status != NavMeshPathStatus.PathComplete)
 						CanTakeElevator = true;
 				}
+                if (stats.Type != TravelerType.WHEELCHAIR && G.Sys.gameManager.FireAlert)
+                    CanTakeElevator = false;
 
 				if (CanTakeElevator) {
 					for (int i = 0; i < possiblePath.Count; i++) {
@@ -244,7 +251,7 @@ public class Traveler : AEntity
 			path.addAction (new FaintAction (this));
 			return;
 		}
-		if (datas.Tiredness < (1f - stats.RestPlaceAttraction / 100f) || path.haveAction (ActionType.SIT))
+        if (datas.Tiredness < (1f - stats.RestPlaceAttraction / 100f) || path.haveAction(ActionType.SIT) || G.Sys.gameManager.FireAlert)
 			return;
 		var benchs = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.BENCH, G.Sys.constants.TravelerDetectionRadius, G.Sys.constants.VerticalAmplification);
 
@@ -269,6 +276,9 @@ public class Traveler : AEntity
 
 	void checkWaste()
 	{
+		if (G.Sys.gameManager.FireAlert)
+			return;
+        
 		if (datas.Waste < 0.01f || path.haveAction(ActionType.THROW_IN_BIN) || path.haveAction(ActionType.THROW_IN_GROUND))
 			return;
 
@@ -337,6 +347,9 @@ public class Traveler : AEntity
 
 	void checkHunger()
 	{
+		if (G.Sys.gameManager.FireAlert)
+			return;
+        
 		if (datas.Hunger < 0.95f || path.haveAction(ActionType.BUY_FOOD))
 			return;
 
@@ -377,6 +390,9 @@ public class Traveler : AEntity
 
 	void checkTicket ()
 	{
+		if (G.Sys.gameManager.FireAlert)
+			return;
+        
 		if (stats.HaveTicket || (datas.Fraud && !G.Sys.GetNearestAgent(transform.position, G.Sys.constants.TravelerDetectionRadius)) ||path.haveAction(ActionType.BUY_TICKET))
 			return;
 
@@ -448,9 +464,9 @@ public class Traveler : AEntity
 		datas.Speed = stats.MovementSpeed * (2 - datas.Tiredness)/2;
 
 		var tiles = G.Sys.tilemap.at (transform.position);
-		if (tiles.Exists (t => t.type == TileID.ESCALATOR)) {
+        if (!G.Sys.gameManager.FireAlert && tiles.Exists (t => t.type == TileID.ESCALATOR)) {
 			agent.speed = G.Sys.constants.EscalatorSpeed;
-		} else if (tiles.Exists (t => t.type == TileID.STAIRS)) {
+		} else if (tiles.Exists (t => t.type == TileID.STAIRS) || (G.Sys.gameManager.FireAlert && tiles.Exists(t => t.type == TileID.ESCALATOR))) {
 			agent.speed = G.Sys.constants.StairsSpeedMultiplier * datas.Speed;
 		} else
 			agent.speed = datas.Speed;
@@ -484,7 +500,7 @@ public class Traveler : AEntity
 
 			datas.Lostness = Mathf.Clamp (datas.Lostness + ((total <= 0.1f || signs > 3f) ? 1 : -1) * stats.LostAbility * stats.LostAbility / 20000 * time, 0, 1);
 		} else {
-			TileID[] validTile = new TileID[]{ TileID.PODOTACTILE, TileID.CONTROLELINE, TileID.ELEVATOR, TileID.ESCALATOR, TileID.IN, TileID.OUT, TileID.METRO};
+			TileID[] validTile = new TileID[]{ TileID.PODOTACTILE, TileID.CONTROLELINE, TileID.ELEVATOR, TileID.ESCALATOR, TileID.OUT, TileID.METRO};
 			bool isOn = false;
 			foreach (var t in validTile)
 				if (G.Sys.tilemap.GetTileOfTypeAt (transform.position, t) != null) {
@@ -552,6 +568,28 @@ public class Traveler : AEntity
 
     void onFireAlertStart(StartFireAlertEvent e)
     {
-        
+        stats.MovementSpeed *= G.Sys.constants.fireAlertSpeedMultiplier;
+        if(stats.Type != TravelerType.WHEELCHAIR)
+            path.abortAllAndActiveActionElse(new ActionType[] { ActionType.FAINT, ActionType.SIGN });
+        else 
+            path.abortAllAndActiveActionElse(new ActionType[] { ActionType.FAINT, ActionType.SIGN, ActionType.WAIT_ELEVATOR });
+
+        float bestDist = float.MaxValue;
+        Vector3 posDoor = Vector3.zero;
+        foreach (var d in G.Sys.tilemap.getSpecialTiles(TileID.OUT))
+        {
+            float dist = (d - transform.position).sqrMagnitude;
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                posDoor = d;
+            }
+        }
+
+        target = posDoor;
+        exitType = ExitType.DOOR;
+        var door = G.Sys.tilemap.GetTileOfTypeAt(posDoor, TileID.OUT) as ExitsTile;
+        if (door != null)
+            targetName = door.exitname;
     }
 }

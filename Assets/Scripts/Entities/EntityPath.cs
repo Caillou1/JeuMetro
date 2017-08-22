@@ -31,6 +31,9 @@ public class EntityPath
 
 	bool finished = true;
 
+    int framsFromLastLink = 0;
+    const int framsFromLastLinkTrigger = 4;
+
 	public EntityPath (NavMeshAgent a, float lostness = 0)
 	{
 		_agent = a;
@@ -135,7 +138,7 @@ public class EntityPath
         onPathCreated();
 	}
 
-    void abortAllAndActiveActionElse(ActionType[] actions)
+    public void abortAllAndActiveActionElse(ActionType[] actions)
     {
         if (currentAction != null && !actions.Contains(currentAction.type))
             currentAction = null;
@@ -251,6 +254,10 @@ public class EntityPath
 
 	public void Update()
 	{
+        framsFromLastLink++;
+        if (isOnOffMeshLink)
+            framsFromLastLink = 0;
+
 		debugPath ();
 
 		if (_agent.isOnOffMeshLink && !isOnOffMeshLink)
@@ -262,12 +269,18 @@ public class EntityPath
 		if (new Vector3i(_agent.transform.position).Equals(new Vector3i(_agent.destination))) {
 			if (currentAction == null)
 				updateAgentPath ();
-			else {
+			else if (framsFromLastLink >= framsFromLastLinkTrigger){
 				_agent.updatePosition = false;
 				_agent.updateRotation = false;
 				_agent.updateUpAxis = false;
 				onAction = true;
 			}
+            else
+            {
+				NavMeshPath aPath = new NavMeshPath();
+				_agent.CalculatePath(currentAction.pos, aPath);
+				_agent.SetPath(aPath);
+            }
 		}
 
 		if (onAction) {
@@ -285,7 +298,7 @@ public class EntityPath
 
 	void checkAction()
 	{
-		if (!_agent.isOnNavMesh)
+        if (!_agent.isOnNavMesh || framsFromLastLink < framsFromLastLinkTrigger)
 			return;
 		if ((_agent.transform.position - _agent.destination).sqrMagnitude > (_agent.transform.position - _actions [0].pos).sqrMagnitude) {
 			_points.Insert (0, _agent.destination);
@@ -440,5 +453,12 @@ public class EntityPath
         }
 
         return false;
+    }
+
+    public bool canGoTo(Vector3 pos)
+    {
+        NavMeshPath path = new NavMeshPath();
+        _agent.CalculatePath(pos, path);
+        return path.status == NavMeshPathStatus.PathComplete;
     }
 }
