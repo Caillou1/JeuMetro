@@ -2,18 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour {
 	[BoxGroup("Music")]
-	public bool PlayTitle;
-	[BoxGroup("Music")]
-	[ShowIf("PlayTitle")]
 	public AudioClip TitleMusic;
 	[BoxGroup("Music")]
-	[HideIf("PlayTitle")]
 	public AudioClip MusicStart;
 	[BoxGroup("Music")]
-	[HideIf("PlayTitle")]
 	public AudioClip MusicLoop;
 	[BoxGroup("Music")]
 	[Range(0f, 1f)]
@@ -100,7 +96,11 @@ public class AudioManager : MonoBehaviour {
 		musicSource.volume = musicVolume;
 		soundSource.volume = soundVolume;
 
-		if (PlayTitle) {
+		bool playTitle = false;
+		if (SceneManager.GetActiveScene ().name.ToLower () == "mainmenu")
+			playTitle = true;
+
+		if (playTitle) {
 			musicSource.clip = TitleMusic;
 			musicSource.loop = true;
 			musicSource.Play ();
@@ -109,6 +109,8 @@ public class AudioManager : MonoBehaviour {
 			musicSource.Play ();
 			StartCoroutine (WaitForEndOfStart ());
 		}
+
+		DontDestroyOnLoad (gameObject);
 	}
 
 	IEnumerator WaitForEndOfStart() {

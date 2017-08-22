@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
 	[ShowIf("SetMaxTravelers")]
 	public int MaxTravelers;
 
+	public int MaxTravelerBeforeLose;
+
 	public int StartingMoney = 0;
 
 	private float TotalTime = 0;
@@ -57,6 +59,13 @@ public class GameManager : MonoBehaviour
 		//PathCalculator = tf.Find ("PathCalculator");
 		InstantiateColliders ();
 		StartCoroutine (checkFaintingTravelers ());
+		StartCoroutine (WaitForLose ());
+	}
+
+	IEnumerator WaitForLose() {
+		yield return new WaitUntil (() => G.Sys.travelerCount() > MaxTravelerBeforeLose);
+
+		G.Sys.menuManager.Lose ();
 	}
 
 	public void OnNavMeshBaked(NavMeshBakedEvent e) {

@@ -47,6 +47,7 @@ public class MenuManager : MonoBehaviour {
 	private GameObject LevelSelectionUI;
     //private List<GameObject> LevelButtons;
     private GameObject WinEndGameUI;
+	private GameObject LoseEndGameUI;
 
 	private Image TimePie;
 	private Text TimeTxt;
@@ -88,6 +89,7 @@ public class MenuManager : MonoBehaviour {
 		LevelSelectionUI = tf.Find ("LevelSelectionUI").gameObject;
         WinEndGameUI = tf.Find("WinEndGameUI").gameObject;
         winMenuDatas = new WinMenuDatas(WinEndGameUI);
+		LoseEndGameUI = tf.Find ("LoseEndGameUI").gameObject;
 
 		//LevelButtons = new List<GameObject> ();
 		for (int i = 0; i < LevelSelectionUI.transform.childCount; i++) {
@@ -156,6 +158,11 @@ public class MenuManager : MonoBehaviour {
 		for (int i = 0; i < ZoomLevels.Length-1; i++) {
 			Zoom ();
 		}
+	}
+
+	public void Lose() {
+		Time.timeScale = 0;
+		LoseEndGameUI.SetActive (true);
 	}
 
     private void OnDestroy()
