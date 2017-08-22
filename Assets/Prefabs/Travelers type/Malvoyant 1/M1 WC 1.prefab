@@ -338,7 +338,7 @@ GameObject:
   - component: {fileID: 195317550349095360}
   - component: {fileID: 114345358887005058}
   m_Layer: 0
-  m_Name: D1 Fa 1
+  m_Name: M1 WC 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1204,11 +1204,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats:
-    Type: 0
+    Type: 2
     RestPlaceAttraction: 20
     Cleanliness: 80
     DeltaCleanliness: 30
-    FaintnessPercentage: 66.5
+    FaintnessPercentage: 6
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
@@ -1219,16 +1219,7 @@ MonoBehaviour:
     Deaf: 0
     HaveTicket: 0
     IgnoreBin: 0
-  targetName: Exit 1
-  datas:
-    Lostness: 0
-    Tiredness: 0
-    Dirtiness: 0
-    Waste: 0
-    Speed: 0
-    Hunger: 0
-    Fraud: 0
-    LostNoTicket: 0
+  targetName: Metro 1
 --- !u!136 &136030902708359128
 CapsuleCollider:
   m_ObjectHideFlags: 1

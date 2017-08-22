@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -7195,7 +7195,7 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -7253,7 +7253,7 @@ Prefab:
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.data[0].Entrance
       value: 
-      objectReference: {fileID: 1683237112}
+      objectReference: {fileID: 1777460176}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.data[1].Entrance
@@ -7350,7 +7350,7 @@ Prefab:
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.data[0].Wave
       value: 
-      objectReference: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c,
+      objectReference: {fileID: 1427005143703886, guid: c18e31107d19d445e9ad33af39ca5d8a,
         type: 2}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}

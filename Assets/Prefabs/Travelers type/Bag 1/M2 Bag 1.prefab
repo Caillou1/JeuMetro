@@ -338,7 +338,7 @@ GameObject:
   - component: {fileID: 195317550349095360}
   - component: {fileID: 114345358887005058}
   m_Layer: 0
-  m_Name: D2 Cl 1
+  m_Name: M2 Bag 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1204,22 +1204,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats:
-    Type: 0
-    RestPlaceAttraction: 20
+    Type: 1
+    RestPlaceAttraction: 30
     Cleanliness: 80
-    DeltaCleanliness: 30
-    FaintnessPercentage: 6
+    DeltaCleanliness: 35
+    FaintnessPercentage: 7
     DeltaFainteness: 25.1
-    FraudPercentage: 40
-    LostAbility: 75
+    FraudPercentage: 3
+    LostAbility: 80
     Hunger: 10
     wastes: 20.2
-    MovementSpeed: 3.5
+    MovementSpeed: 2.5
     Malvoyant: 0
     Deaf: 0
     HaveTicket: 0
     IgnoreBin: 0
-  targetName: Door 2
+  targetName: Metro 2
   datas:
     Lostness: 0
     Tiredness: 0
