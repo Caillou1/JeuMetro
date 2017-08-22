@@ -467,9 +467,9 @@ public class Traveler : AEntity
 		datas.Speed = stats.MovementSpeed * (2 - datas.Tiredness)/2;
 
 		var tiles = G.Sys.tilemap.at (transform.position);
-		if (tiles.Exists (t => t.type == TileID.ESCALATOR)) {
+        if (!G.Sys.gameManager.FireAlert && tiles.Exists (t => t.type == TileID.ESCALATOR)) {
 			agent.speed = G.Sys.constants.EscalatorSpeed;
-		} else if (tiles.Exists (t => t.type == TileID.STAIRS)) {
+		} else if (tiles.Exists (t => t.type == TileID.STAIRS) || (G.Sys.gameManager.FireAlert && tiles.Exists(t => t.type == TileID.ESCALATOR))) {
 			agent.speed = G.Sys.constants.StairsSpeedMultiplier * datas.Speed;
 		} else
 			agent.speed = datas.Speed;
