@@ -26,7 +26,8 @@ public class Traveler : AEntity
 	private float ArrivalTime;
     private SubscriberList subscriberList = new SubscriberList();
 
-	private Animator anim;
+	[HideInInspector]
+	public Animator anim;
 
 	private Vector3 lastPos;
 
