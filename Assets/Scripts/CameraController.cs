@@ -176,4 +176,8 @@ public class CameraController : MonoBehaviour {
 		}
 		return null;
 	}
+
+	public void Move(Vector3 v) {
+		cameraTransform.DOMove(cameraTransform.position + v, .5f);
+	}
 }

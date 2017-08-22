@@ -72,14 +72,15 @@ public sealed class G
 	{
 		if (!travelers.Contains (t)) {
 			travelers.Add (t);
-			_menuManager.SetTravelerNumber (travelerCount());
+			_menuManager.SetTravelerNumber (travelerCount(), G.Sys.gameManager.MaxTravelerBeforeLose);
 		}
 	}
 
 	public bool removeTraveler(Traveler t)
 	{
 		var value = travelers.Remove (t);
-		_menuManager.SetTravelerNumber (travelerCount());
+
+		_menuManager.SetTravelerNumber (travelerCount(), G.Sys.gameManager.MaxTravelerBeforeLose);
 		return value;
 	}
 

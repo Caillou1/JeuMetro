@@ -721,7 +721,7 @@ public class Tilemap
 
 		bool valid = true;
 
-		if (v.Count == 0 || (v [0].type != TileID.GROUND || haveSpecialTileAt(TileID.PODOTACTILE, pos))) {
+		if (v.Count == 0 || ((v [0].type != TileID.GROUND && !haveSpecialTileAt(TileID.WAIT_ZONE, pos)) || haveSpecialTileAt(TileID.PODOTACTILE, pos))) {
 			valid = false;
 		}
 
