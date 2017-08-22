@@ -135,7 +135,7 @@ public class EntityPath
         onPathCreated();
 	}
 
-    void abortAllAndActiveActionElse(ActionType[] actions)
+    public void abortAllAndActiveActionElse(ActionType[] actions)
     {
         if (currentAction != null && !actions.Contains(currentAction.type))
             currentAction = null;
@@ -440,5 +440,12 @@ public class EntityPath
         }
 
         return false;
+    }
+
+    public bool canGoTo(Vector3 pos)
+    {
+        NavMeshPath path = new NavMeshPath();
+        _agent.CalculatePath(pos, path);
+        return path.status == NavMeshPathStatus.PathComplete;
     }
 }

@@ -6,17 +6,12 @@ using UnityEngine;
 
 public class ExitsTile : ATile
 {
-	[Tooltip("Must be IN OUT or METRO")]
-	public TileID id = TileID.IN;
-
+    public bool isInForFlux;
 	public string exitname;
 
 	protected override void Awake()
-	{
-		if (id != TileID.IN && id != TileID.OUT && id != TileID.METRO)
-			throw new ArgumentOutOfRangeException ("The tile must be IN, OUT or METRO !");
-		
-		type = id;
+    {
+        type = TileID.OUT;
 
 		G.Sys.tilemap.addTile (transform.position, this, Tilemap.EXITS_PRIORITY);
 

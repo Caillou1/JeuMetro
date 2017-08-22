@@ -91,11 +91,4 @@ public abstract class AEntity : MonoBehaviour
     {
         return agent;
     }
-
-	public static Vector3 getAlertTarget(Vector3 pos)
-	{
-        var tilesIn = G.Sys.tilemap.getSpecialTiles(TileID.IN);
-        var tilesOut = G.Sys.tilemap.getSpecialTiles(TileID.OUT);
-        return Vector3.zero;
-	}
 }
