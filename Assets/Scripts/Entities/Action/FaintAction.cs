@@ -17,13 +17,13 @@ public class FaintAction : AEntityAction<Traveler>
 		entity.GetComponent<NavMeshAgent> ().enabled = false;
 		//entity.transform.DORotate (new Vector3(90, entity.transform.rotation.eulerAngles.y, 0), 0.5f, RotateMode.Fast);
 		Event<FaintEvent>.Broadcast (new FaintEvent (traveler));
-		G.Sys.audioManager.PlayFaint ();
+		G.Sys.audioManager.PlayFaint();
+		traveler.anim.SetBool("Falling", true);
 		return false;
 	}
 
 	protected override bool Update ()
 	{
-		traveler.anim.SetBool ("Falling", true);
 		return entity.datas.Tiredness <= 0.95f;
 	}
 
