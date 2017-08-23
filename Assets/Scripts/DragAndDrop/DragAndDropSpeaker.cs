@@ -23,7 +23,8 @@ public class DragAndDropSpeaker : DragAndDrop {
 		NotWalledObject = tf.Find ("NotWalled").gameObject;
 		CheckCanPlace ();
 		CheckRotation ();
-		ToggleOutline (false);
+		if(bought)
+			ToggleOutline (false);
 	}
 
 	protected override void CheckCanPlace ()
@@ -34,12 +35,12 @@ public class DragAndDropSpeaker : DragAndDrop {
 
 		//Case centrale
 		var v = G.Sys.tilemap.at (tf.position);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position, TileID.ESCALATOR).Count > 0)
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE)) || G.Sys.tilemap.tilesOfTypeAt(tf.position, TileID.ESCALATOR).Count > 0)
 			canPlace = false;
 
 		//Case en face
 		v = G.Sys.tilemap.at (tf.position + new Vector3(-dir.z, 0, dir.x));
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(-dir.z, 0, dir.x), TileID.ESCALATOR).Count > 0)
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE)) || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(-dir.z, 0, dir.x), TileID.ESCALATOR).Count > 0)
 			canPlace = false;
 	}
 

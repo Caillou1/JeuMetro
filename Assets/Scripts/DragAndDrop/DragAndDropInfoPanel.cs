@@ -23,7 +23,8 @@ public class DragAndDropInfoPanel : DragAndDrop {
 		NotWalledObject = tf.Find ("NotWalled").gameObject;
 		CheckCanPlace ();
 		CheckRotation ();
-		ToggleOutline (false);
+		if(bought)
+			ToggleOutline (false);
 	}
 
 	protected override void CheckRotation() {

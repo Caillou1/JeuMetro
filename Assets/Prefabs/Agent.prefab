@@ -67,6 +67,7 @@ GameObject:
   - component: {fileID: 195774213087576536}
   - component: {fileID: 114531007722711724}
   - component: {fileID: 114499896058144630}
+  - component: {fileID: 136345692455996568}
   m_Layer: 0
   m_Name: Agent
   m_TagString: Disposable
@@ -86,7 +87,7 @@ GameObject:
   - component: {fileID: 136927144965231954}
   m_Layer: 0
   m_Name: Mesh
-  m_TagString: Disposable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -415,6 +416,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4922423764217402}
   - component: {fileID: 137616606340873760}
+  - component: {fileID: 114659300157585926}
   m_Layer: 0
   m_Name: pSphere1
   m_TagString: Untagged
@@ -1220,7 +1222,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Price: 50
   CanDrag: 0
-  IsSelected: 0
+--- !u!114 &114659300157585926
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1595189711509900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
+--- !u!136 &136345692455996568
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1043838553163186}
+  m_Material: {fileID: 13400000, guid: b05aa93199a0c477fb1afa9dbd080cd5, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.25
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!136 &136927144965231954
 CapsuleCollider:
   m_ObjectHideFlags: 1
