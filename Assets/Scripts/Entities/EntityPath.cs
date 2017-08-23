@@ -178,6 +178,7 @@ public class EntityPath
 		float lastPoint = 0;
 		Vector3 lastpoint = _agent.transform.position;
 		var corners = path.corners.ToList ();
+		corners.Add(_destination);
 		if (!canPassControl) {
 			for (int i = 0; i < corners.Count - 1; i++) {
 				if (haveControleLineBetween (corners [i], corners [i + 1])) {
@@ -190,8 +191,6 @@ public class EntityPath
 				}
 			}
 		}
-			
-		corners.Add (_destination);
 
 		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
 		var d = new UniformVector2CircleDistribution (G.Sys.constants.travelerLostVariance);
@@ -216,8 +215,6 @@ public class EntityPath
 			dist += lastCornerDist;
 			lastpoint = pos;
 		}
-
-		_points.Add (_destination);
 
 		updateAgentPath ();
 	}
@@ -364,6 +361,12 @@ public class EntityPath
 			return;
 		}
 		isOnOffMeshLink = true;
+
+        var data = _agent.currentOffMeshLinkData;
+        var pos = (data.startPos + data.endPos) / 2.0f;
+        var tile = G.Sys.tilemap.GetTileOfTypeAt(pos, TileID.CONTROLELINE) as ControleLineTile;
+        if (tile != null)
+            tile.Open(0.2f);
 
 		_behavior.StartCoroutine (onLinkCoroutine ());
 	}

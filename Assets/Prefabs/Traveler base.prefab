@@ -1203,15 +1203,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 0
     Cleanliness: 100
     DeltaCleanliness: 0
-    FaintnessPercentage: 24.5
-    DeltaFainteness: 25.1
+    FaintnessPercentage: 8.9
+    DeltaFainteness: 9.1
     FraudPercentage: 0
-    LostAbility: 100
+    LostAbility: 0
     Hunger: 100
     wastes: 0
     MovementSpeed: 3.5
