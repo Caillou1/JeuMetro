@@ -15,7 +15,7 @@ public class Traveler : AEntity
 
 	[SerializeField]
 	string targetName = "";
-	[HideInInspector]
+	//[HideInInspector]
 	public TravelerDatas datas = new TravelerDatas ();
 
 	bool isLost = false;
@@ -26,7 +26,8 @@ public class Traveler : AEntity
 	private float ArrivalTime;
     private SubscriberList subscriberList = new SubscriberList();
 
-	private Animator anim;
+	[HideInInspector]
+	public Animator anim;
 
 	private Vector3 lastPos;
 
@@ -167,7 +168,7 @@ public class Traveler : AEntity
 						ElevatorTile tile = possiblePath [i].Second;
 						int floor = ((i + 1) < possiblePath.Count) ? Mathf.RoundToInt (possiblePath [i + 1].Second.GetWaitZone (possiblePath [i].First).y) : Mathf.RoundToInt (path.destnation.y);
 						int priority = (possiblePath.Count - i) * 2;
-						path.addAction (new WaitForElevatorAction (this, pos, tile, floor, priority));
+						path.addAction (new WaitForElevatorAction (this, pos, tile, floor, priority, stats.Type != TravelerType.WHEELCHAIR));
 					}
 				} else {
 					CanLookForElevator = false;
@@ -206,7 +207,7 @@ public class Traveler : AEntity
 			var tilesFront = G.Sys.tilemap.at (transform.position + transform.forward);
 			var stairs = tilesFront.Find (x => x.type == TileID.STAIRS) as StairsTile;
 
-			if (stairs != null && !stairs.HasPodotactileOnFloor(Mathf.RoundToInt(transform.position.y))) {
+			if (stairs != null && stairs.IsOnStairsPath(new Vector3i(tf.position)) && !stairs.HasPodotactileOnFloor(Mathf.RoundToInt(transform.position.y))) {
 				float fallChance = G.Sys.constants.FallChance;
 
                 if (stats.Malvoyant)
@@ -219,7 +220,6 @@ public class Traveler : AEntity
 
 				if (chance && !path.haveAction (ActionType.FAINT)) {
 					datas.Tiredness = 1f;
-					anim.SetBool ("Falling", true);
 					path.addAction (new StairsFallAction (this, stairs));
 					CanFall = false;
 				}
@@ -229,7 +229,6 @@ public class Traveler : AEntity
 
 	public void GetUp() {
 		StartCoroutine (CanFallDelay ());
-		anim.SetBool ("Falling", false);
 	}
 		
 	IEnumerator CanFallDelay() {
@@ -245,12 +244,10 @@ public class Traveler : AEntity
 			foreach (var tile in tiles) {
 				if (tile.type == TileID.STAIRS) {
 					path.addAction (new StairsFallAction (this, tile as StairsTile));
-					anim.SetBool ("Falling", true);
 					return;
 				}
 			}
 
-			anim.SetBool ("Falling", true);
 			path.addAction (new FaintAction (this));
 			return;
 		}

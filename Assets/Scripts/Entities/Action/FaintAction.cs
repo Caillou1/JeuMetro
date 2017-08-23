@@ -23,6 +23,7 @@ public class FaintAction : AEntityAction<Traveler>
 
 	protected override bool Update ()
 	{
+		traveler.anim.SetBool ("Falling", true);
 		return entity.datas.Tiredness <= 0.95f;
 	}
 
@@ -30,6 +31,7 @@ public class FaintAction : AEntityAction<Traveler>
 	{
 		//entity.transform.DORotate (new Vector3(0, entity.transform.rotation.eulerAngles.y, 0), 0.5f, RotateMode.Fast);
 		entity.GetUp ();
+		traveler.anim.SetBool ("Falling", false);
 		entity.GetComponent<NavMeshAgent> ().enabled = true;
 	}
 

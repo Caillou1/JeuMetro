@@ -47,6 +47,7 @@ public class MenuManager : MonoBehaviour {
 	private GameObject LevelSelectionUI;
     //private List<GameObject> LevelButtons;
     private GameObject WinEndGameUI;
+	private GameObject LoseEndGameUI;
 
 	private Image TimePie;
 	private Text TimeTxt;
@@ -88,6 +89,7 @@ public class MenuManager : MonoBehaviour {
 		LevelSelectionUI = tf.Find ("LevelSelectionUI").gameObject;
         WinEndGameUI = tf.Find("WinEndGameUI").gameObject;
         winMenuDatas = new WinMenuDatas(WinEndGameUI);
+		LoseEndGameUI = tf.Find ("LoseEndGameUI").gameObject;
 
 		//LevelButtons = new List<GameObject> ();
 		for (int i = 0; i < LevelSelectionUI.transform.childCount; i++) {
@@ -132,6 +134,7 @@ public class MenuManager : MonoBehaviour {
 		PersonnelUI.SetActive (false);
 		SGPUI.SetActive (false);
         WinEndGameUI.SetActive(false);
+		LoseEndGameUI.SetActive (false);
 		var obj = GetCorrespondantUI (CurrentMenu);
 		if (obj != null)
 			obj.SetActive (true);
@@ -156,6 +159,11 @@ public class MenuManager : MonoBehaviour {
 		for (int i = 0; i < ZoomLevels.Length-1; i++) {
 			Zoom ();
 		}
+	}
+
+	public void Lose() {
+		Time.timeScale = 0;
+		LoseEndGameUI.SetActive (true);
 	}
 
     private void OnDestroy()
@@ -205,9 +213,9 @@ public class MenuManager : MonoBehaviour {
 			WaveNumber.text = wave + "/" + maxWave;
 	}
 
-	public void SetTravelerNumber(int traveler) {
+	public void SetTravelerNumber(int traveler, int maxTraveler) {
 		if(TravelerNumber != null)
-			TravelerNumber.text = traveler + "";
+			TravelerNumber.text = traveler + "/" + maxTraveler;
 	}
 
 	public void SetMoneyNumber(int money) {

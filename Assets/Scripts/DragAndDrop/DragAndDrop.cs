@@ -11,6 +11,13 @@ public class DragAndDrop : MonoBehaviour{
 	protected bool HasToCheckWall;
 	protected int Space;
 
+	protected bool isSelected;
+	public bool IsSelected {
+		set {
+			isSelected = value;
+		}
+	}
+
 	protected Transform tf;
 	protected int Rotations = 0;
 	protected bool isRotating = false;
@@ -46,16 +53,17 @@ public class DragAndDrop : MonoBehaviour{
 	void Start() {
 		CheckCanPlace ();
 		CheckRotation ();
-		//ToggleOutline (false);
 		isRotating = false;
+		if(bought)
+			ToggleOutline (false);
 	}
 
 	protected virtual void CheckCanPlace() {
-		canPlace = true; 
+		canPlace = true;
 
 		var v = G.Sys.tilemap.at (tf.position);
 		var p = GetComponent<PodotactileTile> ();
-		if (v.Count == 0 || ((p!=null && v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.ESCALATOR) && !HasTileOfType(v, TileID.STAIRS) && !HasTileOfType(v, TileID.WAIT_ZONE)) || (p==null && v[0].type != TileID.GROUND)))
+		if (v.Count == 0 || ((p!=null && (((v [0].type != TileID.GROUND) && !HasTileOfType(v, TileID.WAIT_ZONE))|| HasTileOfType(v, TileID.PODOTACTILE))) || (p==null && v[0].type != TileID.GROUND)))
 			canPlace = false;
 	}
 
@@ -122,7 +130,7 @@ public class DragAndDrop : MonoBehaviour{
 			} else {
 				tf.localScale = originalScale;
 			}
-		} else {
+		} else if (isSelected && !IsBought) {
 			CheckCanPlace ();
 
 			if (canPlace) {
@@ -130,6 +138,8 @@ public class DragAndDrop : MonoBehaviour{
 			} else {
 				cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
 			}
+		} else if (isSelected && IsBought) {
+			cakeslice.OutlineEffect.Instance.lineColor0 = Color.yellow;
 		}
 	}
 
@@ -240,6 +250,10 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void ToggleOutline(bool b) {
+		if (isSelected && IsBought) {
+			cakeslice.OutlineEffect.Instance.lineColor0 = Color.yellow;
+		}
+
 		foreach(var o in outlines)
 			o.enabled = b;
 	}

@@ -715,5 +715,17 @@ public class Tilemap
     {
         return maxUsedSpace;
     }
+
+	public bool IsValidTileForPodotactile(Vector3 pos) {
+		var v = at (pos);
+
+		bool valid = true;
+
+		if (v.Count == 0 || ((v [0].type != TileID.GROUND && !haveSpecialTileAt(TileID.WAIT_ZONE, pos)) || haveSpecialTileAt(TileID.PODOTACTILE, pos))) {
+			valid = false;
+		}
+
+		return valid;
+	}
 }
  

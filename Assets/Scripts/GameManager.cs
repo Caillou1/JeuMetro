@@ -15,10 +15,13 @@ public class GameManager : MonoBehaviour
 	public GameObject wastePrefab;
 	public GameObject emptyWall;
 	public GameObject underground;
+	public GameObject podotactile;
 	public bool enableTravelers;
 	public bool SetMaxTravelers;
 	[ShowIf("SetMaxTravelers")]
 	public int MaxTravelers;
+
+	public int MaxTravelerBeforeLose;
 
 	public int StartingMoney = 0;
 
@@ -56,6 +59,14 @@ public class GameManager : MonoBehaviour
 		//PathCalculator = tf.Find ("PathCalculator");
 		InstantiateColliders ();
 		StartCoroutine (checkFaintingTravelers ());
+		StartCoroutine (WaitForLose ());
+		G.Sys.menuManager.SetTravelerNumber (0, MaxTravelerBeforeLose);
+	}
+
+	IEnumerator WaitForLose() {
+		yield return new WaitUntil (() => G.Sys.travelerCount() > MaxTravelerBeforeLose);
+
+		G.Sys.menuManager.Lose ();
 	}
 
 	public void OnNavMeshBaked(NavMeshBakedEvent e) {

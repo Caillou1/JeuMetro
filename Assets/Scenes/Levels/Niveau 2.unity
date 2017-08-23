@@ -1233,6 +1233,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -180.00002
       objectReference: {fileID: 0}
+    - target: {fileID: 114269766227660774, guid: 21eb87c58a8c849668e25fa9880f155e,
+        type: 2}
+      propertyPath: exitName
+      value: Metro 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 21eb87c58a8c849668e25fa9880f155e, type: 2}
   m_IsPrefabParent: 0
@@ -3262,17 +3267,17 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: inWaves.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
-        type: 2}
-      propertyPath: waveTimes.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
+      propertyPath: waveTimes.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
       propertyPath: metroWaves.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -3287,11 +3292,21 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: metroWaves.Array.data[0].array.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[1].array.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4972857456900274, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
@@ -3329,12 +3344,12 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: waveCounts
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: waveTimes.Array.data[1]
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -3345,17 +3360,17 @@ Prefab:
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.data[0].Entrance
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 608247406}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.data[0].Wave
       value: 
-      objectReference: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c,
+      objectReference: {fileID: 1116144661974192, guid: 7e25f361276e7be4787df6b8981303f6,
         type: 2}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.data[0].Delay
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -3394,8 +3409,34 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1589386312387930, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1589386312387930, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
+      propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.HaveSurfaceMedal
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.ScoreValue
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[1].array.Array.data[0].Wave
+      value: 
+      objectReference: {fileID: 1414598900003116, guid: 66f7871a04caa4cd7aa0fedc882f6b0c,
+        type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: metroWaves.Array.data[1].array.Array.data[0].Wave
+      value: 
+      objectReference: {fileID: 1001903949469912, guid: 355eeb04206e84cf8ba4b69eef73b274,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
   m_IsPrefabParent: 0
@@ -4871,6 +4912,11 @@ Prefab:
     - target: {fileID: 4819418327898322, guid: 21eb87c58a8c849668e25fa9880f155e, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180.00002
+      objectReference: {fileID: 0}
+    - target: {fileID: 114269766227660774, guid: 21eb87c58a8c849668e25fa9880f155e,
+        type: 2}
+      propertyPath: exitName
+      value: Metro 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 21eb87c58a8c849668e25fa9880f155e, type: 2}
@@ -10894,6 +10940,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: entities.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4581421795220398, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -10940,7 +10991,7 @@ Prefab:
     - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
       propertyPath: enableTravelers
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
@@ -10956,6 +11007,16 @@ Prefab:
         type: 2}
       propertyPath: FallChance
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: HelpTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: MetroComeTime
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}
