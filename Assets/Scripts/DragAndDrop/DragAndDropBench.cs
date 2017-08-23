@@ -19,22 +19,22 @@ public class DragAndDropBench : DragAndDrop {
 
 		//Case centrale
 		var v = G.Sys.tilemap.at (tf.position);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position, TileID.ESCALATOR).Count > 0)
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE)) || G.Sys.tilemap.tilesOfTypeAt(tf.position, TileID.ESCALATOR).Count > 0)
 			canPlace = false;
 
 		//Case côté
 		v = G.Sys.tilemap.at (tf.position + new Vector3(dir.x, 0, dir.z));
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(dir.x, 0, dir.z), TileID.ESCALATOR).Count > 0)
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE)) || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(dir.x, 0, dir.z), TileID.ESCALATOR).Count > 0)
 			canPlace = false;
 
 		//Case en face centrale
 		v = G.Sys.tilemap.at (tf.position + new Vector3(-dir.z, 0, dir.x));
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(-dir.z, 0, dir.x), TileID.ESCALATOR).Count > 0)
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE)) || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(-dir.z, 0, dir.x), TileID.ESCALATOR).Count > 0)
 			canPlace = false;
 
 		//Case en face côté
 		v = G.Sys.tilemap.at (tf.position + new Vector3(dir.x - dir.z, 0, dir.x + dir.z));
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(dir.x - dir.z, 0, dir.x + dir.z), TileID.ESCALATOR).Count > 0)
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE)) || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(dir.x - dir.z, 0, dir.x + dir.z), TileID.ESCALATOR).Count > 0)
 			canPlace = false;
 
 	}

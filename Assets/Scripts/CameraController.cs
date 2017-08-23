@@ -159,7 +159,7 @@ public class CameraController : MonoBehaviour {
 				if (dad != null) {
 					G.Sys.selectionManager.Show (dad);
 				} else {
-					var dade = disposable.transform.parent.GetComponent<DragAndDropEntity> ();
+					var dade = disposable.GetComponent<DragAndDropEntity> ();
 					if (dade != null) {
 						G.Sys.selectionManager.Show (dade, true);
 					}
