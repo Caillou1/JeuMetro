@@ -1206,8 +1206,8 @@ MonoBehaviour:
   stats:
     Type: 0
     RestPlaceAttraction: 20
-    Cleanliness: 80
-    DeltaCleanliness: 30
+    Cleanliness: 90
+    DeltaCleanliness: 10
     FaintnessPercentage: 6
     DeltaFainteness: 25.1
     FraudPercentage: 40
@@ -1229,6 +1229,7 @@ MonoBehaviour:
     Hunger: 0
     Fraud: 0
     LostNoTicket: 0
+  anim: {fileID: 0}
 --- !u!136 &136030902708359128
 CapsuleCollider:
   m_ObjectHideFlags: 1
