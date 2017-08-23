@@ -137,8 +137,8 @@ public class Cleaner : AEntity
 			agent.speed = datas.Speed;
 	}
 
-	protected override void OnPathFinished ()
-	{
-		path.destnation = G.Sys.tilemap.getRandomGroundTile ().transform.position;
-	}
+    protected override void OnPathFinished()
+    {
+        path.destnation = G.Sys.tilemap.getRandomGroundTile().transform.position;
+    }
 }
