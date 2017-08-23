@@ -4139,6 +4139,11 @@ Prefab:
       value: 
       objectReference: {fileID: 1131179153181814, guid: 2a06ec4477e01044cb9622c8f397cf39,
         type: 2}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.data[9].Delay
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
   m_IsPrefabParent: 0
