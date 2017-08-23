@@ -155,6 +155,7 @@ public class CameraController : MonoBehaviour {
 			var disposable = GetDisposable (Physics.RaycastAll (ray));
 
 			if (disposable != null && !IsSelecting) {
+				Debug.Log (IsSelecting);
 				var dad = disposable.GetComponent<DragAndDrop> ();
 				if (dad != null) {
 					G.Sys.selectionManager.Show (dad);

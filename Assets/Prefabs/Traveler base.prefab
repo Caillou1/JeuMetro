@@ -1206,12 +1206,12 @@ MonoBehaviour:
   stats:
     Type: 0
     RestPlaceAttraction: 0
-    Cleanliness: 100
-    DeltaCleanliness: 0
+    Cleanliness: 0
+    DeltaCleanliness: 75.6
     FaintnessPercentage: 0
-    DeltaFainteness: 25.1
+    DeltaFainteness: 0
     FraudPercentage: 0
-    LostAbility: 100
+    LostAbility: 0
     Hunger: 100
     wastes: 0
     MovementSpeed: 3.5
@@ -1220,6 +1220,16 @@ MonoBehaviour:
     HaveTicket: 0
     IgnoreBin: 0
   targetName: Exit
+  datas:
+    Lostness: 0
+    Tiredness: 0
+    Dirtiness: 0
+    Waste: 0
+    Speed: 0
+    Hunger: 0
+    Fraud: 0
+    LostNoTicket: 0
+  anim: {fileID: 0}
 --- !u!136 &136030902708359128
 CapsuleCollider:
   m_ObjectHideFlags: 1
