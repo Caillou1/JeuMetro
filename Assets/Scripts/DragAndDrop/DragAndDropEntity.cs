@@ -12,8 +12,6 @@ public class DragAndDropEntity : MonoBehaviour{
 	protected bool canPlace;
 	[HideInInspector]
 	public bool CanDrag = false;
-	[HideInInspector]
-	public bool IsSelected = false;
 	protected bool Dragging = false;
 	protected bool bought;
 	public bool IsBought {
@@ -23,12 +21,27 @@ public class DragAndDropEntity : MonoBehaviour{
 		}
 	}
 
+	protected bool isSelected;
+	public bool IsSelected {
+		get{
+			return isSelected;
+		}
+		set {
+			isSelected = value;
+		}
+	}
+	private cakeslice.Outline[] outlines;
+
+	private Vector3 originalScale;
+
 	void Awake() {
 		bought = true;
 		tf = transform;
+		outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
 	}
 
 	void Start() {
+		originalScale = tf.localScale;
 		CheckCanPlace ();
 	}
 
@@ -38,7 +51,7 @@ public class DragAndDropEntity : MonoBehaviour{
 		var v = G.Sys.tilemap.at (tf.position);
 		var p = GetComponent<PodotactileTile> ();
 
-		if (v.Count == 0 || (p==null && v[0].type != TileID.GROUND))
+		if (v.Count == 0 || (p==null && v[0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE)))
 			canPlace = false;
 	}
 
@@ -62,6 +75,15 @@ public class DragAndDropEntity : MonoBehaviour{
 		}
 	}
 
+	protected bool HasTileOfType(List<ATile> list, TileID type) {
+		foreach (var l in list) {
+			if (l.type == type) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	void Update() {
 		if (Dragging && CanDrag && !IsBought) {
 			Ray ray = G.Sys.MainCamera.ScreenPointToRay (Input.mousePosition);
@@ -69,15 +91,40 @@ public class DragAndDropEntity : MonoBehaviour{
 			hits = Physics.RaycastAll (ray);
 			RaycastHit hit = FindGround (hits);
 
-			if (hit.transform != null) {
+			if (hit.transform != null && !G.Sys.cameraController.IsOnUI ()) {
 				Vector3 objPos = hit.transform.position;
 				tf.position = new Vector3 (Mathf.RoundToInt (objPos.x), Mathf.RoundToInt (objPos.y), Mathf.RoundToInt (objPos.z));
+			} else if (hit.transform != null) {
+				Vector3 objPos = hit.point;
+				tf.position = new Vector3 (objPos.x, Mathf.RoundToInt (objPos.y), objPos.z);
 			} else {
 				Vector3 pos = ray.origin + (ray.direction * 1000);
-				tf.position = new Vector3 (Mathf.RoundToInt (pos.x), Mathf.RoundToInt (pos.y), Mathf.RoundToInt (pos.z));
+				tf.position = new Vector3 (pos.x, Mathf.RoundToInt (pos.y), pos.z);
 			}
 
 			CheckCanPlace ();
+
+			if (canPlace && !G.Sys.cameraController.IsOnUI ()) {
+				cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
+			} else {
+				cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
+			}
+
+			if (G.Sys.cameraController.IsOnUI ()) {
+				tf.localScale = originalScale / 2;
+			} else {
+				tf.localScale = originalScale;
+			}
+		} else if (isSelected && !IsBought) {
+			CheckCanPlace ();
+
+			if (canPlace) {
+				cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
+			} else {
+				cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
+			}
+		} else if (isSelected && IsBought) {
+			cakeslice.OutlineEffect.Instance.lineColor0 = Color.yellow;
 		}
 	}
 
@@ -131,5 +178,14 @@ public class DragAndDropEntity : MonoBehaviour{
 	public void ActivateCollisions() {
 		foreach (var c in GetComponentsInChildren<Collider>())
 				c.enabled = true;
+	}
+
+	public void ToggleOutline(bool b) {
+		if (isSelected && IsBought) {
+			cakeslice.OutlineEffect.Instance.lineColor0 = Color.yellow;
+		}
+
+		foreach(var o in outlines)
+			o.enabled = b;
 	}
 }

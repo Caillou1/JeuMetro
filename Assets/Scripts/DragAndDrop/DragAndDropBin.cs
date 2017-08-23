@@ -18,7 +18,8 @@ public class DragAndDropBin : DragAndDrop {
 		NotWalledObject = tf.Find ("NotWalled").gameObject;
 		CheckCanPlace ();
 		CheckRotation ();
-		ToggleOutline (false);
+		if(bought)
+			ToggleOutline (false);
 		//IsBought = true;
 	}
 

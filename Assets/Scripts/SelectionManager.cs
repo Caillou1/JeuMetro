@@ -125,7 +125,7 @@ public class SelectionManager : MonoBehaviour {
 			obj.CanDrag = true;
 			G.Sys.cameraController.IsSelecting = true;
 			obj.DesactivateCollisions ();
-			obj.GetComponent<DragAndDrop> ().ToggleOutline (true);
+			o.ToggleOutline (true);
 		}
 	}
 
@@ -143,6 +143,7 @@ public class SelectionManager : MonoBehaviour {
 
 			ent.CanDrag = true;
 			G.Sys.cameraController.IsSelecting = true;
+			e.ToggleOutline (true);
 			//ent.DesactivateCollisions ();
 		}
 	}
@@ -155,6 +156,7 @@ public class SelectionManager : MonoBehaviour {
 				e.enabled = true;
 				G.Sys.cameraController.IsSelecting = false;
 				ent.IsSelected = false;
+				ent.ToggleOutline (false);
 			}
 			if(ResumeMovement) {
 				e.SetIsStopped (false);

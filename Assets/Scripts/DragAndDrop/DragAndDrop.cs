@@ -63,7 +63,7 @@ public class DragAndDrop : MonoBehaviour{
 
 		var v = G.Sys.tilemap.at (tf.position);
 		var p = GetComponent<PodotactileTile> ();
-		if (v.Count == 0 || ((p!=null && (((v [0].type != TileID.GROUND) && !HasTileOfType(v, TileID.WAIT_ZONE))|| HasTileOfType(v, TileID.PODOTACTILE))) || (p==null && v[0].type != TileID.GROUND)))
+		if (v.Count == 0 || ((p!=null && (((v [0].type != TileID.GROUND) && !HasTileOfType(v, TileID.WAIT_ZONE))|| HasTileOfType(v, TileID.PODOTACTILE))) || (p==null && v[0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE))))
 			canPlace = false;
 	}
 

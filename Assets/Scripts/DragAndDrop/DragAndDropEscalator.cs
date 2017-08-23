@@ -23,25 +23,25 @@ public class DragAndDropEscalator : DragAndDrop {
 
 		//Pivot
 		var v = G.Sys.tilemap.at (tf.position);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt (tf.position, TileID.ESCALATOR).Count > 0 || !G.Sys.tilemap.IsEmpty (tf.position + Vector3.up * 2)) {
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE)) || G.Sys.tilemap.tilesOfTypeAt (tf.position, TileID.ESCALATOR).Count > 0 || !G.Sys.tilemap.IsEmpty (tf.position + Vector3.up * 2)) {
 			canPlace = false;
 		}
 
 		//Case  plus basse
 		v = G.Sys.tilemap.at (tf.position + dir);
-		if (v.Count == 0 || v [0].type != TileID.GROUND || G.Sys.tilemap.tilesOfTypeAt (tf.position + dir, TileID.ESCALATOR).Count > 0 || !G.Sys.tilemap.IsEmpty (tf.position + dir + Vector3.up * 2)) {
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE)) || G.Sys.tilemap.tilesOfTypeAt (tf.position + dir, TileID.ESCALATOR).Count > 0 || !G.Sys.tilemap.IsEmpty (tf.position + dir + Vector3.up * 2)) {
 			canPlace = false;
 		}
 
 		//Pied escalator
 		v = G.Sys.tilemap.at (tf.position + 2 * dir);
-		if (v.Count == 0 || (v [0].type != TileID.GROUND && v[0].type != TileID.ESCALATOR && v[0].type != TileID.STAIRS) || !G.Sys.tilemap.IsEmpty (tf.position + 2 * dir + Vector3.up * 2)) {
+		if (v.Count == 0 || (v [0].type != TileID.GROUND && v[0].type != TileID.ESCALATOR && v[0].type != TileID.STAIRS && !HasTileOfType(v, TileID.WAIT_ZONE)) || !G.Sys.tilemap.IsEmpty (tf.position + 2 * dir + Vector3.up * 2)) {
 			canPlace = false;
 		}
 
 		//Haut escalator
 		v = G.Sys.tilemap.at (tf.position - dir + Vector3.up * 2);
-		if (v.Count == 0 || (v.Count == 1 && v[0].type != TileID.GROUND) || (v.Count == 2 && v [0].type != TileID.GROUND && v [0].type != TileID.ESCALATOR && v [0].type != TileID.STAIRS)) {
+		if (v.Count == 0 || (v.Count == 1 && v[0].type != TileID.GROUND) || (v.Count == 2 && v [0].type != TileID.GROUND && v [0].type != TileID.ESCALATOR && v [0].type != TileID.STAIRS && !HasTileOfType(v, TileID.WAIT_ZONE))) {
 			canPlace = false;
 		}
 	}
