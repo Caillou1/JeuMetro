@@ -195,6 +195,7 @@ public class DragAndDrop : MonoBehaviour{
 				IsBought = true;
 				var tile = GetComponent<ATile> ();
 				tile.Register ();
+				OnBuy ();
 			}
 			G.Sys.selectionManager.Hide (true);
 			CanDrag = false;
