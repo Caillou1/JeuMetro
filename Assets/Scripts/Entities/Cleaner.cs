@@ -33,6 +33,12 @@ public class Cleaner : AEntity
 		}
 
 		lastPos = transform.position;
+
+        if (G.Sys.gameManager.FireAlert && G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.OUT))
+        {
+            Destroy(gameObject);
+            return;
+        }
 	}
 
 	void OnDestroy() {
@@ -133,8 +139,8 @@ public class Cleaner : AEntity
 			agent.speed = datas.Speed;
 	}
 
-	protected override void OnPathFinished ()
-	{
-		path.destnation = G.Sys.tilemap.getRandomGroundTile ().transform.position;
-	}
+    protected override void OnPathFinished()
+    {
+        path.destnation = G.Sys.tilemap.getRandomGroundTile().transform.position;
+    }
 }

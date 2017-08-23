@@ -216,7 +216,8 @@ public class EntityPath
 
 	bool haveControleLineBetween(Vector3 pos1, Vector3 pos2)
 	{
-		return G.Sys.tilemap.GetTileOfTypeAt ((pos1 + pos2) / 2, TileID.CONTROLELINE);
+        var tile = G.Sys.tilemap.GetTileOfTypeAt((pos1 + pos2) / 2, TileID.CONTROLELINE) as ControleLineTile;;
+        return tile != null && !tile.canPassWithoutTicket; 
 	}
 
 	void updateAgentPath()

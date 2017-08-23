@@ -6,6 +6,8 @@ using UnityEngine.AI;
 
 public class ControleLineTile : ATile 
 {
+    public bool canPassWithoutTicket;
+
     List<NavMeshLink> backLinks = new List<NavMeshLink>();
     SubscriberList subscriberList = new SubscriberList();
 
@@ -15,9 +17,10 @@ public class ControleLineTile : ATile
 
 		G.Sys.tilemap.addTile (transform.position, this, Tilemap.CONTROLE_LINE_PRIORITY);
         Vector3 forward = transform.right;
+        var rot = transform.rotation;
         foreach(var l in transform.Find("GameObject").GetComponents<NavMeshLink>())
         {
-            if (Vector3.Dot(l.endPoint - l.startPoint, forward) < 0)
+            if (Vector3.Dot(rot * (l.endPoint - l.startPoint), forward) < 0)
                 backLinks.Add(l);
         }
         foreach(var l in backLinks)
