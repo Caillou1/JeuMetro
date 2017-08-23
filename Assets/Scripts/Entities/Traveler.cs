@@ -207,21 +207,22 @@ public class Traveler : AEntity
 			var tilesFront = G.Sys.tilemap.at (transform.position + transform.forward);
 			var stairs = tilesFront.Find (x => x.type == TileID.STAIRS) as StairsTile;
 
-			if (stairs != null && stairs.IsOnStairsPath(new Vector3i(tf.position)) && !stairs.HasPodotactileOnFloor(Mathf.RoundToInt(transform.position.y))) {
+			if (stairs != null && stairs.IsOnStairsPath (new Vector3i (tf.position)) && !stairs.HasPodotactileOnFloor (Mathf.RoundToInt (transform.position.y))) {
 				float fallChance = G.Sys.constants.FallChance;
 
-                if (stats.Malvoyant)
-                    fallChance = G.Sys.constants.PartialyBlindFallChance;
+				if (stats.Malvoyant)
+					fallChance = G.Sys.constants.PartialyBlindFallChance;
 
 				if (stats.Type == TravelerType.BLIND)
-                    fallChance = G.Sys.constants.BlindFallChance;
+					fallChance = G.Sys.constants.BlindFallChance;
 
-                var chance = new BernoulliDistribution(fallChance / 100f).Next(new StaticRandomGenerator<DefaultRandomGenerator>());
+				var chance = new BernoulliDistribution (fallChance / 100f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ());
 
 				if (chance && !path.haveAction (ActionType.FAINT)) {
 					datas.Tiredness = 1f;
 					path.addAction (new StairsFallAction (this, stairs));
 					CanFall = false;
+					StartCoroutine (CanFallDelay ());
 				}
 			}
 		}

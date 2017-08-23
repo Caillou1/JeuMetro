@@ -37,11 +37,6 @@ public class DragAndDropSpeaker : DragAndDrop {
 		var v = G.Sys.tilemap.at (tf.position);
 		if (v.Count == 0 || (v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE)) || G.Sys.tilemap.tilesOfTypeAt(tf.position, TileID.ESCALATOR).Count > 0)
 			canPlace = false;
-
-		//Case en face
-		v = G.Sys.tilemap.at (tf.position + new Vector3(-dir.z, 0, dir.x));
-		if (v.Count == 0 || (v [0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE)) || G.Sys.tilemap.tilesOfTypeAt(tf.position + new Vector3(-dir.z, 0, dir.x), TileID.ESCALATOR).Count > 0)
-			canPlace = false;
 	}
 
 	protected override void CheckRotation() {
