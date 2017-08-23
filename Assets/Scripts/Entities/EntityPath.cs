@@ -222,6 +222,9 @@ public class EntityPath
 
 	void updateAgentPath()
 	{
+        if (!_agent.isOnNavMesh)
+            return;
+        
 		NavMeshPath aPath = new NavMeshPath();
 
 		if (currentAction != null) {
@@ -240,11 +243,8 @@ public class EntityPath
 		if (_points.Count == 0) {
 			currentAction = _actions [0];
 			_actions.RemoveAt (0);
-            if (_agent.isOnNavMesh)
-            {
-				_agent.CalculatePath(currentAction.pos, aPath);
-				_agent.SetPath(aPath);
-            }
+			_agent.CalculatePath(currentAction.pos, aPath);
+			_agent.SetPath(aPath);
 			return;
 		}
 

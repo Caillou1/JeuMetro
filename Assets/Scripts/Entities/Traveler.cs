@@ -33,8 +33,11 @@ public class Traveler : AEntity
 
 	private bool CanLookForElevator;
 
+    private NavMeshPath navmeshPath;
+
 	protected override void OnAwake ()
 	{
+        navmeshPath = new NavMeshPath();
 		CanLookForElevator = true;
 		G.Sys.registerTraveler (this);
 		var e = findExit (targetName);
@@ -154,9 +157,8 @@ public class Traveler : AEntity
 				} else if (path.HaveTileOnPath(TileID.STAIRS) && (new BernoulliDistribution (G.Sys.constants.ElevatorAttraction).Next (new DefaultRandomGenerator ()))) { // Si il y a un escalier calcule proba
 					CanTakeElevator = true;
 				} else { // Si pas d'autres choix
-					NavMeshPath p = new NavMeshPath ();
-					NavMesh.CalculatePath (transform.position, path.destnation, NavMesh.AllAreas, p);
-					if (p.status != NavMeshPathStatus.PathComplete)
+                    NavMesh.CalculatePath (transform.position, path.destnation, NavMesh.AllAreas, navmeshPath);
+					if (navmeshPath.status != NavMeshPathStatus.PathComplete)
 						CanTakeElevator = true;
 				}
                 if (stats.Type != TravelerType.WHEELCHAIR && G.Sys.gameManager.FireAlert)
@@ -185,8 +187,11 @@ public class Traveler : AEntity
 
 	void checkSigns()
 	{
+        if (stats.Type == TravelerType.BLIND)
+            return;
+        
 		if (datas.Lostness > 0.5f && !path.haveAction (ActionType.SIGN)) {
-			var sign = G.Sys.tilemap.getNearestSpecialTileOfType (transform.position, TileID.INFOPANEL, G.Sys.constants.VerticalAmplification, G.Sys.constants.TravelerDetectionRadius);
+            var sign = G.Sys.tilemap.getNearestSpecialTileOfType (transform.position, TileID.INFOPANEL, G.Sys.constants.VerticalAmplification, G.Sys.constants.TravelerDetectionRadius * (stats.Malvoyant ? 0.5f : 1.0f) );
 			if (sign.Second) {
 				List<Vector3> validPos = new List<Vector3> ();
 				if (G.Sys.tilemap.IsEmptyGround (sign.First + Vector3.left))
@@ -197,7 +202,11 @@ public class Traveler : AEntity
 					validPos.Add (sign.First + Vector3.forward);
 				if (G.Sys.tilemap.IsEmptyGround (sign.First + Vector3.back))
 					validPos.Add (sign.First + Vector3.back);
-                path.addAction (new SignAction (this, validPos[new UniformIntDistribution(validPos.Count - 1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())], G.Sys.tilemap.GetTileOfTypeAt(sign.First, TileID.INFOPANEL) as InfoPanelTile));
+                var pos = validPos[new UniformIntDistribution(validPos.Count - 1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())];
+                agent.CalculatePath(pos, navmeshPath);
+                if (navmeshPath.status != NavMeshPathStatus.PathComplete)
+                    return;
+                path.addAction (new SignAction (this, pos, G.Sys.tilemap.GetTileOfTypeAt(sign.First, TileID.INFOPANEL) as InfoPanelTile));
 			}
 		}
 	}
@@ -271,6 +280,9 @@ public class Traveler : AEntity
 		if (validBenchs.Count == 0)
 			return;
 		var bench = validBenchs [new UniformIntDistribution (validBenchs.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())];
+        agent.CalculatePath(bench.First.sideToFrontPos(bench.Second), navmeshPath);
+        if (navmeshPath.status != NavMeshPathStatus.PathComplete)
+            return;
 		path.addAction (new SitAction (this, bench.First.sideToFrontPos (bench.Second), bench.First, bench.Second));
 	}
 
@@ -341,7 +353,12 @@ public class Traveler : AEntity
             if (G.Sys.tilemap.IsEmptyGround(pos + Vector3.right))
                 validPos.Add(pos + Vector3.right);
 
-            path.addAction(new ThrowInBinAction(this, validPos[new UniformIntDistribution(validPos.Count - 1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())], bestBin));
+            var targetPos = validPos[new UniformIntDistribution(validPos.Count - 1).Next(new StaticRandomGenerator<DefaultRandomGenerator>())];
+			agent.CalculatePath(targetPos, navmeshPath);
+			if (navmeshPath.status != NavMeshPathStatus.PathComplete)
+				return;
+
+            path.addAction(new ThrowInBinAction(this, pos, bestBin));
         }
 	}
 
@@ -384,7 +401,11 @@ public class Traveler : AEntity
 		}
 
 		var bestDir = Orienter.orientationToDir (Orienter.angleToOrientation (bestTile.transform.rotation.eulerAngles.y));
-		path.addAction(new BuyFoodAction(this, bestTile.transform.position + new Vector3(-bestDir.y, 0, bestDir.x), bestTile));
+        var pos = bestTile.transform.position + new Vector3(-bestDir.y, 0, bestDir.x);
+		agent.CalculatePath(pos, navmeshPath);
+		if (navmeshPath.status != NavMeshPathStatus.PathComplete)
+			return;
+		path.addAction(new BuyFoodAction(this, pos, bestTile));
 	}
 
 
@@ -427,7 +448,11 @@ public class Traveler : AEntity
 		}
 
 		var bestDir = Orienter.orientationToDir (Orienter.angleToOrientation (bestTile.transform.rotation.eulerAngles.y));
-		path.addAction(new BuyTicketAction(this, bestTile.transform.position + new Vector3(-bestDir.y, 0, bestDir.x), bestTile ));
+		var pos = bestTile.transform.position + new Vector3(-bestDir.y, 0, bestDir.x);
+		agent.CalculatePath(pos, navmeshPath);
+		if (navmeshPath.status != NavMeshPathStatus.PathComplete)
+			return;
+		path.addAction(new BuyTicketAction(this, pos, bestTile ));
 
 	}
 
