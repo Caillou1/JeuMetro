@@ -247,7 +247,7 @@ public class Traveler : AEntity
 
 	void checkTiredness()
 	{
-		if (datas.Tiredness > 0.95f && !path.haveAction(ActionType.FAINT)) {
+        if (datas.Tiredness > 0.95f && !path.haveAction()) {
 			var tiles = G.Sys.tilemap.at (new Vector3i (transform.position + transform.forward));
 
 			foreach (var tile in tiles) {

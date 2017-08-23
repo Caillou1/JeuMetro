@@ -7,6 +7,7 @@ using UnityEngine.AI;
 using NRand;
 using DG.Tweening;
 
+[System.Serializable]
 public class EntityPath
 {
 	const float dLostness = 0.15f;
@@ -33,6 +34,8 @@ public class EntityPath
 
     int framsFromLastLink = 0;
     const int framsFromLastLinkTrigger = 4;
+
+    public ActionType currentActionType = ActionType.NONE;
 
 	public EntityPath (NavMeshAgent a, float lostness = 0)
 	{
@@ -85,6 +88,11 @@ public class EntityPath
 	{
 		return _lastPathBrokePassControl;
 	}
+
+    public bool haveAction()
+    {
+        return currentAction != null || _actions.Count() > 0;
+    }
 
 	public void addAction(AAction action)
 	{
@@ -295,6 +303,8 @@ public class EntityPath
 				updateAgentPath ();
 			}
 		}
+
+        currentActionType = onAction ? currentAction.type : ActionType.NONE;
 	}
 
 	void checkAction()

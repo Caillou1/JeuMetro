@@ -3,6 +3,7 @@ using UnityEngine;
 
 public enum ActionType
 {
+    NONE,
 	SIGN,
 	SIT,
 	FAINT,
