@@ -3619,7 +3619,7 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -3707,12 +3707,12 @@ Prefab:
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.data[2].Entrance
       value: 
-      objectReference: {fileID: 1685497593}
+      objectReference: {fileID: 1164156842}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.data[2].Wave
       value: 
-      objectReference: {fileID: 1427005143703886, guid: 9d920a78b8bc55342b1d96f6b49e746b,
+      objectReference: {fileID: 1089501330821268, guid: ca56a0338a3f02348b216c662f8c33ed,
         type: 2}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -4133,6 +4133,12 @@ Prefab:
       propertyPath: FireAlertTime
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: inWaves.Array.data[2].array.Array.data[3].Wave
+      value: 
+      objectReference: {fileID: 1131179153181814, guid: 2a06ec4477e01044cb9622c8f397cf39,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
   m_IsPrefabParent: 0
