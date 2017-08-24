@@ -209,7 +209,7 @@ public sealed class G
 	}
 
 	public int GetDisposableCount(TileID id) {
-		if (disposablesCount.ContainsKey (id)) {
+		if (disposablesCount != null && disposablesCount.ContainsKey (id)) {
 			return disposablesCount [id];
 		} else {
 			return 0;

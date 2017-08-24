@@ -53,7 +53,7 @@ public class Cleaner : AEntity
 
 	protected override void Check ()
 	{
-        if (!path.haveAction(ActionType.CLEAN_WASTE) && !path.haveAction(ActionType.CLEAN_BIN))
+		if (enabled && !path.haveAction(ActionType.CLEAN_WASTE) && !path.haveAction(ActionType.CLEAN_BIN))
         {
             CheckWaste();
             CheckBin();
