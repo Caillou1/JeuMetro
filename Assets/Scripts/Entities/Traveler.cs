@@ -91,8 +91,9 @@ public class Traveler : AEntity
     {
         if (G.Sys.gameManager.FireAlert)
             return;
-        
-		if (G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.CONTROLELINE) != null)
+
+        var tile = G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.CONTROLELINE) as ControleLineTile;
+        if (tile != null && !tile.canPassWithoutTicket)
 		{
 			isTicketLost = false;
             stats.HaveTicket = true;

@@ -54,10 +54,14 @@ public class ControleLineTile : ATile
 		{
 			l.enabled = true;
 		}
+        FixeOpen();
     }
 
     public void Open(float startTime)
     {
+        if (G.Sys.gameManager.FireAlert)
+            return;
+        
         const float rotateAngle = 85.0f;
         const float inRotationTime = 0.3f;
         const float outRotationTime = 1.5f;
@@ -82,5 +86,18 @@ public class ControleLineTile : ATile
                 { currentTweens.Add(doorRight.DOLocalRotate(Vector3.zero, outRotationTime).SetEase(Ease.OutElastic)); }));
             }));
         }));
+    }
+
+    public void FixeOpen()
+    {
+        const float rotateAngle = 85.0f;
+        const float inRotationTime = 0.3f;
+
+		foreach (var t in currentTweens)
+			if (t != null)
+				t.Kill();
+		currentTweens.Clear();
+        doorLeft.DOLocalRotate(new Vector3(0, rotateAngle, 0), inRotationTime);
+        doorRight.DOLocalRotate(new Vector3(0, -rotateAngle, 0), inRotationTime);
     }
 }
