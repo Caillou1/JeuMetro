@@ -57,7 +57,7 @@ public class PodotactileTile : ATile
 					var e = l [0] as EscalatorTile;
 					var s = l [0] as StairsTile;
 
-					if ((e != null && (l [0] as EscalatorTile).IsOnEscalatorPath (new Vector3i (tf.position))) || (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position)))) {
+					if (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position))) {
 						if (!neighbors.Contains (Orientation.LEFT))
 							neighbors.Add (Orientation.LEFT);
 						if (!neighbors.Contains (Orientation.RIGHT))
@@ -85,7 +85,7 @@ public class PodotactileTile : ATile
 					var e = l [0] as EscalatorTile;
 					var s = l [0] as StairsTile;
 
-					if ((e != null && (l [0] as EscalatorTile).IsOnEscalatorPath (new Vector3i (tf.position))) || (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position)))) {
+					if (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position))) {
 						if (!neighbors.Contains (Orientation.LEFT))
 							neighbors.Add (Orientation.LEFT);
 						if (!neighbors.Contains (Orientation.RIGHT))
@@ -113,7 +113,7 @@ public class PodotactileTile : ATile
 					var e = l [0] as EscalatorTile;
 					var s = l [0] as StairsTile;
 
-					if ((e != null && (l [0] as EscalatorTile).IsOnEscalatorPath (new Vector3i (tf.position))) || (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position)))) {
+					if (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position))) {
 						if (!neighbors.Contains (Orientation.DOWN))
 							neighbors.Add (Orientation.DOWN);
 						if (!neighbors.Contains (Orientation.UP))
@@ -141,7 +141,7 @@ public class PodotactileTile : ATile
 					var e = l [0] as EscalatorTile;
 					var s = l [0] as StairsTile;
 
-					if ((e != null && (l [0] as EscalatorTile).IsOnEscalatorPath (new Vector3i (tf.position))) || (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position)))) {
+					if (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position))) {
 						if (!neighbors.Contains (Orientation.DOWN))
 							neighbors.Add (Orientation.DOWN);
 						if (!neighbors.Contains (Orientation.UP))
