@@ -471,7 +471,6 @@ public class Traveler : AEntity
         datas.Waste = stats.wastes/100;
         datas.Hunger = new BernoulliDistribution(stats.Hunger / 100).Next(gen) ? 1 : 0;
 		datas.Fraud = new BernoulliDistribution (stats.FraudPercentage / 100).Next (gen);
-		datas.LostNoTicket = false;
 		path.canPassControl = stats.HaveTicket || datas.Fraud;
 	}
 
