@@ -273,13 +273,13 @@ public class SelectionManager : MonoBehaviour {
 			gameCanvas.transform.position = objTf.position + Vector3.up * .1f;
 
 			leftButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.left));
-			leftButton.GetComponent<Button> ().interactable = obj.CanPlace;
+			//leftButton.GetComponent<Button> ().interactable = obj.CanPlace;
 			rightButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.right));
-			rightButton.GetComponent<Button> ().interactable = obj.CanPlace;
+			//rightButton.GetComponent<Button> ().interactable = obj.CanPlace;
 			forwardButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.forward));
-			forwardButton.GetComponent<Button> ().interactable = obj.CanPlace;
+			//forwardButton.GetComponent<Button> ().interactable = obj.CanPlace;
 			backButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.back));
-			backButton.GetComponent<Button> ().interactable = obj.CanPlace;
+			//backButton.GetComponent<Button> ().interactable = obj.CanPlace;
 		}
 	}
 }
