@@ -212,7 +212,7 @@ public class Traveler : AEntity
 	}
 
 	void checkStairs() {
-		if (CanFall) {
+		if (stats.Type != TravelerType.WHEELCHAIR && CanFall) {
 			var tilesFront = G.Sys.tilemap.at (transform.position + transform.forward);
 			var stairs = tilesFront.Find (x => x.type == TileID.STAIRS) as StairsTile;
 
@@ -248,7 +248,7 @@ public class Traveler : AEntity
 
 	void checkTiredness()
 	{
-        if (datas.Tiredness > 0.95f && !path.haveAction()) {
+		if (stats.Type != TravelerType.WHEELCHAIR && datas.Tiredness > 0.95f && !path.haveAction()) {
 			var tiles = G.Sys.tilemap.at (new Vector3i (transform.position + transform.forward));
 
 			foreach (var tile in tiles) {

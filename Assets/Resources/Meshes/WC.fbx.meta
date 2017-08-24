@@ -109,17 +109,17 @@ ModelImporter:
     4300006: pSphere1
     7400000: Armature.002|Armature.001Action
     7400002: Armature.002|Armature.001Action.001
-    7400004: PetiteRoues
+    7400004: PetitesRoues - Rolling
     7400006: Armature.002|Armature.001Action.003
     7400008: Armature.002|Armature.001Action.004
-    7400010: Armature.002|ArmatureAction
+    7400010: PetitesRoues
     7400012: Armature.002|ArmatureAction.001
     7400014: Armature.001|Armature.001Action
     7400016: Armature.001|Armature.001Action.001
-    7400018: Armature.001|Armature.001Action.002
-    7400020: Armature.001|Armature.001Action.003
-    7400022: Armature.001|Armature.001Action.004
-    7400024: Armature.001|ArmatureAction
+    7400018: GrossesRoues - Rolling
+    7400020: PetitesRoues
+    7400022: GrossesRoues
+    7400024: PetitesRoues
     7400026: Armature.001|ArmatureAction.001
     7400028: Armature|Armature.001Action
     7400030: Armature|Armature.001Action.001
@@ -128,8 +128,11 @@ ModelImporter:
     7400036: Armature|Armature.001Action.004
     7400038: Armature|ArmatureAction
     7400040: Armature|ArmatureAction.001
-    7400042: Armature|ArmatureAction.002
+    7400042: Rolling
     7400044: Armature.002|ArmatureAction.002
+    7400046: PetitesRoues - Idle
+    7400048: GrossesRoues - Idle
+    7400050: Idle
     9500000: //RootNode
     13700000: Cube.001
     13700002: Cube.002
@@ -158,7 +161,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: PetiteRoues
+      name: PetitesRoues - Rolling
       takeName: Armature.002|Armature.001Action.002
       firstFrame: 0
       lastFrame: 26
@@ -168,7 +171,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -283,507 +286,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature.002|ArmatureAction
-      takeName: Armature.002|ArmatureAction
-      firstFrame: 0
-      lastFrame: 15
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature.002|ArmatureAction.001
-      takeName: Armature.002|ArmatureAction.001
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature.001|Armature.001Action
-      takeName: Armature.001|Armature.001Action
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature.001|Armature.001Action.001
-      takeName: Armature.001|Armature.001Action.001
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature.001|Armature.001Action.002
+      name: GrossesRoues - Rolling
       takeName: Armature.001|Armature.001Action.002
       firstFrame: 0
       lastFrame: 26
@@ -793,7 +296,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -908,1385 +411,385 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature.001|Armature.001Action.003
-      takeName: Armature.001|Armature.001Action.003
-      firstFrame: 0
-      lastFrame: 26
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature.001|Armature.001Action.004
-      takeName: Armature.001|Armature.001Action.004
-      firstFrame: 0
-      lastFrame: 26
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature.001|ArmatureAction
-      takeName: Armature.001|ArmatureAction
-      firstFrame: 0
-      lastFrame: 15
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature.001|ArmatureAction.001
-      takeName: Armature.001|ArmatureAction.001
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature|Armature.001Action
-      takeName: Armature|Armature.001Action
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature|Armature.001Action.001
-      takeName: Armature|Armature.001Action.001
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature|Armature.001Action.002
-      takeName: Armature|Armature.001Action.002
-      firstFrame: 0
-      lastFrame: 26
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature|Armature.001Action.003
-      takeName: Armature|Armature.001Action.003
-      firstFrame: 0
-      lastFrame: 26
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature|Armature.001Action.004
-      takeName: Armature|Armature.001Action.004
-      firstFrame: 0
-      lastFrame: 26
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature|ArmatureAction
-      takeName: Armature|ArmatureAction
-      firstFrame: 0
-      lastFrame: 15
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature|ArmatureAction.001
-      takeName: Armature|ArmatureAction.001
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Armature
-        weight: 1
-      - path: Armature/Bone
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
-        weight: 1
-      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
-          1_end"
-        weight: 1
-      - path: Armature/Bone/hanche
-        weight: 1
-      - path: Armature/Bone/hanche/cuise
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe
-        weight: 1
-      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
-        weight: 1
-      - path: Armature/Bone/hanche.001
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
-        weight: 1
-      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
-        weight: 1
-      - path: Armature/coude
-        weight: 1
-      - path: Armature/coude/coude_end
-        weight: 1
-      - path: Armature/coude 1
-        weight: 1
-      - path: Armature/coude 1/coude 1_end
-        weight: 1
-      - path: Armature/genoux 1
-        weight: 1
-      - path: Armature/genoux 1/genoux 1_end
-        weight: 1
-      - path: Armature/genoux 1.001
-        weight: 1
-      - path: Armature/genoux 1.001/genoux 1.001_end
-        weight: 1
-      - path: Armature/IKmain
-        weight: 1
-      - path: Armature/IKmain/IKmain_end
-        weight: 1
-      - path: Armature/IKmain.001
-        weight: 1
-      - path: Armature/IKmain.001/IKmain.001_end
-        weight: 1
-      - path: Armature/pied
-        weight: 1
-      - path: Armature/pied/pied_end
-        weight: 1
-      - path: Armature/pied 1
-        weight: 1
-      - path: Armature/pied 1/pied 1_end
-        weight: 1
-      - path: Armature.001
-        weight: 1
-      - path: Armature.001/Bone 1
-        weight: 1
-      - path: Armature.001/Bone 1/Bone_end
-        weight: 1
-      - path: Armature.002
-        weight: 1
-      - path: Armature.002/Bone 2
-        weight: 1
-      - path: Armature.002/Bone 2/Bone_end 1
-        weight: 1
-      - path: Cube
-        weight: 1
-      - path: Cube.001
-        weight: 1
-      - path: Cube.002
-        weight: 1
-      - path: pSphere1
-        weight: 1
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature|ArmatureAction.002
+      name: Rolling
       takeName: Armature|ArmatureAction.002
       firstFrame: 0
-      lastFrame: 43
+      lastFrame: 26
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Bone
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
+          1_end"
+        weight: 1
+      - path: Armature/Bone/hanche
+        weight: 1
+      - path: Armature/Bone/hanche/cuise
+        weight: 1
+      - path: Armature/Bone/hanche/cuise/jambe
+        weight: 1
+      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
+        weight: 1
+      - path: Armature/Bone/hanche.001
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
+        weight: 1
+      - path: Armature/coude
+        weight: 1
+      - path: Armature/coude/coude_end
+        weight: 1
+      - path: Armature/coude 1
+        weight: 1
+      - path: Armature/coude 1/coude 1_end
+        weight: 1
+      - path: Armature/genoux 1
+        weight: 1
+      - path: Armature/genoux 1/genoux 1_end
+        weight: 1
+      - path: Armature/genoux 1.001
+        weight: 1
+      - path: Armature/genoux 1.001/genoux 1.001_end
+        weight: 1
+      - path: Armature/IKmain
+        weight: 1
+      - path: Armature/IKmain/IKmain_end
+        weight: 1
+      - path: Armature/IKmain.001
+        weight: 1
+      - path: Armature/IKmain.001/IKmain.001_end
+        weight: 1
+      - path: Armature/pied
+        weight: 1
+      - path: Armature/pied/pied_end
+        weight: 1
+      - path: Armature/pied 1
+        weight: 1
+      - path: Armature/pied 1/pied 1_end
+        weight: 1
+      - path: Armature.001
+        weight: 1
+      - path: Armature.001/Bone 1
+        weight: 1
+      - path: Armature.001/Bone 1/Bone_end
+        weight: 1
+      - path: Armature.002
+        weight: 1
+      - path: Armature.002/Bone 2
+        weight: 1
+      - path: Armature.002/Bone 2/Bone_end 1
+        weight: 1
+      - path: Cube
+        weight: 1
+      - path: Cube.001
+        weight: 1
+      - path: Cube.002
+        weight: 1
+      - path: pSphere1
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: PetitesRoues - Idle
+      takeName: Armature.002|Armature.001Action.002
+      firstFrame: 0
+      lastFrame: 0.10000001
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Bone
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
+          1_end"
+        weight: 1
+      - path: Armature/Bone/hanche
+        weight: 1
+      - path: Armature/Bone/hanche/cuise
+        weight: 1
+      - path: Armature/Bone/hanche/cuise/jambe
+        weight: 1
+      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
+        weight: 1
+      - path: Armature/Bone/hanche.001
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
+        weight: 1
+      - path: Armature/coude
+        weight: 1
+      - path: Armature/coude/coude_end
+        weight: 1
+      - path: Armature/coude 1
+        weight: 1
+      - path: Armature/coude 1/coude 1_end
+        weight: 1
+      - path: Armature/genoux 1
+        weight: 1
+      - path: Armature/genoux 1/genoux 1_end
+        weight: 1
+      - path: Armature/genoux 1.001
+        weight: 1
+      - path: Armature/genoux 1.001/genoux 1.001_end
+        weight: 1
+      - path: Armature/IKmain
+        weight: 1
+      - path: Armature/IKmain/IKmain_end
+        weight: 1
+      - path: Armature/IKmain.001
+        weight: 1
+      - path: Armature/IKmain.001/IKmain.001_end
+        weight: 1
+      - path: Armature/pied
+        weight: 1
+      - path: Armature/pied/pied_end
+        weight: 1
+      - path: Armature/pied 1
+        weight: 1
+      - path: Armature/pied 1/pied 1_end
+        weight: 1
+      - path: Armature.001
+        weight: 1
+      - path: Armature.001/Bone 1
+        weight: 1
+      - path: Armature.001/Bone 1/Bone_end
+        weight: 1
+      - path: Armature.002
+        weight: 1
+      - path: Armature.002/Bone 2
+        weight: 1
+      - path: Armature.002/Bone 2/Bone_end 1
+        weight: 1
+      - path: Cube
+        weight: 1
+      - path: Cube.001
+        weight: 1
+      - path: Cube.002
+        weight: 1
+      - path: pSphere1
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: GrossesRoues - Idle
+      takeName: Armature.001|Armature.001Action.002
+      firstFrame: 0
+      lastFrame: 0.10000001
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Bone
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
+          1_end"
+        weight: 1
+      - path: Armature/Bone/hanche
+        weight: 1
+      - path: Armature/Bone/hanche/cuise
+        weight: 1
+      - path: Armature/Bone/hanche/cuise/jambe
+        weight: 1
+      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
+        weight: 1
+      - path: Armature/Bone/hanche.001
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
+        weight: 1
+      - path: Armature/coude
+        weight: 1
+      - path: Armature/coude/coude_end
+        weight: 1
+      - path: Armature/coude 1
+        weight: 1
+      - path: Armature/coude 1/coude 1_end
+        weight: 1
+      - path: Armature/genoux 1
+        weight: 1
+      - path: Armature/genoux 1/genoux 1_end
+        weight: 1
+      - path: Armature/genoux 1.001
+        weight: 1
+      - path: Armature/genoux 1.001/genoux 1.001_end
+        weight: 1
+      - path: Armature/IKmain
+        weight: 1
+      - path: Armature/IKmain/IKmain_end
+        weight: 1
+      - path: Armature/IKmain.001
+        weight: 1
+      - path: Armature/IKmain.001/IKmain.001_end
+        weight: 1
+      - path: Armature/pied
+        weight: 1
+      - path: Armature/pied/pied_end
+        weight: 1
+      - path: Armature/pied 1
+        weight: 1
+      - path: Armature/pied 1/pied 1_end
+        weight: 1
+      - path: Armature.001
+        weight: 1
+      - path: Armature.001/Bone 1
+        weight: 1
+      - path: Armature.001/Bone 1/Bone_end
+        weight: 1
+      - path: Armature.002
+        weight: 1
+      - path: Armature.002/Bone 2
+        weight: 1
+      - path: Armature.002/Bone 2/Bone_end 1
+        weight: 1
+      - path: Cube
+        weight: 1
+      - path: Cube.001
+        weight: 1
+      - path: Cube.002
+        weight: 1
+      - path: pSphere1
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Idle
+      takeName: Armature|ArmatureAction.002
+      firstFrame: 28
+      lastFrame: 29
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
