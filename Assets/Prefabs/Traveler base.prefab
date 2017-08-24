@@ -1219,7 +1219,7 @@ MonoBehaviour:
     MovementSpeed: 3.5
     Malvoyant: 0
     Deaf: 0
-    HaveTicket: 0
+    HaveTicket: 1
     IgnoreBin: 0
   targetName: Exit
   datas:
@@ -1230,7 +1230,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!136 &136030902708359128
 CapsuleCollider:
@@ -1240,7 +1239,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1566736997975700}
   m_Material: {fileID: 13400000, guid: b05aa93199a0c477fb1afa9dbd080cd5, type: 2}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.25
   m_Height: 1
   m_Direction: 1
