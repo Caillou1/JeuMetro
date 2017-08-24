@@ -4131,7 +4131,7 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: FireAlertTime
-      value: 90
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -4148,6 +4148,11 @@ Prefab:
         type: 2}
       propertyPath: inWaves.Array.data[2].array.Array.data[3].Delay
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: waveTimes.Array.data[5]
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
