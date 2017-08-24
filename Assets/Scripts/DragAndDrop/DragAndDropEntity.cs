@@ -21,6 +21,12 @@ public class DragAndDropEntity : MonoBehaviour{
 		}
 	}
 
+	public bool CanPlace {
+		get {
+			return canPlace;
+		}
+	}
+
 	protected bool isSelected;
 	public bool IsSelected {
 		get{
@@ -98,8 +104,7 @@ public class DragAndDropEntity : MonoBehaviour{
 				Vector3 objPos = hit.point;
 				tf.position = new Vector3 (objPos.x, Mathf.RoundToInt (objPos.y), objPos.z);
 			} else {
-				Vector3 pos = ray.origin + (ray.direction * 1000);
-				tf.position = new Vector3 (pos.x, Mathf.RoundToInt (pos.y), pos.z);
+				tf.position = new Vector3i (tf.position).toVector3 ();
 			}
 
 			CheckCanPlace ();

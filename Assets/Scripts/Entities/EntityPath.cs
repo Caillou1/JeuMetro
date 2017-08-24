@@ -137,15 +137,6 @@ public class EntityPath
 		_actions.RemoveAll (a => a.type == type);
 	}
 
-	void updatePath()
-	{
-		finished = false;
-        NavMeshPath aPath = new NavMeshPath();
-        _agent.CalculatePath(_destination, aPath);
-        _agent.SetPath(aPath);
-        onPathCreated();
-	}
-
     public void abortAllAndActiveActionElse(ActionType[] actions)
     {
         if (currentAction != null && !actions.Contains(currentAction.type))
@@ -160,13 +151,16 @@ public class EntityPath
         _actions = newActions;
     }
 
-	void onPathCreated()
+    void updatePath()
 	{
+		finished = false;
+
+		NavMeshPath aPath = new NavMeshPath();
+		_agent.CalculatePath(_destination, aPath);
+		//_agent.SetPath(aPath);
+
 		_lastPathBrokePassControl = false;
 		_points.Clear ();
-
-		if (!_agent.hasPath)
-			return;
 
 		if (lostness < 0.05f && _canPassControl) {
 			_points.Add (_destination);
@@ -175,26 +169,27 @@ public class EntityPath
 		}
 
 		float distBetweenPoints = G.Sys.constants.travelerLostVariance / lostness;		
-		var path = _agent.path;
+		var path = aPath;
 		float dist = 0;
 		float lastCornerDist = 0;
 		float lastPoint = 0;
 		Vector3 lastpoint = _agent.transform.position;
 		var corners = path.corners.ToList ();
+		corners.Add(_destination);
+
 		if (!canPassControl) {
 			for (int i = 0; i < corners.Count - 1; i++) {
-				if (haveControleLineBetween (corners [i], corners [i + 1])) {
+                if (haveLockedControleLineBetween (corners [i], corners [i + 1])) {
 					if (i == 0)
 						_destination = _agent.transform.position;
 					else _destination = (corners [i - 1] - corners [i]).normalized + corners [i];
 					corners.RemoveRange (i, corners.Count - i);
+					corners.Add(_destination);
 					_lastPathBrokePassControl = true;
 					break;
 				}
 			}
 		}
-			
-		corners.Add (_destination);
 
 		var gen = new StaticRandomGenerator<DefaultRandomGenerator> ();
 		var d = new UniformVector2CircleDistribution (G.Sys.constants.travelerLostVariance);
@@ -218,10 +213,8 @@ public class EntityPath
 			}
 			dist += lastCornerDist;
 			lastpoint = pos;
+            _points.Add(pos);
 		}
-
-		_points.Add (_destination);
-
 		updateAgentPath ();
 	}
 
@@ -238,18 +231,19 @@ public class EntityPath
         
 		NavMeshPath aPath = new NavMeshPath();
 
+		finished = false;
+
 		if (currentAction != null) {
 	        _agent.CalculatePath(currentAction.pos, aPath);
 	        _agent.SetPath(aPath);
 			return;
 		}
-		
+
 		if (_points.Count == 0 && _actions.Count == 0) {
 			finished = true;
 			currentAction = null;
 			return;
 		}
-		finished = false;
 
 		if (_points.Count == 0) {
 			currentAction = _actions [0];
@@ -261,6 +255,7 @@ public class EntityPath
 
 		currentAction = null;
 		_agent.CalculatePath(_points[0], aPath);
+        _agent.SetPath(aPath);
 		_points.RemoveAt (0);
 	}
 
@@ -368,6 +363,12 @@ public class EntityPath
 		}
 		isOnOffMeshLink = true;
 
+        var data = _agent.currentOffMeshLinkData;
+        var pos = (data.startPos + data.endPos) / 2.0f;
+        var tile = G.Sys.tilemap.GetTileOfTypeAt(pos, TileID.CONTROLELINE) as ControleLineTile;
+        if (tile != null)
+            tile.Open(0.2f);
+
 		_behavior.StartCoroutine (onLinkCoroutine ());
 	}
 
@@ -468,6 +469,61 @@ public class EntityPath
 
         return false;
     }
+
+    bool haveTileBetween(TileID id, Vector3 start, Vector3 end, float minChunkLenght = 0.5f)
+    {
+		if (G.Sys.tilemap.GetTileOfTypeAt(start, id) != null || G.Sys.tilemap.GetTileOfTypeAt(end, id) != null)
+			return true;
+        
+        Vector3 chunk = (end - start)/2;
+        int chunkOnSegment = 1;
+        bool lastLoop = false;
+        while(!lastLoop)
+        {
+            for (int i = 0; i < chunkOnSegment; i++)
+            {
+                var pos = start + chunk * (i + 0.5f);
+                if (G.Sys.tilemap.GetTileOfTypeAt(pos, id) != null)
+                    return true;
+            }
+            if (chunk.magnitude < minChunkLenght)
+            {
+                lastLoop = true;
+                break;
+            }
+            chunkOnSegment *= 2;
+            chunk /= 2;
+        }
+        return false;
+    }
+
+	bool haveLockedControleLineBetween(Vector3 start, Vector3 end, float minChunkLenght = 0.5f)
+	{
+        if (G.Sys.tilemap.GetTileOfTypeAt(start, TileID.CONTROLELINE) != null || G.Sys.tilemap.GetTileOfTypeAt(end, TileID.CONTROLELINE) != null)
+			return true;
+
+		Vector3 chunk = (end - start) / 2;
+		int chunkOnSegment = 1;
+		bool lastLoop = false;
+		while (!lastLoop)
+		{
+			for (int i = 0; i < chunkOnSegment; i++)
+			{
+				var pos = start + chunk * (i + 0.5f);
+                var tile = G.Sys.tilemap.GetTileOfTypeAt(pos, TileID.CONTROLELINE) as ControleLineTile;
+                if (tile != null && !tile.canPassWithoutTicket)
+					return true;
+			}
+			if (chunk.magnitude < minChunkLenght)
+			{
+				lastLoop = true;
+				break;
+			}
+			chunkOnSegment *= 2;
+			chunk /= 2;
+		}
+		return false;
+	}
 
     public bool canGoTo(Vector3 pos)
     {

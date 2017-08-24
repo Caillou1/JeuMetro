@@ -212,7 +212,7 @@ public class Traveler : AEntity
 	}
 
 	void checkStairs() {
-		if (CanFall) {
+		if (stats.Type != TravelerType.WHEELCHAIR && CanFall) {
 			var tilesFront = G.Sys.tilemap.at (transform.position + transform.forward);
 			var stairs = tilesFront.Find (x => x.type == TileID.STAIRS) as StairsTile;
 
@@ -248,7 +248,7 @@ public class Traveler : AEntity
 
 	void checkTiredness()
 	{
-        if (datas.Tiredness > 0.95f && !path.haveAction()) {
+		if (stats.Type != TravelerType.WHEELCHAIR && datas.Tiredness > 0.95f && !path.haveAction()) {
 			var tiles = G.Sys.tilemap.at (new Vector3i (transform.position + transform.forward));
 
 			foreach (var tile in tiles) {
@@ -472,7 +472,6 @@ public class Traveler : AEntity
         datas.Waste = stats.wastes/100;
         datas.Hunger = new BernoulliDistribution(stats.Hunger / 100).Next(gen) ? 1 : 0;
 		datas.Fraud = new BernoulliDistribution (stats.FraudPercentage / 100).Next (gen);
-		datas.LostNoTicket = false;
 		path.canPassControl = stats.HaveTicket || datas.Fraud;
 	}
 
@@ -567,7 +566,6 @@ public class Traveler : AEntity
 
 	protected override void OnPathFinished ()
 	{
-		
         if (!isLost && !path.isLastPathNeedPassControl() && !isTicketLost) {
 			path.destnation = target;
 			return;
