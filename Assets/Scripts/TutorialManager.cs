@@ -41,6 +41,7 @@ public class TutorialManager : MonoBehaviour {
 	}
 
 	void StartFireAlert() {
+		G.Sys.audioManager.StartFireMusic ();
 		G.Sys.gameManager.FireAlert = true;
 		Event<StartFireAlertEvent>.Broadcast (new StartFireAlertEvent ());
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());

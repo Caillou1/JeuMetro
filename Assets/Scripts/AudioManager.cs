@@ -12,6 +12,10 @@ public class AudioManager : MonoBehaviour {
 	[BoxGroup("Music")]
 	public AudioClip MusicLoop;
 	[BoxGroup("Music")]
+	public AudioClip FireMusicStart;
+	[BoxGroup("Music")]
+	public AudioClip FireMusicLoop;
+	[BoxGroup("Music")]
 	[Range(0f, 1f)]
 	public float MusicVolume = 1f;
 
@@ -106,20 +110,30 @@ public class AudioManager : MonoBehaviour {
 		} else {
 			musicSource.clip = MusicStart;
 			musicSource.Play ();
-			StartCoroutine (WaitForEndOfStart ());
+			StartCoroutine (WaitForEndOfStart (MusicLoop));
 		}
 
 		if (G.Sys.audioManager == null) {
 			G.Sys.audioManager = this;
 			DontDestroyOnLoad (gameObject);
+		} else {
+			Destroy (gameObject);
 		}
 	}
 
-	IEnumerator WaitForEndOfStart() {
+	public void StartFireMusic() {
+		musicSource.Stop ();
+		musicSource.clip = FireMusicStart;
+		musicSource.loop = false;
+		musicSource.Play ();
+		StartCoroutine (WaitForEndOfStart (FireMusicLoop));
+	}
+
+	IEnumerator WaitForEndOfStart(AudioClip loop) {
 		yield return new WaitUntil (() => {
-			return musicSource.time >= MusicStart.length-0.01f;
+			return musicSource.time >= musicSource.clip.length-0.01f;
 		});
-		musicSource.clip = MusicLoop;
+		musicSource.clip = loop;
 		musicSource.loop = true;
 		musicSource.Play ();
 	}

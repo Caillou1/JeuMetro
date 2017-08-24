@@ -652,7 +652,7 @@ public class Tilemap
 
 		var list = new List<Pair<int, ElevatorTile>> ();
 
-		if (elevatorsConnections.ContainsKey (Mathf.RoundToInt (Origin.y)) && elevatorsConnections [Mathf.RoundToInt (Origin.y)].ContainsKey (Mathf.RoundToInt (Destination.y))) {
+		if (elevatorsConnections != null && elevatorsConnections.ContainsKey (Mathf.RoundToInt (Origin.y)) && elevatorsConnections [Mathf.RoundToInt (Origin.y)].ContainsKey (Mathf.RoundToInt (Destination.y))) {
 			var potentialList = elevatorsConnections [Mathf.RoundToInt (Origin.y)] [Mathf.RoundToInt (Destination.y)];
 
 			foreach (var path in potentialList) {
