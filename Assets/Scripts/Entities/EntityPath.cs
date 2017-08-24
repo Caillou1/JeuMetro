@@ -102,7 +102,9 @@ public class EntityPath
 			if (action.priority > currentAction.priority && !onAction) {
 				_actions.Insert (0, currentAction);
 				currentAction = action;
-				_agent.SetDestination (currentAction.pos);
+                NavMeshPath p = new NavMeshPath();
+                _agent.CalculatePath(currentAction.pos, p);
+                _agent.SetPath(p);
 			} else {
 				bool inserted = false;
 				for (int i = 0; i < _actions.Count; i++) {
@@ -273,7 +275,7 @@ public class EntityPath
 		if (currentAction == null && _actions.Count > 0)
 			checkAction ();
 		
-		if (new Vector3i(_agent.transform.position).Equals(new Vector3i(_agent.destination))) {
+        if ((_agent.transform.position - _agent.destination).sqrMagnitude < 0.3f) {
 			if (currentAction == null)
 				updateAgentPath ();
 			else if (framsFromLastLink >= framsFromLastLinkTrigger){
@@ -313,7 +315,9 @@ public class EntityPath
 			_points.Insert (0, _agent.destination);
 			currentAction = _actions [0];
 			_actions.RemoveAt (0);
-			_agent.SetDestination (currentAction.pos);
+            NavMeshPath p = new NavMeshPath();
+            _agent.CalculatePath(currentAction.pos, p);
+            _agent.SetPath(p);
 		}
 	}
 
