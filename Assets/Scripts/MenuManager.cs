@@ -185,6 +185,22 @@ public class MenuManager : MonoBehaviour {
         substriberList.Unsubscribe();
     }
 
+	private bool StopBlink;
+	public void StartBlinkMoney() {
+		Money.color = Color.yellow;
+		DOVirtual.DelayedCall (.5f, () => {
+			Money.color = Color.white;
+			if(StopBlink)
+				StopBlink = false;
+			else
+				DOVirtual.DelayedCall(.5f, () => StartBlinkMoney());
+		});
+	}
+
+	public void StopBlinkMoney() {
+		StopBlink = true;
+	}
+
 	private List<string> Messages;
 	private int currentMessage;
 

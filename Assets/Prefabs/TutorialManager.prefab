@@ -51,5 +51,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 693636ce939cc4252b14c6e971c950d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tutoriels: []
+  Tutoriels:
+  - SpawnWave: 1
+    WaveToSpawn: {fileID: 1116144661974192, guid: 7e25f361276e7be4787df6b8981303f6,
+      type: 2}
+    Entrance: {fileID: 0}
+    TimeBeforeMessagesShowUp: 3
+    Objectives:
+    - Type: 1
+      Amount: 1
+    MessagesToShowBefore:
+    - Pose un banc et deux poubelles stp
+    MessagesToShowAfter:
+    - "C'est bien t'es pas si d\xE9bile que \xE7a"
   LaunchOnStart: 1
