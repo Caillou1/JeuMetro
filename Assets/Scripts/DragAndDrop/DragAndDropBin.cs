@@ -6,14 +6,10 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class DragAndDropBin : DragAndDrop {
-
-	private GameObject NotWalledObject;
-
 	void Start() {
 		HasToCheckWall = true;
 		tf = transform;
 		isRotating = false;
-		NotWalledObject = tf.Find ("NotWalled").gameObject;
 		CheckCanPlace ();
 		CheckRotation ();
 		if(bought)

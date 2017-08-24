@@ -117,8 +117,7 @@ public class DragAndDrop : MonoBehaviour{
 				Vector3 objPos = hit.point;
 				tf.position = new Vector3 (objPos.x, Mathf.RoundToInt (objPos.y), objPos.z);
 			} else {
-				Vector3 pos = ray.origin + (ray.direction * 1000);
-				tf.position = new Vector3 (pos.x, Mathf.RoundToInt (pos.y), pos.z);
+				tf.position = new Vector3i (tf.position).toVector3 ();
 			}
 
 			CheckRotation ();
