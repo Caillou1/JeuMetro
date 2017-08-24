@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using AmplitudeNS;
 
 public enum Menu {
 	Main,
@@ -72,6 +73,12 @@ public class MenuManager : MonoBehaviour {
     private SubscriberList substriberList = new SubscriberList();
 
 	void Awake() {
+		Amplitude amp = Amplitude.Instance;
+		amp.logging = true;
+		amp.init ("c91e37a9a64907dcd158927243246732");
+
+		amp.logEvent ("Coucou");
+
         substriberList.Add(new Event<WinGameEvent>.Subscriber(onWinGameEvent));
         substriberList.Subscribe();
 
