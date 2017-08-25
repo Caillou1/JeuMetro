@@ -29,12 +29,7 @@ public class Agent : AEntity
 
 	void Start() {
 		GetComponent<DragAndDropEntity> ().ToggleOutline (false);
-		Invoke ("EnableNavMeshAgent", Time.deltaTime * 25);
-	}
-
-
-	void EnableNavMeshAgent() {
-		agent.enabled = true;
+		Invoke ("EnableAgent", 1f);
 	}
 
 	protected override void OnUpdate ()
