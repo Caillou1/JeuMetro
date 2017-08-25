@@ -264,7 +264,9 @@ public class PodotactileTile : ATile
 		}
 
 		foreach (var t in list) {
-			(t as PodotactileTile).Connect (false);
+            var tile = t as PodotactileTile;
+            if(tile != null)
+			    tile.Connect (false);
 		}
 	}
 }
