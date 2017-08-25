@@ -42,7 +42,6 @@ public class MenuManager : MonoBehaviour {
 	private GameObject ScoreUI;
 	private GameObject GameUI;
 	private GameObject ShopUI;
-	private GameObject PersonnelUI;
 	private GameObject SGPUI;
 	private GameObject FadeUI;
 	private GameObject LevelSelectionUI;
@@ -120,7 +119,6 @@ public class MenuManager : MonoBehaviour {
 
 		var menuTf = GameUI.transform.Find ("Menu");
 		ShopUI = menuTf.Find ("ShopUI").gameObject;
-		PersonnelUI = menuTf.Find ("PersonnelUI").gameObject;
 
 		TimePie = menuTf.Find ("Time").Find ("Pie").Find ("Wedge").GetComponent<Image> ();
 		TimeTxt = menuTf.Find ("Time").Find ("Text").GetComponent<Text> ();
@@ -144,7 +142,6 @@ public class MenuManager : MonoBehaviour {
 		ScoreUI.SetActive (false);
 		GameUI.SetActive (false);
 		ShopUI.SetActive (false);
-		PersonnelUI.SetActive (false);
 		SGPUI.SetActive (false);
         WinEndGameUI.SetActive(false);
 		LoseEndGameUI.SetActive (false);
@@ -153,15 +150,18 @@ public class MenuManager : MonoBehaviour {
 		if (obj != null)
 			obj.SetActive (true);
 
-		ShopButtons = new GameObject[8];
-		ShopButtons [0] = ShopUI.transform.Find ("Escalator").gameObject;
-		ShopButtons [1] = ShopUI.transform.Find ("Bench").gameObject;
-		ShopButtons [2] = ShopUI.transform.Find ("TicketDistrib").gameObject;
+		ShopButtons = new GameObject[10];
+		ShopButtons [0] = ShopUI.transform.Find ("Infos").gameObject;
+		ShopButtons [1] = ShopUI.transform.Find ("Podotactile").gameObject;
+		ShopButtons [2] = ShopUI.transform.Find ("Speaker").gameObject;
 		ShopButtons [3] = ShopUI.transform.Find ("FoodDistrib").gameObject;
-		ShopButtons [4] = ShopUI.transform.Find ("Bin").gameObject;
-		ShopButtons [5] = ShopUI.transform.Find ("Infos").gameObject;
-		ShopButtons [6] = ShopUI.transform.Find ("Speaker").gameObject;
-		ShopButtons [7] = ShopUI.transform.Find ("Podotactile").gameObject;
+		ShopButtons [4] = ShopUI.transform.Find ("Bench").gameObject;
+
+		ShopButtons [5] = ShopUI.transform.Find ("Escalator").gameObject;
+		ShopButtons [6] = ShopUI.transform.Find ("TicketDistrib").gameObject;
+		ShopButtons [7] = ShopUI.transform.Find ("Bin").gameObject;
+		ShopButtons [8] = ShopUI.transform.Find ("Cleaner").gameObject;
+		ShopButtons [9] = ShopUI.transform.Find ("Agent").gameObject;
 
 		UpdateShopUI ();
 	}
@@ -414,16 +414,8 @@ public class MenuManager : MonoBehaviour {
 		ShopUI.SetActive (!ShopUI.activeInHierarchy);
 	}
 
-	public void TogglePersonnelUI() {
-		PersonnelUI.SetActive (!PersonnelUI.activeInHierarchy);
-	}
-
 	public void DisableShopUI() {
 		ShopUI.SetActive (false);
-	}
-
-	public void DisablePersonnelUI() {
-		PersonnelUI.SetActive (false);
 	}
 
 	public void Quit() {
