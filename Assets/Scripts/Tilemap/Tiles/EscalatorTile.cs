@@ -29,7 +29,7 @@ public class EscalatorTile : ATile
         set
         {
 			_side = value;
-            if(!G.Sys.gameManager.FireAlert)
+			if(G.Sys.gameManager != null && !G.Sys.gameManager.FireAlert)
 			    anim.SetBool ("Reverse", _side == EscalatorSide.DOWN);
 
 			foreach (var l in linksUp)
