@@ -3195,6 +3195,11 @@ Prefab:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114714110458582758, guid: f1031c0ccbafc43e68061b0fbbf99f99,
+        type: 2}
+      propertyPath: FireAlertUiOffset
+      value: 150
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f1031c0ccbafc43e68061b0fbbf99f99, type: 2}
   m_IsPrefabParent: 0
@@ -7174,17 +7179,17 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: inWaves.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: waveTimes.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: metroWaves.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -7316,7 +7321,7 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: FireAlertTime
-      value: 150
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -7371,7 +7376,7 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: waveCounts
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -7386,12 +7391,12 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: waveTimes.Array.data[1]
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: waveTimes.Array.data[0]
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}

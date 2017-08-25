@@ -33,6 +33,11 @@ public class MenuManager : MonoBehaviour {
 	public Menu CurrentMenu = Menu.NONE;
 	public float[] ZoomLevels;
 	public LevelUnlock[] LevelUnlocks;
+
+    public float FireAlertUiOffset = 100;
+    public float FireAlertUIMoveTime = 1;
+    public float FireAlertUIWaitTime = 2;
+
 	private Vector3 cameraOrigin;
 
 	private int CurrentZoomLevel;
@@ -56,6 +61,7 @@ public class MenuManager : MonoBehaviour {
 	private Text ObjectivesText;
 	private Text MessageText;
 	private Image FireAlertVignette;
+    private GameObject FireAlertUI;
 
 	private Image TimePie;
 	private Text TimeTxt;
@@ -110,6 +116,7 @@ public class MenuManager : MonoBehaviour {
 		MessageBox = GameUI.transform.Find ("MessageBox").gameObject;
 		MessageText = MessageBox.transform.Find ("Text").GetComponent<Text> ();
 		ObjectivesText = GameUI.transform.Find ("ObjectivesText").GetComponent<Text> ();
+        FireAlertUI = tf.Find("FireAlertUI").gameObject;
 
 		//LevelButtons = new List<GameObject> ();
 		for (int i = 0; i < LevelSelectionUI.transform.childCount; i++) {
@@ -154,6 +161,7 @@ public class MenuManager : MonoBehaviour {
         WinEndGameUI.SetActive(false);
 		LoseEndGameUI.SetActive (false);
 		MessageBox.SetActive (false);
+        FireAlertUI.SetActive(false);
 		var obj = GetCorrespondantUI (CurrentMenu);
 		if (obj != null)
 			obj.SetActive (true);
@@ -201,6 +209,10 @@ public class MenuManager : MonoBehaviour {
 		DOVirtual.Float (0f, FireAlertAlphaStart, .5f, (float x) => {
 			FireAlertVignette.color = new Color (1, 1, 1, x);
 		}).OnComplete (() => BlinkVignette ());
+        FireAlertUI.SetActive(true);
+        FireAlertUI.transform.DOLocalMoveY(FireAlertUI.transform.localPosition.y - FireAlertUiOffset, FireAlertUIMoveTime)
+                   .OnComplete(() => DOVirtual.DelayedCall(FireAlertUIWaitTime, () => FireAlertUI.transform.DOLocalMoveY(FireAlertUI.transform.localPosition.y + FireAlertUiOffset, FireAlertUIMoveTime)
+                                                           .OnComplete(() =>  FireAlertUI.SetActive(false))));
 	}
 
 	void BlinkVignette() {
