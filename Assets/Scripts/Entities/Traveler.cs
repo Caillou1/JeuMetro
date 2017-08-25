@@ -622,5 +622,6 @@ public class Traveler : AEntity
         stats.HaveTicket = true;
         isTicketLost = false;
         path.canPassControl = true;
+        path.destnation = target;
     }
 }
