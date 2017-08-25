@@ -159,6 +159,7 @@ public class SelectionManager : MonoBehaviour {
 
 	public void Hide(bool register, bool isEntity, bool ResumeMovement) {
 		if (isEntity) {
+			Price = -1;
 			//ent.ActivateCollisions ();
 			var e = ent.GetComponent<AEntity> ();
 			if (register) {
@@ -187,6 +188,7 @@ public class SelectionManager : MonoBehaviour {
 
 	public void Hide(bool register) {
 		if (obj != null) {
+			Price = -1;
 			obj.ActivateCollisions ();
 			if (register) {
 				obj.IsSelected = false;

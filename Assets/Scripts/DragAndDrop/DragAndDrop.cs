@@ -25,6 +25,7 @@ public class DragAndDrop : MonoBehaviour{
 	protected bool canPlace;
 	public bool CanPlace {
 		get {
+			CheckCanPlace ();
 			return canPlace;
 		}
 	}
