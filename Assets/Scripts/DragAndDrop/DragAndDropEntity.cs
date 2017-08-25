@@ -193,6 +193,9 @@ public class DragAndDropEntity : MonoBehaviour{
 			cakeslice.OutlineEffect.Instance.lineColor0 = Color.yellow;
 		}
 
+		if(outlines == null)
+			outlines = transform.GetComponentsInChildren<cakeslice.Outline> ();
+
 		foreach(var o in outlines)
 			o.enabled = b;
 	}

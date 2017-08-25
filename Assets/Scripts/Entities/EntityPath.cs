@@ -158,7 +158,8 @@ public class EntityPath
 		finished = false;
 
 		NavMeshPath aPath = new NavMeshPath();
-		_agent.CalculatePath(_destination, aPath);
+		if(_agent.enabled)
+			_agent.CalculatePath(_destination, aPath);
 		//_agent.SetPath(aPath);
 
 		_lastPathBrokePassControl = false;
