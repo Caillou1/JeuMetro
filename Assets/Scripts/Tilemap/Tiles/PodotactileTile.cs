@@ -229,7 +229,9 @@ public class PodotactileTile : ATile
 
 			if (CheckArround) {
 				foreach (var t in list) {
-					(t as PodotactileTile).Connect (false);
+                    var tile = t as PodotactileTile;
+                    if(tile != null)
+                        tile.Connect (false);
 				}
 			}
 		}
