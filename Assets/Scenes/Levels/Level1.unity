@@ -3739,12 +3739,12 @@ Prefab:
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.data[2].Entrance
       value: 
-      objectReference: {fileID: 1164156842}
+      objectReference: {fileID: 829319963}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: inWaves.Array.data[0].array.Array.data[2].Wave
       value: 
-      objectReference: {fileID: 1089501330821268, guid: ca56a0338a3f02348b216c662f8c33ed,
+      objectReference: {fileID: 1427005143703886, guid: 5422691bf868b364ab93023674217b31,
         type: 2}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -4185,6 +4185,56 @@ Prefab:
         type: 2}
       propertyPath: waveTimes.Array.data[5]
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: waveTimes.Array.data[0]
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: waveTimes.Array.data[1]
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: waveTimes.Array.data[2]
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: waveTimes.Array.data[3]
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: waveTimes.Array.data[4]
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.AverageTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.MoneyLeft
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.HaveMoneyMedal
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.SpaceUsed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.ScoreValue
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
@@ -12197,6 +12247,16 @@ Prefab:
         type: 2}
       propertyPath: MaxTravelerBeforeLose
       value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: SpeakerEmissionTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: SpeakerWaitTime
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}
