@@ -27,7 +27,7 @@ public class DragAndDrop : MonoBehaviour{
 			return canPlace;
 		}
 	}
-	[HideInInspector]
+	//[HideInInspector]
 	public bool CanDrag = false;
 	protected bool Dragging = false;
 	protected bool bought;

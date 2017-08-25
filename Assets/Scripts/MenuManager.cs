@@ -26,6 +26,10 @@ public class LevelUnlock {
 }
 
 public class MenuManager : MonoBehaviour {
+	public Sprite RedTimerCircle;
+	public float FireAlertBlinkTime;
+	public float FireAlertAlphaStart;
+	public float FireAlertAlphaEnd;
 	public Menu CurrentMenu = Menu.NONE;
 	public float[] ZoomLevels;
 	public LevelUnlock[] LevelUnlocks;
@@ -51,6 +55,7 @@ public class MenuManager : MonoBehaviour {
 	private GameObject MessageBox;
 	private Text ObjectivesText;
 	private Text MessageText;
+	private Image FireAlertVignette;
 
 	private Image TimePie;
 	private Text TimeTxt;
@@ -69,7 +74,7 @@ public class MenuManager : MonoBehaviour {
 
     private WinMenuDatas winMenuDatas;
 
-    private SubscriberList substriberList = new SubscriberList();
+    private SubscriberList subscriberList = new SubscriberList();
 
 	void Awake() {
 		/*Amplitude amp = Amplitude.Instance;
@@ -78,8 +83,9 @@ public class MenuManager : MonoBehaviour {
 
 		amp.logEvent ("Coucou");*/
 
-        substriberList.Add(new Event<WinGameEvent>.Subscriber(onWinGameEvent));
-        substriberList.Subscribe();
+		subscriberList.Add(new Event<WinGameEvent>.Subscriber(onWinGameEvent));
+		subscriberList.Add (new Event<StartFireAlertEvent>.Subscriber (OnFireAlert));
+		subscriberList.Subscribe();
 
 		Time.timeScale = 1f;
 		G.Sys.menuManager = this;
@@ -95,6 +101,8 @@ public class MenuManager : MonoBehaviour {
 		PauseUI = tf.Find ("PauseUI").gameObject;
 		ScoreUI = tf.Find ("ScoresUI").gameObject;
 		GameUI = tf.Find ("GameUI").gameObject;
+		FireAlertVignette = GameUI.transform.Find ("FireAlertVignette").GetComponent<Image> ();
+		FireAlertVignette.color = new Color (1, 1, 1, 0);
 		LevelSelectionUI = tf.Find ("LevelSelectionUI").gameObject;
         WinEndGameUI = tf.Find("WinEndGameUI").gameObject;
         winMenuDatas = new WinMenuDatas(WinEndGameUI);
@@ -167,6 +175,8 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	void Start() {
+		
+
 		ParametersUI.transform.Find("MusicSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("musicVolume", 1f);
 		ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("soundVolume", 1f);
 
@@ -183,8 +193,25 @@ public class MenuManager : MonoBehaviour {
 
     private void OnDestroy()
     {
-        substriberList.Unsubscribe();
+		subscriberList.Unsubscribe();
     }
+
+	void OnFireAlert(StartFireAlertEvent fireAlertEvent) {
+		TimePie.sprite = RedTimerCircle;
+		DOVirtual.Float (0f, FireAlertAlphaStart, .5f, (float x) => {
+			FireAlertVignette.color = new Color (1, 1, 1, x);
+		}).OnComplete (() => BlinkVignette ());
+	}
+
+	void BlinkVignette() {
+		DOVirtual.Float (FireAlertAlphaStart, FireAlertAlphaEnd, FireAlertBlinkTime / 2f, (float x) => {
+			FireAlertVignette.color = new Color (1, 1, 1, x);
+		}).OnComplete(() => {
+			DOVirtual.Float (FireAlertAlphaEnd, FireAlertAlphaStart, FireAlertBlinkTime / 2f, (float x) => {
+				FireAlertVignette.color = new Color (1, 1, 1, x);
+			}).OnComplete(() => BlinkVignette());
+		});
+	}
 
 	private bool StopBlink;
 	public void StartBlinkMoney() {
