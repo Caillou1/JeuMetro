@@ -73,7 +73,8 @@ public class Cleaner : AEntity
     void CheckWaste()
     {
         WasteTile wasteTile = null;
-		var wastes = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.WASTE, /*G.Sys.constants.WorkerDetectionRadius*/ float.MaxValue, G.Sys.constants.VerticalAmplification);
+        float dist = float.MaxValue;
+		var wastes = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.WASTE, G.Sys.constants.WorkerDetectionRadius, G.Sys.constants.VerticalAmplification);
         foreach(var w in wastes)
         {
             var waste = G.Sys.tilemap.GetTileOfTypeAt(w, TileID.WASTE) as WasteTile;
@@ -85,7 +86,13 @@ public class Cleaner : AEntity
 			if (p.status != NavMeshPathStatus.PathComplete)
 				continue;
 
-            wasteTile = waste;
+            float d = (transform.position - w).sqrMagnitude;
+            if (d < dist)
+            {
+				wasteTile = waste;
+                dist = d;
+            }
+
             break;
         }
 

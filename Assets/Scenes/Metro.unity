@@ -6284,12 +6284,12 @@ Prefab:
     - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
       propertyPath: minDelay
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
       propertyPath: maxDelay
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
@@ -6346,6 +6346,11 @@ Prefab:
         type: 2}
       propertyPath: FireAlert
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: WorkerDetectionRadius
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}
