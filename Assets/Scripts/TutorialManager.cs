@@ -1,19 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
 
 public class TutorialManager : MonoBehaviour {
 	public List<Tutorial> Tutoriels;
 	public bool LaunchOnStart;
 
 	void Start () {
-		if (Tutoriels.Count > 0 && LaunchOnStart) {
+		if (LaunchOnStart) {
 			StartCoroutine(TutorialRoutine());
 		}
 	}
 
 	IEnumerator TutorialRoutine() {
 		foreach (var t in Tutoriels) {
+			SpawnWave (t);
+
+			yield return new WaitForSeconds (t.TimeBeforeMessagesShowUp);
+
 			G.Sys.menuManager.ShowMessages (t.MessagesToShowBefore);
 
 			yield return new WaitUntil (() => G.Sys.menuManager.AreAllMessagesRead ());
@@ -22,10 +27,24 @@ public class TutorialManager : MonoBehaviour {
 
 			yield return new WaitUntil (() => t.ObjectivesDone);
 
+			G.Sys.menuManager.HideObjectives ();
 			G.Sys.menuManager.ShowMessages (t.MessagesToShowAfter);
 
 			yield return new WaitUntil (() => G.Sys.menuManager.AreAllMessagesRead ());
 		}
+
+		StartFireAlert ();
+	}
+
+	void SpawnWave(Tutorial t) {
+		if(t.WaveToSpawn != null) Instantiate (t.WaveToSpawn, t.Entrance.position, Quaternion.identity, transform);
+	}
+
+	void StartFireAlert() {
+		G.Sys.audioManager.StartFireMusic ();
+		G.Sys.gameManager.FireAlert = true;
+		Event<StartFireAlertEvent>.Broadcast (new StartFireAlertEvent ());
+		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 	}
 }
 
@@ -46,6 +65,7 @@ public enum ObjectifType {
 [System.Serializable]
 public class Objectif {
 	public ObjectifType Type;
+	[HideIf("TypeIsNone")]
 	public int Amount;
 
 	private int startAmount;
@@ -60,12 +80,27 @@ public class Objectif {
 
 		startAmount = ObjectifChecker.GetStartAmount(t);
 	}
+
+	private bool TypeIsNone() {
+		return Type == ObjectifType.NONE;
+	}
+
+	public override string ToString ()
+	{
+		return ObjectifChecker.GetCorrespondantText (this);
+	}
 }
 
 [System.Serializable]
 public class Tutorial {
-	public List<string> MessagesToShowBefore;
+	public bool SpawnWave;
+	[ShowIf("SpawnWave")]
+	public GameObject WaveToSpawn;
+	[ShowIf("SpawnWave")]
+	public Transform Entrance;
+	public float TimeBeforeMessagesShowUp;
 	public List<Objectif> Objectives;
+	public List<string> MessagesToShowBefore;
 	public List<string> MessagesToShowAfter;
 
 	public bool ObjectivesDone {
@@ -75,7 +110,6 @@ public class Tutorial {
 					return false;
 				}
 			}
-
 			return true;
 		}
 	}
@@ -137,6 +171,35 @@ public static class ObjectifChecker {
 			return G.Sys.GetDisposableCount (TileID.TICKETDISTRIBUTEUR);
 		default:
 			return 0;
+		}
+	}
+
+	public static string GetCorrespondantText(Objectif o) {
+		switch (o.Type) {
+		case ObjectifType.NONE:
+			return "";
+		case ObjectifType.DROP_AGENT:
+			return "- Poser " + o.Amount + " agent" + ((o.Amount > 1) ? "s" : "") + " de sécurité";
+		case ObjectifType.DROP_BENCH:
+			return "- Poser " + o.Amount + " banc" + ((o.Amount > 1) ? "s" : "");
+		case ObjectifType.DROP_BIN:
+			return "- Poser " + o.Amount + " poubelle" + ((o.Amount > 1) ? "s" : "");
+		case ObjectifType.DROP_CLEANER:
+			return "- Poser " + o.Amount + " agent" + ((o.Amount > 1) ? "s" : "") + " d'entretien";
+		case ObjectifType.DROP_ESCALATOR:
+			return "- Poser " + o.Amount + " escalator" + ((o.Amount > 1) ? "s" : "");
+		case ObjectifType.DROP_FOODDISTRIB:
+			return "- Poser " + o.Amount + " distributeur" + ((o.Amount > 1) ? "s" : "") + " de nourriture";
+		case ObjectifType.DROP_INFOPANEL:
+			return "- Poser " + o.Amount + " panneau" + ((o.Amount > 1) ? "x" : "") + " d'informations";
+		case ObjectifType.DROP_PODOTACTILE:
+			return "- Poser " + o.Amount + " bande" + ((o.Amount > 1) ? "s" : "") + " podotactile";
+		case ObjectifType.DROP_SPEAKER:
+			return "- Poser " + o.Amount + " émetteur" + ((o.Amount > 1) ? "s" : "") + " sonore";
+		case ObjectifType.DROP_TICKETDISTRIB:
+			return "- Poser " + o.Amount + " distributeur" + ((o.Amount > 1) ? "s" : "") + " de tickets";
+		default:
+			return "";
 		}
 	}
 }

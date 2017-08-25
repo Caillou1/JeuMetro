@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using AmplitudeNS;
 
 public enum Menu {
 	Main,
@@ -48,6 +49,9 @@ public class MenuManager : MonoBehaviour {
     //private List<GameObject> LevelButtons;
     private GameObject WinEndGameUI;
 	private GameObject LoseEndGameUI;
+	private GameObject MessageBox;
+	private Text ObjectivesText;
+	private Text MessageText;
 
 	private Image TimePie;
 	private Text TimeTxt;
@@ -69,6 +73,12 @@ public class MenuManager : MonoBehaviour {
     private SubscriberList substriberList = new SubscriberList();
 
 	void Awake() {
+		/*Amplitude amp = Amplitude.Instance;
+		amp.logging = true;
+		amp.init ("c91e37a9a64907dcd158927243246732");
+
+		amp.logEvent ("Coucou");*/
+
         substriberList.Add(new Event<WinGameEvent>.Subscriber(onWinGameEvent));
         substriberList.Subscribe();
 
@@ -90,6 +100,9 @@ public class MenuManager : MonoBehaviour {
         WinEndGameUI = tf.Find("WinEndGameUI").gameObject;
         winMenuDatas = new WinMenuDatas(WinEndGameUI);
 		LoseEndGameUI = tf.Find ("LoseEndGameUI").gameObject;
+		MessageBox = GameUI.transform.Find ("MessageBox").gameObject;
+		MessageText = MessageBox.transform.Find ("Text").GetComponent<Text> ();
+		ObjectivesText = GameUI.transform.Find ("ObjectivesText").GetComponent<Text> ();
 
 		//LevelButtons = new List<GameObject> ();
 		for (int i = 0; i < LevelSelectionUI.transform.childCount; i++) {
@@ -135,6 +148,7 @@ public class MenuManager : MonoBehaviour {
 		SGPUI.SetActive (false);
         WinEndGameUI.SetActive(false);
 		LoseEndGameUI.SetActive (false);
+		MessageBox.SetActive (false);
 		var obj = GetCorrespondantUI (CurrentMenu);
 		if (obj != null)
 			obj.SetActive (true);
@@ -171,16 +185,63 @@ public class MenuManager : MonoBehaviour {
         substriberList.Unsubscribe();
     }
 
-	public void ShowMessages(List<string> messages) {
+	private bool StopBlink;
+	public void StartBlinkMoney() {
+		Money.color = Color.yellow;
+		DOVirtual.DelayedCall (.5f, () => {
+			Money.color = Color.white;
+			if(StopBlink)
+				StopBlink = false;
+			else
+				DOVirtual.DelayedCall(.5f, () => StartBlinkMoney());
+		});
+	}
 
+	public void StopBlinkMoney() {
+		StopBlink = true;
+	}
+
+	private List<string> Messages;
+	private int currentMessage;
+
+	public void ShowMessages(List<string> messages) {
+		if (messages.Count > 0) {
+			Messages = messages;
+
+			currentMessage = 0;
+
+			MessageText.text = Messages [0];
+			MessageBox.SetActive (true);
+
+			Time.timeScale = 0f;
+		}
 	}
 
 	public void ShowObjectives(List<Objectif> objectives) {
+		ObjectivesText.text = "";
+		foreach (var o in objectives) {
+			ObjectivesText.text += o.ToString () + "\n";
+		}
+	}
 
+	public void HideObjectives() {
+		ObjectivesText.text = "";
+	}
+
+	public void NextMessage() {
+		if (currentMessage >= Messages.Count - 1) {
+			MessageBox.SetActive (false);
+			currentMessage++;
+			Time.timeScale = 1f;
+		} else {
+			currentMessage++;
+
+			MessageText.text = Messages [currentMessage];
+		}
 	}
 
 	public bool AreAllMessagesRead() {
-		return true;
+		return currentMessage >= Messages.Count;
 	}
 
     GameObject GetCorrespondantUI(Menu menu) {

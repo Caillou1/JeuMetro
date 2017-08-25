@@ -6,16 +6,10 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class DragAndDropBin : DragAndDrop {
-
-	private GameObject WalledObject;
-	private GameObject NotWalledObject;
-
 	void Start() {
 		HasToCheckWall = true;
 		tf = transform;
 		isRotating = false;
-		WalledObject = tf.Find ("Walled").gameObject;
-		NotWalledObject = tf.Find ("NotWalled").gameObject;
 		CheckCanPlace ();
 		CheckRotation ();
 		if(bought)
@@ -56,27 +50,12 @@ public class DragAndDropBin : DragAndDrop {
 			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.DOWN, false));
 		}
 
-		if (PossibleOrientations.Count > 0 && (!PossibleOrientations.Exists(x => { return x.First == or; }) || !IsWalled))
+		if (PossibleOrientations.Count > 0 && !PossibleOrientations.Exists(x => { return x.First == or; }))
 		{
 			float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0].First);
 
-			if ((!IsWalled || NotWalledObject.activeInHierarchy) && PossibleOrientations[0].Second)
-			{
-				IsWalled = true;
-				WalledObject.SetActive (true);
-				NotWalledObject.SetActive (false);
-			}
 			if (tf.rotation.eulerAngles.y != desiredAngle)
 				RotateObject(desiredAngle);
-		}
-		else if (PossibleOrientations.Count == 0)
-		{
-			if (IsWalled || WalledObject.activeInHierarchy)
-			{
-				IsWalled = false;
-				WalledObject.SetActive (false);
-				NotWalledObject.SetActive (true);
-			}
 		}
 	}
 

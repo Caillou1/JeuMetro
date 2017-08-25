@@ -57,9 +57,15 @@ public class StairsTile : ATile
 	public bool IsOnStairsPath(Vector3i pos) {
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
 
-		Vector3i v1 = new Vector3i (transform.position + dir * 2);
-		Vector3i v2 = new Vector3i (transform.position - dir + Vector3.up * 2);
+		var right = new Vector3 (dir.z, dir.y, -dir.x);
 
-		return (pos.equal (v1) || pos.equal (v2));
+		Vector3i v1 = new Vector3i (transform.position + dir * 2);
+		Vector3i v2 = new Vector3i (transform.position + dir * 2 + right);
+		Vector3i v3 = new Vector3i (transform.position + dir * 2 - right);
+		Vector3i v4 = new Vector3i (transform.position - dir + Vector3.up * 2);
+		Vector3i v5 = new Vector3i (transform.position - dir + Vector3.up * 2 + right);
+		Vector3i v6 = new Vector3i (transform.position - dir + Vector3.up * 2 - right);
+
+		return (pos.equal (v1) || pos.equal (v4) || pos.equal(v2) || pos.equal(v3) || pos.equal(v5) || pos.equal(v6));
 	}
 }

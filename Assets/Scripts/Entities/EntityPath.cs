@@ -142,7 +142,10 @@ public class EntityPath
     public void abortAllAndActiveActionElse(ActionType[] actions)
     {
         if (currentAction != null && !actions.Contains(currentAction.type))
+        {
             currentAction = null;
+            onAction = false;
+        }
         List<AAction> newActions = new List<AAction>();
         foreach(var a in _actions)
             if (actions.Contains(a.type))

@@ -56,9 +56,13 @@ public class SelectionManager : MonoBehaviour {
 		gameCanvas.transform.position = objTf.position + Vector3.up * .1f;
 
 		leftButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.left));
+		leftButton.GetComponent<Button> ().interactable = obj.CanPlace;
 		rightButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.right));
+		rightButton.GetComponent<Button> ().interactable = obj.CanPlace;
 		forwardButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.forward));
+		forwardButton.GetComponent<Button> ().interactable = obj.CanPlace;
 		backButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.back));
+		backButton.GetComponent<Button> ().interactable = obj.CanPlace;
 	}
 
 	void HideArrows() {
@@ -67,32 +71,37 @@ public class SelectionManager : MonoBehaviour {
 	}
 
 	public void Left() {
-		SpawnPodotactile (obj.transform.position + Vector3.left);
-		G.Sys.cameraController.Move (Vector3.left);
+		if(SpawnPodotactile (obj.transform.position + Vector3.left))
+			G.Sys.cameraController.Move (Vector3.left);
 	}
 
 	public void Right() {
-		SpawnPodotactile (obj.transform.position + Vector3.right);
-		G.Sys.cameraController.Move (Vector3.right);
+		if(SpawnPodotactile (obj.transform.position + Vector3.right))
+			G.Sys.cameraController.Move (Vector3.right);
 	}
 
 	public void Forward() {
-		SpawnPodotactile (obj.transform.position + Vector3.forward);
-		G.Sys.cameraController.Move (Vector3.forward);
+		if(SpawnPodotactile (obj.transform.position + Vector3.forward))
+			G.Sys.cameraController.Move (Vector3.forward);
 	}
 
 	public void Back() {
-		SpawnPodotactile (obj.transform.position + Vector3.back);
-		G.Sys.cameraController.Move (Vector3.back);
+		if(SpawnPodotactile (obj.transform.position + Vector3.back))
+			G.Sys.cameraController.Move (Vector3.back);
 	}
 
-	public void SpawnPodotactile(Vector3 pos) {
-		obj.ValidateObject ();
-		Hide (true);
-		var o = Instantiate (G.Sys.gameManager.podotactile, new Vector3i (pos).toVector3 (), Quaternion.identity);
-		var dad = o.GetComponent<DragAndDrop> ();
-		dad.IsBought = false;
-		Show (dad);
+	public bool SpawnPodotactile(Vector3 pos) {
+		if (obj.CanPlace) {
+			obj.ValidateObject ();
+			Hide (true);
+			var o = Instantiate (G.Sys.gameManager.podotactile, new Vector3i (pos).toVector3 (), Quaternion.identity);
+			var dad = o.GetComponent<DragAndDrop> ();
+			dad.IsBought = false;
+			Show (dad);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void Show(DragAndDrop o) {
@@ -248,7 +257,7 @@ public class SelectionManager : MonoBehaviour {
 		}
 
 		if (Price > -1) {
-			bool b = G.Sys.gameManager.GetMoney () >= Price;
+			bool b = (G.Sys.gameManager.GetMoney () >= Price) && ((obj != null && obj.CanPlace) || (ent != null && ent.CanPlace));
 			validateButton.interactable = b;
 
 			if(showArrows) {
@@ -264,9 +273,13 @@ public class SelectionManager : MonoBehaviour {
 			gameCanvas.transform.position = objTf.position + Vector3.up * .1f;
 
 			leftButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.left));
+			//leftButton.GetComponent<Button> ().interactable = obj.CanPlace;
 			rightButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.right));
+			//rightButton.GetComponent<Button> ().interactable = obj.CanPlace;
 			forwardButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.forward));
+			//forwardButton.GetComponent<Button> ().interactable = obj.CanPlace;
 			backButton.SetActive (G.Sys.tilemap.IsValidTileForPodotactile (objTf.position + Vector3.back));
+			//backButton.GetComponent<Button> ().interactable = obj.CanPlace;
 		}
 	}
 }

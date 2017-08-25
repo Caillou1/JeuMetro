@@ -1,0 +1,502 @@
+fileFormatVersion: 2
+guid: db347fa9c600c4441a677a70e0b902d9
+timeCreated: 1503481304
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Armature
+    100002: avant bras
+    100004: avant bras 1
+    100006: //RootNode
+    100008: Bone
+    100010: bras
+    100012: bras 1
+    100014: bras 1_end
+    100016: bras_end
+    100018: coude
+    100020: coude 1
+    100022: coude 1_end
+    100024: coude_end
+    100026: cuise
+    100028: cuisse 1
+    100030: Cylinder
+    100032: genoux 1
+    100034: genoux 1.001
+    100036: genoux 1.001_end
+    100038: genoux 1_end
+    100040: "g\xE9n\xE9ral"
+    100042: "g\xE9n\xE9ral.001"
+    100044: "g\xE9n\xE9ral.001_end"
+    100046: hanche
+    100048: hanche.001
+    100050: IKmain
+    100052: IKmain.001
+    100054: IKmain.001_end
+    100056: IKmain_end
+    100058: jambe
+    100060: jambe.01
+    100062: jambe.01_end
+    100064: jambe_end
+    100066: pied
+    100068: pied 1
+    100070: pied 1_end
+    100072: pied_end
+    100074: Plane
+    100076: pSphere1
+    100078: "\xE9paule"
+    100080: "\xE9paule.001"
+    400000: Armature
+    400002: avant bras
+    400004: avant bras 1
+    400006: //RootNode
+    400008: Bone
+    400010: bras
+    400012: bras 1
+    400014: bras 1_end
+    400016: bras_end
+    400018: coude
+    400020: coude 1
+    400022: coude 1_end
+    400024: coude_end
+    400026: cuise
+    400028: cuisse 1
+    400030: Cylinder
+    400032: genoux 1
+    400034: genoux 1.001
+    400036: genoux 1.001_end
+    400038: genoux 1_end
+    400040: "g\xE9n\xE9ral"
+    400042: "g\xE9n\xE9ral.001"
+    400044: "g\xE9n\xE9ral.001_end"
+    400046: hanche
+    400048: hanche.001
+    400050: IKmain
+    400052: IKmain.001
+    400054: IKmain.001_end
+    400056: IKmain_end
+    400058: jambe
+    400060: jambe.01
+    400062: jambe.01_end
+    400064: jambe_end
+    400066: pied
+    400068: pied 1
+    400070: pied 1_end
+    400072: pied_end
+    400074: Plane
+    400076: pSphere1
+    400078: "\xE9paule"
+    400080: "\xE9paule.001"
+    4300000: Cylinder
+    4300002: Plane
+    4300004: pSphere1
+    7400000: Walk
+    7400002: Idle
+    7400004: Fall
+    9500000: //RootNode
+    13700000: Cylinder
+    13700002: Plane
+    13700004: pSphere1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Walk
+      takeName: Armature|ArmatureAction
+      firstFrame: 30
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Bone
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
+          1_end"
+        weight: 1
+      - path: Armature/Bone/hanche
+        weight: 1
+      - path: Armature/Bone/hanche/cuise
+        weight: 1
+      - path: Armature/Bone/hanche/cuise/jambe
+        weight: 1
+      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
+        weight: 1
+      - path: Armature/Bone/hanche.001
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
+        weight: 1
+      - path: Armature/coude
+        weight: 1
+      - path: Armature/coude/coude_end
+        weight: 1
+      - path: Armature/coude 1
+        weight: 1
+      - path: Armature/coude 1/coude 1_end
+        weight: 1
+      - path: Armature/genoux 1
+        weight: 1
+      - path: Armature/genoux 1/genoux 1_end
+        weight: 1
+      - path: Armature/genoux 1.001
+        weight: 1
+      - path: Armature/genoux 1.001/genoux 1.001_end
+        weight: 1
+      - path: Armature/IKmain
+        weight: 1
+      - path: Armature/IKmain/IKmain_end
+        weight: 1
+      - path: Armature/IKmain.001
+        weight: 1
+      - path: Armature/IKmain.001/IKmain.001_end
+        weight: 1
+      - path: Armature/pied
+        weight: 1
+      - path: Armature/pied/pied_end
+        weight: 1
+      - path: Armature/pied 1
+        weight: 1
+      - path: Armature/pied 1/pied 1_end
+        weight: 1
+      - path: Cylinder
+        weight: 1
+      - path: Plane
+        weight: 1
+      - path: pSphere1
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Idle
+      takeName: Armature|ArmatureAction
+      firstFrame: 58
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Bone
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
+          1_end"
+        weight: 1
+      - path: Armature/Bone/hanche
+        weight: 1
+      - path: Armature/Bone/hanche/cuise
+        weight: 1
+      - path: Armature/Bone/hanche/cuise/jambe
+        weight: 1
+      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
+        weight: 1
+      - path: Armature/Bone/hanche.001
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
+        weight: 1
+      - path: Armature/coude
+        weight: 1
+      - path: Armature/coude/coude_end
+        weight: 1
+      - path: Armature/coude 1
+        weight: 1
+      - path: Armature/coude 1/coude 1_end
+        weight: 1
+      - path: Armature/genoux 1
+        weight: 1
+      - path: Armature/genoux 1/genoux 1_end
+        weight: 1
+      - path: Armature/genoux 1.001
+        weight: 1
+      - path: Armature/genoux 1.001/genoux 1.001_end
+        weight: 1
+      - path: Armature/IKmain
+        weight: 1
+      - path: Armature/IKmain/IKmain_end
+        weight: 1
+      - path: Armature/IKmain.001
+        weight: 1
+      - path: Armature/IKmain.001/IKmain.001_end
+        weight: 1
+      - path: Armature/pied
+        weight: 1
+      - path: Armature/pied/pied_end
+        weight: 1
+      - path: Armature/pied 1
+        weight: 1
+      - path: Armature/pied 1/pied 1_end
+        weight: 1
+      - path: Cylinder
+        weight: 1
+      - path: Plane
+        weight: 1
+      - path: pSphere1
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Fall
+      takeName: Armature|ArmatureAction
+      firstFrame: 60
+      lastFrame: 72
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Armature
+        weight: 1
+      - path: Armature/Bone
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/g\xE9n\xE9ral.001/g\xE9n\xE9ral.001_end"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule/avant bras/bras/bras_end"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1"
+        weight: 1
+      - path: "Armature/Bone/g\xE9n\xE9ral/\xE9paule.001/avant bras 1/bras 1/bras
+          1_end"
+        weight: 1
+      - path: Armature/Bone/hanche
+        weight: 1
+      - path: Armature/Bone/hanche/cuise
+        weight: 1
+      - path: Armature/Bone/hanche/cuise/jambe
+        weight: 1
+      - path: Armature/Bone/hanche/cuise/jambe/jambe_end
+        weight: 1
+      - path: Armature/Bone/hanche.001
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01
+        weight: 1
+      - path: Armature/Bone/hanche.001/cuisse 1/jambe.01/jambe.01_end
+        weight: 1
+      - path: Armature/coude
+        weight: 1
+      - path: Armature/coude/coude_end
+        weight: 1
+      - path: Armature/coude 1
+        weight: 1
+      - path: Armature/coude 1/coude 1_end
+        weight: 1
+      - path: Armature/genoux 1
+        weight: 1
+      - path: Armature/genoux 1/genoux 1_end
+        weight: 1
+      - path: Armature/genoux 1.001
+        weight: 1
+      - path: Armature/genoux 1.001/genoux 1.001_end
+        weight: 1
+      - path: Armature/IKmain
+        weight: 1
+      - path: Armature/IKmain/IKmain_end
+        weight: 1
+      - path: Armature/IKmain.001
+        weight: 1
+      - path: Armature/IKmain.001/IKmain.001_end
+        weight: 1
+      - path: Armature/pied
+        weight: 1
+      - path: Armature/pied/pied_end
+        weight: 1
+      - path: Armature/pied 1
+        weight: 1
+      - path: Armature/pied 1/pied 1_end
+        weight: 1
+      - path: Cylinder
+        weight: 1
+      - path: Plane
+        weight: 1
+      - path: pSphere1
+        weight: 1
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.5
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

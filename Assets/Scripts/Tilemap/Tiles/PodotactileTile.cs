@@ -53,11 +53,10 @@ public class PodotactileTile : ATile
 					list.Add (l [0]);
 					if (!neighbors.Contains (Orientation.UP))
 						neighbors.Add (Orientation.UP);
-				} else if ((l [0].type == TileID.ESCALATOR) || (l [0].type == TileID.STAIRS)) {
-					var e = l [0] as EscalatorTile;
+				} else if (l [0].type == TileID.STAIRS) {
 					var s = l [0] as StairsTile;
 
-					if ((e != null && (l [0] as EscalatorTile).IsOnEscalatorPath (new Vector3i (tf.position))) || (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position)))) {
+					if (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position))) {
 						if (!neighbors.Contains (Orientation.LEFT))
 							neighbors.Add (Orientation.LEFT);
 						if (!neighbors.Contains (Orientation.RIGHT))
@@ -81,11 +80,10 @@ public class PodotactileTile : ATile
 					list.Add (l [0]);
 					if (!neighbors.Contains (Orientation.DOWN))
 						neighbors.Add (Orientation.DOWN);
-				} else if ((l [0].type == TileID.ESCALATOR) || (l [0].type == TileID.STAIRS)) {
-					var e = l [0] as EscalatorTile;
+				} else if (l [0].type == TileID.STAIRS) {
 					var s = l [0] as StairsTile;
 
-					if ((e != null && (l [0] as EscalatorTile).IsOnEscalatorPath (new Vector3i (tf.position))) || (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position)))) {
+					if (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position))) {
 						if (!neighbors.Contains (Orientation.LEFT))
 							neighbors.Add (Orientation.LEFT);
 						if (!neighbors.Contains (Orientation.RIGHT))
@@ -109,11 +107,10 @@ public class PodotactileTile : ATile
 					list.Add (l [0]);
 					if (!neighbors.Contains (Orientation.RIGHT))
 						neighbors.Add (Orientation.RIGHT);
-				} else if ((l [0].type == TileID.ESCALATOR) || (l [0].type == TileID.STAIRS)) {
-					var e = l [0] as EscalatorTile;
+				} else if (l [0].type == TileID.STAIRS) {
 					var s = l [0] as StairsTile;
 
-					if ((e != null && (l [0] as EscalatorTile).IsOnEscalatorPath (new Vector3i (tf.position))) || (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position)))) {
+					if (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position))) {
 						if (!neighbors.Contains (Orientation.DOWN))
 							neighbors.Add (Orientation.DOWN);
 						if (!neighbors.Contains (Orientation.UP))
@@ -137,11 +134,10 @@ public class PodotactileTile : ATile
 					list.Add (l [0]);
 					if (!neighbors.Contains (Orientation.LEFT))
 						neighbors.Add (Orientation.LEFT);
-				} else if ((l [0].type == TileID.ESCALATOR) || (l [0].type == TileID.STAIRS)) {
-					var e = l [0] as EscalatorTile;
+				} else if (l [0].type == TileID.STAIRS) {
 					var s = l [0] as StairsTile;
 
-					if ((e != null && (l [0] as EscalatorTile).IsOnEscalatorPath (new Vector3i (tf.position))) || (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position)))) {
+					if (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position))) {
 						if (!neighbors.Contains (Orientation.DOWN))
 							neighbors.Add (Orientation.DOWN);
 						if (!neighbors.Contains (Orientation.UP))

@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -155,7 +155,8 @@ public class WaveManager : MonoBehaviour {
                     return;
                 }
                 else
-                {
+				{
+					G.Sys.audioManager.StartFireMusic ();
                     G.Sys.gameManager.FireAlert = true;
                     Event<StartFireAlertEvent>.Broadcast(new StartFireAlertEvent());
                     Event<BakeNavMeshEvent>.Broadcast(new BakeNavMeshEvent());

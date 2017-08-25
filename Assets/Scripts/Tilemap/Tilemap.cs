@@ -652,7 +652,7 @@ public class Tilemap
 
 		var list = new List<Pair<int, ElevatorTile>> ();
 
-		if (elevatorsConnections.ContainsKey (Mathf.RoundToInt (Origin.y)) && elevatorsConnections [Mathf.RoundToInt (Origin.y)].ContainsKey (Mathf.RoundToInt (Destination.y))) {
+		if (elevatorsConnections != null && elevatorsConnections.ContainsKey (Mathf.RoundToInt (Origin.y)) && elevatorsConnections [Mathf.RoundToInt (Origin.y)].ContainsKey (Mathf.RoundToInt (Destination.y))) {
 			var potentialList = elevatorsConnections [Mathf.RoundToInt (Origin.y)] [Mathf.RoundToInt (Destination.y)];
 
 			foreach (var path in potentialList) {
@@ -721,7 +721,7 @@ public class Tilemap
 
 		bool valid = true;
 
-		if (v.Count == 0 || ((v [0].type != TileID.GROUND && !haveSpecialTileAt(TileID.WAIT_ZONE, pos)) || haveSpecialTileAt(TileID.PODOTACTILE, pos))) {
+		if (v.Count == 0 || ((v [0].type != TileID.GROUND && v[0].type != TileID.CONTROLELINE && !haveSpecialTileAt(TileID.WAIT_ZONE, pos))|| haveSpecialTileAt(TileID.PODOTACTILE, pos))) {
 			valid = false;
 		}
 

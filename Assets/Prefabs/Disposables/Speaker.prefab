@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 95037184807700278}
   - component: {fileID: 65200572770265790}
   - component: {fileID: 114943332183781494}
+  - component: {fileID: 114271405212713544}
   m_Layer: 8
   m_Name: NotWalled
   m_TagString: Untagged
@@ -60,6 +61,7 @@ GameObject:
   - component: {fileID: 33274526164127234}
   - component: {fileID: 23555369193356742}
   - component: {fileID: 95381207076515220}
+  - component: {fileID: 114060749314498014}
   m_Layer: 0
   m_Name: Walled
   m_TagString: Untagged
@@ -74,7 +76,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1096111250764522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.9033394, y: -2, z: -17.400023}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4574315434011606}
@@ -244,6 +246,21 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114060749314498014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1564650319496632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114197993654635460
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -255,6 +272,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc28138641e41adbee4f14d993a60f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114271405212713544
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1308865195032384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114827029882004986
 MonoBehaviour:
   m_ObjectHideFlags: 1

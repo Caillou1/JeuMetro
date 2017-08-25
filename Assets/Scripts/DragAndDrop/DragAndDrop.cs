@@ -22,6 +22,11 @@ public class DragAndDrop : MonoBehaviour{
 	protected int Rotations = 0;
 	protected bool isRotating = false;
 	protected bool canPlace;
+	public bool CanPlace {
+		get {
+			return canPlace;
+		}
+	}
 	[HideInInspector]
 	public bool CanDrag = false;
 	protected bool Dragging = false;
@@ -63,7 +68,7 @@ public class DragAndDrop : MonoBehaviour{
 
 		var v = G.Sys.tilemap.at (tf.position);
 		var p = GetComponent<PodotactileTile> ();
-		if (v.Count == 0 || ((p!=null && (((v [0].type != TileID.GROUND) && !HasTileOfType(v, TileID.WAIT_ZONE))|| HasTileOfType(v, TileID.PODOTACTILE))) || (p==null && v[0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE))))
+		if (v.Count == 0 || ((p!=null && (((v [0].type != TileID.GROUND) && !HasTileOfType(v, TileID.WAIT_ZONE) && !HasTileOfType(v, TileID.CONTROLELINE)) || HasTileOfType(v, TileID.PODOTACTILE))) || (p==null && v[0].type != TileID.GROUND && !HasTileOfType(v, TileID.WAIT_ZONE))))
 			canPlace = false;
 	}
 
@@ -112,8 +117,7 @@ public class DragAndDrop : MonoBehaviour{
 				Vector3 objPos = hit.point;
 				tf.position = new Vector3 (objPos.x, Mathf.RoundToInt (objPos.y), objPos.z);
 			} else {
-				Vector3 pos = ray.origin + (ray.direction * 1000);
-				tf.position = new Vector3 (pos.x, Mathf.RoundToInt (pos.y), pos.z);
+				tf.position = new Vector3i (tf.position).toVector3 ();
 			}
 
 			CheckRotation ();
@@ -190,6 +194,7 @@ public class DragAndDrop : MonoBehaviour{
 				IsBought = true;
 				var tile = GetComponent<ATile> ();
 				tile.Register ();
+				OnBuy ();
 			}
 			G.Sys.selectionManager.Hide (true);
 			CanDrag = false;

@@ -47,5 +47,6 @@ public class WasteTile : ATile
 	{
 		G.Sys.tilemap.delTile (transform.position, this);
 		G.Sys.tilemap.delSpecialTile (type, transform.position);
+		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 	}
 }
