@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PodotactileTile : ATile
 {
@@ -37,6 +38,11 @@ public class PodotactileTile : ATile
 
 	public void Connect (bool CheckArround)
 	{
+		if (!G.Sys.tilemap.HasTileOfTypeAt (TileID.CONTROLELINE, transform.position)) {
+			GetComponent<NavMeshModifier> ().enabled = false;
+			Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
+		}
+
 		Vector3i pos = new Vector3i (transform.position);
 		List<ATile> list = new List<ATile> ();
 		List<Orientation> neighbors = new List<Orientation> ();
