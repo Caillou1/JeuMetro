@@ -145,7 +145,11 @@ public class EntityPath
         {
             currentAction = null;
             onAction = false;
+			_agent.updatePosition = true;
+			_agent.updateRotation = true;
+			_agent.updateUpAxis = true;
         }
+
         List<AAction> newActions = new List<AAction>();
         foreach(var a in _actions)
             if (actions.Contains(a.type))

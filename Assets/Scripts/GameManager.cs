@@ -199,7 +199,9 @@ public class GameManager : MonoBehaviour
 		UniformFloatDistribution dDelta = new UniformFloatDistribution (minDelay, maxDelay);
 
 		while (true) {
-			yield return new WaitForSeconds (dDelta.Next (gen));
+			yield return new WaitForSeconds(dDelta.Next(gen));
+			if (FireAlert)
+				break;
 			if (!SetMaxTravelers || (SetMaxTravelers && G.Sys.travelerCount() < MaxTravelers)) 
             {
                 var doors = G.Sys.tilemap.getSpecialTiles(TileID.OUT);
