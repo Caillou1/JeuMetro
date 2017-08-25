@@ -177,6 +177,7 @@ public class MenuManager : MonoBehaviour {
 
 	public void Lose() {
 		Time.timeScale = 0;
+		FadeUI.SetActive (true);
 		LoseEndGameUI.SetActive (true);
 	}
 
