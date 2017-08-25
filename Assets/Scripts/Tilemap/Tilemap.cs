@@ -716,12 +716,23 @@ public class Tilemap
         return maxUsedSpace;
     }
 
+	public bool HasTileOfTypeAt(TileID id, Vector3 pos) {
+		var tiles = at (pos);
+
+		foreach (var t in tiles) {
+			if (t.type == id)
+				return true;
+		}
+
+		return false;
+	}
+
 	public bool IsValidTileForPodotactile(Vector3 pos) {
 		var v = at (pos);
 
 		bool valid = true;
 
-		if (v.Count == 0 || ((v [0].type != TileID.GROUND && v[0].type != TileID.CONTROLELINE && !haveSpecialTileAt(TileID.WAIT_ZONE, pos))|| haveSpecialTileAt(TileID.PODOTACTILE, pos))) {
+		if (v.Count == 0 || ((v [0].type != TileID.GROUND && v[0].type != TileID.CONTROLELINE && !haveSpecialTileAt(TileID.WAIT_ZONE, pos))|| HasTileOfTypeAt(TileID.PODOTACTILE, pos))) {
 			valid = false;
 		}
 

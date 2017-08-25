@@ -164,8 +164,11 @@ public class WaveManager : MonoBehaviour {
 			}
 			chronoStartTime = Time.time;
 		}
-
-		G.Sys.menuManager.SetPieTime ((Time.time - chronoStartTime) / WaveTime (currentWave), Mathf.RoundToInt(WaveTime (currentWave) - (Time.time - chronoStartTime)));
+		if (G.Sys.gameManager.FireAlert) {
+			G.Sys.menuManager.SetPieTime (1 - ((Time.time - chronoStartTime) / WaveTime (currentWave)), Mathf.RoundToInt (WaveTime (currentWave) - (Time.time - chronoStartTime)));
+		} else {
+			G.Sys.menuManager.SetPieTime ((Time.time - chronoStartTime) / WaveTime (currentWave), Mathf.RoundToInt (WaveTime (currentWave) - (Time.time - chronoStartTime)));
+		}
 
         if (!G.Sys.gameManager.FireAlert)
         {
