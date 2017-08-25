@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
 
 	void InstantiateColliders() {
 		var bounds = G.Sys.tilemap.GlobalBounds ();
-		return;
+
 		for (int x = (int)bounds.min.x; x <= (int)bounds.max.x; x++) {
 			for (int y = (int)bounds.min.y; y <= (int)bounds.max.y; y++) {
 				for (int z = (int)bounds.min.z; z <= (int)bounds.max.z; z++) {
