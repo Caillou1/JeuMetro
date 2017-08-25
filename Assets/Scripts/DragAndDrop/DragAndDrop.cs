@@ -184,6 +184,7 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public bool ValidateObject() {
+		tf.localScale = originalScale;
 		Rotations = 0;
 		rotTween.Complete ();
 		CheckCanPlace ();
