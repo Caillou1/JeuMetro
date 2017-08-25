@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Linq;
 
 public class DragAndDrop : MonoBehaviour{
 	public int Price;
@@ -24,10 +25,11 @@ public class DragAndDrop : MonoBehaviour{
 	protected bool canPlace;
 	public bool CanPlace {
 		get {
+			CheckCanPlace ();
 			return canPlace;
 		}
 	}
-	[HideInInspector]
+	//[HideInInspector]
 	public bool CanDrag = false;
 	protected bool Dragging = false;
 	protected bool bought;
@@ -148,6 +150,8 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	RaycastHit FindGround(RaycastHit[] hits) {
+		hits = hits.OrderBy (h => h.distance).ToArray();
+
 		foreach (var h in hits) {
 			if (h.transform.CompareTag ("Ground"))
 				return h;

@@ -22,6 +22,16 @@ public class Cleaner : AEntity
 		anim = GetComponentInChildren<Animator> ();
 	}
 
+	void Start() {
+		GetComponent<DragAndDropEntity> ().ToggleOutline (false);
+		Invoke ("EnableNavMeshAgent", Time.deltaTime * 25);
+	}
+
+
+	void EnableNavMeshAgent() {
+		agent.enabled = true;
+	}
+
 	protected override void OnUpdate ()
 	{
 		anim.SetFloat ("MovementSpeed", agent.velocity.magnitude);
