@@ -159,6 +159,7 @@ public class DragAndDropEntity : MonoBehaviour{
 	}
 
 	public bool ValidateObject() {
+		tf.localScale = originalScale;
 		CheckCanPlace ();
 
 		if ((canPlace && !IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)) || IsBought && canPlace) {

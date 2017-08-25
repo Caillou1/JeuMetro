@@ -25,6 +25,11 @@ public class Cleaner : AEntity
 	void Start() {
 		GetComponent<DragAndDropEntity> ().ToggleOutline (false);
 		Invoke ("EnableAgent", 1f);
+
+		if (G.Sys.constants.TravelerColors.Count > 0)
+			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = G.Sys.constants.TravelerColors [(new UniformIntDistribution (G.Sys.constants.TravelerColors.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ()))];
+		else
+			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = Color.HSVToRGB ((new UniformFloatDistribution (0f, 1f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())), 1f, 1f);
 	}
 
 	protected override void OnUpdate ()
