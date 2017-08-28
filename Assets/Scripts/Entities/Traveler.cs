@@ -26,6 +26,8 @@ public class Traveler : AEntity
 	private float ArrivalTime;
     private SubscriberList subscriberList = new SubscriberList();
 
+    bool fireAlertStarted = false;
+
 	[HideInInspector]
 	public Animator anim;
 
@@ -70,6 +72,11 @@ public class Traveler : AEntity
             else
             {
                 anim.SetBool("Walking", false);
+            }
+            if (fireAlertStarted)
+			{
+				fireAlertStarted = false;
+                StartFireAlert();
             }
         }
 
@@ -601,33 +608,50 @@ public class Traveler : AEntity
 
     void onFireAlertStart(StartFireAlertEvent e)
     {
-        stats.MovementSpeed *= G.Sys.constants.fireAlertSpeedMultiplier;
-        if(stats.Type != TravelerType.WHEELCHAIR)
-            path.abortAllAndActiveActionElse(new ActionType[] { ActionType.FAINT, ActionType.SIGN });
-        else 
-            path.abortAllAndActiveActionElse(new ActionType[] { ActionType.FAINT, ActionType.SIGN, ActionType.WAIT_ELEVATOR });
+        Invoke("StartFireAlert", new UniformFloatDistribution(G.Sys.constants.MinTravelerFireAlertDelay, G.Sys.constants.MaxTravelerFireAlertDelay).Next(new StaticRandomGenerator<DefaultRandomGenerator>()));
+        /*if (gameObject.activeSelf)
+            StartCoroutine(StartFireAlertCoroutine());
+        else fireAlertStarted = true;*/
+    }
 
-        float bestDist = float.MaxValue;
-        Vector3 posDoor = Vector3.zero;
-        foreach (var d in G.Sys.tilemap.getSpecialTiles(TileID.OUT))
+    void StartFireAlert()
+    {
+        if (!gameObject.activeSelf)
         {
-            float dist = (d - transform.position).sqrMagnitude;
-            if (dist < bestDist)
-            {
-                bestDist = dist;
-                posDoor = d;
-            }
+            fireAlertStarted = true;
+            return;
         }
 
-        target = posDoor;
-        exitType = ExitType.DOOR;
-        var door = G.Sys.tilemap.GetTileOfTypeAt(posDoor, TileID.OUT) as ExitsTile;
-        if (door != null)
-            targetName = door.exitname;
+		stats.MovementSpeed *= G.Sys.constants.fireAlertSpeedMultiplier;
+		if (stats.Type != TravelerType.WHEELCHAIR)
+			path.abortAllAndActiveActionElse(new ActionType[] { ActionType.FAINT, ActionType.SIGN });
+		else
+			path.abortAllAndActiveActionElse(new ActionType[] { ActionType.FAINT, ActionType.SIGN, ActionType.WAIT_ELEVATOR });
 
-        stats.HaveTicket = true;
-        isTicketLost = false;
-        path.canPassControl = true;
-        path.destnation = target;
+		float bestDist = float.MaxValue;
+		Vector3 posDoor = Vector3.zero;
+		foreach (var d in G.Sys.tilemap.getSpecialTiles(TileID.OUT))
+		{
+			float dist = (d - transform.position).sqrMagnitude;
+			if (dist < bestDist)
+			{
+				bestDist = dist;
+				posDoor = d;
+			}
+		}
+
+		target = posDoor;
+		exitType = ExitType.DOOR;
+		var door = G.Sys.tilemap.GetTileOfTypeAt(posDoor, TileID.OUT) as ExitsTile;
+		if (door != null)
+			targetName = door.exitname;
+
+        if(!path.haveAction())
+            agent.enabled = true;
+
+		stats.HaveTicket = true;
+		isTicketLost = false;
+		path.canPassControl = true;
+		path.destnation = target;
     }
 }

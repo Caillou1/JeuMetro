@@ -63,6 +63,10 @@ public class Constants : MonoBehaviour
     public float lostMultiplier = 1;
     [Tooltip("Rayon de detection des escalators lors de l'attente a un ascensseur")]
     public float EscalatorDetectionRadius = 10;
+    [Tooltip("Minimum de temps que met un voyageur a se rendre compte d'une alerte incendie")]
+    public float MinTravelerFireAlertDelay = 1;
+    [Tooltip("Maximum de temps que met un voyageur a se rendre compte d'une alerte incendie")]
+    public float MaxTravelerFireAlertDelay = 5;
 
 	public List<Color> TravelerColors;
 
