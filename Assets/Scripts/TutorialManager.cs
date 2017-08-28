@@ -5,20 +5,27 @@ using Sirenix.OdinInspector;
 using UnityEngine.SceneManagement;
 
 public class TutorialManager : MonoBehaviour {
+	[BoxGroup("Tutorial")]
 	public List<Tutorial> Tutoriels;
-	public string NextScene;
-	public bool LaunchOnStart;
+	[BoxGroup("After Tutorial")]
 	public bool FireAlertAtTheEnd;
+	[BoxGroup("After Tutorial")]
+	[ShowIf("FireAlertAtTheEnd")]
+	public bool ShowMessagesAtTheEnd;
+	[BoxGroup("After Tutorial")]
+	[ShowIf("ShowMessagesAtTheEnd")]
+	public List<string> MessagesAtTheEnd;
+	[BoxGroup("After Tutorial")]
 	public float TimeBeforeNextScene;
+	[BoxGroup("After Tutorial")]
+	public string NextScene;
 
 	void Start () {
 		foreach (var t in Tutoriels)
 			if(t.ZoneToHighlight != null)
 				t.ZoneToHighlight.SetActive (false);
-
-		if (LaunchOnStart) {
-			StartCoroutine(TutorialRoutine());
-		}
+		
+		StartCoroutine(TutorialRoutine());
 	}
 
 	IEnumerator TutorialRoutine() {
@@ -55,6 +62,12 @@ public class TutorialManager : MonoBehaviour {
 			StartFireAlert ();
 
 		yield return new WaitForSeconds (TimeBeforeNextScene);
+
+		if (ShowMessagesAtTheEnd) {
+			G.Sys.menuManager.ShowMessages (MessagesAtTheEnd);
+
+			yield return new WaitUntil (() => G.Sys.menuManager.AreAllMessagesRead ());
+		}
 
 		if (NextScene != "") {
 			G.Sys.tilemap.clear ();

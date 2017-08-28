@@ -74,7 +74,12 @@ public class Cleaner : AEntity
     {
         WasteTile wasteTile = null;
         float dist = float.MaxValue;
-		var wastes = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.WASTE, G.Sys.constants.WorkerDetectionRadius, G.Sys.constants.VerticalAmplification);
+		var wastes = new List<Vector3> ();
+
+		if (G.Sys.constants != null) {
+			wastes = G.Sys.tilemap.getSurrondingSpecialTile (transform.position, TileID.WASTE, G.Sys.constants.WorkerDetectionRadius, G.Sys.constants.VerticalAmplification);
+		}
+
         foreach(var w in wastes)
         {
             var waste = G.Sys.tilemap.GetTileOfTypeAt(w, TileID.WASTE) as WasteTile;
@@ -107,27 +112,27 @@ public class Cleaner : AEntity
     void CheckBin()
     {
         BinTile binTile = null;
+		if (G.Sys.constants != null) {
+			foreach (var w in G.Sys.tilemap.getSurrondingSpecialTile(transform.position, TileID.BIN, G.Sys.constants.WorkerDetectionRadius, G.Sys.constants.VerticalAmplification)) {
+				var bin = G.Sys.tilemap.GetTileOfTypeAt (w, TileID.BIN) as BinTile;
+				if (bin.Targetted || bin.waste < 0.5f)
+					continue;
 
-        foreach (var w in G.Sys.tilemap.getSurrondingSpecialTile(transform.position, TileID.BIN, G.Sys.constants.WorkerDetectionRadius, G.Sys.constants.VerticalAmplification))
-		{
-            var bin = G.Sys.tilemap.GetTileOfTypeAt(w, TileID.BIN) as BinTile;
-            if (bin.Targetted || bin.waste < 0.5f)
-				continue;
+				NavMeshPath p = new NavMeshPath ();
+				agent.CalculatePath (w, p);
+				if (p.status != NavMeshPathStatus.PathComplete)
+					continue;
 
-			NavMeshPath p = new NavMeshPath();
-			agent.CalculatePath(w, p);
-			if (p.status != NavMeshPathStatus.PathComplete)
-				continue;
+				binTile = bin;
+				break;
+			}
 
-			binTile = bin;
-			break;
+			if (binTile == null)
+				return;
+
+			binTile.Targetted = true;
+			path.addAction (new CleanBinAction (this, binTile.transform.position, binTile));
 		}
-
-		if (binTile == null)
-			return;
-
-		binTile.Targetted = true;
-        path.addAction(new CleanBinAction(this, binTile.transform.position, binTile));
     }
 
 	void initializeDatas()

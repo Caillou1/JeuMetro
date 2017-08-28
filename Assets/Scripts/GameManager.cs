@@ -5,6 +5,7 @@ using NRand;
 using UnityEngine.SceneManagement;
 using Sirenix.OdinInspector;
 using UnityEngine.AI;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
 
 	void OnDestroy() {
 		subscriberList.Unsubscribe ();
+		DOTween.KillAll ();
 	}
 
 	void OnTravelerFaint(FaintEvent e) {
@@ -127,7 +129,7 @@ public class GameManager : MonoBehaviour
 
 	void InstantiateColliders() {
 		var bounds = G.Sys.tilemap.GlobalBounds ();
-
+		/*
 		for (int x = (int)bounds.min.x; x <= (int)bounds.max.x; x++) {
 			for (int y = (int)bounds.min.y; y <= (int)bounds.max.y; y++) {
 				for (int z = (int)bounds.min.z; z <= (int)bounds.max.z; z++) {
@@ -150,7 +152,7 @@ public class GameManager : MonoBehaviour
 				}
 			}
 		}
-
+		*/
 		Instantiate (underground, new Vector3 (0, bounds.min.y, 0), Quaternion.identity, tf);
 	}
 
@@ -221,7 +223,7 @@ public class GameManager : MonoBehaviour
                     foreach (var d in dir)
                     {
                         var tiles = G.Sys.tilemap.at(door + d);
-                        if (tiles.Count == 0 && tiles[0].type == TileID.GROUND)
+                        if (tiles.Count != 0 && tiles[0].type == TileID.GROUND)
                             validDir.Add(door + d);
                     }
 

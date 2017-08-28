@@ -88,8 +88,15 @@ public class EscalatorTile : ATile
 
 	protected override void OnDestroy()
 	{
-		GetComponent<DragAndDropEscalator> ().OnDestroy ();
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
+
+		Vector3i v1 = new Vector3i (transform.position + dir * 2);
+		Vector3i v2 = new Vector3i (transform.position - dir + Vector3.up * 2);
+
+		var list = G.Sys.tilemap.tilesOfTypeAt (v1, TileID.PODOTACTILE).Concat (G.Sys.tilemap.tilesOfTypeAt (v2, TileID.PODOTACTILE)).ToList ();
+
+		foreach (var podotactileTile in list)
+			(podotactileTile as PodotactileTile).Connect (false);
 
 		G.Sys.tilemap.delTile (transform.position, this);
 		G.Sys.tilemap.delTile (transform.position + dir, this);
