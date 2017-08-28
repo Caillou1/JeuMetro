@@ -5,16 +5,31 @@ using Sirenix.OdinInspector;
 using UnityEngine.SceneManagement;
 
 public class TutorialManager : MonoBehaviour {
+	[BoxGroup("Tutorial")]
 	public List<Tutorial> Tutoriels;
-	public bool LaunchOnStart;
+	[BoxGroup("After Tutorial")]
+	public bool FireAlertAtTheEnd;
+	[BoxGroup("After Tutorial")]
+	[ShowIf("FireAlertAtTheEnd")]
+	public bool ShowMessagesAtTheEnd;
+	[BoxGroup("After Tutorial")]
+	[ShowIf("ShowMessagesAtTheEnd")]
+	public List<string> MessagesAtTheEnd;
+	[BoxGroup("After Tutorial")]
+	public float TimeBeforeNextScene;
+	[BoxGroup("After Tutorial")]
+	public string NextScene;
 
 	void Start () {
-		if (LaunchOnStart) {
-			StartCoroutine(TutorialRoutine());
-		}
+		foreach (var t in Tutoriels)
+			if(t.ZoneToHighlight != null)
+				t.ZoneToHighlight.SetActive (false);
+		
+		StartCoroutine(TutorialRoutine());
 	}
 
 	IEnumerator TutorialRoutine() {
+		yield return new WaitForSeconds (Time.deltaTime * 5);
 		foreach (var t in Tutoriels) {
 			SpawnWave (t);
 
@@ -24,11 +39,15 @@ public class TutorialManager : MonoBehaviour {
 
 			yield return new WaitUntil (() => G.Sys.menuManager.AreAllMessagesRead ());
 
+			if (t.ZoneToHighlight != null)
+				t.ZoneToHighlight.SetActive (true);
 			G.Sys.menuManager.ShowObjectives (t.Objectives);
 
 			yield return new WaitUntil (() => t.ObjectivesDone);
 
 			G.Sys.menuManager.HideObjectives ();
+			if (t.ZoneToHighlight != null)
+				t.ZoneToHighlight.SetActive (false);
 
 			yield return new WaitForSeconds (t.TimeBeforeLastMessages);
 
@@ -37,16 +56,23 @@ public class TutorialManager : MonoBehaviour {
 			yield return new WaitUntil (() => G.Sys.menuManager.AreAllMessagesRead ());
 
 			yield return new WaitForSeconds (1f);
-
-			if (t.NextScene != "") {
-				G.Sys.tilemap.clear ();
-				SceneManager.LoadScene (t.NextScene);
-			}
 		}
 
-		//SceneManager.LoadScene (0);
+		if(FireAlertAtTheEnd)
+			StartFireAlert ();
 
-		StartFireAlert ();
+		yield return new WaitForSeconds (TimeBeforeNextScene);
+
+		if (ShowMessagesAtTheEnd) {
+			G.Sys.menuManager.ShowMessages (MessagesAtTheEnd);
+
+			yield return new WaitUntil (() => G.Sys.menuManager.AreAllMessagesRead ());
+		}
+
+		if (NextScene != "") {
+			G.Sys.tilemap.clear ();
+			SceneManager.LoadScene (NextScene);
+		}
 	}
 
 	void SpawnWave(Tutorial t) {
@@ -112,11 +138,11 @@ public class Tutorial {
 	[ShowIf("SpawnWave")]
 	public Transform Entrance;
 	public List<Objectif> Objectives;
+	public GameObject ZoneToHighlight;
 	public float TimeBeforeFirstMessages;
 	public List<string> MessagesToShowBefore;
 	public float TimeBeforeLastMessages;
 	public List<string> MessagesToShowAfter;
-	public string NextScene;
 
 	public bool ObjectivesDone {
 		get{

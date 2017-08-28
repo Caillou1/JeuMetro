@@ -88,7 +88,6 @@ public class EscalatorTile : ATile
 
 	protected override void OnDestroy()
 	{
-		GetComponent<DragAndDropEscalator> ().OnDestroy ();
 		var dir = Orienter.orientationToDir3(Orienter.angleToOrientation(transform.rotation.eulerAngles.y));
 
 		G.Sys.tilemap.delTile (transform.position, this);

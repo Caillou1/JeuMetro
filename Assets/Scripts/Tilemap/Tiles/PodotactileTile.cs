@@ -15,10 +15,14 @@ public class PodotactileTile : ATile
 	private GameObject FourBranches;
 
 	private bool isStop;
+	private cakeslice.Outline[] outlines;
 
 	protected override void Awake()
 	{
 		tf = transform;
+
+		outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
+
 		isStop = false;
 
 		Stop = tf.Find ("Stop").gameObject;
@@ -35,6 +39,10 @@ public class PodotactileTile : ATile
 
 		Connect (true);
     }
+
+	public cakeslice.Outline[] getOutlines() {
+		return outlines;
+	}
 
     void Start()
     {

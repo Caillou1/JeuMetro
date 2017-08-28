@@ -47,10 +47,18 @@ public class DragAndDrop : MonoBehaviour{
 	void Awake() {
 		tf = transform;
 		originalScale = tf.localScale;
-		outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
+		GetOutlines ();
 		IsWalled = false;
 		bought = true;
 		OnAwake ();
+	}
+
+	public void GetOutlines() {
+		var p = GetComponent<PodotactileTile> ();
+		if (p == null)
+			outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
+		else
+			outlines = p.getOutlines ();
 	}
 
 	protected virtual void OnAwake() {
@@ -263,6 +271,9 @@ public class DragAndDrop : MonoBehaviour{
 		if (isSelected && IsBought) {
 			cakeslice.OutlineEffect.Instance.lineColor0 = Color.yellow;
 		}
+
+		if (outlines == null)
+			GetOutlines ();
 
 		foreach(var o in outlines)
 			o.enabled = b;

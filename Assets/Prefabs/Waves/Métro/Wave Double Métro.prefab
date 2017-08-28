@@ -18962,6 +18962,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -18971,7 +18973,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -18987,7 +18989,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114028283764778382
 MonoBehaviour:
@@ -19000,6 +19001,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 25
@@ -19009,7 +19012,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 80
     LostAbility: 75
-    Hunger: 50
+    Hunger: 25
     wastes: 80
     MovementSpeed: 3.6
     Malvoyant: 0
@@ -19025,7 +19028,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114107832209591418
 MonoBehaviour:
@@ -19038,6 +19040,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19047,7 +19051,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19063,7 +19067,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114110850012765718
 MonoBehaviour:
@@ -19076,6 +19079,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19085,7 +19090,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19101,7 +19106,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114204527997817460
 MonoBehaviour:
@@ -19114,6 +19118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19123,7 +19129,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19139,7 +19145,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114259589821242874
 MonoBehaviour:
@@ -19152,6 +19157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19161,7 +19168,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19177,7 +19184,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114295362862038288
 MonoBehaviour:
@@ -19190,6 +19196,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19199,7 +19207,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 50
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19215,7 +19223,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114314401648410992
 MonoBehaviour:
@@ -19228,6 +19235,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19237,7 +19246,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19253,7 +19262,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114403018599447616
 MonoBehaviour:
@@ -19266,6 +19274,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19275,7 +19285,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19291,7 +19301,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114445027579269996
 MonoBehaviour:
@@ -19304,6 +19313,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19313,7 +19324,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19329,7 +19340,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114506088174870274
 MonoBehaviour:
@@ -19342,6 +19352,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19351,7 +19363,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 50
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19367,7 +19379,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114569611206678486
 MonoBehaviour:
@@ -19380,6 +19391,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19389,7 +19402,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19405,7 +19418,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114603093256939886
 MonoBehaviour:
@@ -19418,6 +19430,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19427,7 +19441,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19443,7 +19457,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114607073781346988
 MonoBehaviour:
@@ -19456,6 +19469,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 25
@@ -19465,7 +19480,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 80
     LostAbility: 75
-    Hunger: 50
+    Hunger: 25
     wastes: 80
     MovementSpeed: 3.6
     Malvoyant: 0
@@ -19481,7 +19496,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114872135887215420
 MonoBehaviour:
@@ -19494,6 +19508,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19503,7 +19519,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19519,7 +19535,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114969243311458990
 MonoBehaviour:
@@ -19532,6 +19547,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 20
@@ -19541,7 +19558,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -19557,7 +19574,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!136 &136049919643588368
 CapsuleCollider:
