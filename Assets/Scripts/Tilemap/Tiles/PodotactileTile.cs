@@ -19,6 +19,10 @@ public class PodotactileTile : ATile
 	protected override void Awake()
 	{
 		tf = transform;
+
+		if (tf.name == "Podotactile (16)")
+			Debug.Log ("tile awake" + Time.time);
+
 		isStop = false;
 
 		Stop = tf.Find ("Stop").gameObject;
@@ -38,6 +42,9 @@ public class PodotactileTile : ATile
 
 	public void Connect (bool CheckArround)
 	{
+		if (tf.name == "Podotactile (16)")
+			Debug.Log ("tile connect " + Time.time);
+		
 		if (!G.Sys.tilemap.HasTileOfTypeAt (TileID.CONTROLELINE, transform.position)) {
 			GetComponent<NavMeshModifier> ().enabled = false;
 			Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());

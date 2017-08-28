@@ -6,9 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class TutorialManager : MonoBehaviour {
 	public List<Tutorial> Tutoriels;
+	public string NextScene;
 	public bool LaunchOnStart;
+	public bool FireAlertAtTheEnd;
+	public float TimeBeforeNextScene;
 
 	void Start () {
+		foreach (var t in Tutoriels)
+			if(t.ZoneToHighlight != null)
+				t.ZoneToHighlight.SetActive (false);
+
 		if (LaunchOnStart) {
 			StartCoroutine(TutorialRoutine());
 		}
@@ -24,11 +31,15 @@ public class TutorialManager : MonoBehaviour {
 
 			yield return new WaitUntil (() => G.Sys.menuManager.AreAllMessagesRead ());
 
+			if (t.ZoneToHighlight != null)
+				t.ZoneToHighlight.SetActive (true);
 			G.Sys.menuManager.ShowObjectives (t.Objectives);
 
 			yield return new WaitUntil (() => t.ObjectivesDone);
 
 			G.Sys.menuManager.HideObjectives ();
+			if (t.ZoneToHighlight != null)
+				t.ZoneToHighlight.SetActive (false);
 
 			yield return new WaitForSeconds (t.TimeBeforeLastMessages);
 
@@ -37,16 +48,17 @@ public class TutorialManager : MonoBehaviour {
 			yield return new WaitUntil (() => G.Sys.menuManager.AreAllMessagesRead ());
 
 			yield return new WaitForSeconds (1f);
-
-			if (t.NextScene != "") {
-				G.Sys.tilemap.clear ();
-				SceneManager.LoadScene (t.NextScene);
-			}
 		}
 
-		//SceneManager.LoadScene (0);
+		if(FireAlertAtTheEnd)
+			StartFireAlert ();
 
-		StartFireAlert ();
+		yield return new WaitForSeconds (TimeBeforeNextScene);
+
+		if (NextScene != "") {
+			G.Sys.tilemap.clear ();
+			SceneManager.LoadScene (NextScene);
+		}
 	}
 
 	void SpawnWave(Tutorial t) {
@@ -112,11 +124,11 @@ public class Tutorial {
 	[ShowIf("SpawnWave")]
 	public Transform Entrance;
 	public List<Objectif> Objectives;
+	public GameObject ZoneToHighlight;
 	public float TimeBeforeFirstMessages;
 	public List<string> MessagesToShowBefore;
 	public float TimeBeforeLastMessages;
 	public List<string> MessagesToShowAfter;
-	public string NextScene;
 
 	public bool ObjectivesDone {
 		get{
