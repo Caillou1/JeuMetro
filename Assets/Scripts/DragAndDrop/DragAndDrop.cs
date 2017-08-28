@@ -47,17 +47,27 @@ public class DragAndDrop : MonoBehaviour{
 	void Awake() {
 		tf = transform;
 		originalScale = tf.localScale;
-		outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
+		if(outlines == null)
+			outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
 		IsWalled = false;
 		bought = true;
 		OnAwake ();
 	}
 
+	public void GetOutlines() {
+		if(outlines == null)
+			outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
+	}
+
 	protected virtual void OnAwake() {
 		Space = 1;
+		if (tf.name == "Podotactile (16)")
+			Debug.Log ("dad awake " + Time.time);
 	}
 
 	void Start() {
+		if (tf.name == "Podotactile (16)")
+			Debug.Log ("dad start " + Time.time);
 		CheckCanPlace ();
 		CheckRotation ();
 		isRotating = false;
@@ -260,6 +270,9 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	public void ToggleOutline(bool b) {
+		if (tf.name == "Podotactile (16)")
+			Debug.Log (tf.name + " : outline set to " + b + " and there is " + (outlines.Length) + " outlines on this go");
+
 		if (isSelected && IsBought) {
 			cakeslice.OutlineEffect.Instance.lineColor0 = Color.yellow;
 		}

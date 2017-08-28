@@ -19,6 +19,10 @@ public class PodotactileTile : ATile
 	protected override void Awake()
 	{
 		tf = transform;
+
+		if (tf.name == "Podotactile (16)")
+			Debug.Log ("tile awake" + Time.time);
+
 		isStop = false;
 
 		Stop = tf.Find ("Stop").gameObject;

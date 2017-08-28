@@ -4,43 +4,32 @@ using UnityEngine;
 using DG.Tweening;
 
 public class Blinker : MonoBehaviour {
-
-	public float BlinkSpeed;
-	public Color BlinkColor;
-	public bool BlinkAtStart;
+	public float BlinkTime;
+	public float AlphaStart;
+	public float AlphaEnd;
 
 	private Material mat;
-
-	private IEnumerator BlinkRoutine;
 
 	void Start () {
 		mat = GetComponent<MeshRenderer> ().material;
 
-		if (BlinkAtStart)
-			StartBlink ();
+		Blink ();
 	}
 
-	public void StartBlink() {
-		mat.EnableKeyword("_EMISSION");
-		BlinkRoutine = Blink ();
-		StartCoroutine (BlinkRoutine);
+	void Blink() {
+		mat.color = new Color (mat.color.r, mat.color.g, mat.color.b, AlphaStart);
+		DOVirtual.Float (AlphaStart, AlphaEnd, BlinkTime / 2f, (float x) => {
+			mat.color = new Color (mat.color.r, mat.color.g, mat.color.b, x);
+		}).OnComplete(() => { 
+			DOVirtual.Float (AlphaEnd, AlphaStart, BlinkTime / 2f, (float x) => {
+				mat.color = new Color (mat.color.r, mat.color.g, mat.color.b, x);
+			}).OnComplete(() => { 
+				Blink();
+			});
+		});
 	}
 
-	public void StopBlink() {
-		mat.DisableKeyword ("_EMISSION");
-		if (BlinkRoutine != null)
-			StopCoroutine (BlinkRoutine);
-	}
-
-	IEnumerator Blink() {
-		while (true) {
-			float emission = Mathf.PingPong (Time.time * BlinkSpeed, 1.0f);
-
-			Color finalColor = BlinkColor * Mathf.LinearToGammaSpace (emission);
-
-			mat.SetColor ("_EmissionColor", finalColor);
-
-			yield return new WaitForEndOfFrame ();
-		}
+	void OnDestroy() {
+		DOTween.KillAll (false);
 	}
 }
