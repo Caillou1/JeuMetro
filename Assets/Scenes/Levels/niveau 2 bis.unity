@@ -7001,12 +7001,12 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: score.GoldAverageTime
-      value: 10
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: score.GoldMoneyLeft
-      value: 750
+      value: 2500
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -7199,6 +7199,11 @@ Prefab:
         type: 2}
       propertyPath: inWaves.Array.data[9].array.Array.data[3].Delay
       value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.GoldSurface
+      value: 36
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
