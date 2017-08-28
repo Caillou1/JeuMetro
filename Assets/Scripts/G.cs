@@ -10,6 +10,7 @@ public sealed class G
 	public Tilemap tilemap = new Tilemap();
     public int levelIndex = 0;
 	private List<Traveler> travelers = new List<Traveler> ();
+    private List<Traveler> falseTravelers = new List<Traveler>();
 	private List<Agent> agents = new List<Agent> ();
 	private List<Cleaner> cleaners = new List<Cleaner> ();
 	private List<Metro> metros = new List<Metro> ();
@@ -271,5 +272,21 @@ public sealed class G
 		get {
 			return cleaners.Count;
 		}
+	}
+
+	public void registerFalseTraveler(Traveler t)
+	{
+		if (!falseTravelers.Contains(t))
+			falseTravelers.Add(t);
+	}
+
+	public bool removeFalseTraveler(Traveler t)
+	{
+		return falseTravelers.Remove(t);
+	}
+
+    public int falseTravelerCount()
+	{
+		return falseTravelers.Count;
 	}
 }
