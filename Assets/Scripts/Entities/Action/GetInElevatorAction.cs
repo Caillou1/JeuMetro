@@ -18,6 +18,8 @@ public class GetInElevatorAction : AEntityAction<AEntity>
 	{
 		elevatorTile.CallElevator (destinationFloor);
 
+        elevatorTile.SetTravelerinElevator(entity.gameObject, destinationFloor);
+
 		return false;
 	}
 
