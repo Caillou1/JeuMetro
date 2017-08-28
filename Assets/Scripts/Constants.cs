@@ -67,6 +67,8 @@ public class Constants : MonoBehaviour
     public float MinTravelerFireAlertDelay = 1;
     [Tooltip("Maximum de temps que met un voyageur a se rendre compte d'une alerte incendie")]
     public float MaxTravelerFireAlertDelay = 5;
+    [Tooltip("Acceleration du temps lorsque la gare est vide")]
+    public float TimeAcceleration = 10;
 
 	public List<Color> TravelerColors;
 

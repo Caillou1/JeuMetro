@@ -166,6 +166,8 @@ public class WaveManager : MonoBehaviour {
 		}
 		if (G.Sys.gameManager.FireAlert) {
 			G.Sys.menuManager.SetPieTime (1 - ((Time.time - chronoStartTime) / WaveTime (currentWave)), Mathf.RoundToInt (WaveTime (currentWave) - (Time.time - chronoStartTime)));
+            if (isMapEmpty())
+                chronoStartTime -= Time.deltaTime * (G.Sys.constants.TimeAcceleration - 1);
 		} else {
 			G.Sys.menuManager.SetPieTime ((Time.time - chronoStartTime) / WaveTime (currentWave), Mathf.RoundToInt (WaveTime (currentWave) - (Time.time - chronoStartTime)));
 		}
@@ -219,6 +221,11 @@ public class WaveManager : MonoBehaviour {
 			return waveTimes [wave + 1];
         return FireAlertTime;
 	}
+
+    bool isMapEmpty()
+    {
+        return G.Sys.travelerCount() == 0 && G.Sys.cleanerCount == 0 && G.Sys.agentsCount == 0 && G.Sys.falseTravelerCount() == 0;
+    }
 }
 
 [System.Serializable]

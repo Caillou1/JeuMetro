@@ -42,7 +42,8 @@ public class Traveler : AEntity
         navmeshPath = new NavMeshPath();
 		CanLookForElevator = true;
         if (!G.Sys.gameManager.FireAlert)
-		    G.Sys.registerTraveler (this);
+            G.Sys.registerTraveler(this);
+        else G.Sys.registerFalseTraveler(this);
 		var e = findExit (targetName);
 		target = e.First;
 		exitType = e.Second;
@@ -146,6 +147,7 @@ public class Traveler : AEntity
 	void OnDestroy()
 	{
 		G.Sys.removeTraveler (this);
+        G.Sys.removeFalseTraveler(this);
 		G.Sys.gameManager.AddTime (Time.time - ArrivalTime);
         subscriberList.Unsubscribe();
 	}
