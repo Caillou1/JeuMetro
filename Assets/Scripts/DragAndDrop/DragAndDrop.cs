@@ -272,6 +272,9 @@ public class DragAndDrop : MonoBehaviour{
 			cakeslice.OutlineEffect.Instance.lineColor0 = Color.yellow;
 		}
 
+		if (outlines == null)
+			GetOutlines ();
+
 		foreach(var o in outlines)
 			o.enabled = b;
 	}
