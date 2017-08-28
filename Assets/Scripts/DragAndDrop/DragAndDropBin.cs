@@ -24,35 +24,27 @@ public class DragAndDropBin : DragAndDrop {
 
 	protected override void CheckRotation() {
 		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
-		List<Pair<Orientation, bool>> PossibleOrientations = new List<Pair<Orientation, bool>> ();
+		List<Orientation> PossibleOrientations = new List<Orientation> ();
 
-		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.forward, TileID.WALL) != null) {
-			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.LEFT, true));
-		} else if(G.Sys.tilemap.HasEmptyWallAt (tf.position + Vector3.forward)) {
-			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.LEFT, false));
+		if (G.Sys.tilemap.at (tf.position + Vector3.forward).Count == 0) {
+			PossibleOrientations.Add (Orientation.LEFT);
 		}
 
-		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.back, TileID.WALL) != null) {
-			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.RIGHT, true));
-		} else if (G.Sys.tilemap.HasEmptyWallAt (tf.position + Vector3.back)) {
-			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.RIGHT, false));
+		if (G.Sys.tilemap.at (tf.position + Vector3.back).Count == 0) {
+			PossibleOrientations.Add (Orientation.RIGHT);
 		}
 
-		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.right, TileID.WALL) != null) {
-			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.UP, true));
-		} else if(G.Sys.tilemap.HasEmptyWallAt (tf.position + Vector3.right)) {
-			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.UP, false));
+		if (G.Sys.tilemap.at (tf.position + Vector3.right).Count == 0) {
+			PossibleOrientations.Add (Orientation.UP);
 		}
 
-		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.left, TileID.WALL) != null) {
-			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.DOWN, true));
-		} else if(G.Sys.tilemap.HasEmptyWallAt (tf.position + Vector3.left)) {
-			PossibleOrientations.Add (new Pair<Orientation, bool>(Orientation.DOWN, false));
+		if (G.Sys.tilemap.at (tf.position + Vector3.left).Count == 0) {
+			PossibleOrientations.Add (Orientation.DOWN);
 		}
 
-		if (PossibleOrientations.Count > 0 && !PossibleOrientations.Exists(x => { return x.First == or; }))
+		if (PossibleOrientations.Count > 0 && !PossibleOrientations.Contains(or))
 		{
-			float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0].First);
+			float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0]);
 
 			if (tf.rotation.eulerAngles.y != desiredAngle)
 				RotateObject(desiredAngle);

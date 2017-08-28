@@ -19,8 +19,6 @@ public class DragAndDropSpeaker : DragAndDrop {
 		HasToCheckWall = true;
 		tf = transform;
 		isRotating = false;
-		WalledObject = tf.Find ("Walled").gameObject;
-		NotWalledObject = tf.Find ("NotWalled").gameObject;
 		CheckCanPlace ();
 		CheckRotation ();
 		if(bought)
@@ -30,37 +28,29 @@ public class DragAndDropSpeaker : DragAndDrop {
 	protected override void CheckRotation() {
 		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
 		List<Orientation> PossibleOrientations = new List<Orientation> ();
-		var dir = Orienter.orientationToDir3 (or);
 
-		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.forward, TileID.WALL) != null)
+		if (G.Sys.tilemap.at (tf.position + Vector3.forward).Count == 0) {
 			PossibleOrientations.Add (Orientation.LEFT);
-		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.back, TileID.WALL) != null)
-			PossibleOrientations.Add (Orientation.RIGHT);
-		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.right, TileID.WALL) != null)
-			PossibleOrientations.Add (Orientation.UP);
-		if (G.Sys.tilemap.GetTileOfTypeAt (tf.position + Vector3.left, TileID.WALL) != null)
-			PossibleOrientations.Add (Orientation.DOWN);
+		}
 
-		if (PossibleOrientations.Count > 0 && (!PossibleOrientations.Contains(or) || !IsWalled))
+		if (G.Sys.tilemap.at (tf.position + Vector3.back).Count == 0) {
+			PossibleOrientations.Add (Orientation.RIGHT);
+		}
+
+		if (G.Sys.tilemap.at (tf.position + Vector3.right).Count == 0) {
+			PossibleOrientations.Add (Orientation.UP);
+		}
+
+		if (G.Sys.tilemap.at (tf.position + Vector3.left).Count == 0) {
+			PossibleOrientations.Add (Orientation.DOWN);
+		}
+
+		if (PossibleOrientations.Count > 0 && !PossibleOrientations.Contains(or))
 		{
 			float desiredAngle = Orienter.orientationToAngle(PossibleOrientations[0]);
 
 			if (tf.rotation.eulerAngles.y != desiredAngle)
 				RotateObject(desiredAngle);
-		}
-
-		if (G.Sys.tilemap.haveSpecialTileAt (TileID.WALL, tf.position + new Vector3 (dir.z, 0, -dir.x))) {
-			if (!IsWalled || NotWalledObject.activeInHierarchy) {
-				IsWalled = true;
-				WalledObject.SetActive (true);
-				NotWalledObject.SetActive (false);
-			}
-		} else {
-			if (IsWalled || WalledObject.activeInHierarchy) {
-				IsWalled = false;
-				WalledObject.SetActive (false);
-				NotWalledObject.SetActive (true);
-			}
 		}
 	}
 
