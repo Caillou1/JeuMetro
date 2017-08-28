@@ -25,7 +25,7 @@ public class WaitForElevatorAction : AEntityAction<AEntity>
 	protected override bool Update ()
 	{
 		if (checkElevator) {
-			var positions = G.Sys.tilemap.getSurrondingSpecialTile (entity.transform.position, TileID.ESCALATOR, 6f);
+            var positions = G.Sys.tilemap.getSurrondingSpecialTile (entity.transform.position, TileID.ESCALATOR, G.Sys.constants.EscalatorDetectionRadius, G.Sys.constants.VerticalAmplification);
 			if (positions.Count > 0) {
 				canEnd = false;
 				return true;
