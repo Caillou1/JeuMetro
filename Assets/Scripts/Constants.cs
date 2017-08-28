@@ -61,6 +61,8 @@ public class Constants : MonoBehaviour
     public float fireAlertSpeedMultiplier = 2;
     [Tooltip("Change la vitesse de perte de tous les voyageurs")]
     public float lostMultiplier = 1;
+    [Tooltip("Rayon de detection des escalators lors de l'attente a un ascensseur")]
+    public float EscalatorDetectionRadius = 10;
 
 	public List<Color> TravelerColors;
 
