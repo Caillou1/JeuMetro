@@ -193,6 +193,10 @@ public class MenuManager : MonoBehaviour {
 		}
 	}
 
+	public void LoadScene(string sceneName) {
+		SceneManager.LoadScene (sceneName);
+	}
+
 	public void Lose() {
 		Time.timeScale = 0;
 		FadeUI.SetActive (true);
@@ -420,11 +424,13 @@ public class MenuManager : MonoBehaviour {
 			LevelSelection ();
 		} else {
 			G.Sys.audioManager.PlayLevelSelected ();
+			G.Sys.tilemap.clear ();
 			SceneManager.LoadScene ("Level" + i);
 		}
 	}
 
 	public void MainMenu() {
+		G.Sys.tilemap.clear ();
 		SceneManager.LoadScene("MainMenu");
 	}
 
@@ -486,6 +492,7 @@ public class MenuManager : MonoBehaviour {
 
 	public void Replay() {
 		Time.timeScale = 1f;
+		G.Sys.tilemap.clear ();
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
 

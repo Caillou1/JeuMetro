@@ -117,7 +117,24 @@ public class AudioManager : MonoBehaviour {
 			G.Sys.audioManager = this;
 			DontDestroyOnLoad (gameObject);
 		} else {
+			G.Sys.audioManager.ChangeMusic ();
 			Destroy (gameObject);
+		}
+	}
+
+	public void ChangeMusic() {
+		bool playTitle = false;
+		if (SceneManager.GetActiveScene ().name.ToLower () == "mainmenu")
+			playTitle = true;
+
+		if (playTitle) {
+			musicSource.clip = TitleMusic;
+			musicSource.loop = true;
+			musicSource.Play ();
+		} else {
+			musicSource.clip = MusicStart;
+			musicSource.Play ();
+			StartCoroutine (WaitForEndOfStart (MusicLoop));
 		}
 	}
 

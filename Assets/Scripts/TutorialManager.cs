@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
+using UnityEngine.SceneManagement;
 
 public class TutorialManager : MonoBehaviour {
 	public List<Tutorial> Tutoriels;
@@ -17,7 +18,7 @@ public class TutorialManager : MonoBehaviour {
 		foreach (var t in Tutoriels) {
 			SpawnWave (t);
 
-			yield return new WaitForSeconds (t.TimeBeforeMessagesShowUp);
+			yield return new WaitForSeconds (t.TimeBeforeFirstMessages);
 
 			G.Sys.menuManager.ShowMessages (t.MessagesToShowBefore);
 
@@ -28,10 +29,22 @@ public class TutorialManager : MonoBehaviour {
 			yield return new WaitUntil (() => t.ObjectivesDone);
 
 			G.Sys.menuManager.HideObjectives ();
+
+			yield return new WaitForSeconds (t.TimeBeforeLastMessages);
+
 			G.Sys.menuManager.ShowMessages (t.MessagesToShowAfter);
 
 			yield return new WaitUntil (() => G.Sys.menuManager.AreAllMessagesRead ());
+
+			yield return new WaitForSeconds (1f);
+
+			if (t.NextScene != "") {
+				G.Sys.tilemap.clear ();
+				SceneManager.LoadScene (t.NextScene);
+			}
 		}
+
+		//SceneManager.LoadScene (0);
 
 		StartFireAlert ();
 	}
@@ -98,10 +111,12 @@ public class Tutorial {
 	public GameObject WaveToSpawn;
 	[ShowIf("SpawnWave")]
 	public Transform Entrance;
-	public float TimeBeforeMessagesShowUp;
 	public List<Objectif> Objectives;
+	public float TimeBeforeFirstMessages;
 	public List<string> MessagesToShowBefore;
+	public float TimeBeforeLastMessages;
 	public List<string> MessagesToShowAfter;
+	public string NextScene;
 
 	public bool ObjectivesDone {
 		get{
