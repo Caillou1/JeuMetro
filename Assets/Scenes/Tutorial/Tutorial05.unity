@@ -11578,6 +11578,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
         type: 2}
+      propertyPath: MessagesAtTheEnd.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
+        type: 2}
       propertyPath: Tutoriels.Array.data[0].Objectives.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -11746,12 +11751,28 @@ Prefab:
     - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
         type: 2}
       propertyPath: TimeBeforeNextScene
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
         type: 2}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
+        type: 2}
+      propertyPath: ShowMessagesAtTheEnd
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
+        type: 2}
+      propertyPath: MessagesAtTheEnd.Array.data[0]
+      value: "Maintenant vous comprenez pourquoi il est important d'avoir une gare
+        bien agenc\xE9e."
+      objectReference: {fileID: 0}
+    - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
+        type: 2}
+      propertyPath: MessagesAtTheEnd.Array.data[1]
+      value: Je vous souhaite bon courage pour la suite !
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: de7c17bb221bb49419ac43c0ec7cd274, type: 2}

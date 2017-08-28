@@ -5,6 +5,7 @@ using NRand;
 using UnityEngine.SceneManagement;
 using Sirenix.OdinInspector;
 using UnityEngine.AI;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
 
 	void OnDestroy() {
 		subscriberList.Unsubscribe ();
+		DOTween.KillAll ();
 	}
 
 	void OnTravelerFaint(FaintEvent e) {
