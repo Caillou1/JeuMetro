@@ -6636,7 +6636,7 @@ Prefab:
         type: 2}
       propertyPath: metroWaves.Array.data[9].array.Array.data[1].Wave
       value: 
-      objectReference: {fileID: 1291282371005216, guid: 7e2653c2d24e9474083f589d306efdf9,
+      objectReference: {fileID: 1515202955301000, guid: b51e352169a291141ab893cadf35e016,
         type: 2}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
@@ -13599,8 +13599,8 @@ Transform:
   - {fileID: 1490541225}
   - {fileID: 639486998}
   - {fileID: 995770897}
-  - {fileID: 767754798}
   - {fileID: 275993786}
+  - {fileID: 767754798}
   - {fileID: 705764851}
   - {fileID: 887129738}
   - {fileID: 31589178}
@@ -21202,6 +21202,21 @@ Prefab:
         type: 2}
       propertyPath: StartingMoney
       value: 750
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: ElevatorComeTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: ElevatorWaitTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: EscalatorDetectionRadius
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}
