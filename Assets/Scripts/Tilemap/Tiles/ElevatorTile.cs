@@ -14,6 +14,7 @@ public class ElevatorTile : ATile
 	private int[] Floors;
 	private Dictionary<int, Vector3> WaitZones;
 	private int peopleInElevator;
+    private List<Pair<GameObject, int>> travelers = new List<Pair<GameObject, int>>();
 
 	protected override void Awake()
 	{
@@ -102,19 +103,36 @@ public class ElevatorTile : ATile
 
 				CurrentFloor = FloorsToVisit [0];
 				FloorsToVisit.RemoveAt (0);
+                sendTravelersToTarget();
 
 				yield return new WaitForSeconds (G.Sys.constants.ElevatorWaitTime);
 			}
 		}
 	}
 
+    void sendTravelersToTarget()
+    {
+        for (int i = 0; i < travelers.Count(); i++)
+        {
+            if(travelers[i].Second == CurrentFloor)
+                travelers[i].First.SetActive(true);
+        }
+        travelers.RemoveAll(t => t.Second == CurrentFloor);
+    }
+
 	public List<int> GetFloors() {
 		return Floors.ToList ();
 	}
 
-	public void AddPersonInElevator() {
+    public void AddPersonInElevator() {
 		peopleInElevator++;
 	}
+
+    public void SetTravelerinElevator(GameObject traveler, int targetFloor)
+    {
+		travelers.Add(new Pair<GameObject, int>(traveler, targetFloor));
+		traveler.SetActive(false);
+    }
 
 	public void RemovePersonFromElevator() {
 		peopleInElevator--;
