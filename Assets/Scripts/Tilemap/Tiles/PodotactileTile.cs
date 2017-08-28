@@ -53,10 +53,6 @@ public class PodotactileTile : ATile
 		}
     }
 
-	public cakeslice.Outline[] getOutlines() {
-		return outlines;
-	}
-
 	public void Connect (bool CheckArround)
 	{
 		Vector3i pos = new Vector3i (transform.position);
