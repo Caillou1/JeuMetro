@@ -25,7 +25,7 @@ public class WaitForElevatorAction : AEntityAction<AEntity>
 	protected override bool Update ()
 	{
 		if (checkElevator) {
-			var positions = G.Sys.tilemap.getSurrondingSpecialTile (entity.transform.position, TileID.ESCALATOR, 6f);
+            var positions = G.Sys.tilemap.getSurrondingSpecialTile (entity.transform.position, TileID.ESCALATOR, G.Sys.constants.EscalatorDetectionRadius, G.Sys.constants.VerticalAmplification);
 			if (positions.Count > 0) {
 				canEnd = false;
 				return true;
@@ -39,8 +39,9 @@ public class WaitForElevatorAction : AEntityAction<AEntity>
 	protected override void End ()
 	{
 		if (canEnd) {
-			elevatorTile.AddPersonInElevator ();
-			entity.path.addAction (new GetInElevatorAction (entity, new Vector3 (elevatorTile.transform.position.x - 1f, entity.transform.position.y, elevatorTile.transform.position.z), elevatorTile, destinationFloor, priority - 1));
+            elevatorTile.AddPersonInElevator ();
+            entity.path.addAction (new GetInElevatorAction (entity, new Vector3(elevatorTile.transform.position.x, entity.transform.position.y, elevatorTile.transform.position.z) 
+                                                                    + Orienter.orientationToDir3(Orienter.angleToOrientation(elevatorTile.transform.rotation.eulerAngles.y)), elevatorTile, destinationFloor, priority - 1));
 		}
 	}
 }

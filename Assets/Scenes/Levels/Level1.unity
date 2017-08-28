@@ -5429,6 +5429,21 @@ Prefab:
       propertyPath: score.ScoreValue
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.GoldAverageTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.GoldMoneyLeft
+      value: 750
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.GoldSurface
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
   m_IsPrefabParent: 0
@@ -5929,26 +5944,6 @@ Prefab:
     - target: {fileID: 4827771329649698, guid: e7158405a01784213b0c43026c49bf45, type: 2}
       propertyPath: m_RootOrder
       value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114749702779243096, guid: e7158405a01784213b0c43026c49bf45,
-        type: 2}
-      propertyPath: FaintClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 237066e3c2ded044ca03834a495d8525, type: 3}
-    - target: {fileID: 114749702779243096, guid: e7158405a01784213b0c43026c49bf45,
-        type: 2}
-      propertyPath: StairsFallClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 0f966a662948ee54ba6710d5f33fe1fc, type: 3}
-    - target: {fileID: 114749702779243096, guid: e7158405a01784213b0c43026c49bf45,
-        type: 2}
-      propertyPath: FaintVolume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114749702779243096, guid: e7158405a01784213b0c43026c49bf45,
-        type: 2}
-      propertyPath: StairsFallVolume
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e7158405a01784213b0c43026c49bf45, type: 2}

@@ -1263,6 +1263,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 3
     RestPlaceAttraction: 35
@@ -1288,7 +1290,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!136 &136544995259173246
 CapsuleCollider:
@@ -1511,7 +1512,7 @@ NavMeshAgent:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1427005143703886}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: 1479372276
   m_Radius: 0.3
   m_Speed: 3.5
   m_Acceleration: 50

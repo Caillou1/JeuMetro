@@ -59,16 +59,22 @@ public class Traveler : AEntity
 
 	protected override void OnUpdate ()
 	{
-		checkOnExit ();
-        checkOnControleLine();
+        if (gameObject.activeSelf)
+        {
+            anim.SetFloat("MovementSpeed", agent.velocity.magnitude);
 
-		anim.SetFloat ("MovementSpeed", agent.velocity.magnitude);
+            if ((lastPos - transform.position).magnitude >= .001f)
+            {
+                anim.SetBool("Walking", true);
+            }
+            else
+            {
+                anim.SetBool("Walking", false);
+            }
+        }
 
-		if ((lastPos - transform.position).magnitude >= .001f) {
-			anim.SetBool ("Walking", true);
-		} else {
-			anim.SetBool ("Walking", false);
-		}
+		checkOnExit();
+		checkOnControleLine();
 
 		lastPos = transform.position;
 	}

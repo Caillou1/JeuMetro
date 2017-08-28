@@ -35,7 +35,7 @@ public class PodotactileTile : ATile
 
 		G.Sys.tilemap.addTile (tf.position, this, Tilemap.LOW_PRIORITY);
 
-		G.Sys.tilemap.addSpecialTile (type, tf.position);
+		G.Sys.tilemap.addSpecialTile(type, tf.position); 
 
 		Connect (true);
     }
@@ -44,13 +44,17 @@ public class PodotactileTile : ATile
 		return outlines;
 	}
 
-	public void Connect (bool CheckArround)
-	{		
-		if (!G.Sys.tilemap.HasTileOfTypeAt (TileID.CONTROLELINE, transform.position)) {
-			GetComponent<NavMeshModifier> ().enabled = false;
-			Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
+    void Start()
+    {
+		if (G.Sys.tilemap.HasTileOfTypeAt(TileID.CONTROLELINE, transform.position))
+		{
+			GetComponent<NavMeshModifier>().enabled = false;
+			Event<BakeNavMeshEvent>.Broadcast(new BakeNavMeshEvent());
 		}
+    }
 
+	public void Connect (bool CheckArround)
+	{
 		Vector3i pos = new Vector3i (transform.position);
 		List<ATile> list = new List<ATile> ();
 		List<Orientation> neighbors = new List<Orientation> ();

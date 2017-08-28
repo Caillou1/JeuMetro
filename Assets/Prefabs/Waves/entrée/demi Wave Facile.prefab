@@ -4778,6 +4778,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 80
@@ -4787,7 +4789,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 10
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.5
     Malvoyant: 0
@@ -4803,7 +4805,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114653825430875722
 MonoBehaviour:
@@ -4816,6 +4817,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 80
@@ -4825,7 +4828,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 30
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.4
     Malvoyant: 0
@@ -4841,7 +4844,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114816482179355552
 MonoBehaviour:
@@ -4854,6 +4856,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 80
@@ -4863,7 +4867,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 80
     LostAbility: 75
-    Hunger: 50
+    Hunger: 25
     wastes: 80
     MovementSpeed: 3.6
     Malvoyant: 0
@@ -4879,7 +4883,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!114 &114943467703490434
 MonoBehaviour:
@@ -4892,6 +4895,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19e87a5dd3fcb475cbe702587c72a704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path:
+    currentActionType: 0
   stats:
     Type: 0
     RestPlaceAttraction: 80
@@ -4901,7 +4906,7 @@ MonoBehaviour:
     DeltaFainteness: 25.1
     FraudPercentage: 40
     LostAbility: 75
-    Hunger: 10
+    Hunger: 25
     wastes: 20.2
     MovementSpeed: 3.5
     Malvoyant: 0
@@ -4917,7 +4922,6 @@ MonoBehaviour:
     Speed: 0
     Hunger: 0
     Fraud: 0
-    LostNoTicket: 0
   anim: {fileID: 0}
 --- !u!136 &136032070312746914
 CapsuleCollider:
