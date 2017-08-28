@@ -5429,6 +5429,21 @@ Prefab:
       propertyPath: score.ScoreValue
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.GoldAverageTime
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.GoldMoneyLeft
+      value: 750
+      objectReference: {fileID: 0}
+    - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
+        type: 2}
+      propertyPath: score.GoldSurface
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dde0399ecd55f40cbab557f01fca87bd, type: 2}
   m_IsPrefabParent: 0
