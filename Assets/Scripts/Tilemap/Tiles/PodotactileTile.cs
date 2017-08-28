@@ -15,13 +15,13 @@ public class PodotactileTile : ATile
 	private GameObject FourBranches;
 
 	private bool isStop;
+	private cakeslice.Outline[] outlines;
 
 	protected override void Awake()
 	{
 		tf = transform;
 
-		if (tf.name == "Podotactile (16)")
-			Debug.Log ("tile awake" + Time.time);
+		outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
 
 		isStop = false;
 
@@ -40,11 +40,12 @@ public class PodotactileTile : ATile
 		Connect (true);
     }
 
+	public cakeslice.Outline[] getOutlines() {
+		return outlines;
+	}
+
 	public void Connect (bool CheckArround)
-	{
-		if (tf.name == "Podotactile (16)")
-			Debug.Log ("tile connect " + Time.time);
-		
+	{		
 		if (!G.Sys.tilemap.HasTileOfTypeAt (TileID.CONTROLELINE, transform.position)) {
 			GetComponent<NavMeshModifier> ().enabled = false;
 			Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());

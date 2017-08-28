@@ -22,6 +22,7 @@ public class TutorialManager : MonoBehaviour {
 	}
 
 	IEnumerator TutorialRoutine() {
+		yield return new WaitForSeconds (Time.deltaTime * 5);
 		foreach (var t in Tutoriels) {
 			SpawnWave (t);
 
