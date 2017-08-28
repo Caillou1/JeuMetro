@@ -41,7 +41,8 @@ public class Traveler : AEntity
 	{
         navmeshPath = new NavMeshPath();
 		CanLookForElevator = true;
-		G.Sys.registerTraveler (this);
+        if (!G.Sys.gameManager.FireAlert)
+		    G.Sys.registerTraveler (this);
 		var e = findExit (targetName);
 		target = e.First;
 		exitType = e.Second;

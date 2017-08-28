@@ -14,6 +14,8 @@ public class Cleaner : AEntity
 	private Animator anim;
 	private Vector3 lastPos;
 
+    bool endInvoked = false;
+
 	protected override void OnAwake ()
 	{
 		//path.lostness = 0.5f;
@@ -44,10 +46,10 @@ public class Cleaner : AEntity
 
 		lastPos = transform.position;
 
-        if (G.Sys.gameManager.FireAlert && G.Sys.tilemap.GetTileOfTypeAt(transform.position, TileID.OUT))
+        if (G.Sys.gameManager.FireAlert && G.Sys.travelerCount() == 0 && !endInvoked)
         {
-            Destroy(gameObject);
-            return;
+            Invoke("OnAllTravelersExited", new UniformFloatDistribution(G.Sys.constants.MinTravelerFireAlertDelay, G.Sys.constants.MaxTravelerFireAlertDelay).Next(new StaticRandomGenerator<DefaultRandomGenerator>()));
+            endInvoked = true;
         }
 	}
 
@@ -164,5 +166,28 @@ public class Cleaner : AEntity
     protected override void OnPathFinished()
     {
         path.destnation = G.Sys.tilemap.getRandomGroundTile().transform.position;
+    }
+
+    void OnAllTravelersExited()
+    {
+        agent.agentTypeID = 0;
+
+        var comp = gameObject.AddComponent<Traveler>();
+
+        var tStats = new TravelerStats();
+        tStats.FaintnessPercentage = 0;
+        tStats.LostAbility = 0;
+        tStats.MovementSpeed = stats.MovementSpeed;
+        tStats.Type = TravelerType.CLASSIC;
+        comp.stats = tStats;
+
+        var tDatas = new TravelerDatas();
+        tDatas.Lostness = 0;
+        tDatas.Tiredness = 0;
+        comp.datas = tDatas;
+
+        comp.Invoke("StartFireAlert", 0.1f);
+
+        Destroy(this);
     }
 }

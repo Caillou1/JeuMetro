@@ -223,7 +223,7 @@ public class GameManager : MonoBehaviour
                     foreach (var d in dir)
                     {
                         var tiles = G.Sys.tilemap.at(door + d);
-                        if (tiles.Count == 0 && tiles[0].type == TileID.GROUND)
+                        if (tiles.Count != 0 && tiles[0].type == TileID.GROUND)
                             validDir.Add(door + d);
                     }
 
