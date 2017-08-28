@@ -94,11 +94,6 @@ public class DragAndDropEscalator : DragAndDrop {
 		}
 	}
 
-	public void OnDestroy() {
-		if(!G.Sys.tilemap.HasEmptyWallAt(tf.position + Vector3.up * 2))
-			G.Sys.gameManager.InstantiateEmptyWallAt (tf.position + Vector3.up * 2);
-	}
-
 	protected override void OnBuy ()
 	{
 		G.Sys.AddDisposable (TileID.ESCALATOR);
