@@ -457,11 +457,13 @@ public class Traveler : AEntity
 
 		var bestDir = Orienter.orientationToDir (Orienter.angleToOrientation (bestTile.transform.rotation.eulerAngles.y));
 		var pos = bestTile.transform.position + new Vector3(-bestDir.y, 0, bestDir.x);
-		agent.CalculatePath(pos, navmeshPath);
-		if (navmeshPath.status != NavMeshPathStatus.PathComplete)
-			return;
-		path.addAction(new BuyTicketAction(this, pos, bestTile ));
-
+		if (agent != null && navmeshPath != null) {
+			agent.CalculatePath (pos, navmeshPath);
+			if (navmeshPath.status != NavMeshPathStatus.PathComplete)
+				return;
+		
+			path.addAction (new BuyTicketAction (this, pos, bestTile));
+		}
 	}
 
 	void initializeDatas()

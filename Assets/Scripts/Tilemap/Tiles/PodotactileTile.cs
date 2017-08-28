@@ -15,13 +15,13 @@ public class PodotactileTile : ATile
 	private GameObject FourBranches;
 
 	private bool isStop;
+	private cakeslice.Outline[] outlines;
 
 	protected override void Awake()
 	{
 		tf = transform;
 
-		if (tf.name == "Podotactile (16)")
-			Debug.Log ("tile awake" + Time.time);
+		outlines = tf.GetComponentsInChildren<cakeslice.Outline> ();
 
 		isStop = false;
 
@@ -48,6 +48,10 @@ public class PodotactileTile : ATile
 			Event<BakeNavMeshEvent>.Broadcast(new BakeNavMeshEvent());
 		}
     }
+
+	public cakeslice.Outline[] getOutlines() {
+		return outlines;
+	}
 
 	public void Connect (bool CheckArround)
 	{
