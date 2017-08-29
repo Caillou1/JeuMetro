@@ -37,6 +37,8 @@ public class EntityPath
 
     public ActionType currentActionType = ActionType.NONE;
 
+    bool updateAgentPathNotOnnavmesh = false;
+
 	public EntityPath (NavMeshAgent a, float lostness = 0)
 	{
 		_agent = a;
@@ -101,7 +103,7 @@ public class EntityPath
 		else {
 			if (action.priority > currentAction.priority && !onAction) {
 				_actions.Insert (0, currentAction);
-				currentAction = action;
+                onAction = true;
                 NavMeshPath p = new NavMeshPath();
                 _agent.CalculatePath(currentAction.pos, p);
                 _agent.SetPath(p);
@@ -234,7 +236,10 @@ public class EntityPath
 	void updateAgentPath()
 	{
         if (!_agent.isOnNavMesh)
-            return;
+		{
+            updateAgentPathNotOnnavmesh = true;
+			return;
+        }
         
 		NavMeshPath aPath = new NavMeshPath();
 
@@ -309,6 +314,18 @@ public class EntityPath
 			}
 		}
 
+        if(updateAgentPathNotOnnavmesh)
+        {
+            updateAgentPathNotOnnavmesh = false;
+            updateAgentPath();
+        }
+
+        if (finished && (_agent.transform.position - destnation).sqrMagnitude > 0.3f)
+        {
+            updatePath();
+            Debug.Log("Poop");
+        }
+        
         currentActionType = onAction ? currentAction.type : ActionType.NONE;
 	}
 

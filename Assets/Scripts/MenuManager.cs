@@ -333,6 +333,15 @@ public class MenuManager : MonoBehaviour {
 		TimeTxt.text = IntToString (secondTime);
 	}
 
+    public void EnableUITutoMode()
+    {
+        TimeTxt.text = "∞";
+        TimeTxt.fontSize = 150;
+        Money.transform.parent.gameObject.SetActive(false);
+        TravelerNumber.transform.parent.gameObject.SetActive(false);
+        WaveNumber.transform.parent.gameObject.SetActive(false);
+    }
+
 	private string IntToString(int seconds) {
 		string time = "";
 
