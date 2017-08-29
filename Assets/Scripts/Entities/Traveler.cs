@@ -41,7 +41,9 @@ public class Traveler : AEntity
 	{
         navmeshPath = new NavMeshPath();
 		CanLookForElevator = true;
-		G.Sys.registerTraveler (this);
+        if (!G.Sys.gameManager.FireAlert)
+            G.Sys.registerTraveler(this);
+        else G.Sys.registerFalseTraveler(this);
 		var e = findExit (targetName);
 		target = e.First;
 		exitType = e.Second;
@@ -49,11 +51,8 @@ public class Traveler : AEntity
 		initializeDatas();
 		ArrivalTime = Time.time;
 		anim = GetComponentInChildren<Animator> ();
+        GetComponentInChildren<SkinnedMeshRenderer>().material.color = G.Sys.constants.GetRandomColor(G.Sys.constants.travelerSaturation);
 
-		if (G.Sys.constants.TravelerColors.Count > 0)
-			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = G.Sys.constants.TravelerColors [(new UniformIntDistribution (G.Sys.constants.TravelerColors.Count - 1).Next (new StaticRandomGenerator<DefaultRandomGenerator> ()))];
-		else
-			GetComponentInChildren<SkinnedMeshRenderer> ().material.color = Color.HSVToRGB ((new UniformFloatDistribution (0f, 1f).Next (new StaticRandomGenerator<DefaultRandomGenerator> ())), 1f, 1f);
         subscriberList.Add(new Event<CollectTravelerTimeEvent>.Subscriber(onCollectTime));
         subscriberList.Add(new Event<StartFireAlertEvent>.Subscriber(onFireAlertStart));
         subscriberList.Subscribe();
@@ -145,6 +144,7 @@ public class Traveler : AEntity
 	void OnDestroy()
 	{
 		G.Sys.removeTraveler (this);
+        G.Sys.removeFalseTraveler(this);
 		G.Sys.gameManager.AddTime (Time.time - ArrivalTime);
         subscriberList.Unsubscribe();
 	}
