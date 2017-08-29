@@ -74,14 +74,21 @@ public class PodotactileTile : ATile
 				} else if (l [0].type == TileID.STAIRS) {
 					var s = l [0] as StairsTile;
 
-					if (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position))) {
+					if (s != null && s.IsOnStairsPath (new Vector3i (tf.position))) {
 						if (!neighbors.Contains (Orientation.LEFT))
 							neighbors.Add (Orientation.LEFT);
 						if (!neighbors.Contains (Orientation.RIGHT))
 							neighbors.Add (Orientation.RIGHT);
 						isStop = true;
 					}
-				} else {
+				} else if (l [0].type == TileID.ESCALATOR) {
+					var e = l [0] as EscalatorTile;
+
+					if (e != null && e.IsOnEscalatorPath (new Vector3i (tf.position))) {
+						if (!neighbors.Contains (Orientation.UP))
+							neighbors.Add (Orientation.UP);
+					}
+				}  else {
 					if (!neighbors.Contains (Orientation.UP))
 						neighbors.Add (Orientation.UP);
 				}
@@ -101,14 +108,21 @@ public class PodotactileTile : ATile
 				} else if (l [0].type == TileID.STAIRS) {
 					var s = l [0] as StairsTile;
 
-					if (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position))) {
+					if (s != null && s.IsOnStairsPath (new Vector3i (tf.position))) {
 						if (!neighbors.Contains (Orientation.LEFT))
 							neighbors.Add (Orientation.LEFT);
 						if (!neighbors.Contains (Orientation.RIGHT))
 							neighbors.Add (Orientation.RIGHT);
 						isStop = true;
 					}
-				} else {
+				} else if (l [0].type == TileID.ESCALATOR) {
+					var e = l [0] as EscalatorTile;
+
+					if (e != null && e.IsOnEscalatorPath (new Vector3i (tf.position))) {
+						if (!neighbors.Contains (Orientation.DOWN))
+							neighbors.Add (Orientation.DOWN);
+					}
+				}  else {
 					if (!neighbors.Contains (Orientation.DOWN))
 						neighbors.Add (Orientation.DOWN);
 				}
@@ -128,12 +142,19 @@ public class PodotactileTile : ATile
 				} else if (l [0].type == TileID.STAIRS) {
 					var s = l [0] as StairsTile;
 
-					if (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position))) {
+					if (s != null && s.IsOnStairsPath (new Vector3i (tf.position))) {
 						if (!neighbors.Contains (Orientation.DOWN))
 							neighbors.Add (Orientation.DOWN);
 						if (!neighbors.Contains (Orientation.UP))
 							neighbors.Add (Orientation.UP);
 						isStop = true;
+					}
+				} else if (l [0].type == TileID.ESCALATOR) {
+					var e = l [0] as EscalatorTile;
+
+					if (e != null && e.IsOnEscalatorPath (new Vector3i (tf.position))) {
+						if (!neighbors.Contains (Orientation.RIGHT))
+							neighbors.Add (Orientation.RIGHT);
 					}
 				} else {
 					if (!neighbors.Contains (Orientation.RIGHT))
@@ -155,14 +176,21 @@ public class PodotactileTile : ATile
 				} else if (l [0].type == TileID.STAIRS) {
 					var s = l [0] as StairsTile;
 
-					if (s != null && (l [0] as StairsTile).IsOnStairsPath (new Vector3i (tf.position))) {
+					if (s != null && s.IsOnStairsPath (new Vector3i (tf.position))) {
 						if (!neighbors.Contains (Orientation.DOWN))
 							neighbors.Add (Orientation.DOWN);
 						if (!neighbors.Contains (Orientation.UP))
 							neighbors.Add (Orientation.UP);
 						isStop = true;
 					}
-				} else {
+				} else if (l [0].type == TileID.ESCALATOR) {
+					var e = l [0] as EscalatorTile;
+
+					if (e != null && e.IsOnEscalatorPath (new Vector3i (tf.position))) {
+						if (!neighbors.Contains (Orientation.LEFT))
+							neighbors.Add (Orientation.LEFT);
+					}
+				}  else {
 					if (!neighbors.Contains (Orientation.LEFT))
 						neighbors.Add (Orientation.LEFT);
 				}
