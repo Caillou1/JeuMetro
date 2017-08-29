@@ -21,6 +21,7 @@ public class TutorialManager : MonoBehaviour {
 	public string NextScene;
 
 	void Start () {
+        //G.Sys.menuManager.DisableGameUI();
 		foreach (var t in Tutoriels)
 			if(t.ZoneToHighlight != null)
 				t.ZoneToHighlight.SetActive (false);
