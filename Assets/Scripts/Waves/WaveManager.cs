@@ -126,6 +126,16 @@ public class WaveManager : MonoBehaviour {
         totalScore += 1 / ((1f + score.SpaceUsed) / (1f + score.GoldSurface)) * 1000;
         score.ScoreValue = (int)totalScore;
 
+		if (EndWithFireAlert) {
+			if (isMapEmpty ()) {
+				score.ScoreValue += 1000;
+				score.WonFireAlert = true;
+			} else {
+				score.ScoreValue /= 2;
+				score.WonFireAlert = false;
+			}
+		}
+
 		Event<WinGameEvent>.Broadcast (new WinGameEvent (score));
 	}
 
@@ -248,6 +258,8 @@ public class Score {
     public bool HaveSurfaceMedal;
     [HideInInspector]
     public int ScoreValue;
+	[HideInInspector]
+	public bool WonFireAlert;
 
 	public void SetValues(float avgT, int money, int spaceUsed, int score) {
 		AverageTime = avgT;

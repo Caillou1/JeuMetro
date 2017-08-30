@@ -584,6 +584,8 @@ public class MenuManager : MonoBehaviour {
 
             score = parent.transform.Find("Score").GetComponent<Text>();
             bestScore = parent.transform.Find("Best").GetComponent<Text>();
+
+			fireAlert = bubble.transform.Find("FireAlert").Find("Value").GetComponent<Text>();
         }
 
         public void set(Score s)
@@ -609,6 +611,8 @@ public class MenuManager : MonoBehaviour {
                 PlayerPrefs.Save();
             }
             bestScore.text = best.ToString();
+
+			fireAlert.text = (s.WonFireAlert) ? "Réussie" : "Échec";
         }
 
         public void toggleBubble()
@@ -626,6 +630,7 @@ public class MenuManager : MonoBehaviour {
         Text targetMoney;
         Text currentSurface;
         Text targetSurface;
+		Text fireAlert;
 
         Text score;
         Text bestScore;
