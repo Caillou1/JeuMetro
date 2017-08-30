@@ -1265,6 +1265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path:
+    log: 0
     currentActionType: 0
   stats:
     MovementSpeed: 5
@@ -1280,7 +1281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def03237a67b64288b9bcc5ff9076fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Price: 50
+  Price: 100
   CanDrag: 0
 --- !u!136 &136267645287226140
 CapsuleCollider:
