@@ -8,11 +8,17 @@ using DG.Tweening;
 
 public class ElevatorTile : ATile
 {
+    float closedOffset = 69;
+    float openedOffset = 142;
+    float openedoffset2 = 65;
+    float openTime = 0.6f;
+
 	private List<int> FloorsToVisit;
 	private Transform tf;
 	private int CurrentFloor;
 	private int[] Floors;
-	private Dictionary<int, Vector3> WaitZones;
+    private Dictionary<int, Vector3> WaitZones;
+    private Dictionary<int, Pair<Transform, Transform>> doors = new Dictionary<int, Pair<Transform, Transform>>();
 	private int peopleInElevator;
     private List<Pair<GameObject, int>> travelers = new List<Pair<GameObject, int>>();
 
@@ -31,8 +37,9 @@ public class ElevatorTile : ATile
 
 			Floors [i] = Mathf.RoundToInt (fTf.position.y);
 
-			var fDir = Orienter.orientationToDir3 (Orienter.angleToOrientation (fTf.rotation.eulerAngles.y));
+            var fDir = Orienter.orientationToDir3(Orienter.angleToOrientation(fTf.rotation.eulerAngles.y+90)) * 1.5f;
 			WaitZones.Add (Floors [i], fTf.position - fDir);
+            doors.Add(Floors[i], new Pair<Transform, Transform>(fTf.Find("porte_01"), fTf.Find("porte_02")));
 		}
 
 		var dir = Orienter.orientationToDir3 (Orienter.angleToOrientation (tf.rotation.eulerAngles.y + -90f));
@@ -45,6 +52,10 @@ public class ElevatorTile : ATile
 			G.Sys.tilemap.addSpecialTile (TileID.ELEVATOR, pos + dir + new Vector3 (0, f, 0));
 			G.Sys.tilemap.addSpecialTile (TileID.ELEVATOR, pos + new Vector3 (0, f, 0));
 		}
+
+        CurrentFloor = WaitZones.First().Key;
+
+        openDoors(CurrentFloor);
 
 		StartCoroutine (ElevatorRoutine ());
     }
@@ -97,6 +108,7 @@ public class ElevatorTile : ATile
 			if (FloorsToVisit.Count == 0) {
 				yield return new WaitForEndOfFrame ();
 			} else {
+                closeDoors(CurrentFloor);
 				float time = G.Sys.constants.ElevatorComeTime * Mathf.Abs (CurrentFloor - FloorsToVisit [0]) / 2f;
 				CurrentFloor = int.MinValue;
 				yield return new WaitForSeconds (time);
@@ -104,11 +116,30 @@ public class ElevatorTile : ATile
 				CurrentFloor = FloorsToVisit [0];
 				FloorsToVisit.RemoveAt (0);
                 sendTravelersToTarget();
+                openDoors(CurrentFloor);
 
 				yield return new WaitForSeconds (G.Sys.constants.ElevatorWaitTime);
 			}
 		}
 	}
+
+    void openDoors(int floor)
+    {
+        if (!doors.ContainsKey(floor))
+            return;
+        var d = doors[floor];
+        d.First.DOLocalMoveX(openedOffset, openTime);
+        d.Second.DOLocalMoveX(openedoffset2, openTime);
+    }
+
+    void closeDoors(int floor)
+    {
+		if (!doors.ContainsKey(floor))
+			return;
+		var d = doors[floor];
+        d.First.DOLocalMoveX(closedOffset, openTime);
+        d.Second.DOLocalMoveX(-closedOffset, openTime);
+    }
 
     void sendTravelersToTarget()
     {
