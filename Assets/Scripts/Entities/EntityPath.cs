@@ -10,6 +10,7 @@ using DG.Tweening;
 [System.Serializable]
 public class EntityPath
 {
+    public bool log = false;
 	const float dLostness = 0.15f;
 
 	NavMeshAgent _agent;
@@ -320,14 +321,23 @@ public class EntityPath
             updateAgentPath();
         }
 
-        if (finished && (_agent.transform.position - destnation).sqrMagnitude > 0.3f)
-            updatePath();
+        if (_agent.isOnNavMesh)
+        {
+            if (float.IsInfinity(_agent.remainingDistance))
+                updatePath();
 
-        if (_agent.isOnNavMesh && _agent.remainingDistance < 0.3f)
-            updatePath();
-        
+            if (!_agent.hasPath)
+                updatePath();
+
+            if (_agent.remainingDistance < 0.1f)
+                finished = true;
+        }
         
         currentActionType = currentAction != null ? currentAction.type : ActionType.NONE;
+
+		if (log)
+			Debug.Log("OnNavmesh " + _agent.isOnNavMesh + "\nOnLink " + _agent.isOnOffMeshLink + "\nHasPath " + _agent.hasPath + "\nCorners " + _agent.path.corners.Count() + "\nActions " + (_actions.Count() + (currentAction == null ? 0 : 1))
+					  + "\nDestination " + destnation + "\nAgentDestination " + _agent.destination + "\nRemainingDistance " + _agent.remainingDistance);
 	}
 
 	void checkAction()
