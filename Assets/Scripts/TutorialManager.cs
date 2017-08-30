@@ -21,6 +21,7 @@ public class TutorialManager : MonoBehaviour {
 	public string NextScene;
 
 	void Start () {
+        G.Sys.menuManager.EnableUITutoMode();
 		foreach (var t in Tutoriels)
 			if(t.ZoneToHighlight != null)
 				t.ZoneToHighlight.SetActive (false);
@@ -28,7 +29,13 @@ public class TutorialManager : MonoBehaviour {
 		StartCoroutine(TutorialRoutine());
 	}
 
-	IEnumerator TutorialRoutine() {
+    private void Update()
+    {
+        if (G.Sys.gameManager.GetMoney() < 500)
+            G.Sys.gameManager.AddMoney(500);
+    }
+
+    IEnumerator TutorialRoutine() {
 		yield return new WaitForSeconds (Time.deltaTime * 5);
 		foreach (var t in Tutoriels) {
 			SpawnWave (t);

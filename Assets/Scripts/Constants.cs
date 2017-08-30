@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NRand;
 
 public class Constants : MonoBehaviour 
 {
@@ -69,8 +70,24 @@ public class Constants : MonoBehaviour
     public float MaxTravelerFireAlertDelay = 5;
     [Tooltip("Acceleration du temps lorsque la gare est vide")]
     public float TimeAcceleration = 10;
+    [Tooltip("Saturation de la couleur des voyageyrs [0-1]")]
+    public float travelerSaturation = 0.5f;
+    [Tooltip("Saturation de la couleur des agents [0-1]")]
+    public float agentSaturation = 1;
 
 	public List<Color> TravelerColors;
+
+    public Color GetRandomColor(float saturation)
+    {
+        var color = Color.white;
+        if(TravelerColors.Count > 0)
+            color = TravelerColors[(new UniformIntDistribution(TravelerColors.Count - 1).Next(new StaticRandomGenerator<DefaultRandomGenerator>()))];
+        else return Color.HSVToRGB((new UniformFloatDistribution(0f, 1f).Next(new StaticRandomGenerator<DefaultRandomGenerator>())), saturation, 1f);
+
+        float h, s, v;
+        Color.RGBToHSV(color, out h, out s, out v);
+        return Color.HSVToRGB(h, saturation, v);
+    }
 
 	void Awake()
 	{
