@@ -321,12 +321,13 @@ public class EntityPath
         }
 
         if (finished && (_agent.transform.position - destnation).sqrMagnitude > 0.3f)
-        {
             updatePath();
-            Debug.Log("Poop");
-        }
+
+        if (_agent.isOnNavMesh && _agent.remainingDistance < 0.3f)
+            updatePath();
         
-        currentActionType = onAction ? currentAction.type : ActionType.NONE;
+        
+        currentActionType = currentAction != null ? currentAction.type : ActionType.NONE;
 	}
 
 	void checkAction()

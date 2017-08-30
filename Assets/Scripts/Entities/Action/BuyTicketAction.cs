@@ -7,7 +7,7 @@ public class BuyTicketAction : AEntityAction<Traveler>
 	float time = 0;
 	float maxTime = 0;
 
-	public BuyTicketAction (Traveler t, Vector3 pos, TicketDistribTile tile) : base(t, ActionType.BUY_TICKET, pos)
+	public BuyTicketAction (Traveler t, Vector3 pos, TicketDistribTile tile) : base(t, ActionType.BUY_TICKET, pos, 1)
 	{
 		ticketDistrib = tile;
 	}
