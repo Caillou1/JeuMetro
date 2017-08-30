@@ -21,6 +21,7 @@ public class ElevatorTile : ATile
     private Dictionary<int, Pair<Transform, Transform>> doors = new Dictionary<int, Pair<Transform, Transform>>();
 	private int peopleInElevator;
     private List<Pair<GameObject, int>> travelers = new List<Pair<GameObject, int>>();
+    public int peopleWaiting = 0;
 
 	protected override void Awake()
 	{
