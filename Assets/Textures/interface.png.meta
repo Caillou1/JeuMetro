@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 4b5f7808f66f44d2d9b0370a2ee41895
-timeCreated: 1503584415
+timeCreated: 1504167402
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -103,6 +103,14 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -116,7 +124,7 @@ TextureImporter:
         height: 651
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 25, y: 23, z: 26, w: 118}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
@@ -375,7 +383,7 @@ TextureImporter:
         width: 184
         height: 184
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

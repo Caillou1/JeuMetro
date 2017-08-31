@@ -452,14 +452,17 @@ public class MenuManager : MonoBehaviour {
 
 	public void Options() {
 		ParametersUI.SetActive (true);
-		GetCorrespondantUI (CurrentMenu).SetActive (false);
+		FadeUI.SetActive (true);
+		if(SceneManager.GetActiveScene().name != "MainMenu")
+			GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.Parameters;
 	}
 
 	public void Credits() {
 		CreditsUI.SetActive (true);
-		GetCorrespondantUI (CurrentMenu).SetActive (false);
+		FadeUI.SetActive (true);
+		//GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.Credits;
 	}
@@ -478,7 +481,8 @@ public class MenuManager : MonoBehaviour {
 
 	public void SGP() {
 		SGPUI.SetActive (true);
-		GetCorrespondantUI (CurrentMenu).SetActive (false);
+		FadeUI.SetActive (true);
+		//GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.SGP;
 	}
@@ -506,7 +510,7 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Back() {
-		if (CurrentMenu == Menu.LevelSelection) {
+		if (CurrentMenu == Menu.LevelSelection || CurrentMenu == Menu.SGP || CurrentMenu == Menu.Credits || (CurrentMenu == Menu.Parameters && SceneManager.GetActiveScene().name == "MainMenu")) {
 			FadeUI.SetActive (false);
 		}
 		var tmp = LastMenu;
