@@ -182,6 +182,8 @@ public class Traveler : AEntity
 					for (int i = 0; i < possiblePath.Count; i++) {
 						Vector3 pos = (i == 0) ? possiblePath [i].Second.GetWaitZone (Mathf.RoundToInt (transform.position.y)) : possiblePath [i].Second.GetWaitZone (possiblePath [i - 1].First);
 						ElevatorTile tile = possiblePath [i].Second;
+                        if (stats.Type != TravelerType.WHEELCHAIR && tile.peopleWaiting > G.Sys.constants.ElevatorMaxPeople)
+                            continue;
 						int floor = ((i + 1) < possiblePath.Count) ? Mathf.RoundToInt (possiblePath [i + 1].Second.GetWaitZone (possiblePath [i].First).y) : Mathf.RoundToInt (path.destnation.y);
 						int priority = (possiblePath.Count - i) * 2;
 						path.addAction (new WaitForElevatorAction (this, pos, tile, floor, priority, stats.Type != TravelerType.WHEELCHAIR));
