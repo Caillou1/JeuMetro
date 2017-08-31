@@ -194,6 +194,7 @@ public class Tilemap
 		specialTiles.Clear ();
         currentUsedSpace = 0;
         maxUsedSpace = 0;
+        G.Sys.clear();
 	}
 
 	/// <summary>

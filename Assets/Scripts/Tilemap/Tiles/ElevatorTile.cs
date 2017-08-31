@@ -30,11 +30,22 @@ public class ElevatorTile : ATile
 		type = TileID.ELEVATOR;
 
 		FloorsToVisit = new List<int> ();
-		Floors = new int[tf.childCount];
+
+        List<Transform> validFloors = new List<Transform>();
+        for (int i = 0; i < tf.childCount; i++)
+        {
+			var fTf = tf.GetChild(i);
+			if (!fTf.gameObject.name.StartsWith("Floor", StringComparison.Ordinal))
+				continue;
+            validFloors.Add(fTf);
+        }
+
+		Floors = new int[validFloors.Count()];
 		WaitZones = new Dictionary<int, Vector3> ();
 
-		for (int i = 0; i < tf.childCount; i++) {
-			var fTf = tf.GetChild (i);
+        for (int i = 0; i < validFloors.Count(); i++)
+        {
+            var fTf = validFloors[i];
 
 			Floors [i] = Mathf.RoundToInt (fTf.position.y);
 

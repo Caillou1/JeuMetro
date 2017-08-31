@@ -196,6 +196,8 @@ public sealed class G
 		agents.Clear ();
 		cleaners.Clear ();
 		metros.Clear ();
+        if(disposablesCount != null)
+            disposablesCount.Clear();
 	}
 
 	public void AddDisposable(TileID id) {
