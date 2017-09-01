@@ -83,7 +83,7 @@ public class MenuManager : MonoBehaviour {
     private SubscriberList subscriberList = new SubscriberList();
 
 	void Awake() {
-		/*Amplitude amp = Amplitude.Instance;
+        /*Amplitude amp = Amplitude.Instance;
 		amp.logging = true;
 		amp.init ("c91e37a9a64907dcd158927243246732");
 
@@ -122,13 +122,18 @@ public class MenuManager : MonoBehaviour {
 		for (int i = 0; i < LevelSelectionUI.transform.childCount; i++) {
 			var c = LevelSelectionUI.transform.GetChild (i);
 			if (c.name.ToLower ().Contains ("level")) {
-				if (c.name.Remove (0, 5) != "1") {
-					bool isUnlocked = PlayerPrefs.GetInt (c.name + "Unlocked", 0) == 1;
-					c.GetComponent<Button> ().interactable = isUnlocked;
-					if(!isUnlocked)
-						c.Find ("Text").GetComponent<Image> ().color = new Color (100f / 255f, 100f / 255f, 100f / 255f);
-					c.Find ("Lock").GetComponent<Image> ().enabled = !isUnlocked;
-				}
+                int value;
+                bool ok = int.TryParse(c.name.Remove(0, 5), out value);
+                if (!ok)
+                    continue;
+                
+                bool isUnlocked = ScoreManager.IsLevelunlocked(value);
+				c.GetComponent<Button> ().interactable = isUnlocked;
+				if(!isUnlocked)
+					c.Find ("Text").GetComponent<Image> ().color = new Color (100f / 255f, 100f / 255f, 100f / 255f);
+				c.Find ("Lock").GetComponent<Image> ().enabled = !isUnlocked;
+
+                SetMedals(value, c.Find("Gold").gameObject, c.Find("Silver").gameObject, c.Find("Bronze").gameObject);
 			}
 		}
 
@@ -182,9 +187,28 @@ public class MenuManager : MonoBehaviour {
 		UpdateShopUI ();
 	}
 
-	void Start() {
-		
+    void SetMedals(int level, GameObject gold, GameObject silver, GameObject bronze)
+	{
+		gold.SetActive(false);
+        silver.SetActive(false);
+        bronze.SetActive(false);
 
+        if (!ScoreManager.IsLevelunlocked(level))
+            return;
+        
+        var medals = ScoreManager.GetMedals(level);
+        int count = (medals.haveGoldAverageTime ? 1 : 0) + (medals.haveGoldMoneyLeft ? 1 : 0) + (medals.haveGoldSurface ? 1 : 0);
+
+        if (count == 1)
+            bronze.SetActive(true);
+        if (count == 2)
+            silver.SetActive(true);
+        if (count == 3)
+            gold.SetActive(true);
+    }
+
+	void Start() {
+        
 		ParametersUI.transform.Find("MusicSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("musicVolume", 1f);
 		ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("soundVolume", 1f);
 
@@ -533,7 +557,8 @@ public class MenuManager : MonoBehaviour {
 	}
 
     void onWinGameEvent(WinGameEvent e)
-    {
+	{
+		ScoreManager.AddScore(new ScoreManager.ScoreData(e.score.ScoreValue, e.score.HaveTimeMedal, e.score.HaveMoneyMedal, e.score.HaveSurfaceMedal), G.Sys.levelIndex);
         FadeUI.SetActive(true);
         WinEndGameUI.SetActive(true);
         winMenuDatas.set(e.score);
@@ -572,7 +597,7 @@ public class MenuManager : MonoBehaviour {
             medalSurface = parent.transform.Find("GoldSurface").gameObject;
 
             bubble = parent.transform.Find("Bubble").gameObject;
-            bubble.SetActive(false);
+            //bubble.SetActive(false);
             var timeObj = bubble.transform.Find("Time");
             var moneyObj = bubble.transform.Find("Money");
             var surfaceObj = bubble.transform.Find("Surface");
@@ -607,13 +632,7 @@ public class MenuManager : MonoBehaviour {
             targetSurface.text = s.GoldSurface.ToString();
 
             score.text = s.ScoreValue.ToString();
-            int best = PlayerPrefs.GetInt("Level" + G.Sys.levelIndex, 0);
-            if(best < s.ScoreValue)
-            {
-                best = s.ScoreValue;
-                PlayerPrefs.SetInt("Level" + G.Sys.levelIndex, best);
-                PlayerPrefs.Save();
-            }
+            int best = ScoreManager.GetBestScore(G.Sys.levelIndex).score;
             bestScore.text = best.ToString();
 
 			fireAlert.text = (s.WonFireAlert) ? "Réussie" : "Échec";

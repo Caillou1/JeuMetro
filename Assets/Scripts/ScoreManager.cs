@@ -57,8 +57,14 @@ public static class ScoreManager
         for (int i = 0; i < Mathf.Min(scores.Count, MaxScoreCount); i++)
             WriteScores(scores[i], level, i);
 
-		if (LevelLimit() < level)
-			WriteLevelLimit(level);
+		if (LevelLimit() < level+1)
+			WriteLevelLimit(level+1);
+
+        var medals = GetMedals(level);
+        medals.haveGoldAverageTime |= data.haveGoldAverageTime;
+        medals.haveGoldMoneyLeft |= data.haveGoldMoneyLeft;
+        medals.haveGoldSurface |= data.haveGoldSurface;
+        SetMedals(medals, level);
 	}
 
     public static ScoreData GetBestScore(int level)
@@ -101,6 +107,11 @@ public static class ScoreManager
     public static MedalData GetMedals(int level)
     {
         return ReadMedals(level);
+    }
+
+    public static void SetMedals(MedalData data, int level)
+    {
+        WriteMedals(data, level);
     }
 
     static void WriteScores(ScoreData data, int level, int index)
