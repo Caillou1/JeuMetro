@@ -82,6 +82,8 @@ public class MenuManager : MonoBehaviour {
 
     private SubscriberList subscriberList = new SubscriberList();
 
+    private int scoreIndex = 1;
+
 	void Awake() {
         /*Amplitude amp = Amplitude.Instance;
 		amp.logging = true;
@@ -468,11 +470,53 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Score() {
-		ScoreUI.SetActive (true);
-		GetCorrespondantUI (CurrentMenu).SetActive (false);
+		ScoreUI.SetActive(true);
+		FadeUI.SetActive(true);
+		if (SceneManager.GetActiveScene().name != "MainMenu")
+			GetCorrespondantUI(CurrentMenu).SetActive(false);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.Score;
+        scoreIndex = 1;
+        OpenNextPage(0);
 	}
+
+    public void OpenNextPage(int offset)
+    {
+        scoreIndex += offset;
+
+        var t = ScoreUI.transform;
+
+        var leftArrow = t.Find("LeftButton").gameObject;
+        var rightArrow = t.Find("RightButton").gameObject;
+        var levelText = t.Find("Levelname").GetComponent<Text>();
+        var medalTime = t.Find("MedalTime").gameObject;
+        var medalSurface = t.Find("MedalSurface").gameObject;
+        var medalMoney = t.Find("MedalMoney").gameObject;
+
+        var value1 = t.Find("Value1").GetComponent<Text>();
+        var value2 = t.Find("Value2").GetComponent<Text>();
+        var value3 = t.Find("Value3").GetComponent<Text>();
+
+        leftArrow.SetActive(scoreIndex > 1);
+        rightArrow.SetActive(ScoreManager.IsLevelunlocked(scoreIndex+1));
+
+        levelText.text = "Level " + scoreIndex;
+
+        var medals = ScoreManager.GetMedals(scoreIndex);
+        medalTime.SetActive(medals.haveGoldAverageTime);
+        medalMoney.SetActive(medals.haveGoldMoneyLeft);
+        medalSurface.SetActive(medals.haveGoldSurface);
+
+        var scores = ScoreManager.GetAllScore(scoreIndex);
+        for (int i = 0; i < 3; i++)
+        {
+            var value = i == 0 ? value1 : i == 1 ? value2 : value3;
+            if(scores.Count <= i)
+                value.text = "----";
+            else
+                value.text = scores[i].score.ToString();
+        }
+    }
 
 	public void Options() {
 		ParametersUI.SetActive (true);
@@ -534,7 +578,7 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Back() {
-		if (CurrentMenu == Menu.LevelSelection || CurrentMenu == Menu.SGP || CurrentMenu == Menu.Credits || (CurrentMenu == Menu.Parameters && SceneManager.GetActiveScene().name == "MainMenu")) {
+        if (CurrentMenu == Menu.LevelSelection || CurrentMenu == Menu.Score || CurrentMenu == Menu.SGP || CurrentMenu == Menu.Credits || (CurrentMenu == Menu.Parameters && SceneManager.GetActiveScene().name == "MainMenu")) {
 			FadeUI.SetActive (false);
 		}
 		var tmp = LastMenu;
