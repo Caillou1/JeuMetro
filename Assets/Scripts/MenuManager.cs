@@ -40,7 +40,7 @@ public class MenuManager : MonoBehaviour {
 
 	private Vector3 cameraOrigin;
 
-	private int CurrentZoomLevel;
+    private float CurrentZoomLevel;
 
 	private Menu LastMenu = Menu.NONE;
 
@@ -99,7 +99,6 @@ public class MenuManager : MonoBehaviour {
 		G.Sys.menuManager = this;
 
 		cameraTransform = G.Sys.MainCamera.transform;
-		cameraOrigin = cameraTransform.position;
 
 		tf = transform;
 		FadeUI = tf.Find ("FadeUI").gameObject;
@@ -212,11 +211,7 @@ public class MenuManager : MonoBehaviour {
 	void Start() {
         
 		ParametersUI.transform.Find("MusicSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("musicVolume", 1f);
-		ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("soundVolume", 1f);
-
-		for (int i = 0; i < ZoomLevels.Length-1; i++) {
-			Zoom ();
-		}
+        ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat("soundVolume", 1f);
 	}
 
 	public void LoadScene(string sceneName) {
@@ -421,28 +416,30 @@ public class MenuManager : MonoBehaviour {
 		UpdateShopUI ();
 	}
 
-	public void Zoom() {
-		CurrentZoomLevel = (CurrentZoomLevel + 1) % ZoomLevels.Length;
-		cameraTransform.position = cameraOrigin - cameraTransform.forward * ZoomLevels[CurrentZoomLevel];
+	public void Zoom()
+	{
+		CurrentZoomLevel = (Mathf.RoundToInt(CurrentZoomLevel) + 1) % ZoomLevels.Length;
+        applyCurrentZoom();
 	}
 
-	public void Zoom(float ZoomPower) {
-		bool done = false;
-		int iter = 0;
-		while (!done && iter < 3) {
-			Vector3 pos = cameraTransform.position + cameraTransform.forward * ZoomPower;
-			if (pos.y >= cameraOrigin.y && pos.y <= (cameraOrigin - cameraTransform.forward * ZoomLevels [ZoomLevels.Length - 1]).y) {
-				cameraTransform.position = pos;
-				done = true;
-			}
+    void applyCurrentZoom()
+    {
+        float normalizedOffset = CurrentZoomLevel % 1.0f;
+        int z = Mathf.Clamp(Mathf.FloorToInt(CurrentZoomLevel), 0, ZoomLevels.Length - 1);
+        int z1 = Mathf.Clamp(Mathf.CeilToInt(CurrentZoomLevel), 0, ZoomLevels.Length - 1);
+        float level = 0;
+        if (z == z1)
+            level = ZoomLevels[z];
+        else level = Mathf.Lerp(ZoomLevels[z], ZoomLevels[z1], normalizedOffset);
 
-			ZoomPower /= 2;
-			iter++;
-		}
-	}
+        cameraTransform.position = -(cameraTransform.forward * level);
+        if (cameraTransform.parent != null)
+            cameraTransform.position += cameraTransform.parent.position;
+    }
 
-	public float GetZoomRatio() {
-		return (cameraTransform.position.y - cameraOrigin.y) / (cameraOrigin - cameraTransform.forward * ZoomLevels [ZoomLevels.Length - 1]).y + .1f;
+    public void Zoom(float ZoomPower) {
+        CurrentZoomLevel = Mathf.Clamp(CurrentZoomLevel + ZoomPower, 0, ZoomLevels.Length - 1);
+        applyCurrentZoom();
 	}
 
 	public void LevelSelection() {
