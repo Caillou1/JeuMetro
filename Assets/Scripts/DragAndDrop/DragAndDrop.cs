@@ -14,6 +14,7 @@ public class DragAndDrop : MonoBehaviour{
 
 	protected bool isSelected;
 	public bool IsSelected {
+        get { return isSelected; }
 		set {
 			isSelected = value;
 		}

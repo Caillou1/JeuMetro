@@ -260,6 +260,8 @@ public class SelectionManager : MonoBehaviour {
 
 		if (Price > -1) {
 			bool b = (G.Sys.gameManager.GetMoney () >= Price) && ((obj != null && obj.CanPlace) || (ent != null && ent.CanPlace));
+            if (obj != null && obj.IsSelected && obj.IsBought && obj.CanPlace)
+                b = true;
 			validateButton.interactable = b;
 
 			if(showArrows) {
