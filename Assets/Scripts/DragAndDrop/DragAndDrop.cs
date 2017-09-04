@@ -135,7 +135,10 @@ public class DragAndDrop : MonoBehaviour{
 			CheckCanPlace ();
 
 			if (canPlace && !G.Sys.cameraController.IsOnUI ()) {
-				cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
+				if (G.Sys.gameManager.GetMoney() <= Price)
+					cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
+				else
+					cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
 			} else {
 				cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
 			}
@@ -149,7 +152,10 @@ public class DragAndDrop : MonoBehaviour{
 			CheckCanPlace ();
 
 			if (canPlace) {
-				cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
+                if(G.Sys.gameManager.GetMoney() <= Price)
+                    cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
+				else 
+                    cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
 			} else {
 				cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
 			}
