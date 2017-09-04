@@ -92,6 +92,13 @@ public class DragAndDropEntity : MonoBehaviour{
 	}
 
 	void Update() {
+		if (!IsBought && (Dragging || IsSelected))
+		{
+			if (G.Sys.gameManager.GetMoney() < Price)
+				G.Sys.menuManager.MakeMoneyBlink();
+			else G.Sys.menuManager.StopBlinkMoney();
+		}
+
 		if (Dragging && CanDrag && !IsBought) {
 			Ray ray = G.Sys.MainCamera.ScreenPointToRay (Input.mousePosition);
 			RaycastHit[] hits;

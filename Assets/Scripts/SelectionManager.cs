@@ -262,6 +262,8 @@ public class SelectionManager : MonoBehaviour {
 			bool b = (G.Sys.gameManager.GetMoney () >= Price) && ((obj != null && obj.CanPlace) || (ent != null && ent.CanPlace));
             if (obj != null && obj.IsSelected && obj.IsBought && obj.CanPlace)
                 b = true;
+			if (ent != null && ent.IsSelected && ent.IsBought)
+				b = true;
 			validateButton.interactable = b;
 
 			if(showArrows) {

@@ -115,7 +115,15 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	void Update() {
-		if (Dragging && CanDrag && !IsBought) {
+        if (!IsBought && (Dragging || IsSelected))
+        {
+            if (G.Sys.gameManager.GetMoney() < Price)
+                G.Sys.menuManager.MakeMoneyBlink();
+            else G.Sys.menuManager.StopBlinkMoney();
+        }
+        else G.Sys.menuManager.StopMoneyBlink();
+
+        if (Dragging && CanDrag && !IsBought) {
 			Ray ray = G.Sys.MainCamera.ScreenPointToRay (Input.mousePosition);
 			RaycastHit[] hits;
 			hits = Physics.RaycastAll (ray);
@@ -135,7 +143,7 @@ public class DragAndDrop : MonoBehaviour{
 			CheckCanPlace ();
 
 			if (canPlace && !G.Sys.cameraController.IsOnUI ()) {
-				if (G.Sys.gameManager.GetMoney() <= Price)
+				if (G.Sys.gameManager.GetMoney() < Price)
 					cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
 				else
 					cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
@@ -152,7 +160,7 @@ public class DragAndDrop : MonoBehaviour{
 			CheckCanPlace ();
 
 			if (canPlace) {
-                if(G.Sys.gameManager.GetMoney() <= Price)
+                if(G.Sys.gameManager.GetMoney() < Price)
                     cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
 				else 
                     cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;

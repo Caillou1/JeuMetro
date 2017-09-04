@@ -84,6 +84,8 @@ public class MenuManager : MonoBehaviour {
 
     private int scoreIndex = 1;
 
+    private bool noMoneyBlinking = false;
+
 	void Awake() {
         /*Amplitude amp = Amplitude.Instance;
 		amp.logging = true;
@@ -348,6 +350,36 @@ public class MenuManager : MonoBehaviour {
 		if(Money != null)
 			Money.text = money + "";
 	}
+
+    public void MakeMoneyBlink()
+    {
+        if (noMoneyBlinking)
+            return;
+        noMoneyBlinking = true;
+
+        StartCoroutine(blinkCoroutine());
+    }
+
+    public void StopMoneyBlink()
+    {
+        noMoneyBlinking = false;
+    }
+
+    public IEnumerator blinkCoroutine()
+    {
+        Color white = Color.white;
+        Color red = Color.red;
+        const float speed = 5f;
+
+        while(noMoneyBlinking)
+        {
+            yield return new WaitForEndOfFrame();
+            var tNorm = (Mathf.Sin(Time.time * speed) + 1) / 2.0f;
+            Money.color = Color.Lerp(white, red, tNorm);
+        }
+
+        Money.color = white;
+    }
 
 	public void SetPieTime(float timePercentage, int secondTime) {
 		TimePie.fillAmount = timePercentage;
