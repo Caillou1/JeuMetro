@@ -71,9 +71,11 @@ public class Constants : MonoBehaviour
     [Tooltip("Acceleration du temps lorsque la gare est vide")]
     public float TimeAcceleration = 10;
     [Tooltip("Saturation de la couleur des voyageyrs [0-1]")]
-    public float travelerSaturation = 0.5f;
+    public float TravelerSaturation = 0.5f;
     [Tooltip("Saturation de la couleur des agents [0-1]")]
-    public float agentSaturation = 1;
+    public float AgentSaturation = 1;
+    [Tooltip("proportion de voyageur a laquelle les warnings de saturation de la gare s'enclanchent")]
+    public float WarningSaturationTrigger = 0.8f;
 
 	public List<Color> TravelerColors;
 

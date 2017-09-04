@@ -73,6 +73,8 @@ public class MenuManager : MonoBehaviour {
 	private Transform tf;
 
 	private GameObject[] ShopButtons;
+    private GameObject WarningSaturation;
+    public bool warningSaturationActive = false;
 
 	private Transform cameraTransform;
 
@@ -149,6 +151,9 @@ public class MenuManager : MonoBehaviour {
 		TravelerNumber = menuTf.Find ("Middle").Find ("Travelers").Find ("Text").GetComponent<Text> ();
 		Money = menuTf.Find ("Middle").Find ("Money").Find ("Text").GetComponent<Text> ();
 		MoneyAdded = menuTf.Find ("Middle").Find("Money").Find ("MoneyAdded").GetComponent<Text> ();
+
+        WarningSaturation = GameUI.transform.Find("WarningSaturation").gameObject;
+        WarningSaturation.SetActive(false);
 
 		SGPUI = tf.Find ("SGPUI").gameObject;
 
@@ -344,6 +349,52 @@ public class MenuManager : MonoBehaviour {
 	public void SetTravelerNumber(int traveler, int maxTraveler) {
 		if(TravelerNumber != null)
 			TravelerNumber.text = traveler + "/" + maxTraveler;
+
+        if (traveler > maxTraveler * G.Sys.constants.WarningSaturationTrigger)
+        {
+            if (!warningSaturationActive)
+            {
+                showWarningSaturation();
+                StartCoroutine(blinkTravelerCoroutine((int)(maxTraveler * G.Sys.constants.WarningSaturationTrigger)));
+                warningSaturationActive = true;
+            }
+        }
+        else warningSaturationActive = false;
+	}
+
+	void showWarningSaturation()
+	{
+        const float shakeTime = 1.5f;
+        const float waitTime = 0.5f;
+        const float rot = 10;
+
+        WarningSaturation.SetActive(true);
+        WarningSaturation.transform.rotation = Quaternion.Euler(0, 0, rot);
+
+        WarningSaturation.transform.DORotate(new Vector3(0, 0, 0), shakeTime).SetEase(Ease.OutElastic).OnComplete(() =>
+        {
+            DOVirtual.DelayedCall(waitTime, () =>
+            {
+                WarningSaturation.transform.rotation = Quaternion.Euler(0, 0, rot);
+                WarningSaturation.transform.DORotate(new Vector3(0, 0, 0), shakeTime).SetEase(Ease.OutElastic).OnComplete(() => { WarningSaturation.SetActive(false); });
+            });
+        });
+	}
+
+	IEnumerator blinkTravelerCoroutine(int minTravelers)
+	{
+		Color white = Color.white;
+		Color red = Color.red;
+		const float speed = 5f;
+
+		while (G.Sys.travelerCount() > minTravelers)
+		{
+			yield return new WaitForEndOfFrame();
+			var tNorm = (Mathf.Sin(Time.time * speed) + 1) / 2.0f;
+			TravelerNumber.color = Color.Lerp(white, red, tNorm);
+		}
+
+		TravelerNumber.color = white;
 	}
 
 	public void SetMoneyNumber(int money) {
@@ -365,7 +416,7 @@ public class MenuManager : MonoBehaviour {
         noMoneyBlinking = false;
     }
 
-    public IEnumerator blinkCoroutine()
+    IEnumerator blinkCoroutine()
     {
         Color white = Color.white;
         Color red = Color.red;

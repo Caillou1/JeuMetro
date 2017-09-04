@@ -51,7 +51,7 @@ public class Traveler : AEntity
 		initializeDatas();
 		ArrivalTime = Time.time;
 		anim = GetComponentInChildren<Animator> ();
-        GetComponentInChildren<SkinnedMeshRenderer>().material.color = G.Sys.constants.GetRandomColor(G.Sys.constants.travelerSaturation);
+        GetComponentInChildren<SkinnedMeshRenderer>().material.color = G.Sys.constants.GetRandomColor(G.Sys.constants.TravelerSaturation);
 
         subscriberList.Add(new Event<CollectTravelerTimeEvent>.Subscriber(onCollectTime));
         subscriberList.Add(new Event<StartFireAlertEvent>.Subscriber(onFireAlertStart));
