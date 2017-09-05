@@ -7,6 +7,8 @@ using UnityEngine.AI;
 
 public class PodotactileTile : ATile
 {
+    public GameObject podoBoxPrefab;
+
 	private Transform tf;
 	private GameObject Stop;
 	private GameObject TwoBranchesStraight;
@@ -16,6 +18,8 @@ public class PodotactileTile : ATile
 
 	private bool isStop;
 	private cakeslice.Outline[] outlines;
+
+    bool podoBoxInstanciated = false;
 
 	protected override void Awake()
 	{
@@ -44,13 +48,16 @@ public class PodotactileTile : ATile
 		return outlines;
 	}
 
-    void Start()
+    protected override void OnRegister()
     {
-		if (G.Sys.tilemap.HasTileOfTypeAt(TileID.CONTROLELINE, transform.position))
-		{
-			GetComponent<NavMeshModifier>().enabled = false;
-			Event<BakeNavMeshEvent>.Broadcast(new BakeNavMeshEvent());
-		}
+        if (G.Sys.tilemap.HasTileOfTypeAt(TileID.CONTROLELINE, transform.position))
+            return;
+
+        if(! podoBoxInstanciated)
+        {
+            podoBoxInstanciated = true;
+            Instantiate(podoBoxPrefab, transform.position, transform.rotation, transform);
+        }
     }
 
 	public void Connect (bool CheckArround)
