@@ -118,7 +118,10 @@ public class ElevatorTile : ATile
 	IEnumerator ElevatorRoutine() {
 		while (true) {
 			if (FloorsToVisit.Count == 0) {
-				yield return new WaitForEndOfFrame ();
+                if (travelers.Count() == 0)
+                    yield return new WaitForEndOfFrame();
+                else FloorsToVisit.Add(travelers[0].Second);
+
 			} else {
                 closeDoors(CurrentFloor);
 				float time = G.Sys.constants.ElevatorComeTime * Mathf.Abs (CurrentFloor - FloorsToVisit [0]) / 2f;
