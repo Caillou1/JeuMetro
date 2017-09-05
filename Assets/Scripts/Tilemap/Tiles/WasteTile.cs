@@ -8,6 +8,7 @@ public class WasteTile : ATile
 {
 	bool _bigWaste = false;
 	GameObject _bigWasteObject;
+    GameObject _smallWasteObject;
 	bool targetted = false;
 
 	public bool Targetted {
@@ -26,6 +27,7 @@ public class WasteTile : ATile
 			if (_bigWaste != value) {
 				_bigWaste = value;
 				_bigWasteObject.SetActive (_bigWaste);
+                _smallWasteObject.SetActive(!_bigWaste);
 				Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 			}
 		}
@@ -33,6 +35,8 @@ public class WasteTile : ATile
 
 	protected override void Awake()
     {
+
+        _smallWasteObject = transform.Find("LVL1").gameObject;
 		_bigWasteObject = transform.Find ("LVL2").gameObject;
 		_bigWasteObject.SetActive (false);
 

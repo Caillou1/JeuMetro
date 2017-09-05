@@ -61,9 +61,12 @@ public static class ScoreManager
 			WriteLevelLimit(level+1);
 
         var medals = GetMedals(level);
-        medals.haveGoldAverageTime |= data.haveGoldAverageTime;
-        medals.haveGoldMoneyLeft |= data.haveGoldMoneyLeft;
-        medals.haveGoldSurface |= data.haveGoldSurface;
+        if(data.haveGoldAverageTime)
+            medals.haveGoldAverageTime = true;
+        if(data.haveGoldMoneyLeft)
+            medals.haveGoldMoneyLeft = true;
+        if (data.haveGoldSurface)
+            medals.haveGoldSurface = true; 
         SetMedals(medals, level);
 	}
 
