@@ -38,8 +38,6 @@ public class MenuManager : MonoBehaviour {
     public float FireAlertUIMoveTime = 1;
     public float FireAlertUIWaitTime = 2;
 
-	private Vector3 cameraOrigin;
-
     private float CurrentZoomLevel;
 
 	private Menu LastMenu = Menu.NONE;
@@ -241,6 +239,10 @@ public class MenuManager : MonoBehaviour {
         FireAlertUI.transform.DOLocalMoveY(FireAlertUI.transform.localPosition.y - FireAlertUiOffset, FireAlertUIMoveTime)
                    .OnComplete(() => DOVirtual.DelayedCall(FireAlertUIWaitTime, () => FireAlertUI.transform.DOLocalMoveY(FireAlertUI.transform.localPosition.y + FireAlertUiOffset, FireAlertUIMoveTime)
                                                            .OnComplete(() =>  FireAlertUI.SetActive(false))));
+
+        var tbell = FireAlertUI.transform.Find("Bell");
+        tbell.rotation = Quaternion.Euler(0, 0, -10);
+        tbell.transform.DORotate(new Vector3(0, 0, 10), 0.25f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
 	}
 
 	void BlinkVignette() {
