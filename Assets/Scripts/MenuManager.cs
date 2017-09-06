@@ -221,10 +221,6 @@ public class MenuManager : MonoBehaviour {
         ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat("soundVolume", 1f);
 	}
 
-	public void LoadScene(string sceneName) {
-		SceneManager.LoadScene (sceneName);
-	}
-
 	public void Lose() {
 		Time.timeScale = 0;
 		FadeUI.SetActive (true);
@@ -540,7 +536,11 @@ public class MenuManager : MonoBehaviour {
 		} else {
 			G.Sys.audioManager.PlayLevelSelected ();
 			G.Sys.tilemap.clear ();
-			SceneManager.LoadScene ("Level" + i);
+            string sceneName = "Level" + i;
+			var s = SceneManager.GetSceneByName(sceneName);
+            if (!s.IsValid())
+                MainMenu();
+			else SceneManager.LoadScene (sceneName);
 		}
 	}
 
