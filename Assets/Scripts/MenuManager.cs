@@ -287,11 +287,26 @@ public class MenuManager : MonoBehaviour {
 		}
 	}
 
-	public void ShowObjectives(List<Objectif> objectives) {
-		ObjectivesText.text = "";
+    public void ShowObjectives(List<Objectif> objectives) {
+		string text = "";
+        foreach (var o in objectives)
+        {
+            bool finished = ObjectifChecker.Check(o);
+            if (finished)
+                text += "<color=#00ff00>";
+            text += o.ToString();
+            if (ObjectifChecker.Count(o) > 0 && o.Amount > 1)
+                text += " (" + Mathf.Min(ObjectifChecker.Count(o), o.Amount) + "/" + o.Amount + ")";
+            if (finished)
+                text += "</color>";
+            text += "\n";
+        }
+        ObjectivesText.text = text;
+
+		/*ObjectivesText.text = "";
 		foreach (var o in objectives) {
 			ObjectivesText.text += o.ToString () + "\n";
-		}
+		}*/
 	}
 
 	public void HideObjectives() {

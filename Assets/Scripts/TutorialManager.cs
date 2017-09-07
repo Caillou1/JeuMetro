@@ -50,11 +50,13 @@ public class TutorialManager : MonoBehaviour {
 				t.ZoneToHighlight.SetActive (true);
 			G.Sys.menuManager.ShowObjectives (t.Objectives);
 
-			yield return new WaitUntil (() => t.ObjectivesDone);
+            yield return new WaitUntil(() => { G.Sys.menuManager.ShowObjectives(t.Objectives); return t.ObjectivesDone; });
 
-			G.Sys.menuManager.HideObjectives ();
 			if (t.ZoneToHighlight != null)
 				t.ZoneToHighlight.SetActive (false);
+
+			yield return new WaitForSeconds(1f);
+			G.Sys.menuManager.HideObjectives();
 
 			yield return new WaitForSeconds (t.TimeBeforeLastMessages);
 
@@ -165,33 +167,38 @@ public class Tutorial {
 
 public static class ObjectifChecker {
 	public static bool Check(Objectif o) {
-		switch (o.Type) {
-		case ObjectifType.NONE:
-			return true;
-		case ObjectifType.DROP_AGENT:
-			return (G.Sys.agentsCount - o.StartAmount) >= o.Amount;
-		case ObjectifType.DROP_BENCH:
-			return (G.Sys.GetDisposableCount (TileID.BENCH) - o.StartAmount) >= o.Amount;
-		case ObjectifType.DROP_BIN:
-			return (G.Sys.GetDisposableCount (TileID.BIN) - o.StartAmount) >= o.Amount;
-		case ObjectifType.DROP_CLEANER:
-			return (G.Sys.cleanerCount - o.StartAmount) >= o.Amount;
-		case ObjectifType.DROP_ESCALATOR:
-			return (G.Sys.GetDisposableCount (TileID.ESCALATOR) - o.StartAmount) >= o.Amount;
-		case ObjectifType.DROP_FOODDISTRIB:
-			return (G.Sys.GetDisposableCount (TileID.FOODDISTRIBUTEUR) - o.StartAmount) >= o.Amount;
-		case ObjectifType.DROP_INFOPANEL:
-			return (G.Sys.GetDisposableCount (TileID.INFOPANEL) - o.StartAmount) >= o.Amount;
-		case ObjectifType.DROP_PODOTACTILE:
-			return (G.Sys.GetDisposableCount (TileID.PODOTACTILE) - o.StartAmount) >= o.Amount;
-		case ObjectifType.DROP_SPEAKER:
-			return (G.Sys.GetDisposableCount (TileID.SPEAKER) - o.StartAmount) >= o.Amount;
-		case ObjectifType.DROP_TICKETDISTRIB:
-			return (G.Sys.GetDisposableCount (TileID.TICKETDISTRIBUTEUR) - o.StartAmount) >= o.Amount;
-		default:
-			return true;
-		}
+        return Count(o) >= o.Amount;
 	}
+
+    public static int Count(Objectif o)
+    {
+		switch(o.Type) {
+        case ObjectifType.NONE:
+            return 0;
+        case ObjectifType.DROP_AGENT:
+            return (G.Sys.agentsCount - o.StartAmount);
+        case ObjectifType.DROP_BENCH:
+            return (G.Sys.GetDisposableCount(TileID.BENCH) - o.StartAmount);
+        case ObjectifType.DROP_BIN:
+            return (G.Sys.GetDisposableCount(TileID.BIN) - o.StartAmount);
+        case ObjectifType.DROP_CLEANER:
+            return (G.Sys.cleanerCount - o.StartAmount);
+        case ObjectifType.DROP_ESCALATOR:
+            return (G.Sys.GetDisposableCount(TileID.ESCALATOR) - o.StartAmount);
+        case ObjectifType.DROP_FOODDISTRIB:
+            return (G.Sys.GetDisposableCount(TileID.FOODDISTRIBUTEUR) - o.StartAmount);
+        case ObjectifType.DROP_INFOPANEL:
+            return (G.Sys.GetDisposableCount(TileID.INFOPANEL) - o.StartAmount);
+        case ObjectifType.DROP_PODOTACTILE:
+            return (G.Sys.GetDisposableCount(TileID.PODOTACTILE) - o.StartAmount);
+        case ObjectifType.DROP_SPEAKER:
+            return (G.Sys.GetDisposableCount(TileID.SPEAKER) - o.StartAmount);
+        case ObjectifType.DROP_TICKETDISTRIB:
+            return (G.Sys.GetDisposableCount(TileID.TICKETDISTRIBUTEUR) - o.StartAmount);
+			default:
+            return 0;
+		}
+    }
 
 	public static int GetStartAmount(ObjectifType type) {
 		switch (type) {
