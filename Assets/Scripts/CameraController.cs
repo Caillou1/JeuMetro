@@ -93,6 +93,7 @@ public class CameraController : MonoBehaviour {
 					if(SelectCoroutine != null)
 						StopCoroutine (SelectCoroutine);
 				}
+
 				var bounds = G.Sys.tilemap.GlobalBounds ();
 
 				var originRay = G.Sys.MainCamera.ScreenPointToRay (dragOrigin);

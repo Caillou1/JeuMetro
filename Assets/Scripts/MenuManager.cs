@@ -72,7 +72,7 @@ public class MenuManager : MonoBehaviour {
 
 	private GameObject[] ShopButtons;
     private GameObject WarningSaturation;
-    public bool warningSaturationActive = false;
+    bool warningSaturationActive = false;
 
 	private Transform cameraTransform;
 
