@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
 
 	void Start ()
     {
+        Event<InitializePodotactileEvent>.Broadcast(new InitializePodotactileEvent());
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 		tf = transform;
 		AddMoney(StartingMoney);

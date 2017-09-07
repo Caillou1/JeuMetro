@@ -21,6 +21,8 @@ public class PodotactileTile : ATile
 
     bool podoBoxInstanciated = false;
 
+    SubscriberList subscriberList = new SubscriberList();
+
 	protected override void Awake()
 	{
 		tf = transform;
@@ -42,6 +44,9 @@ public class PodotactileTile : ATile
 		G.Sys.tilemap.addSpecialTile(type, tf.position); 
 
 		Connect (true);
+
+        subscriberList.Add(new Event<InitializePodotactileEvent>.Subscriber(OnInit));
+        subscriberList.Subscribe();
     }
 
 	public cakeslice.Outline[] getOutlines() {
@@ -323,5 +328,16 @@ public class PodotactileTile : ATile
             if(tile != null)
 			    tile.Connect (false);
 		}
+
+        subscriberList.Unsubscribe();
 	}
+
+    void OnInit(InitializePodotactileEvent e)
+    {
+		if (!podoBoxInstanciated)
+		{
+			podoBoxInstanciated = true;
+			Instantiate(podoBoxPrefab, transform.position, transform.rotation, transform);
+		}
+    }
 }
