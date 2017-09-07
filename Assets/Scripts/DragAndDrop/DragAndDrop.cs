@@ -194,6 +194,8 @@ public class DragAndDrop : MonoBehaviour{
 
 	public void DeleteObject() {
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
+        if(!IsBought)
+		    Event<AbortDragObjectEvent>.Broadcast(new AbortDragObjectEvent(GetComponent<ATile>().type));
         G.Sys.tilemap.addSpaceUsed(-Space);
 		Destroy (gameObject);
 	}
@@ -203,7 +205,9 @@ public class DragAndDrop : MonoBehaviour{
 
 		list.Add (tf.position);
 
-		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+		var tile = tf.GetComponent<ATile>();
+		if (tile != null)
+			Event<ObjectPlacedEvent>.Broadcast(new ObjectPlacedEvent(list, tile.type));
 	}
 
 	public bool ValidateObject() {

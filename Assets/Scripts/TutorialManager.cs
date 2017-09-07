@@ -20,6 +20,54 @@ public class TutorialManager : MonoBehaviour {
 	[BoxGroup("After Tutorial")]
 	public string NextScene;
 
+    SubscriberList subscriberList = new SubscriberList();
+
+    void Awake()
+    {
+        subscriberList.Add(new Event<AgentPlacedEvent>.Subscriber(OnPlaceAgent));
+        subscriberList.Add(new Event<ObjectPlacedEvent>.Subscriber(onPlaceObject));
+        subscriberList.Add(new Event<StartDragAgentEvent>.Subscriber(onStartDragAgent));
+        subscriberList.Add(new Event<StartDragObjectEvent>.Subscriber(onStartDragObject));
+        subscriberList.Add(new Event<AbortDragAgentEvent>.Subscriber(onAbortDragAgent));
+        subscriberList.Add(new Event<AbortDragObjectEvent>.Subscriber(onAbortDragObject));
+        subscriberList.Subscribe();
+    }
+
+    private void OnDestroy()
+    {
+        subscriberList.Unsubscribe();
+    }
+
+    void OnPlaceAgent(AgentPlacedEvent e)
+    {
+        Debug.Log("Placed " + e.type);
+    }
+
+    void onPlaceObject(ObjectPlacedEvent e)
+    {
+        Debug.Log("Placed " + e.type);
+    }
+
+    void onStartDragAgent(StartDragAgentEvent e)
+    {
+        Debug.Log("Drag " + e.type);
+    }
+
+    void onStartDragObject(StartDragObjectEvent e)
+    {
+        Debug.Log("Drag " + e.type);
+    }
+
+    void onAbortDragAgent(AbortDragAgentEvent e)
+    {
+        Debug.Log("Abort " + e.type);
+    }
+
+    void onAbortDragObject(AbortDragObjectEvent e)
+    {
+        Debug.Log("Abort " + e.type);
+    }
+
 	void Start () {
         G.Sys.menuManager.EnableUITutoMode();
 		foreach (var t in Tutoriels)

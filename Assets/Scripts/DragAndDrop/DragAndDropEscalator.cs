@@ -82,7 +82,9 @@ public class DragAndDropEscalator : DragAndDrop {
 		list.Add (tf.position + 2 * dir);
 		list.Add (tf.position - dir + Vector3.up * 2);
 
-		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+		var tile = tf.GetComponent<ATile>();
+		if (tile != null)
+			Event<ObjectPlacedEvent>.Broadcast(new ObjectPlacedEvent(list, tile.type));
 	}
 
 	protected override void DeletePossibleEmptyWalls ()

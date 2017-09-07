@@ -56,8 +56,9 @@ public class DragAndDropDistrib : DragAndDrop {
 		var list = new List<Vector3> ();
 
 		list.Add (tf.position);
-
-		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+        var tile = tf.GetComponent<ATile>();
+        if(tile != null)
+           Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list, tile.type));
 	}
 
 	protected override void OnBuy ()

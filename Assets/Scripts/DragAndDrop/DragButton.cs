@@ -17,10 +17,12 @@ public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 	void Spawn() {
 		if (!G.Sys.cameraController.IsSelecting) {
 			spawnedObject = Instantiate (ObjectToSpawn, new Vector3 (999, 999, 999), Quaternion.identity);
-			spawnedObject.GetComponent<ATile> ().Unregister ();
+            var tile = spawnedObject.GetComponent<ATile>();
+            tile.Unregister ();
 			var dad = spawnedObject.GetComponent<DragAndDrop> ();
 			G.Sys.selectionManager.Show (dad);
 			dad.ToggleOutline (true);
+            Event<StartDragObjectEvent>.Broadcast(new StartDragObjectEvent(tile.type));
 		}
 	}
 

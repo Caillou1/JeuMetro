@@ -67,7 +67,9 @@ public class DragAndDropBench : DragAndDrop {
 		list.Add (tf.position);
 		list.Add (tf.position + dir);
 
-		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+		var tile = tf.GetComponent<ATile>();
+		if (tile != null)
+			Event<ObjectPlacedEvent>.Broadcast(new ObjectPlacedEvent(list, tile.type));
 	}
 
 	protected override void OnBuy ()

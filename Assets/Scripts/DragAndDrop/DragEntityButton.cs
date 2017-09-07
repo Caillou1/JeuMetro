@@ -20,6 +20,9 @@ public class DragEntityButton : MonoBehaviour, IBeginDragHandler, IDragHandler, 
 			var dade = spawnedObject.GetComponent<DragAndDropEntity> ();
 			G.Sys.selectionManager.Show (dade, false);
 			dade.ToggleOutline (true);
+            if (spawnedObject.GetComponent<Agent>() != null)
+                Event<StartDragAgentEvent>.Broadcast(new StartDragAgentEvent(AgentType.AGENT));
+            else Event<StartDragAgentEvent>.Broadcast(new StartDragAgentEvent(AgentType.CLEANER));
 		}
 	}
 

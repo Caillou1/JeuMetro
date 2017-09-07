@@ -161,7 +161,15 @@ public class DragAndDropEntity : MonoBehaviour{
 		}
 	}
 
-	public void DeleteObject() {
+	public void DeleteObject()
+	{
+        if (!IsBought)
+        {
+            if (GetComponent<Agent>() != null)
+                Event<AbortDragAgentEvent>.Broadcast(new AbortDragAgentEvent(AgentType.AGENT));
+            else Event<AbortDragAgentEvent>.Broadcast(new AbortDragAgentEvent(AgentType.CLEANER));
+        }
+
 		Destroy (gameObject);
 	}
 
