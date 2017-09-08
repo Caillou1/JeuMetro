@@ -295,8 +295,8 @@ public class MenuManager : MonoBehaviour {
             if (finished)
                 text += "<color=#00ff00>";
             text += o.ToString();
-            if (ObjectifChecker.Count(o) > 0 && o.Amount > 1)
-                text += " (" + Mathf.Min(ObjectifChecker.Count(o), o.Amount) + "/" + o.Amount + ")";
+            if (o.CurrentAmount > 0 && o.Amount > 1)
+                text += " (" + Mathf.Min(o.CurrentAmount, o.Amount) + "/" + o.Amount + ")";
             if (finished)
                 text += "</color>";
             text += "\n";

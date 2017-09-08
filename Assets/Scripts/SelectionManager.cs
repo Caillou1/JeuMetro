@@ -98,6 +98,7 @@ public class SelectionManager : MonoBehaviour {
 			var dad = o.GetComponent<DragAndDrop> ();
 			dad.IsBought = false;
 			Show (dad);
+            Event<StartDragObjectEvent>.Broadcast(new StartDragObjectEvent(TileID.PODOTACTILE));
 			return true;
 		} else {
 			return false;

@@ -59,7 +59,7 @@ public class DragAndDropBench : DragAndDrop {
 		}
 	}
 
-	protected override void SendEvent() {
+	protected override void SendEvent(bool wasBought) {
 		Orientation or = Orienter.angleToOrientation (tf.rotation.eulerAngles.y);
 		Vector3 dir = Orienter.orientationToDir3 (or);
 		var list = new List<Vector3> ();
@@ -69,7 +69,7 @@ public class DragAndDropBench : DragAndDrop {
 
 		var tile = tf.GetComponent<ATile>();
 		if (tile != null)
-			Event<ObjectPlacedEvent>.Broadcast(new ObjectPlacedEvent(list, tile.type));
+            Event<ObjectPlacedEvent>.Broadcast(new ObjectPlacedEvent(list, tile.type, wasBought));
 	}
 
 	protected override void OnBuy ()

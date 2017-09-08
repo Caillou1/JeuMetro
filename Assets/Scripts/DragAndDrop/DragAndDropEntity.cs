@@ -182,6 +182,9 @@ public class DragAndDropEntity : MonoBehaviour{
 			if (!IsBought) {
 				G.Sys.gameManager.AddMoney (-Price);
 				IsBought = true;
+				if (GetComponent<Agent>() != null)
+                    Event<AgentPlacedEvent>.Broadcast(new AgentPlacedEvent(transform.position, AgentType.AGENT));
+				else Event<AgentPlacedEvent>.Broadcast(new AgentPlacedEvent(transform.position, AgentType.CLEANER));
 			}
 			CanDrag = false;
 			var e = GetComponent<AEntity> ();

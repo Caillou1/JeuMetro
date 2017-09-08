@@ -52,13 +52,13 @@ public class DragAndDropDistrib : DragAndDrop {
 		}
 	}
 
-	protected override void SendEvent() {
+	protected override void SendEvent(bool wasBought) {
 		var list = new List<Vector3> ();
 
 		list.Add (tf.position);
         var tile = tf.GetComponent<ATile>();
         if(tile != null)
-           Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list, tile.type));
+            Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list, tile.type, wasBought));
 	}
 
 	protected override void OnBuy ()

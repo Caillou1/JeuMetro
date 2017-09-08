@@ -20,6 +20,8 @@ public class TutorialManager : MonoBehaviour {
 	[BoxGroup("After Tutorial")]
 	public string NextScene;
 
+    int currentTutorialIndex = -1;
+
     SubscriberList subscriberList = new SubscriberList();
 
     void Awake()
@@ -40,41 +42,121 @@ public class TutorialManager : MonoBehaviour {
 
     void OnPlaceAgent(AgentPlacedEvent e)
     {
-        Debug.Log("Placed " + e.type);
+		if (currentTutorialIndex < 0)
+			return;
+        addOne(ObjectifChecker.AgentTypeToObjectif(e.type), e.pos);
+        disableZones();
     }
 
     void onPlaceObject(ObjectPlacedEvent e)
     {
-        Debug.Log("Placed " + e.type);
+        if (e.bought)
+            return;
+        
+        if (currentTutorialIndex < 0)
+            return;
+        addOne(ObjectifChecker.TileTypeToObjectif(e.type), e.points);
+        disableZones();
     }
 
     void onStartDragAgent(StartDragAgentEvent e)
     {
-        Debug.Log("Drag " + e.type);
+		if (currentTutorialIndex < 0)
+			return;
+        enableZones(ObjectifChecker.AgentTypeToObjectif(e.type));
     }
 
     void onStartDragObject(StartDragObjectEvent e)
-    {
-        Debug.Log("Drag " + e.type);
+	{
+		if (currentTutorialIndex < 0)
+			return;
+        enableZones(ObjectifChecker.TileTypeToObjectif(e.type));
     }
 
     void onAbortDragAgent(AbortDragAgentEvent e)
-    {
-        Debug.Log("Abort " + e.type);
+	{
+		if (currentTutorialIndex < 0)
+			return;
+        disableZones();
     }
 
     void onAbortDragObject(AbortDragObjectEvent e)
+	{
+		if (currentTutorialIndex < 0)
+			return;
+        disableZones();
+    }
+
+    void enableZones(ObjectifType type)
     {
-        Debug.Log("Abort " + e.type);
+        foreach (var z in Tutoriels[currentTutorialIndex].zonesToHighlight)
+        {
+            if (z.HaveObjective(type))
+                z.gameObject.SetActive(true);
+        }
+    }
+
+    void disableZones()
+    {
+		foreach (var z in Tutoriels[currentTutorialIndex].zonesToHighlight)
+			z.gameObject.SetActive(false);
+    }
+
+    void addOne(ObjectifType type, List<Vector3i> points)
+	{
+		bool isOn = false;
+		foreach (var z in Tutoriels[currentTutorialIndex].zonesToHighlight)
+		{
+            foreach (var p in points)
+            {
+                if (z.HaveObjective(type) && z.isOn(p))
+                {
+                    isOn = true;
+                    break;
+                }
+            }
+            if (isOn)
+                break;
+		}
+		if (!isOn)
+			return;
+        
+		foreach (var o in Tutoriels[currentTutorialIndex].Objectives)
+		{
+			if (o.Type == type)
+				o.CurrentAmount++;
+		}
+	}
+
+    void addOne(ObjectifType type, Vector3 pos)
+    {
+        bool isOn = false;
+        foreach(var z in Tutoriels[currentTutorialIndex].zonesToHighlight)
+        {
+            if(z.HaveObjective(type) && z.isOn(pos))
+            {
+                isOn = true;
+                break;
+            }
+        }
+        if (!isOn)
+            return;
+
+		foreach (var o in Tutoriels[currentTutorialIndex].Objectives)
+		{
+            if (o.Type == type)
+                o.CurrentAmount++;
+		}
     }
 
 	void Start () {
         G.Sys.menuManager.EnableUITutoMode();
-		foreach (var t in Tutoriels)
-			if(t.ZoneToHighlight != null)
-				t.ZoneToHighlight.SetActive (false);
 		
 		StartCoroutine(TutorialRoutine());
+
+        foreach (var t in Tutoriels)
+            foreach (var z in t.zonesToHighlight)
+                z.gameObject.SetActive(false);
 	}
 
     private void Update()
@@ -85,7 +167,10 @@ public class TutorialManager : MonoBehaviour {
 
     IEnumerator TutorialRoutine() {
 		yield return new WaitForSeconds (Time.deltaTime * 5);
-		foreach (var t in Tutoriels) {
+        for (int i = 0; i < Tutoriels.Count; i++)
+        {
+            var t = Tutoriels[i];
+
 			SpawnWave (t);
 
 			yield return new WaitForSeconds (t.TimeBeforeFirstMessages);
@@ -93,15 +178,13 @@ public class TutorialManager : MonoBehaviour {
 			G.Sys.menuManager.ShowMessages (t.MessagesToShowBefore);
 
 			yield return new WaitUntil (() => G.Sys.menuManager.AreAllMessagesRead ());
+            currentTutorialIndex = i;
 
-			if (t.ZoneToHighlight != null)
-				t.ZoneToHighlight.SetActive (true);
 			G.Sys.menuManager.ShowObjectives (t.Objectives);
 
             yield return new WaitUntil(() => { G.Sys.menuManager.ShowObjectives(t.Objectives); return t.ObjectivesDone; });
-
-			if (t.ZoneToHighlight != null)
-				t.ZoneToHighlight.SetActive (false);
+            disableZones();
+            currentTutorialIndex = -1;
 
 			yield return new WaitForSeconds(1f);
 			G.Sys.menuManager.HideObjectives();
@@ -164,17 +247,12 @@ public class Objectif {
 	[HideIf("TypeIsNone")]
 	public int Amount;
 
-	private int startAmount;
-	public int StartAmount {
-		get{
-			return startAmount;
-		}
-	}
+    [HideInInspector]
+    public int CurrentAmount = 0;
+
 	public Objectif(ObjectifType t, int amount) {
 		Type = t;
 		Amount = amount;
-
-		startAmount = ObjectifChecker.GetStartAmount(t);
 	}
 
 	private bool TypeIsNone() {
@@ -195,7 +273,7 @@ public class Tutorial {
 	[ShowIf("SpawnWave")]
 	public Transform Entrance;
 	public List<Objectif> Objectives;
-	public GameObject ZoneToHighlight;
+    public List<TutorialZoneinfos> zonesToHighlight;
 	public float TimeBeforeFirstMessages;
 	public List<string> MessagesToShowBefore;
 	public float TimeBeforeLastMessages;
@@ -215,66 +293,7 @@ public class Tutorial {
 
 public static class ObjectifChecker {
 	public static bool Check(Objectif o) {
-        return Count(o) >= o.Amount;
-	}
-
-    public static int Count(Objectif o)
-    {
-		switch(o.Type) {
-        case ObjectifType.NONE:
-            return 0;
-        case ObjectifType.DROP_AGENT:
-            return (G.Sys.agentsCount - o.StartAmount);
-        case ObjectifType.DROP_BENCH:
-            return (G.Sys.GetDisposableCount(TileID.BENCH) - o.StartAmount);
-        case ObjectifType.DROP_BIN:
-            return (G.Sys.GetDisposableCount(TileID.BIN) - o.StartAmount);
-        case ObjectifType.DROP_CLEANER:
-            return (G.Sys.cleanerCount - o.StartAmount);
-        case ObjectifType.DROP_ESCALATOR:
-            return (G.Sys.GetDisposableCount(TileID.ESCALATOR) - o.StartAmount);
-        case ObjectifType.DROP_FOODDISTRIB:
-            return (G.Sys.GetDisposableCount(TileID.FOODDISTRIBUTEUR) - o.StartAmount);
-        case ObjectifType.DROP_INFOPANEL:
-            return (G.Sys.GetDisposableCount(TileID.INFOPANEL) - o.StartAmount);
-        case ObjectifType.DROP_PODOTACTILE:
-            return (G.Sys.GetDisposableCount(TileID.PODOTACTILE) - o.StartAmount);
-        case ObjectifType.DROP_SPEAKER:
-            return (G.Sys.GetDisposableCount(TileID.SPEAKER) - o.StartAmount);
-        case ObjectifType.DROP_TICKETDISTRIB:
-            return (G.Sys.GetDisposableCount(TileID.TICKETDISTRIBUTEUR) - o.StartAmount);
-			default:
-            return 0;
-		}
-    }
-
-	public static int GetStartAmount(ObjectifType type) {
-		switch (type) {
-		case ObjectifType.NONE:
-			return 0;
-		case ObjectifType.DROP_AGENT:
-			return G.Sys.agentsCount;
-		case ObjectifType.DROP_BENCH:
-			return G.Sys.GetDisposableCount (TileID.BENCH);
-		case ObjectifType.DROP_BIN:
-			return G.Sys.GetDisposableCount (TileID.BIN);
-		case ObjectifType.DROP_CLEANER:
-			return G.Sys.cleanerCount;
-		case ObjectifType.DROP_ESCALATOR:
-			return G.Sys.GetDisposableCount (TileID.ESCALATOR);
-		case ObjectifType.DROP_FOODDISTRIB:
-			return G.Sys.GetDisposableCount (TileID.FOODDISTRIBUTEUR);
-		case ObjectifType.DROP_INFOPANEL:
-			return G.Sys.GetDisposableCount (TileID.INFOPANEL);
-		case ObjectifType.DROP_PODOTACTILE:
-			return G.Sys.GetDisposableCount (TileID.PODOTACTILE);
-		case ObjectifType.DROP_SPEAKER:
-			return G.Sys.GetDisposableCount (TileID.SPEAKER);
-		case ObjectifType.DROP_TICKETDISTRIB:
-			return G.Sys.GetDisposableCount (TileID.TICKETDISTRIBUTEUR);
-		default:
-			return 0;
-		}
+        return o.CurrentAmount >= o.Amount;
 	}
 
 	public static string GetCorrespondantText(Objectif o) {
@@ -305,4 +324,41 @@ public static class ObjectifChecker {
 			return "";
 		}
 	}
+
+    public static ObjectifType AgentTypeToObjectif(AgentType agent)
+    {
+        switch(agent)
+        {
+            case AgentType.AGENT:
+                return ObjectifType.DROP_AGENT;
+            case AgentType.CLEANER:
+                return ObjectifType.DROP_CLEANER;
+        }
+
+        return ObjectifType.NONE;
+    }
+
+    public static ObjectifType TileTypeToObjectif(TileID tile)
+    {
+        switch(tile)
+        {
+            case TileID.BENCH:
+                return ObjectifType.DROP_BENCH;
+            case TileID.BIN:
+                return ObjectifType.DROP_BIN;
+            case TileID.ESCALATOR:
+                return ObjectifType.DROP_ESCALATOR;
+            case TileID.FOODDISTRIBUTEUR:
+                return ObjectifType.DROP_FOODDISTRIB;
+            case TileID.INFOPANEL:
+                return ObjectifType.DROP_INFOPANEL;
+            case TileID.PODOTACTILE:
+                return ObjectifType.DROP_PODOTACTILE;
+            case TileID.SPEAKER:
+                return ObjectifType.DROP_SPEAKER;
+            case TileID.TICKETDISTRIBUTEUR:
+                return ObjectifType.DROP_TICKETDISTRIB;
+        }
+        return ObjectifType.NONE;
+    }
 }

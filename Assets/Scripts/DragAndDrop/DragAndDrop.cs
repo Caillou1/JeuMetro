@@ -200,14 +200,14 @@ public class DragAndDrop : MonoBehaviour{
 		Destroy (gameObject);
 	}
 
-	protected virtual void SendEvent() {
+	protected virtual void SendEvent(bool wasBought) {
 		var list = new List<Vector3> ();
 
 		list.Add (tf.position);
 
 		var tile = tf.GetComponent<ATile>();
 		if (tile != null)
-			Event<ObjectPlacedEvent>.Broadcast(new ObjectPlacedEvent(list, tile.type));
+            Event<ObjectPlacedEvent>.Broadcast(new ObjectPlacedEvent(list, tile.type, wasBought));
 	}
 
 	public bool ValidateObject() {
@@ -220,6 +220,7 @@ public class DragAndDrop : MonoBehaviour{
 
 		if ((canPlace && !IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)) || IsBought && canPlace) {
 			G.Sys.cameraController.IsSelecting = false;
+            bool wasBought = IsBought;
 			if (!IsBought) {
                 G.Sys.tilemap.addSpaceUsed(Space);
 				G.Sys.gameManager.AddMoney (-Price);
@@ -230,7 +231,7 @@ public class DragAndDrop : MonoBehaviour{
 			}
 			G.Sys.selectionManager.Hide (true);
 			CanDrag = false;
-			SendEvent ();
+            SendEvent (wasBought);
 			DeletePossibleEmptyWalls ();
 			StartCoroutine (eventCoroutine ());
 			G.Sys.audioManager.PlayConstruct ();
