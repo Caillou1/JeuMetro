@@ -30,6 +30,7 @@ public class CameraController : MonoBehaviour {
 		canSelect = true;
 		CanDrag = true;
 		IsSelecting = false;
+        G.Sys.menuManager.Zoom(1);
 	}
 
 	void LateUpdate() {

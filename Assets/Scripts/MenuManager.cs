@@ -561,6 +561,11 @@ public class MenuManager : MonoBehaviour {
 		}
 	}
 
+    public void Tutorial()
+    {
+        SceneManager.LoadScene("Tutorial01");
+    }
+
 	public void MainMenu() {
 		G.Sys.tilemap.clear ();
 		SceneManager.LoadScene("MainMenu");
@@ -651,6 +656,11 @@ public class MenuManager : MonoBehaviour {
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.SGP;
 	}
+
+    public void OpenSGPUrl()
+    {
+        Application.OpenURL("https://www.societedugrandparis.fr/");
+    }
 
 	public void Pause () {
 		FadeUI.SetActive (true);

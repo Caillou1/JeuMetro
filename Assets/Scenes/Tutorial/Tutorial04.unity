@@ -1932,6 +1932,12 @@ GameObject:
   m_PrefabParentObject: {fileID: 1631759426103780, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c,
     type: 2}
   m_PrefabInternal: {fileID: 206876193}
+--- !u!114 &98945899 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114750251000443350, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c,
+    type: 2}
+  m_PrefabInternal: {fileID: 206876193}
+  m_Script: {fileID: 11500000, guid: 8609b7ef09eef4899abe90a1d4ec3d67, type: 3}
 --- !u!4 &100777445 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4923826175585558, guid: 3eba3ada29d4d455f9b53aff0bda3be1,
@@ -3430,6 +3436,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114750251000443350, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c,
+        type: 2}
+      propertyPath: types.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4022565953322948, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c, type: 2}
       propertyPath: m_LocalPosition.x
       value: -15.5
@@ -3469,6 +3480,16 @@ Prefab:
     - target: {fileID: 4022565953322948, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c, type: 2}
       propertyPath: m_LocalScale.z
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114750251000443350, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c,
+        type: 2}
+      propertyPath: types.Array.data[0]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114750251000443350, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c,
+        type: 2}
+      propertyPath: types.Array.data[1]
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c, type: 2}
@@ -20163,6 +20184,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
         type: 2}
+      propertyPath: Tutoriels.Array.data[0].zonesToHighlight.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
+        type: 2}
       propertyPath: Tutoriels.Array.data[0].MessagesToShowAfter.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -20295,6 +20321,16 @@ Prefab:
       propertyPath: Tutoriels.Array.data[0].MessagesToShowAfter.Array.data[2]
       value: 'Si votre gare est '
       objectReference: {fileID: 0}
+    - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
+        type: 2}
+      propertyPath: Tutoriels.Array.data[0].zonesToHighlight.Array.data[0]
+      value: 
+      objectReference: {fileID: 98945899}
+    - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
+        type: 2}
+      propertyPath: Tutoriels.Array.data[0].zonesToHighlight.Array.data[1]
+      value: 
+      objectReference: {fileID: 98945899}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: de7c17bb221bb49419ac43c0ec7cd274, type: 2}
   m_IsPrefabParent: 0

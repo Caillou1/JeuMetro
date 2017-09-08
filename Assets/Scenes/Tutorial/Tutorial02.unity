@@ -6529,6 +6529,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114750251000443350, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c,
+        type: 2}
+      propertyPath: types.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4022565953322948, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c, type: 2}
       propertyPath: m_LocalPosition.x
       value: -23.5
@@ -6569,6 +6574,16 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114750251000443350, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c,
+        type: 2}
+      propertyPath: types.Array.data[0]
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114750251000443350, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c,
+        type: 2}
+      propertyPath: types.Array.data[1]
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c, type: 2}
   m_IsPrefabParent: 0
@@ -6577,6 +6592,12 @@ GameObject:
   m_PrefabParentObject: {fileID: 1631759426103780, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c,
     type: 2}
   m_PrefabInternal: {fileID: 569958568}
+--- !u!114 &569958570 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114750251000443350, guid: 6d3a4c95ebd9d46c9883ddff3c982e9c,
+    type: 2}
+  m_PrefabInternal: {fileID: 569958568}
+  m_Script: {fileID: 11500000, guid: 8609b7ef09eef4899abe90a1d4ec3d67, type: 3}
 --- !u!1 &584813518
 GameObject:
   m_ObjectHideFlags: 0
@@ -14435,6 +14456,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
         type: 2}
+      propertyPath: Tutoriels.Array.data[0].zonesToHighlight.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
+        type: 2}
       propertyPath: Tutoriels.Array.data[0].MessagesToShowAfter.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -14553,6 +14579,11 @@ Prefab:
       propertyPath: Tutoriels.Array.data[0].ZoneToHighlight
       value: 
       objectReference: {fileID: 569958569}
+    - target: {fileID: 114571872741641690, guid: de7c17bb221bb49419ac43c0ec7cd274,
+        type: 2}
+      propertyPath: Tutoriels.Array.data[0].zonesToHighlight.Array.data[0]
+      value: 
+      objectReference: {fileID: 569958570}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: de7c17bb221bb49419ac43c0ec7cd274, type: 2}
   m_IsPrefabParent: 0
