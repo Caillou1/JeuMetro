@@ -48,7 +48,7 @@ public class NavMeshManager : MonoBehaviour
 				}
 
 				if (!hasCreatedElevatorsConnections) {
-					Event<NavMeshBakedEvent>.Broadcast (new NavMeshBakedEvent ());
+					//Event<NavMeshBakedEvent>.Broadcast (new NavMeshBakedEvent ());
 					hasCreatedElevatorsConnections = true;
 				}
 			}
