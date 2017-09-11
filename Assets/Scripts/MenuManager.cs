@@ -37,6 +37,7 @@ public class MenuManager : MonoBehaviour {
     public float FireAlertUiOffset = 100;
     public float FireAlertUIMoveTime = 1;
     public float FireAlertUIWaitTime = 2;
+    public int sceneCount = 2;
 
     private float CurrentZoomLevel;
 
@@ -554,8 +555,7 @@ public class MenuManager : MonoBehaviour {
 			G.Sys.audioManager.PlayLevelSelected ();
 			G.Sys.tilemap.clear ();
             string sceneName = "Level" + i;
-			var s = SceneManager.GetSceneByName(sceneName);
-            if (!s.IsValid())
+            if (i > sceneCount)
                 MainMenu();
 			else SceneManager.LoadScene (sceneName);
 		}
