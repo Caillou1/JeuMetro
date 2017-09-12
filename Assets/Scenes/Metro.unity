@@ -6783,12 +6783,12 @@ Prefab:
     - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
       propertyPath: enableTravelers
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
       propertyPath: SetMaxTravelers
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
@@ -6804,7 +6804,7 @@ Prefab:
         type: 2}
       propertyPath: entities.Array.data[0]
       value: 
-      objectReference: {fileID: 1427005143703886, guid: c18e31107d19d445e9ad33af39ca5d8a,
+      objectReference: {fileID: 1427005143703886, guid: 44977d8568c9b499ea2978fe6287dd0d,
         type: 2}
     - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
@@ -6844,6 +6844,11 @@ Prefab:
     - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
       propertyPath: agentSaturation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: ElevatorAttraction
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -7968,12 +7973,12 @@ Prefab:
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: waveTimes.Array.data[1]
-      value: 5
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}
       propertyPath: waveTimes.Array.data[0]
-      value: 5
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 114670179706503746, guid: dde0399ecd55f40cbab557f01fca87bd,
         type: 2}

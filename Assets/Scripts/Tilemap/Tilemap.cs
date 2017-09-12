@@ -584,7 +584,6 @@ public class Tilemap
                 }
             }
         }
-
     }
 
     /*private Dictionary<int, Dictionary<int, List<List<Pair<int, ElevatorTile>>>>> elevatorsConnections;
@@ -780,12 +779,13 @@ public class Tilemap
 
     public List<Pair<int, ElevatorTile>> GetElevatorsToFloor(Vector3 Origin, Vector3 Destination)
     {
+        Debug.Log(1);
         var returnList = new List<Pair<int, ElevatorTile>>();
         var elevatorsIn = elevatorsConectedTo(Origin);
         var elevatorsOut = elevatorsConectedTo(Destination);
         if (elevatorsIn.Count() == 0 || elevatorsOut.Count() == 0)
             return returnList;
-
+        Debug.Log(2);
         foreach (var eIn in elevatorsIn)
         {
             foreach (var eOut in elevatorsOut)
@@ -798,7 +798,7 @@ public class Tilemap
                 }
             }
         }
-
+        Debug.Log(3);
         var visited = new List<VisitedElevators>();
         var toVisit = new List<int>();
 
@@ -808,8 +808,6 @@ public class Tilemap
             visited.Add(new VisitedElevators(-1, e, Mathf.RoundToInt(Origin.y)));
         }
         bool found = false;
-
-
 
         while (!found && toVisit.Count() > 0)
         {
@@ -840,7 +838,7 @@ public class Tilemap
 
         if (!found)
             return returnList;
-
+        Debug.Log(4);
         int currentIndex = visited.Count()-1;
         int currentFloor = Mathf.RoundToInt(Destination.y);
 
@@ -874,9 +872,12 @@ public class Tilemap
     {
         List<ElevatorTile> elevators = new List<ElevatorTile>();
 
-        foreach (var e in elevatorConnections2)
-            if (e.tile.FloorExists(floor))
-                elevators.Add(e.tile);
+        foreach (var e in getSpecialTilesI(TileID.ELEVATOR))
+        {
+            var t = GetTileOfTypeAt(e, TileID.ELEVATOR) as ElevatorTile;
+            if (t != null && t.FloorExists(floor))
+                elevators.Add(t);
+        }
         return elevators;
     }
 
@@ -905,6 +906,7 @@ public class Tilemap
 				continue;
             elevators.Add(e);
         }
+
         return elevators;
     }
 

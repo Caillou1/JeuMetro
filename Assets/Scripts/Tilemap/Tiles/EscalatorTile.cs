@@ -95,8 +95,12 @@ public class EscalatorTile : ATile
 
 		var list = G.Sys.tilemap.tilesOfTypeAt (v1, TileID.PODOTACTILE).Concat (G.Sys.tilemap.tilesOfTypeAt (v2, TileID.PODOTACTILE)).ToList ();
 
-		foreach (var podotactileTile in list)
-			(podotactileTile as PodotactileTile).Connect (false);
+        foreach (var podotactileTile in list)
+        {
+            var p = podotactileTile as PodotactileTile;
+            if(p != null)
+            p.Connect(false);
+        }
 
 		G.Sys.tilemap.delTile (transform.position, this);
 		G.Sys.tilemap.delTile (transform.position + dir, this);

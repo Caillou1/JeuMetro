@@ -163,13 +163,13 @@ public class Traveler : AEntity
 
 	void checkElevators() {
 		if (CanLookForElevator && !path.haveAction (ActionType.WAIT_ELEVATOR)) {
-			var possiblePath = G.Sys.tilemap.GetElevatorsToFloor (transform.position, path.destnation);
+			var possiblePath = G.Sys.tilemap.GetElevatorsToFloor(transform.position, path.destnation);
 			if (possiblePath.Count > 0) {
 				bool CanTakeElevator = false;
 
 				if (stats.Type == TravelerType.WHEELCHAIR) { // Si chaise roulante
 					CanTakeElevator = true;
-				} else if (path.HaveTileOnPath(TileID.STAIRS) && (new BernoulliDistribution (G.Sys.constants.ElevatorAttraction).Next (new DefaultRandomGenerator ()))) { // Si il y a un escalier calcule proba
+                } else if (Mathf.RoundToInt((target - transform.position).y) >= 1 && (new BernoulliDistribution (G.Sys.constants.ElevatorAttraction).Next (new DefaultRandomGenerator ()))) { // Si il y a un escalier calcule proba
 					CanTakeElevator = true;
 				} else { // Si pas d'autres choix
                     NavMesh.CalculatePath (transform.position, path.destnation, NavMesh.AllAreas, navmeshPath);
