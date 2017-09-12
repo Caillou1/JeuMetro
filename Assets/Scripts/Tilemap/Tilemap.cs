@@ -364,6 +364,19 @@ public class Tilemap
 		return null;
 	}
 
+	public ATile GetTileOfTypeAt(Vector3i pos, TileID id)
+	{
+		var tiles = at(pos);
+		foreach (var t in tiles)
+		{
+			if (t.type == id)
+			{
+				return t;
+			}
+		}
+		return null;
+	}
+
 	/// <summary>
 	/// Retourne la tile spéciale la plus proche du type spécifiée.
 	/// La seconde valeur de la paire est à faux si aucune tile n'a été trouvée.
@@ -487,7 +500,94 @@ public class Tilemap
 		return true;
 	}
 
-	private Dictionary<int, Dictionary<int, List<List<Pair<int, ElevatorTile>>>>> elevatorsConnections;
+    private class ElevatorConnexionsInfos
+    {
+        public ElevatorConnexionsInfos(ElevatorTile _tile)
+        {
+            tile = _tile;
+            exits = new Dictionary<int, List<ElevatorTile>>();
+        }
+
+        public ElevatorTile tile;
+        public Dictionary<int, List<ElevatorTile>> exits;
+    }
+
+    private class VisitedElevators
+    {
+        public VisitedElevators(int _parent, ElevatorTile _child, int _floor)
+        {
+            parent = _parent;
+            child = _child;
+            floor = _floor;
+        }
+
+        public int parent;
+        public ElevatorTile child;
+        public int floor;
+    }
+
+    private List<ElevatorConnexionsInfos> elevatorConnections2 = new List<ElevatorConnexionsInfos>();
+
+    public void CreateElevatorsConnections()
+    {
+        elevatorConnections2.Clear();
+
+		NavMeshPath path = new NavMeshPath();
+
+		var elevators = getSpecialTilesI(TileID.ELEVATOR);
+
+        foreach(var pos in elevators)
+        {
+            var tile = GetTileOfTypeAt(pos, TileID.ELEVATOR) as ElevatorTile;
+            if (tile == null)
+                continue;
+
+            var connexionsInfos = new ElevatorConnexionsInfos(tile);
+            elevatorConnections2.Add(connexionsInfos);
+
+            foreach (var floor in tile.GetFloors())
+            {
+                List<ElevatorTile> exits = new List<ElevatorTile>();
+                connexionsInfos.exits.Add(floor, exits);
+
+                foreach(var pos2 in elevators)
+                {
+                    if (pos2.Equals(pos))
+                        continue;
+                    
+					var tile2 = GetTileOfTypeAt(pos, TileID.ELEVATOR) as ElevatorTile;
+					if (tile2 == null)
+						continue;
+
+                    if (!tile2.FloorExists(floor))
+                        continue;
+
+                    var startPos = tile.GetWaitZone(floor);
+                    var endPos = tile2.GetWaitZone(floor);
+
+
+                    NavMesh.CalculatePath(startPos, endPos, NavMesh.AllAreas, path);
+                    if (path.status != NavMeshPathStatus.PathComplete)
+                        continue;
+                    bool pathValid = true;
+                    foreach (var c in path.corners)
+                    {
+                        if (Mathf.RoundToInt(c.y) != floor)
+                        {
+                            pathValid = false;
+                            break;
+                        }
+                    }
+                    if (!pathValid)
+                        continue;
+                    exits.Add(tile2);
+                }
+            }
+        }
+
+    }
+
+    /*private Dictionary<int, Dictionary<int, List<List<Pair<int, ElevatorTile>>>>> elevatorsConnections;
 
 	public void CreateElevatorsConnections() {
 		//System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch ();
@@ -629,9 +729,9 @@ public class Tilemap
 		//ShowConnections ();
 		//Debug.Log ("CreateElevatorsConnections execution time : " + watch.ElapsedMilliseconds + " ms");
 		//watch.Stop ();
-	}
+	}*/
 
-	private void ShowConnections() {
+    /*private void ShowConnections() {
 		foreach (var a in elevatorsConnections) {
 			int fr = a.Key;
 			foreach (var b in a.Value) {
@@ -645,9 +745,9 @@ public class Tilemap
 				}
 			}
 		}
-	}
+	}*/
 
-	public List<Pair<int, ElevatorTile>> GetElevatorsToFloor(Vector3 Origin, Vector3 Destination) {
+    /*public List<Pair<int, ElevatorTile>> GetElevatorsToFloor(Vector3 Origin, Vector3 Destination) {
 		//System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch ();
 		//watch.Start ();
 
@@ -676,7 +776,145 @@ public class Tilemap
 		//watch.Stop ();
 
 		return list;
-	}
+	}*/
+
+    public List<Pair<int, ElevatorTile>> GetElevatorsToFloor(Vector3 Origin, Vector3 Destination)
+    {
+        var returnList = new List<Pair<int, ElevatorTile>>();
+        var elevatorsIn = elevatorsConectedTo(Origin);
+        var elevatorsOut = elevatorsConectedTo(Destination);
+        if (elevatorsIn.Count() == 0 || elevatorsOut.Count() == 0)
+            return returnList;
+
+        foreach (var eIn in elevatorsIn)
+        {
+            foreach (var eOut in elevatorsOut)
+            {
+                if (eIn == eOut)
+                {
+                    if (Mathf.RoundToInt(Origin.y) != Mathf.RoundToInt(Destination.y))
+                        returnList.Add(new Pair<int, ElevatorTile>(Mathf.RoundToInt(Destination.y), eIn));
+                    return returnList;
+                }
+            }
+        }
+
+        var visited = new List<VisitedElevators>();
+        var toVisit = new List<int>();
+
+        foreach(var e in elevatorsIn)
+        {
+            toVisit.Add(visited.Count());
+            visited.Add(new VisitedElevators(-1, e, Mathf.RoundToInt(Origin.y)));
+        }
+        bool found = false;
+
+
+
+        while (!found && toVisit.Count() > 0)
+        {
+            var id = toVisit.First();
+            toVisit.RemoveAt(0);
+
+            var e = visited[id];
+            foreach(var c in connexionsInfosOf(e.child).exits)
+            {
+                if (c.Key == e.floor)
+                    continue;
+                foreach(var item in c.Value)
+                {
+                    if (isVisited(item, visited))
+                        continue;
+                    toVisit.Add(visited.Count());
+                    visited.Add(new VisitedElevators(id, item, c.Key));
+                    if (isOn(item, elevatorsOut))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found)
+                    break;
+            }
+        }
+
+        if (!found)
+            return returnList;
+
+        int currentIndex = visited.Count()-1;
+        int currentFloor = Mathf.RoundToInt(Destination.y);
+
+        while(currentIndex > 0)
+        {
+            returnList.Insert(0, new Pair<int, ElevatorTile>(currentFloor, visited[currentIndex].child));
+            currentFloor = visited[currentIndex].floor;
+            currentIndex = visited[currentIndex].parent;
+        }
+
+        return returnList;
+    }
+
+    bool isOn(ElevatorTile tile, List<ElevatorTile> list)
+    {
+        foreach (var t in list)
+            if (tile == t)
+                return true;
+        return false;
+    }
+
+    bool isVisited(ElevatorTile tile, List<VisitedElevators> list)
+    {
+        foreach (var t in list)
+            if (t.parent > 0 && tile == list[t.parent].child)
+                return true;
+        return false;
+    }
+
+    List<ElevatorTile> elevatorsAtFloor(int floor)
+    {
+        List<ElevatorTile> elevators = new List<ElevatorTile>();
+
+        foreach (var e in elevatorConnections2)
+            if (e.tile.FloorExists(floor))
+                elevators.Add(e.tile);
+        return elevators;
+    }
+
+    List<ElevatorTile> elevatorsConectedTo(Vector3 pos)
+    {
+        int floor = Mathf.RoundToInt(pos.y);
+        var potentialElevators = elevatorsAtFloor(floor);
+        List<ElevatorTile> elevators = new List<ElevatorTile>();
+
+        NavMeshPath path = new NavMeshPath();
+        foreach(var e in potentialElevators)
+        {
+            NavMesh.CalculatePath(pos, e.GetWaitZone(floor), NavMesh.AllAreas, path);
+			if (path.status != NavMeshPathStatus.PathComplete)
+				continue;
+			bool pathValid = true;
+			foreach (var c in path.corners)
+			{
+				if (Mathf.RoundToInt(c.y) != floor)
+				{
+					pathValid = false;
+					break;
+				}
+			}
+			if (!pathValid)
+				continue;
+            elevators.Add(e);
+        }
+        return elevators;
+    }
+
+    ElevatorConnexionsInfos connexionsInfosOf(ElevatorTile tile)
+    {
+        foreach (var c in elevatorConnections2)
+            if (c.tile == tile)
+                return c;
+        return null;
+    }
 
 	private bool IsReachable(Vector3 origin, Vector3 destination) {
 		NavMeshPath path = new NavMeshPath();
