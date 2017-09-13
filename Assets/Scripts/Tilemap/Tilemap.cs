@@ -194,6 +194,7 @@ public class Tilemap
 		specialTiles.Clear ();
         currentUsedSpace = 0;
         maxUsedSpace = 0;
+        _elevators.Clear();
         G.Sys.clear();
 	}
 
@@ -527,6 +528,18 @@ public class Tilemap
     }
 
     private List<ElevatorConnexionsInfos> elevatorConnections2 = new List<ElevatorConnexionsInfos>();
+    private List<ElevatorTile> _elevators = new List<ElevatorTile>();
+
+    public void RegisterElevator(ElevatorTile t)
+    {
+        if (!_elevators.Contains(t))
+            _elevators.Add(t);
+    }
+
+    public bool UnregisterElevator(ElevatorTile t)
+    {
+        return _elevators.Remove(t);
+    }
 
     public void CreateElevatorsConnections()
     {
@@ -534,14 +547,8 @@ public class Tilemap
 
 		NavMeshPath path = new NavMeshPath();
 
-		var elevators = getSpecialTilesI(TileID.ELEVATOR);
-
-        foreach(var pos in elevators)
+        foreach(var tile in _elevators)
         {
-            var tile = GetTileOfTypeAt(pos, TileID.ELEVATOR) as ElevatorTile;
-            if (tile == null)
-                continue;
-
             var connexionsInfos = new ElevatorConnexionsInfos(tile);
             elevatorConnections2.Add(connexionsInfos);
 
@@ -550,14 +557,10 @@ public class Tilemap
                 List<ElevatorTile> exits = new List<ElevatorTile>();
                 connexionsInfos.exits.Add(floor, exits);
 
-                foreach(var pos2 in elevators)
+                foreach(var tile2 in _elevators)
                 {
-                    if (pos2.Equals(pos))
+                    if (tile == tile2)
                         continue;
-                    
-					var tile2 = GetTileOfTypeAt(pos, TileID.ELEVATOR) as ElevatorTile;
-					if (tile2 == null)
-						continue;
 
                     if (!tile2.FloorExists(floor))
                         continue;
@@ -779,13 +782,13 @@ public class Tilemap
 
     public List<Pair<int, ElevatorTile>> GetElevatorsToFloor(Vector3 Origin, Vector3 Destination)
     {
-        Debug.Log(1);
         var returnList = new List<Pair<int, ElevatorTile>>();
         var elevatorsIn = elevatorsConectedTo(Origin);
         var elevatorsOut = elevatorsConectedTo(Destination);
+
         if (elevatorsIn.Count() == 0 || elevatorsOut.Count() == 0)
             return returnList;
-        Debug.Log(2);
+        
         foreach (var eIn in elevatorsIn)
         {
             foreach (var eOut in elevatorsOut)
@@ -798,7 +801,7 @@ public class Tilemap
                 }
             }
         }
-        Debug.Log(3);
+
         var visited = new List<VisitedElevators>();
         var toVisit = new List<int>();
 
@@ -838,7 +841,7 @@ public class Tilemap
 
         if (!found)
             return returnList;
-        Debug.Log(4);
+        
         int currentIndex = visited.Count()-1;
         int currentFloor = Mathf.RoundToInt(Destination.y);
 
@@ -872,12 +875,9 @@ public class Tilemap
     {
         List<ElevatorTile> elevators = new List<ElevatorTile>();
 
-        foreach (var e in getSpecialTilesI(TileID.ELEVATOR))
-        {
-            var t = GetTileOfTypeAt(e, TileID.ELEVATOR) as ElevatorTile;
-            if (t != null && t.FloorExists(floor))
-                elevators.Add(t);
-        }
+        foreach (var e in _elevators)
+            if (e.FloorExists(floor))
+                elevators.Add(e);
         return elevators;
     }
 
@@ -890,9 +890,24 @@ public class Tilemap
         NavMeshPath path = new NavMeshPath();
         foreach(var e in potentialElevators)
         {
-            NavMesh.CalculatePath(pos, e.GetWaitZone(floor), NavMesh.AllAreas, path);
-			if (path.status != NavMeshPathStatus.PathComplete)
+            NavMesh.CalculatePath(e.GetWaitZone(floor), pos, NavMesh.AllAreas, path);
+
+            if (path.status == NavMeshPathStatus.PathInvalid)
 				continue;
+            
+			for (int i = 0; i < path.corners.Count() - 1; i++)
+			{
+				Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.green, 1);
+			}
+			Debug.DrawRay(pos, Vector3.up, Color.red, 1);
+			Debug.DrawRay(path.corners[path.corners.Count() - 1], Vector3.up, Color.blue, 1);
+
+            if(path.status == NavMeshPathStatus.PathPartial)
+            {
+                if (path.corners.Count() == 0 || (path.corners[path.corners.Count()-1] - pos).magnitude > 0.2f)
+                    continue;
+            }
+
 			bool pathValid = true;
 			foreach (var c in path.corners)
 			{
@@ -920,7 +935,12 @@ public class Tilemap
 
 	private bool IsReachable(Vector3 origin, Vector3 destination) {
 		NavMeshPath path = new NavMeshPath();
-		if (NavMesh.CalculatePath (origin, destination, NavMesh.AllAreas, path)) {
+
+        NavMeshQueryFilter filter = new NavMeshQueryFilter();
+        filter.agentTypeID = NavMesh.GetSettingsByIndex(2).agentTypeID; //weelchair.
+        filter.areaMask = NavMesh.AllAreas;
+
+		if (NavMesh.CalculatePath (origin, destination, filter, path)) {
 			foreach (var c in path.corners) {
 				if (Mathf.RoundToInt (c.y) != Mathf.RoundToInt (origin.y)) {
 					return false;

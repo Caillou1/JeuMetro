@@ -47,7 +47,7 @@ public class ElevatorTile : ATile
         {
             var fTf = validFloors[i];
 
-			Floors [i] = Mathf.RoundToInt (fTf.position.y);
+            Floors [i] = Mathf.RoundToInt (fTf.position.y);
 
             var fDir = Orienter.orientationToDir3(Orienter.angleToOrientation(fTf.rotation.eulerAngles.y+90)) * 1.5f;
 			WaitZones.Add (Floors [i], fTf.position - fDir);
@@ -64,6 +64,7 @@ public class ElevatorTile : ATile
 			G.Sys.tilemap.addSpecialTile (TileID.ELEVATOR, pos + dir + new Vector3 (0, f, 0));
 			G.Sys.tilemap.addSpecialTile (TileID.ELEVATOR, pos + new Vector3 (0, f, 0));
 		}
+        G.Sys.tilemap.RegisterElevator(this);
 
         CurrentFloor = WaitZones.First().Key;
 
@@ -84,6 +85,8 @@ public class ElevatorTile : ATile
 			G.Sys.tilemap.delSpecialTile (TileID.ELEVATOR, pos + dir + new Vector3 (0, f, 0));
 			G.Sys.tilemap.delSpecialTile (TileID.ELEVATOR, pos + new Vector3 (0, f, 0));
 		}
+
+        G.Sys.tilemap.UnregisterElevator(this);
 
 		StopAllCoroutines ();
 	}
