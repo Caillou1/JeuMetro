@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-using AmplitudeNS;
+using System;
 
 public enum Menu {
 	Main,

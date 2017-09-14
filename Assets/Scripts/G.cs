@@ -8,6 +8,7 @@ public sealed class G
     private static volatile G _instance;
 
 	public Tilemap tilemap = new Tilemap();
+    AmplitudeManager amplitudeManager = new AmplitudeManager();
     public int levelIndex = 0;
 	private List<Traveler> travelers = new List<Traveler> ();
     private List<Traveler> falseTravelers = new List<Traveler>();
