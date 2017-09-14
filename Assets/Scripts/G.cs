@@ -7,6 +7,8 @@ public sealed class G
 {
     private static volatile G _instance;
 
+    public readonly string Version = "Indev 1";
+
 	public Tilemap tilemap = new Tilemap();
     AmplitudeManager amplitudeManager = new AmplitudeManager();
     public int levelIndex = 0;

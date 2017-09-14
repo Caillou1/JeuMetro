@@ -191,6 +191,8 @@ public class MenuManager : MonoBehaviour {
 		ShopButtons [8] = ShopUI.transform.Find ("Cleaner").gameObject;
 		ShopButtons [9] = ShopUI.transform.Find ("Agent").gameObject;
 
+        MainUI.transform.Find("Version").GetComponent<Text>().text = G.Sys.Version;
+
 		UpdateShopUI ();
 	}
 
