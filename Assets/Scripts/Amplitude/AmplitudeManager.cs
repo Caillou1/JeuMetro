@@ -23,11 +23,13 @@ public class AmplitudeManager
     bool _firstSceneLoaded = false;
 
     DateTime _levelStartTime;
+    DateTime _waveStartTime;
 
     int _placedObjectCount;
     int _removedObjectCount;
     int _missplacedObjectCount;
     int _levelIndex;
+    int _currentWave;
 
 	public AmplitudeManager()
 	{
@@ -39,8 +41,9 @@ public class AmplitudeManager
         _subscriberList.Add(new Event<ObjectRemovedEvent>.Subscriber(OnRemoveObjectEvent));
         _subscriberList.Add(new Event<AgentRemovedEvent>.Subscriber(OnRemoveAgentEvent));
         _subscriberList.Add(new Event<TutorialObjectValidationEvent>.Subscriber(OnTutorialItemValidationEvent));
-        _subscriberList.Add(new Event<QuitLevelEvent>.Subscriber(OnLevelQuit));
         _subscriberList.Add(new Event<QuitTutorialEvent>.Subscriber(OnTutorialQuit));
+		_subscriberList.Add(new Event<StartLevelEvent>.Subscriber(OnLevelStart));
+		_subscriberList.Add(new Event<QuitLevelEvent>.Subscriber(OnLevelQuit));
 		_subscriberList.Subscribe();
 
         _amplitude = Amplitude.instance;
@@ -99,6 +102,21 @@ public class AmplitudeManager
         data.Time = (float)time;
         data.Restart = e.restarted;
         _amplitude.SendEvent(QuitTutorialStr, data);
+    }
+
+    void OnLevelStart(StartLevelEvent e)
+    {
+		_levelStartTime = DateTime.Now;
+        _waveStartTime = DateTime.Now;
+        _currentWave = 0;
+		_placedObjectCount = 0;
+		_missplacedObjectCount = 0;
+		_removedObjectCount = 0;
+		_levelIndex = e.index;
+
+        var data = new StartLevelData();
+        data.LevelIndex = e.index;
+        _amplitude.SendEvent(StartLevelStr, data);
     }
 
     void OnLevelQuit(QuitLevelEvent e)
@@ -180,6 +198,15 @@ public class AmplitudeManager
         public int ValueMoney;
         public int ValueSurface;
         public bool ValueFireAlert;
+    }
+
+    class LooseLevelData
+    {
+		public int LevelIndex;
+		public int PlacedObjectCount;
+		public float Time;
+		public int Wave;
+		public float WaveTime;
     }
 
     class QuitLevelData

@@ -6,13 +6,13 @@ using UnityEngine.Networking;
 
 public sealed class Amplitude 
 {
-    private bool sendFromEditor = true;
     private const string apiUrl = "https://api.amplitude.com/httpapi";
     private static volatile Amplitude _instance;
 	private string _UniqueUserId;
     private string _sessionId;
     private UnityWebRequest _www;
 
+	public bool sendFromEditor = true;
 	public string apikey = "";
 
     public static Amplitude instance

@@ -561,7 +561,11 @@ public class MenuManager : MonoBehaviour {
             string sceneName = "Level" + i;
             if (i > sceneCount)
                 MainMenu();
-			else SceneManager.LoadScene (sceneName);
+			else 
+            {
+                SceneManager.LoadScene(sceneName);
+                Event<StartLevelEvent>.Broadcast(new StartLevelEvent(i));
+            }
 		}
 	}
 
