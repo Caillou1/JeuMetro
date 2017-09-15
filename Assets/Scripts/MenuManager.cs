@@ -571,6 +571,9 @@ public class MenuManager : MonoBehaviour {
     }
 
 	public void MainMenu() {
+        if (SceneManager.GetActiveScene().name.Contains("Level"))
+            Event<QuitLevelEvent>.Broadcast(new QuitLevelEvent(false));
+        else Event<QuitTutorialEvent>.Broadcast(new QuitTutorialEvent(false));
 		G.Sys.tilemap.clear ();
 		SceneManager.LoadScene("MainMenu");
 	}
@@ -683,6 +686,9 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Replay() {
+		if (SceneManager.GetActiveScene().name.Contains("Level"))
+			Event<QuitLevelEvent>.Broadcast(new QuitLevelEvent(true));
+        else Event<QuitTutorialEvent>.Broadcast(new QuitTutorialEvent(true));
 		Time.timeScale = 1f;
 		G.Sys.tilemap.clear ();
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);

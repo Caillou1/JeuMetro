@@ -118,6 +118,8 @@ public class TutorialManager : MonoBehaviour {
             if (isOn)
                 break;
 		}
+        if(points.Count > 0)
+            Event<TutorialObjectValidationEvent>.Broadcast(new TutorialObjectValidationEvent(type, points[0].toVector3(), !isOn));
 		if (!isOn)
 			return;
         
@@ -139,6 +141,7 @@ public class TutorialManager : MonoBehaviour {
                 break;
             }
         }
+        Event<TutorialObjectValidationEvent>.Broadcast(new TutorialObjectValidationEvent(type, pos, !isOn));
         if (!isOn)
             return;
 

@@ -34,6 +34,13 @@ public class AmplitudeManager
         _subscriberList.Add(new Event<SceneLoadedEvent>.Subscriber(OnSceneLoaded));
         _subscriberList.Add(new Event<StartTutorialEvent>.Subscriber(OnTutorialStart));
         _subscriberList.Add(new Event<FinishTutorialEvent>.Subscriber(OnTutorialEnd));
+        _subscriberList.Add(new Event<ObjectPlacedEvent>.Subscriber(OnPlaceObjectEvent));
+        _subscriberList.Add(new Event<AgentPlacedEvent>.Subscriber(OnPlaceAgentEvent));
+        _subscriberList.Add(new Event<ObjectRemovedEvent>.Subscriber(OnRemoveObjectEvent));
+        _subscriberList.Add(new Event<AgentRemovedEvent>.Subscriber(OnRemoveAgentEvent));
+        _subscriberList.Add(new Event<TutorialObjectValidationEvent>.Subscriber(OnTutorialItemValidationEvent));
+        _subscriberList.Add(new Event<QuitLevelEvent>.Subscriber(OnLevelQuit));
+        _subscriberList.Add(new Event<QuitTutorialEvent>.Subscriber(OnTutorialQuit));
 		_subscriberList.Subscribe();
 
         _amplitude = Amplitude.instance;
@@ -83,6 +90,51 @@ public class AmplitudeManager
         _amplitude.SendEvent(FinishTutorialStr, data);
     }
 
+    void OnTutorialQuit(QuitTutorialEvent e)
+    {
+        var time = (DateTime.Now - _levelStartTime).TotalSeconds;
+
+        var data = new QuitTutorialData();
+        data.Levelindex = _levelIndex;
+        data.Time = (float)time;
+        data.Restart = e.restarted;
+        _amplitude.SendEvent(QuitTutorialStr, data);
+    }
+
+    void OnLevelQuit(QuitLevelEvent e)
+    {
+        Debug.Log("Poop");
+    }
+
+    void OnPlaceObjectEvent(ObjectPlacedEvent e)
+    {
+        if(!e.bought)
+            _placedObjectCount++;
+    }
+
+    void OnPlaceAgentEvent(AgentPlacedEvent e)
+    {
+        _placedObjectCount++;
+    }
+
+    void OnRemoveObjectEvent(ObjectRemovedEvent e)
+    {
+        if(e.bought)
+            _removedObjectCount++;
+    }
+
+    void OnRemoveAgentEvent(AgentRemovedEvent e)
+    {
+        if (e.bought)
+            _removedObjectCount++;
+    }
+
+    void OnTutorialItemValidationEvent(TutorialObjectValidationEvent e)
+    {
+        if (e.missplaced)
+            _missplacedObjectCount++;
+    }
+
     [Serializable]
     class StartSessionData
     {
@@ -100,6 +152,7 @@ public class AmplitudeManager
     {
         public int Levelindex;
         public float Time;
+        public bool Restart;
     }
 
     [Serializable]
@@ -136,6 +189,7 @@ public class AmplitudeManager
         public float Time;
         public int Wave;
         public float WaveTime;
+        public bool Restart;
     }
 }
 

@@ -231,10 +231,15 @@ public class SelectionManager : MonoBehaviour {
 	public void Delete() {
 		G.Sys.cameraController.IsSelecting = false;
 		if (obj != null) {
+            Event<ObjectRemovedEvent>.Broadcast(new ObjectRemovedEvent(obj.transform.position, obj.GetComponent<ATile>().type, obj.IsBought));
 			obj.DeleteObject ();
 			Hide (false);
 		}
 		if (ent != null) {
+            var agent = obj.GetComponent<Agent>();
+            if (agent == null)
+                Event<AgentRemovedEvent>.Broadcast(new AgentRemovedEvent(ent.transform.position, AgentType.CLEANER, ent.IsBought));
+            else Event<AgentRemovedEvent>.Broadcast(new AgentRemovedEvent(ent.transform.position, AgentType.AGENT, ent.IsBought));
 			ent.DeleteObject ();
 			Hide (false, true, false);
 		}

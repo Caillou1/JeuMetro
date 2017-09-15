@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public sealed class Amplitude 
 {
-    private const bool sendFromEditor = false;
+    private bool sendFromEditor = true;
     private const string apiUrl = "https://api.amplitude.com/httpapi";
     private static volatile Amplitude _instance;
 	private string _UniqueUserId;
