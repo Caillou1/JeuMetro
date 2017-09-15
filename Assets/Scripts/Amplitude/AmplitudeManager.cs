@@ -20,19 +20,67 @@ public class AmplitudeManager
 	private Amplitude _amplitude;
 	private SubscriberList _subscriberList = new SubscriberList();
 
+    bool _firstSceneLoaded = false;
+
+    DateTime _levelStartTime;
+
+    int _placedObjectCount;
+    int _removedObjectCount;
+    int _missplacedObjectCount;
+    int _levelIndex;
+
 	public AmplitudeManager()
 	{
+        _subscriberList.Add(new Event<SceneLoadedEvent>.Subscriber(OnSceneLoaded));
+        _subscriberList.Add(new Event<StartTutorialEvent>.Subscriber(OnTutorialStart));
+        _subscriberList.Add(new Event<FinishTutorialEvent>.Subscriber(OnTutorialEnd));
 		_subscriberList.Subscribe();
 
         _amplitude = Amplitude.instance;
         _amplitude.apikey = ApiKey;
+
+        _levelStartTime = DateTime.Now;
+		_levelIndex = 0; 
+        _placedObjectCount = 0;
+		_missplacedObjectCount = 0;
+        _removedObjectCount = 0;
 	}
 
-    public void StartSession()
-    {
+    void OnSceneLoaded(SceneLoadedEvent e)
+	{
+        if (_firstSceneLoaded)
+            return;
+		_firstSceneLoaded = true; 
+
         var data = new StartSessionData();
-        data.GameVersion = G.Sys.Version;
-        _amplitude.SendEvent(StartSessionStr, data);
+		data.GameVersion = G.Sys.Version;
+		_amplitude.SendEvent(StartSessionStr, data);
+	}
+
+    void OnTutorialStart(StartTutorialEvent e)
+    {
+        _levelStartTime = DateTime.Now;
+        _placedObjectCount = 0;
+        _missplacedObjectCount = 0;
+        _removedObjectCount = 0;
+        _levelIndex = e.index;
+
+        var data = new StartLevelData();
+        data.LevelIndex = e.index;
+        _amplitude.SendEvent(StartTutorialStr, data);
+    }
+
+    void OnTutorialEnd(FinishTutorialEvent e)
+    {
+        var time = (DateTime.Now - _levelStartTime).TotalSeconds;
+
+        var data = new FinishTutorialData();
+        data.LevelIndex = _levelIndex;
+        data.Time = (float)time;
+        data.MisplacedObjectCount = _missplacedObjectCount;
+        data.PlacedObjectCount = _placedObjectCount;
+        data.RemovedObjectCount = _removedObjectCount;
+        _amplitude.SendEvent(FinishTutorialStr, data);
     }
 
     [Serializable]
@@ -60,6 +108,7 @@ public class AmplitudeManager
         public int LevelIndex;
         public int PlacedObjectCount;
         public int MisplacedObjectCount;
+        public int RemovedObjectCount;
         public float Time;
     }
 
@@ -68,6 +117,7 @@ public class AmplitudeManager
     {
         public int LevelIndex;
         public int PlacedObjectCount;
+        public int RemovedObjectCount;
         public float Time;
         public bool MedalTime;
         public bool MedalMoney;

@@ -220,6 +220,8 @@ public class MenuManager : MonoBehaviour {
         
 		ParametersUI.transform.Find("MusicSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("musicVolume", 1f);
         ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat("soundVolume", 1f);
+
+        Event<SceneLoadedEvent>.Broadcast(new SceneLoadedEvent(CurrentMenu));
 	}
 
 	public void Lose() {

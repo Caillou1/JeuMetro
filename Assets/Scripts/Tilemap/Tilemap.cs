@@ -818,24 +818,28 @@ public class Tilemap
             toVisit.RemoveAt(0);
 
             var e = visited[id];
-            foreach(var c in connexionsInfosOf(e.child).exits)
+            var connexions = connexionsInfosOf(e.child);
+            if (connexions != null)
             {
-                if (c.Key == e.floor)
-                    continue;
-                foreach(var item in c.Value)
+                foreach (var c in connexions.exits)
                 {
-                    if (isVisited(item, visited))
+                    if (c.Key == e.floor)
                         continue;
-                    toVisit.Add(visited.Count());
-                    visited.Add(new VisitedElevators(id, item, c.Key));
-                    if (isOn(item, elevatorsOut))
+                    foreach (var item in c.Value)
                     {
-                        found = true;
-                        break;
+                        if (isVisited(item, visited))
+                            continue;
+                        toVisit.Add(visited.Count());
+                        visited.Add(new VisitedElevators(id, item, c.Key));
+                        if (isOn(item, elevatorsOut))
+                        {
+                            found = true;
+                            break;
+                        }
                     }
+                    if (found)
+                        break;
                 }
-                if (found)
-                    break;
             }
         }
 

@@ -149,7 +149,17 @@ public class TutorialManager : MonoBehaviour {
 		}
     }
 
-	void Start () {
+	void Start () 
+    {
+        var sceneName = SceneManager.GetActiveScene().name;
+        while (sceneName[0] <= '0' || sceneName[0] > '9')
+            sceneName = sceneName.Remove(0, 1);
+        int sceneId = 0;
+        if (!int.TryParse(sceneName, out sceneId))
+            Debug.LogError("Tutorial scene name is wrongly formated !\nIt must be \"Tutorial[id]\" with [id] the index of the tutorial");
+        else Event<StartTutorialEvent>.Broadcast(new StartTutorialEvent(sceneId));
+
+
         G.Sys.menuManager.EnableUITutoMode();
 		
 		StartCoroutine(TutorialRoutine());
@@ -210,6 +220,7 @@ public class TutorialManager : MonoBehaviour {
 		}
 
 		if (NextScene != "") {
+            Event<FinishTutorialEvent>.Broadcast(new FinishTutorialEvent());
 			G.Sys.tilemap.clear ();
 			SceneManager.LoadScene (NextScene);
 		}

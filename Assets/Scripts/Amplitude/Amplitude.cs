@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 
 public sealed class Amplitude 
 {
+    private const bool sendFromEditor = false;
     private const string apiUrl = "https://api.amplitude.com/httpapi";
     private static volatile Amplitude _instance;
 	private string _UniqueUserId;
@@ -49,6 +50,20 @@ public sealed class Amplitude
 
     private void sendEventPrivate(string eventName, string data)
     {
+        if(!sendFromEditor)
+        {
+            switch(Application.platform)
+            {
+                case RuntimePlatform.LinuxEditor :
+                case RuntimePlatform.OSXEditor:
+                case RuntimePlatform.WindowsEditor:
+                    Debug.Log("Events from editor are disabled - " + eventName);
+                    return;
+                default:
+                    break;
+            }
+        }
+
 		string platform = Application.platform.ToString();
 		int secondsSinceEpoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
 
@@ -61,7 +76,7 @@ public sealed class Amplitude
 		eventData += ", \"time\":" + secondsSinceEpoch.ToString();
 		eventData += ", \"session_id\":" + _sessionId;
 		eventData += "}]";
-		Debug.Log(eventData);
+		Debug.Log(eventName + " " + eventData);
 
 		WWWForm wwwf = new WWWForm();
 		wwwf.AddField("api_key", apikey);
