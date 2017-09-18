@@ -30,6 +30,7 @@ public class AmplitudeManager
     int _missplacedObjectCount;
     int _levelIndex;
     int _currentWave;
+    bool _loose;
 
 	public AmplitudeManager()
 	{
@@ -44,6 +45,8 @@ public class AmplitudeManager
         _subscriberList.Add(new Event<QuitTutorialEvent>.Subscriber(OnTutorialQuit));
 		_subscriberList.Add(new Event<StartLevelEvent>.Subscriber(OnLevelStart));
 		_subscriberList.Add(new Event<QuitLevelEvent>.Subscriber(OnLevelQuit));
+        _subscriberList.Add(new Event<WinGameEvent>.Subscriber(OnFinishLevel));
+        _subscriberList.Add(new Event<LooseLevelEvent>.Subscriber(OnLooseLevel));
 		_subscriberList.Subscribe();
 
         _amplitude = Amplitude.instance;
@@ -54,7 +57,10 @@ public class AmplitudeManager
         _placedObjectCount = 0;
 		_missplacedObjectCount = 0;
         _removedObjectCount = 0;
+        _loose = false;
 	}
+
+    // --- Event that send datas to Amplitude ---
 
     void OnSceneLoaded(SceneLoadedEvent e)
 	{
@@ -113,6 +119,7 @@ public class AmplitudeManager
 		_missplacedObjectCount = 0;
 		_removedObjectCount = 0;
 		_levelIndex = e.index;
+        _loose = false;
 
         var data = new StartLevelData();
         data.LevelIndex = e.index;
@@ -121,10 +128,63 @@ public class AmplitudeManager
 
     void OnLevelQuit(QuitLevelEvent e)
     {
-        Debug.Log("Poop");
+        if (_loose)
+            return;
+        
+        var time = (DateTime.Now - _levelStartTime).TotalSeconds;
+        var waveTime = (DateTime.Now - _waveStartTime).TotalSeconds;
+
+        var data = new QuitLevelData();
+        data.LevelIndex = _levelIndex;
+        data.PlacedObjectCount = _placedObjectCount;
+        data.RemovedObjectCount = _removedObjectCount;
+        data.Restart = e.restarted;
+        data.Time = (float)time;
+        data.Wave = _currentWave;
+        data.WaveTime = (float)waveTime;
+        _amplitude.SendEvent(QuitLevelStr, data);
     }
 
-    void OnPlaceObjectEvent(ObjectPlacedEvent e)
+	void OnFinishLevel(WinGameEvent e)
+    {
+        var time = (DateTime.Now - _levelStartTime).TotalSeconds;
+
+        var data = new FinishLevelData();
+        data.LevelIndex = _levelIndex;
+        data.MedalMoney = e.score.HaveMoneyMedal;
+        data.MedalSurface = e.score.HaveSurfaceMedal;
+        data.MedalTime = e.score.HaveTimeMedal;
+        data.PlacedObjectCount = _placedObjectCount;
+        data.RemovedObjectCount = _removedObjectCount;
+        data.Score = e.score.ScoreValue;
+        data.Time = (float)time;
+        data.ValueFireAlert = e.score.WonFireAlert;
+        data.ValueMoney = e.score.MoneyLeft;
+        data.ValueSurface = e.score.SpaceUsed;
+        data.ValueTime = e.score.AverageTime;
+        _amplitude.SendEvent(FinishLevelStr, data);
+    }
+
+    void OnLooseLevel(LooseLevelEvent e)
+    {
+        _loose = true;
+
+		var time = (DateTime.Now - _levelStartTime).TotalSeconds;
+		var waveTime = (DateTime.Now - _waveStartTime).TotalSeconds;
+
+        var data = new LooseLevelData();
+		data.LevelIndex = _levelIndex;
+		data.PlacedObjectCount = _placedObjectCount;
+		data.RemovedObjectCount = _removedObjectCount;
+		data.Time = (float)time;
+		data.Wave = _currentWave;
+		data.WaveTime = (float)waveTime;
+        _amplitude.SendEvent(LooseLevelStr, data);
+    }
+
+	// --- Stats events ---
+
+	void OnPlaceObjectEvent(ObjectPlacedEvent e)
     {
         if(!e.bought)
             _placedObjectCount++;
@@ -152,6 +212,14 @@ public class AmplitudeManager
         if (e.missplaced)
             _missplacedObjectCount++;
     }
+
+    void OnFinishWaveEvent(FinishWaveEvent e)
+    {
+        _currentWave = e.wave + 1;
+        _waveStartTime = DateTime.Now;
+    }
+
+    // --- Datas ---
 
     [Serializable]
     class StartSessionData
@@ -204,6 +272,7 @@ public class AmplitudeManager
     {
 		public int LevelIndex;
 		public int PlacedObjectCount;
+        public int RemovedObjectCount;
 		public float Time;
 		public int Wave;
 		public float WaveTime;
@@ -213,6 +282,7 @@ public class AmplitudeManager
     {
         public int LevelIndex;
         public int PlacedObjectCount;
+        public int RemovedObjectCount;
         public float Time;
         public int Wave;
         public float WaveTime;

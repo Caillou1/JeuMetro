@@ -37,7 +37,7 @@ public class MenuManager : MonoBehaviour {
     public float FireAlertUiOffset = 100;
     public float FireAlertUIMoveTime = 1;
     public float FireAlertUIWaitTime = 2;
-    public int sceneCount = 2;
+    public int levelsCount = 2;
 
     private float CurrentZoomLevel;
 
@@ -131,7 +131,7 @@ public class MenuManager : MonoBehaviour {
                 if (!ok)
                     continue;
                 
-                bool isUnlocked = ScoreManager.IsLevelunlocked(value);
+                bool isUnlocked = ScoreManager.IsLevelunlocked(value) && value <= levelsCount;
 				c.GetComponent<Button> ().interactable = isUnlocked;
 				if(!isUnlocked)
 					c.Find ("Text").GetComponent<Image> ().color = new Color (100f / 255f, 100f / 255f, 100f / 255f);
@@ -559,7 +559,7 @@ public class MenuManager : MonoBehaviour {
 			G.Sys.audioManager.PlayLevelSelected ();
 			G.Sys.tilemap.clear ();
             string sceneName = "Level" + i;
-            if (i > sceneCount)
+            if (i > levelsCount)
                 MainMenu();
 			else 
             {

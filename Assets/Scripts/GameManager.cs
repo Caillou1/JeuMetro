@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator WaitForLose() {
 		yield return new WaitUntil (() => G.Sys.travelerCount() > MaxTravelerBeforeLose);
-
+        Event<LooseLevelEvent>.Broadcast(new LooseLevelEvent());
 		G.Sys.menuManager.Lose ();
 	}
 
