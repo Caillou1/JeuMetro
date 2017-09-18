@@ -14,6 +14,7 @@ public sealed class Amplitude
 
 	public bool sendFromEditor = true;
 	public string apikey = "";
+    public string appVersion = "";
 
     public static Amplitude instance
 	{
@@ -75,6 +76,8 @@ public sealed class Amplitude
 		eventData += ", \"platform\":\"" + platform + "\"";
 		eventData += ", \"time\":" + secondsSinceEpoch.ToString();
 		eventData += ", \"session_id\":" + _sessionId;
+        if (appVersion.Length > 0)
+            eventData += ", \"app_version\":\"" + appVersion + "\"";
 		eventData += "}]";
 		Debug.Log(eventName + " " + eventData);
 

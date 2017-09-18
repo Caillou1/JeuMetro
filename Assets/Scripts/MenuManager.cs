@@ -191,7 +191,13 @@ public class MenuManager : MonoBehaviour {
 		ShopButtons [8] = ShopUI.transform.Find ("Cleaner").gameObject;
 		ShopButtons [9] = ShopUI.transform.Find ("Agent").gameObject;
 
-        MainUI.transform.Find("Version").GetComponent<Text>().text = G.Sys.Version;
+        MainUI.transform.Find("Version").GetComponent<Text>().text = G.Version;
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            var quitButton = MainUI.transform.Find("QuitButton");
+            quitButton.gameObject.SetActive(false);
+            MainUI.transform.Find("CreditsButton").position = quitButton.position;
+        }
 
 		UpdateShopUI ();
 	}

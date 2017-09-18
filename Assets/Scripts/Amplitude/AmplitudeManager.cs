@@ -30,7 +30,7 @@ public class AmplitudeManager
     int _missplacedObjectCount;
     int _levelIndex;
     int _currentWave;
-    bool _loose;
+    bool _finished;
 
 	public AmplitudeManager()
 	{
@@ -57,7 +57,8 @@ public class AmplitudeManager
         _placedObjectCount = 0;
 		_missplacedObjectCount = 0;
         _removedObjectCount = 0;
-        _loose = false;
+        _finished = false;
+        _amplitude.appVersion = G.Version;
 	}
 
     // --- Event that send datas to Amplitude ---
@@ -68,9 +69,7 @@ public class AmplitudeManager
             return;
 		_firstSceneLoaded = true; 
 
-        var data = new StartSessionData();
-		data.GameVersion = G.Sys.Version;
-		_amplitude.SendEvent(StartSessionStr, data);
+		_amplitude.SendEvent(StartSessionStr);
 	}
 
     void OnTutorialStart(StartTutorialEvent e)
@@ -119,7 +118,7 @@ public class AmplitudeManager
 		_missplacedObjectCount = 0;
 		_removedObjectCount = 0;
 		_levelIndex = e.index;
-        _loose = false;
+        _finished = false;
 
         var data = new StartLevelData();
         data.LevelIndex = e.index;
@@ -128,7 +127,7 @@ public class AmplitudeManager
 
     void OnLevelQuit(QuitLevelEvent e)
     {
-        if (_loose)
+        if (_finished)
             return;
         
         var time = (DateTime.Now - _levelStartTime).TotalSeconds;
@@ -147,6 +146,8 @@ public class AmplitudeManager
 
 	void OnFinishLevel(WinGameEvent e)
     {
+        _finished = true;
+
         var time = (DateTime.Now - _levelStartTime).TotalSeconds;
 
         var data = new FinishLevelData();
@@ -167,7 +168,7 @@ public class AmplitudeManager
 
     void OnLooseLevel(LooseLevelEvent e)
     {
-        _loose = true;
+        _finished = true;
 
 		var time = (DateTime.Now - _levelStartTime).TotalSeconds;
 		var waveTime = (DateTime.Now - _waveStartTime).TotalSeconds;
@@ -220,12 +221,6 @@ public class AmplitudeManager
     }
 
     // --- Datas ---
-
-    [Serializable]
-    class StartSessionData
-    {
-        public string GameVersion;
-    }
 
     [Serializable]
     class StartLevelData

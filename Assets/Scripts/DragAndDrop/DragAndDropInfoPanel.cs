@@ -7,8 +7,8 @@ using DG.Tweening;
 
 public class DragAndDropInfoPanel : DragAndDrop {
 
-	private GameObject WalledObject;
-	private GameObject NotWalledObject;
+	//private GameObject WalledObject;
+	//private GameObject NotWalledObject;
 
 	protected override void OnAwake ()
 	{
