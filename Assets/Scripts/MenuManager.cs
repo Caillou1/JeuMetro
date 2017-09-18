@@ -617,7 +617,7 @@ public class MenuManager : MonoBehaviour {
         var value3 = t.Find("Value3").GetComponent<Text>();
 
         leftArrow.SetActive(scoreIndex > 1);
-        rightArrow.SetActive(ScoreManager.IsLevelunlocked(scoreIndex+1));
+        rightArrow.SetActive(ScoreManager.IsLevelunlocked(scoreIndex+1) && scoreIndex < levelsCount);
 
         levelText.text = "Level " + scoreIndex;
 

@@ -104,7 +104,22 @@ public static class ScoreManager
 
     public static void ClearAllScores()
     {
-        PlayerPrefs.DeleteAll();
+        for (int level = 0; level < LevelLimit(); level++)
+        {
+            for (int index = 0; index < ScoreCount(level); index++)
+            {
+                PlayerPrefs.DeleteKey("Score" + level + "*" + index);
+				PlayerPrefs.DeleteKey("AverageTime" + level + "*" + index);
+				PlayerPrefs.DeleteKey("Money" + level + "*" + index);
+				PlayerPrefs.DeleteKey("Surface" + level + "*" + index);
+            }
+
+            PlayerPrefs.DeleteKey("AverageTime" + level);
+            PlayerPrefs.DeleteKey("Money" + level);
+            PlayerPrefs.DeleteKey("Surface" + level);
+        }
+
+        PlayerPrefs.DeleteKey("LevelLimit");
     }
 
     public static MedalData GetMedals(int level)
@@ -149,7 +164,7 @@ public static class ScoreManager
     static MedalData ReadMedals(int level)
     {
         return new MedalData(
-		PlayerPrefs.GetInt("AverageTime" + level, 0) != 0,
+		    PlayerPrefs.GetInt("AverageTime" + level, 0) != 0,
 			PlayerPrefs.GetInt("Money" + level, 0) != 0,
 			PlayerPrefs.GetInt("Surface" + level, 0) != 0);
     }
