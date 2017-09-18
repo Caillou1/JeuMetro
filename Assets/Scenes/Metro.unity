@@ -611,6 +611,10 @@ Prefab:
       propertyPath: isInForFlux
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1826326760656580, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
   m_IsPrefabParent: 0
@@ -1106,6 +1110,10 @@ Prefab:
       propertyPath: isInForFlux
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1826326760656580, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
   m_IsPrefabParent: 0
@@ -1457,6 +1465,10 @@ Prefab:
     - target: {fileID: 114638673886010524, guid: c090a8be31fc341fe862b5065a24dd6b,
         type: 2}
       propertyPath: isInForFlux
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1826326760656580, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2391,6 +2403,10 @@ Prefab:
       propertyPath: isInForFlux
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1826326760656580, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
   m_IsPrefabParent: 0
@@ -3154,6 +3170,10 @@ Prefab:
       propertyPath: isInForFlux
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1826326760656580, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
   m_IsPrefabParent: 0
@@ -3692,6 +3712,10 @@ Prefab:
     - target: {fileID: 1692554459125874, guid: 003417550dd0a4c60b1a72bb72c90d4a, type: 2}
       propertyPath: m_Name
       value: Out (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1692554459125874, guid: 003417550dd0a4c60b1a72bb72c90d4a, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 003417550dd0a4c60b1a72bb72c90d4a, type: 2}
@@ -6763,12 +6787,12 @@ Prefab:
     - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
       propertyPath: minDelay
-      value: 0.5
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
       propertyPath: maxDelay
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
@@ -6798,7 +6822,7 @@ Prefab:
     - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
       propertyPath: MaxTravelers
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114566646453279186, guid: a823d1724f5f842059c4fa1b5453df9b,
         type: 2}
@@ -6850,6 +6874,11 @@ Prefab:
         type: 2}
       propertyPath: ElevatorAttraction
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114708820167919978, guid: a823d1724f5f842059c4fa1b5453df9b,
+        type: 2}
+      propertyPath: ElevatorMaxPeople
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a823d1724f5f842059c4fa1b5453df9b, type: 2}
@@ -8646,6 +8675,10 @@ Prefab:
     - target: {fileID: 114638673886010524, guid: c090a8be31fc341fe862b5065a24dd6b,
         type: 2}
       propertyPath: isInForFlux
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1826326760656580, guid: c090a8be31fc341fe862b5065a24dd6b, type: 2}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -890,6 +890,7 @@ public class Tilemap
         int floor = Mathf.RoundToInt(pos.y);
         var potentialElevators = elevatorsAtFloor(floor);
         List<ElevatorTile> elevators = new List<ElevatorTile>();
+        List<ElevatorTile> possibleElevators = new List<ElevatorTile>();
 
         NavMeshPath path = new NavMeshPath();
         foreach(var e in potentialElevators)
@@ -912,6 +913,8 @@ public class Tilemap
                     continue;
             }
 
+            possibleElevators.Add(e);
+
 			bool pathValid = true;
 			foreach (var c in path.corners)
 			{
@@ -925,6 +928,9 @@ public class Tilemap
 				continue;
             elevators.Add(e);
         }
+
+        /*if (elevators.Count() == 0)
+            return possibleElevators;*/
 
         return elevators;
     }
