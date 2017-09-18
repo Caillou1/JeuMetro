@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class AmplitudeManager
 {
-    private const string ApiKey = "5df5e4c504c6f123761f6348e28427db";
+    private const string ApiKeyTests = "5df5e4c504c6f123761f6348e28427db";
+    private const string ApiKey = "d3eb320c4e366e3b6eee24d28bfe7ce8";
 
     private const string StartSessionStr = "StartSession";
     private const string StartTutorialStr = "StartTutorial";
@@ -50,7 +51,17 @@ public class AmplitudeManager
 		_subscriberList.Subscribe();
 
         _amplitude = Amplitude.instance;
-        _amplitude.apikey = ApiKey;
+		switch (Application.platform)
+		{
+			case RuntimePlatform.LinuxEditor:
+			case RuntimePlatform.OSXEditor:
+			case RuntimePlatform.WindowsEditor:
+				_amplitude.apikey = ApiKeyTests;
+                break;
+			default:
+				_amplitude.apikey = ApiKey;
+				break;
+		}
 
         _levelStartTime = DateTime.Now;
 		_levelIndex = 0; 
