@@ -39,11 +39,12 @@ public class WaitForElevatorAction : AEntityAction<AEntity>
 
 	protected override void End ()
 	{
-		if (canEnd) {
+		if (canEnd) 
+        {
             elevatorTile.peopleWaiting--;
             elevatorTile.AddPersonInElevator ();
             entity.path.addAction (new GetInElevatorAction (entity, new Vector3(elevatorTile.transform.position.x, entity.transform.position.y, elevatorTile.transform.position.z) 
-                                                                    + Orienter.orientationToDir3(Orienter.angleToOrientation(elevatorTile.transform.rotation.eulerAngles.y)), elevatorTile, destinationFloor, priority - 1));
+                                                                    + Orienter.orientationToDir3(Orienter.angleToOrientation(elevatorTile.transform.rotation.eulerAngles.y)), elevatorTile, destinationFloor, 1));
 		}
 	}
 }

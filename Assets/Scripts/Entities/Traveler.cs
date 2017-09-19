@@ -161,35 +161,49 @@ public class Traveler : AEntity
 		checkStairs ();
 	}
 
-	void checkElevators() {
-		if (CanLookForElevator && !path.haveAction (ActionType.WAIT_ELEVATOR)) {
-			var possiblePath = G.Sys.tilemap.GetElevatorsToFloor(transform.position, path.destnation);
-			if (possiblePath.Count > 0) {
-				bool CanTakeElevator = false;
+	void checkElevators() 
+    {
+		if (CanLookForElevator && !path.haveAction (ActionType.WAIT_ELEVATOR)) 
+        {
+			bool CanTakeElevator = false;
 
-				if (stats.Type == TravelerType.WHEELCHAIR) { // Si chaise roulante
+			if (stats.Type == TravelerType.WHEELCHAIR)
+			{ // Si chaise roulante
+				CanTakeElevator = true;
+			}
+			else if (Mathf.RoundToInt((target - transform.position).y) >= 1 && (new BernoulliDistribution(G.Sys.constants.ElevatorAttraction).Next(new DefaultRandomGenerator())))
+			{ // Si il y a un escalier calcule proba
+				CanTakeElevator = true;
+			}
+			else
+			{ // Si pas d'autres choix
+				NavMeshQueryFilter filter = new NavMeshQueryFilter();
+				filter.agentTypeID = agent.agentTypeID;
+				filter.areaMask = NavMesh.AllAreas;
+				NavMesh.CalculatePath(transform.position, path.destnation, filter, navmeshPath);
+				if (navmeshPath.status != NavMeshPathStatus.PathComplete)
 					CanTakeElevator = true;
-                } else if (Mathf.RoundToInt((target - transform.position).y) >= 1 && (new BernoulliDistribution (G.Sys.constants.ElevatorAttraction).Next (new DefaultRandomGenerator ()))) { // Si il y a un escalier calcule proba
-					CanTakeElevator = true;
-				} else { // Si pas d'autres choix
-                    NavMesh.CalculatePath (transform.position, path.destnation, NavMesh.AllAreas, navmeshPath);
-					if (navmeshPath.status != NavMeshPathStatus.PathComplete)
-						CanTakeElevator = true;
-				}
-                if (stats.Type != TravelerType.WHEELCHAIR && G.Sys.gameManager.FireAlert)
-                    CanTakeElevator = false;
-
-				if (CanTakeElevator) {
-					for (int i = 0; i < possiblePath.Count; i++) {
+			}
+			if (stats.Type != TravelerType.WHEELCHAIR && G.Sys.gameManager.FireAlert)
+				CanTakeElevator = false;
+            if (CanTakeElevator)
+			{
+    			var possiblePath = G.Sys.tilemap.GetElevatorsToFloor(transform.position, path.destnation);
+    			if (possiblePath.Count > 0) 
+                {
+				
+					for (int i = 0; i < possiblePath.Count; i++) 
+                    {
 						Vector3 pos = (i == 0) ? possiblePath [i].Second.GetWaitZone (Mathf.RoundToInt (transform.position.y)) : possiblePath [i].Second.GetWaitZone (possiblePath [i - 1].First);
 						ElevatorTile tile = possiblePath [i].Second;
                         if (stats.Type != TravelerType.WHEELCHAIR && tile.peopleWaiting > G.Sys.constants.ElevatorMaxPeople)
                             continue;
 						int floor = ((i + 1) < possiblePath.Count) ? Mathf.RoundToInt (possiblePath [i + 1].Second.GetWaitZone (possiblePath [i].First).y) : Mathf.RoundToInt (path.destnation.y);
-						int priority = (possiblePath.Count - i) * 2;
-						path.addAction (new WaitForElevatorAction (this, pos, tile, floor, priority, stats.Type != TravelerType.WHEELCHAIR));
+						path.addAction (new WaitForElevatorAction (this, pos, tile, floor, 0, stats.Type != TravelerType.WHEELCHAIR));
 					}
-				} else {
+				} 
+                else 
+                {
 					CanLookForElevator = false;
 					StartCoroutine(DelayedElevator());
 				}
