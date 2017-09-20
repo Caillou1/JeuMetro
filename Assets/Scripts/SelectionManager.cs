@@ -236,7 +236,7 @@ public class SelectionManager : MonoBehaviour {
 			Hide (false);
 		}
 		if (ent != null) {
-            var agent = obj.GetComponent<Agent>();
+            var agent = ent.GetComponent<Agent>();
             if (agent == null)
                 Event<AgentRemovedEvent>.Broadcast(new AgentRemovedEvent(ent.transform.position, AgentType.CLEANER, ent.IsBought));
             else Event<AgentRemovedEvent>.Broadcast(new AgentRemovedEvent(ent.transform.position, AgentType.AGENT, ent.IsBought));
