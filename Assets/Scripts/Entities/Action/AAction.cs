@@ -28,6 +28,7 @@ public abstract class AAction
 	{
 		type = t;
 		pos = p;
+        priority = _priority;
 	}
 
 	protected virtual bool Start()

@@ -199,7 +199,7 @@ public class Traveler : AEntity
                         if (stats.Type != TravelerType.WHEELCHAIR && tile.peopleWaiting > G.Sys.constants.ElevatorMaxPeople)
                             continue;
 						int floor = ((i + 1) < possiblePath.Count) ? Mathf.RoundToInt (possiblePath [i + 1].Second.GetWaitZone (possiblePath [i].First).y) : Mathf.RoundToInt (path.destnation.y);
-						path.addAction (new WaitForElevatorAction (this, pos, tile, floor, 0, stats.Type != TravelerType.WHEELCHAIR));
+						path.addAction (new WaitForElevatorAction (this, pos, tile, floor, stats.Type != TravelerType.WHEELCHAIR));
 					}
 				} 
                 else 

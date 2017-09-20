@@ -7,7 +7,7 @@ public sealed class G
 {
     private static volatile G _instance;
 
-    public static readonly string Version = "Indev 2";
+    public static readonly string Version = "Indev 3";
 
 	public Tilemap tilemap = new Tilemap();
     AmplitudeManager amplitudeManager = new AmplitudeManager();

@@ -8,7 +8,7 @@ public class WaitForElevatorAction : AEntityAction<AEntity>
 	bool checkElevator;
 	bool canEnd;
 
-	public WaitForElevatorAction (AEntity t, Vector3 pos, ElevatorTile tile, int destination, int priority, bool check) : base(t, ActionType.WAIT_ELEVATOR, pos, priority)
+	public WaitForElevatorAction (AEntity t, Vector3 pos, ElevatorTile tile, int destination, bool check) : base(t, ActionType.WAIT_ELEVATOR, pos)
 	{
 		elevatorTile = tile;
 		destinationFloor = destination;
@@ -44,7 +44,7 @@ public class WaitForElevatorAction : AEntityAction<AEntity>
             elevatorTile.peopleWaiting--;
             elevatorTile.AddPersonInElevator ();
             entity.path.addAction (new GetInElevatorAction (entity, new Vector3(elevatorTile.transform.position.x, entity.transform.position.y, elevatorTile.transform.position.z) 
-                                                                    + Orienter.orientationToDir3(Orienter.angleToOrientation(elevatorTile.transform.rotation.eulerAngles.y)), elevatorTile, destinationFloor, 1));
+                                                                    + Orienter.orientationToDir3(Orienter.angleToOrientation(elevatorTile.transform.rotation.eulerAngles.y)), elevatorTile, destinationFloor));
 		}
 	}
 }

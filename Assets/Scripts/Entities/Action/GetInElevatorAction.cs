@@ -8,8 +8,8 @@ public class GetInElevatorAction : AEntityAction<AEntity>
 	int destinationFloor;
 	bool wait = false;
 
-	public GetInElevatorAction (AEntity t, Vector3 pos, ElevatorTile tile, int destination, int priority) : base(t, ActionType.WAIT_ELEVATOR, pos, priority)
-	{
+	public GetInElevatorAction (AEntity t, Vector3 pos, ElevatorTile tile, int destination) : base(t, ActionType.WAIT_ELEVATOR, pos, 1)
+    {
 		elevatorTile = tile;
 		destinationFloor = destination;
 	}
