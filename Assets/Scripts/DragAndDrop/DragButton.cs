@@ -4,14 +4,17 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
+public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler {
 	public GameObject ObjectToSpawn;
 
 	private GameObject spawnedObject;
 	private bool CanEndDrag;
+    private GameObject hoveredObject;
 
 	void Awake() {
 		transform.Find ("Price").GetComponent<Text> ().text = ObjectToSpawn.GetComponent<DragAndDrop> ().Price.ToString();
+        hoveredObject = transform.Find("BackText").gameObject;
+        hoveredObject.SetActive(false);
 	}
 
 	void Spawn() {
@@ -61,4 +64,14 @@ public class DragButton : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 			}
 		}
 	}
+
+    void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
+    {
+        hoveredObject.SetActive(true);
+    }
+
+    void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
+    {
+        hoveredObject.SetActive(false);
+    }
 }
