@@ -34,8 +34,8 @@ public class CameraController : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-        const float scrollZoom = 0.3f;
-        const float touchZoom = 0.1f;
+        const float scrollZoom = -0.3f;
+        const float touchZoom = -0.1f;
 
 		if (Input.touchCount == 0) {
 			float scroll = Input.GetAxisRaw ("Mouse ScrollWheel");
