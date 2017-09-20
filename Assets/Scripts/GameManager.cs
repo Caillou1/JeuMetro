@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
 
 	void Start ()
     {
+        Event<InitializePodotactileEvent>.Broadcast(new InitializePodotactileEvent());
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
 		tf = transform;
 		AddMoney(StartingMoney);
@@ -66,7 +67,7 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator WaitForLose() {
 		yield return new WaitUntil (() => G.Sys.travelerCount() > MaxTravelerBeforeLose);
-
+        Event<LooseLevelEvent>.Broadcast(new LooseLevelEvent());
 		G.Sys.menuManager.Lose ();
 	}
 

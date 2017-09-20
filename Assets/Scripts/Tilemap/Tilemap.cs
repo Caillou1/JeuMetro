@@ -194,6 +194,8 @@ public class Tilemap
 		specialTiles.Clear ();
         currentUsedSpace = 0;
         maxUsedSpace = 0;
+        _elevators.Clear();
+        G.Sys.clear();
 	}
 
 	/// <summary>
@@ -363,6 +365,19 @@ public class Tilemap
 		return null;
 	}
 
+	public ATile GetTileOfTypeAt(Vector3i pos, TileID id)
+	{
+		var tiles = at(pos);
+		foreach (var t in tiles)
+		{
+			if (t.type == id)
+			{
+				return t;
+			}
+		}
+		return null;
+	}
+
 	/// <summary>
 	/// Retourne la tile spéciale la plus proche du type spécifiée.
 	/// La seconde valeur de la paire est à faux si aucune tile n'a été trouvée.
@@ -459,7 +474,7 @@ public class Tilemap
 
 	public bool IsEmptyGround(Vector3 pos)
 	{
-		var validTiles = new TileID[]{ TileID.GROUND, TileID.PODOTACTILE, TileID.WASTE };
+        var validTiles = new TileID[]{ TileID.GROUND, TileID.PODOTACTILE, TileID.WASTE, TileID.OUT };
 
 		var tiles = at (pos);
 		if (tiles.Count == 0)
@@ -486,200 +501,250 @@ public class Tilemap
 		return true;
 	}
 
-	private Dictionary<int, Dictionary<int, List<List<Pair<int, ElevatorTile>>>>> elevatorsConnections;
+    private class ElevatorConnexionsInfos
+    {
+        public ElevatorConnexionsInfos(ElevatorTile _tile)
+        {
+            tile = _tile;
+            exits = new Dictionary<int, List<ElevatorTile>>();
+        }
 
-	public void CreateElevatorsConnections() {
-		//System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch ();
-		//watch.Start ();
+        public ElevatorTile tile;
+        public Dictionary<int, List<ElevatorTile>> exits;
+    }
 
-		//INITIALISATION
-		elevatorsConnections = new Dictionary<int, Dictionary<int, List<List<Pair<int, ElevatorTile>>>>>();
-		var positions = getSpecialTiles (TileID.ELEVATOR);
-		List<int> Floors = new List<int> ();
+    private class VisitedElevators
+    {
+        public VisitedElevators(int _parent, ElevatorTile _child, int _floor)
+        {
+            parent = _parent;
+            child = _child;
+            floor = _floor;
+        }
 
-		//Détermine l'étage min et max
-		foreach (var pos in positions) {
-			var fl = Mathf.RoundToInt (pos.y);
-			if (!Floors.Contains (fl))
-				Floors.Add (fl);
-		}
+        public int parent;
+        public ElevatorTile child;
+        public int floor;
+    }
 
-		//Parcourt les étages du min au max pour établir les chemins possibles
-		foreach (var floor in Floors) {
-			var posAtFloor = GetElevatorsPosAtFloor (floor);
+    private List<ElevatorConnexionsInfos> elevatorConnections2 = new List<ElevatorConnexionsInfos>();
+    private List<ElevatorTile> _elevators = new List<ElevatorTile>();
 
-			if (posAtFloor.Count > 0) {
-				elevatorsConnections.Add (floor, new Dictionary<int, List<List<Pair<int, ElevatorTile>>>> ());
-				var elevatorsAtFloor = new List<ElevatorTile> ();
+    public void RegisterElevator(ElevatorTile t)
+    {
+        if (!_elevators.Contains(t))
+            _elevators.Add(t);
+    }
 
-				//Référence tous les ascenseurs à cet étage
-				foreach (var pos in posAtFloor) {
-					var et = GetTileOfTypeAt (pos, TileID.ELEVATOR) as ElevatorTile;
-					if (!elevatorsAtFloor.Contains (et)) {
-						elevatorsAtFloor.Add (et);
-					}
-				}
+    public bool UnregisterElevator(ElevatorTile t)
+    {
+        return _elevators.Remove(t);
+    }
 
-				foreach(var potentialFloor in Floors) {
-					elevatorsConnections [floor].Add (potentialFloor, null);
-				}
+    public void CreateElevatorsConnections()
+    {
+        elevatorConnections2.Clear();
 
-				//Parcourt les ascenseurs pour ajouter les étages desservis
-				foreach (var elevator in elevatorsAtFloor) {
-					foreach (var f in elevator.GetFloors()) {
-						if (floor != f) {
-							if (elevatorsConnections [floor] [f] == null) {
-								elevatorsConnections [floor] [f] = new List<List<Pair<int, ElevatorTile>>> ();
-							}
+		NavMeshPath path = new NavMeshPath(); 
+        NavMeshQueryFilter filter = new NavMeshQueryFilter();
+		filter.agentTypeID = NavMesh.GetSettingsByIndex(2).agentTypeID; //weelchair.
+		filter.areaMask = NavMesh.AllAreas;
 
-							elevatorsConnections [floor] [f].Add (new List<Pair<int, ElevatorTile>> ());
-							var pair = new Pair<int, ElevatorTile> ();
-							pair.First = f;
-							pair.Second = elevator;
-							elevatorsConnections [floor] [f].Last ().Add (pair);
-						}
-					}
-				}
+        foreach(var tile in _elevators)
+        {
+            var connexionsInfos = new ElevatorConnexionsInfos(tile);
+            elevatorConnections2.Add(connexionsInfos);
+
+            foreach (var floor in tile.GetFloors())
+            {
+                List<ElevatorTile> exits = new List<ElevatorTile>();
+                connexionsInfos.exits.Add(floor, exits);
+
+                foreach(var tile2 in _elevators)
+                {
+                    if (tile == tile2)
+                        continue;
+
+                    if (!tile2.FloorExists(floor))
+                        continue;
+
+                    var startPos = tile.GetWaitZone(floor);
+                    var endPos = tile2.GetWaitZone(floor);
+
+
+                    NavMesh.CalculatePath(startPos, endPos, filter, path);
+                    if (path.status == NavMeshPathStatus.PathInvalid)
+                        continue;
+                    if (path.status == NavMeshPathStatus.PathPartial && (path.corners[path.corners.Count()-1] - endPos).magnitude > 0.2f)
+                        continue;
+                    
+                    exits.Add(tile2);
+                }
+            }
+        }
+    }
+
+    public List<Pair<int, ElevatorTile>> GetElevatorsToFloor(Vector3 Origin, Vector3 Destination)
+    {
+        var returnList = new List<Pair<int, ElevatorTile>>();
+        var elevatorsIn = elevatorsConectedTo(Origin);
+        var elevatorsOut = elevatorsConectedTo(Destination);
+
+        if (elevatorsIn.Count() == 0 || elevatorsOut.Count() == 0)
+            return returnList;
+        
+        foreach (var eIn in elevatorsIn)
+        {
+            foreach (var eOut in elevatorsOut)
+            {
+                if (eIn == eOut)
+                {
+                    if (Mathf.RoundToInt(Origin.y) != Mathf.RoundToInt(Destination.y))
+                        returnList.Add(new Pair<int, ElevatorTile>(Mathf.RoundToInt(Destination.y), eIn));
+                    return returnList;
+                }
+            }
+        }
+
+        var visited = new List<VisitedElevators>();
+        var toVisit = new List<int>();
+
+        foreach(var e in elevatorsIn)
+        {
+            toVisit.Add(visited.Count());
+            visited.Add(new VisitedElevators(-1, e, Mathf.RoundToInt(Origin.y)));
+        }
+        bool found = false;
+
+        while (!found && toVisit.Count() > 0)
+        {
+            var id = toVisit.First();
+            toVisit.RemoveAt(0);
+
+            var e = visited[id];
+            var connexions = connexionsInfosOf(e.child);
+            if (connexions != null)
+            {
+                foreach (var c in connexions.exits)
+                {
+                    if (c.Key == e.floor)
+                        continue;
+                    foreach (var item in c.Value)
+                    {
+                        if (isVisited(item, visited))
+                            continue;
+                        toVisit.Add(visited.Count());
+                        visited.Add(new VisitedElevators(id, item, c.Key));
+                        if (isOn(item, elevatorsOut))
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found)
+                        break;
+                }
+            }
+        }
+
+        if (!found)
+            return returnList;
+        
+        int currentIndex = visited.Count()-1;
+        int currentFloor = Mathf.RoundToInt(Destination.y);
+
+        while(currentIndex >= 0)
+        {
+            returnList.Insert(0, new Pair<int, ElevatorTile>(currentFloor, visited[currentIndex].child));
+            currentFloor = visited[currentIndex].floor;
+            currentIndex = visited[currentIndex].parent;
+        }
+
+        return returnList;
+    }
+
+    bool isOn(ElevatorTile tile, List<ElevatorTile> list)
+    {
+        foreach (var t in list)
+            if (tile == t)
+                return true;
+        return false;
+    }
+
+    bool isVisited(ElevatorTile tile, List<VisitedElevators> list)
+    {
+        foreach (var t in list)
+            if (t.parent > 0 && tile == list[t.parent].child)
+                return true;
+        return false;
+    }
+
+    List<ElevatorTile> elevatorsAtFloor(int floor)
+    {
+        List<ElevatorTile> elevators = new List<ElevatorTile>();
+
+        foreach (var e in _elevators)
+            if (e.FloorExists(floor))
+                elevators.Add(e);
+        return elevators;
+    }
+
+    List<ElevatorTile> elevatorsConectedTo(Vector3 pos)
+    {
+        int floor = Mathf.RoundToInt(pos.y);
+        var potentialElevators = elevatorsAtFloor(floor);
+        List<ElevatorTile> elevators = new List<ElevatorTile>();
+
+        NavMeshPath path = new NavMeshPath();
+        foreach(var e in potentialElevators)
+        {
+			NavMeshQueryFilter filter = new NavMeshQueryFilter();
+			filter.agentTypeID = NavMesh.GetSettingsByIndex(2).agentTypeID; //weelchair.
+            filter.areaMask = NavMesh.AllAreas;
+
+            NavMesh.CalculatePath(e.GetWaitZone(floor), pos, filter, path);
+
+            if (path.status == NavMeshPathStatus.PathInvalid)
+				continue;
+			if (path.status == NavMeshPathStatus.PathPartial && (path.corners[path.corners.Count() - 1] - pos).magnitude > 0.2f)
+				continue;
+            
+			for (int i = 0; i < path.corners.Count() - 1; i++)
+			{
+				Debug.DrawLine(path.corners[i], path.corners[i + 1], Color.green, 1);
 			}
-		}
+			Debug.DrawRay(pos, Vector3.up, Color.red, 1);
+			Debug.DrawRay(path.corners[path.corners.Count() - 1], Vector3.up, Color.blue, 1);
 
-		//Parcourt des chemins possibles pour ajouter les ascenseurs intermédiaires
-		bool HasChanged = true;
+            if(path.status == NavMeshPathStatus.PathPartial)
+            {
+                if (path.corners.Count() == 0 || (path.corners[path.corners.Count()-1] - pos).magnitude > 0.2f)
+                    continue;
+            }
 
-		while (HasChanged) {
-			HasChanged = false;
+            elevators.Add(e);
+        }
 
-			foreach (var originFloorConnections in elevatorsConnections.ToList()) {
-				foreach (var connectedFloor in originFloorConnections.Value.ToList()) {
-					if (connectedFloor.Value != null && connectedFloor.Value.Count > 0) {
-						foreach (var connectedFloorConnections in elevatorsConnections[connectedFloor.Key].ToList()) {
-							if (connectedFloorConnections.Value != null && connectedFloorConnections.Value.Count > 0) {
-								if (originFloorConnections.Value [connectedFloorConnections.Key] == null || originFloorConnections.Value [connectedFloorConnections.Key].Count == 0) {
-									List<List<Pair<int, ElevatorTile>>> list = new List<List<Pair<int, ElevatorTile>>> ();
 
-									foreach (var el1 in connectedFloor.Value.ToList()) {
-										foreach (var el2 in connectedFloorConnections.Value.ToList()) {
-											var pos1 = el1.Last ().Second.GetWaitZone (el1.Last ().First);
-											var pos2 = el2.First ().Second.GetWaitZone (el1.Last ().First);
+        return elevators;
+    }
 
-											if (IsReachable (pos1, pos2)) {
-												var l = el1.Concat (el2).ToList ();
-												if (l [0].Second != l.Last ().Second) {
-													list.Add (l);
-													HasChanged = true;
-												}
-											}
-										}
-									}
-
-									originFloorConnections.Value [connectedFloorConnections.Key] = list;
-								} else {
-									List<List<Pair<int, ElevatorTile>>> list = new List<List<Pair<int, ElevatorTile>>> ();
-
-									foreach (var el1 in connectedFloor.Value.ToList()) {
-										foreach (var el2 in connectedFloorConnections.Value.ToList()) {
-											var pos1 = el1.Last ().Second.GetWaitZone (el1.Last ().First);
-											var pos2 = el2.First ().Second.GetWaitZone (el1.Last ().First);
-
-											if (IsReachable (pos1, pos2)) {
-												var l = el1.Concat (el2).ToList ();
-												if (l [0].Second != l.Last ().Second) {
-													bool canAdd = true;
-
-													foreach(var path in originFloorConnections.Value[l.Last().First]) {
-														var firstO = l.First ().Second.GetWaitZone (originFloorConnections.Key);
-														var firstD = path.First ().Second.GetWaitZone (originFloorConnections.Key);
-														var lastO = l.Last ().Second.GetWaitZone (l.Last ().First);
-														var lastD = path.Last ().Second.GetWaitZone (l.Last ().First);
-
-														if (IsReachable (firstO, firstD) && IsReachable (lastO, lastD)) {
-															canAdd = false;
-														}
-													}
-
-													if (canAdd) {
-														foreach (var pair in l) {
-															if(l.Exists(e => {
-																return (pair != e && e.Second == pair.Second);
-															})) {
-																canAdd = false;
-															}
-														}
-
-														if (canAdd) {
-															list.Add (l);
-															HasChanged = true;
-														}
-													}
-												}
-											}
-										}
-									}
-
-									originFloorConnections.Value [connectedFloorConnections.Key] = originFloorConnections.Value [connectedFloorConnections.Key].Concat (list).ToList ();
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		//ShowConnections ();
-		//Debug.Log ("CreateElevatorsConnections execution time : " + watch.ElapsedMilliseconds + " ms");
-		//watch.Stop ();
-	}
-
-	private void ShowConnections() {
-		foreach (var a in elevatorsConnections) {
-			int fr = a.Key;
-			foreach (var b in a.Value) {
-				int to = b.Key;
-				foreach (var c in b.Value) {
-					string str = "From " + fr + " to " + to + " : ";
-					foreach (var d in c) {
-						str += "(" + d.First + "," + d.Second.transform.name + ") - ";
-					}
-					Debug.Log (str);
-				}
-			}
-		}
-	}
-
-	public List<Pair<int, ElevatorTile>> GetElevatorsToFloor(Vector3 Origin, Vector3 Destination) {
-		//System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch ();
-		//watch.Start ();
-
-		var list = new List<Pair<int, ElevatorTile>> ();
-
-		if (elevatorsConnections != null && elevatorsConnections.ContainsKey (Mathf.RoundToInt (Origin.y)) && elevatorsConnections [Mathf.RoundToInt (Origin.y)].ContainsKey (Mathf.RoundToInt (Destination.y))) {
-			var potentialList = elevatorsConnections [Mathf.RoundToInt (Origin.y)] [Mathf.RoundToInt (Destination.y)];
-
-			foreach (var path in potentialList) {
-				Vector3 o, d;
-				d = path [0].Second.transform.position;
-				d.y = Origin.y;
-
-				o = path.Last ().Second.transform.position;
-				o.y = Destination.y;
-
-				if (IsReachable (Origin, d) && IsReachable (o, Destination)) {
-					if (list.Count == 0 || Vector3.Distance (Origin, d) < Vector3.Distance (Origin, path.First ().Second.GetWaitZone (Mathf.RoundToInt (Origin.y)))) {
-						list = path;
-					}
-				}
-			}
-		}
-
-		//Debug.Log ("GetElevatorsToFloor execution time : " + watch.ElapsedMilliseconds + " ms");
-		//watch.Stop ();
-
-		return list;
-	}
+    ElevatorConnexionsInfos connexionsInfosOf(ElevatorTile tile)
+    {
+        foreach (var c in elevatorConnections2)
+            if (c.tile == tile)
+                return c;
+        return null;
+    }
 
 	private bool IsReachable(Vector3 origin, Vector3 destination) {
 		NavMeshPath path = new NavMeshPath();
-		if (NavMesh.CalculatePath (origin, destination, NavMesh.AllAreas, path)) {
+
+        NavMeshQueryFilter filter = new NavMeshQueryFilter();
+        filter.agentTypeID = NavMesh.GetSettingsByIndex(2).agentTypeID; //weelchair.
+        filter.areaMask = NavMesh.GetSettingsByIndex(2).agentTypeID;
+
+		if (NavMesh.CalculatePath (origin, destination, filter, path)) {
 			foreach (var c in path.corners) {
 				if (Mathf.RoundToInt (c.y) != Mathf.RoundToInt (origin.y)) {
 					return false;

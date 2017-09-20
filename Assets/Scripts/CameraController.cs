@@ -30,15 +30,19 @@ public class CameraController : MonoBehaviour {
 		canSelect = true;
 		CanDrag = true;
 		IsSelecting = false;
+        G.Sys.menuManager.Zoom(1);
 	}
 
 	void LateUpdate() {
+        const float scrollZoom = 0.3f;
+        const float touchZoom = 0.1f;
+
 		if (Input.touchCount == 0) {
 			float scroll = Input.GetAxisRaw ("Mouse ScrollWheel");
 			if (scroll > 0) {
-				G.Sys.menuManager.Zoom (7.5f);
+				G.Sys.menuManager.Zoom (scrollZoom);
 			} else if (scroll < 0) {
-				G.Sys.menuManager.Zoom (-7.5f);
+				G.Sys.menuManager.Zoom (-scrollZoom);
 			}
 		}
 
@@ -59,9 +63,9 @@ public class CameraController : MonoBehaviour {
 					StopCoroutine (PinchingCoroutine);
 				pinching = true;
 				if (deltaMagnitudeDiff < 0f) {
-					G.Sys.menuManager.Zoom (2f);
+					G.Sys.menuManager.Zoom (touchZoom);
 				} else if (deltaMagnitudeDiff > 0f) {
-					G.Sys.menuManager.Zoom (-2f);
+					G.Sys.menuManager.Zoom (-touchZoom);
 				}
 			}
 		} else {
@@ -90,6 +94,7 @@ public class CameraController : MonoBehaviour {
 					if(SelectCoroutine != null)
 						StopCoroutine (SelectCoroutine);
 				}
+
 				var bounds = G.Sys.tilemap.GlobalBounds ();
 
 				var originRay = G.Sys.MainCamera.ScreenPointToRay (dragOrigin);

@@ -7,9 +7,6 @@ using DG.Tweening;
 
 public class DragAndDropSpeaker : DragAndDrop {
 
-	private GameObject WalledObject;
-	private GameObject NotWalledObject;
-
 	protected override void OnAwake ()
 	{
 		Space = 1;
@@ -54,12 +51,14 @@ public class DragAndDropSpeaker : DragAndDrop {
 		}
 	}
 
-	protected override void SendEvent() {
+	protected override void SendEvent(bool wasBought) {
 		var list = new List<Vector3> ();
 
 		list.Add (tf.position);
 
-		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+		var tile = tf.GetComponent<ATile>();
+		if (tile != null)
+            Event<ObjectPlacedEvent>.Broadcast(new ObjectPlacedEvent(list, tile.type, wasBought));
 	}
 
 	protected override void OnBuy ()

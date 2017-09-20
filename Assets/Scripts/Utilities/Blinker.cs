@@ -16,17 +16,13 @@ public class Blinker : MonoBehaviour {
 		Blink ();
 	}
 
-	void Blink() {
-		mat.color = new Color (mat.color.r, mat.color.g, mat.color.b, AlphaStart);
-		DOVirtual.Float (AlphaStart, AlphaEnd, BlinkTime / 2f, (float x) => {
-			mat.color = new Color (mat.color.r, mat.color.g, mat.color.b, x);
-		}).OnComplete(() => { 
-			DOVirtual.Float (AlphaEnd, AlphaStart, BlinkTime / 2f, (float x) => {
-				mat.color = new Color (mat.color.r, mat.color.g, mat.color.b, x);
-			}).OnComplete(() => { 
-				Blink();
-			});
-		});
+    void Blink()
+    {
+        Color c = mat.color;
+        DOVirtual.Float(AlphaStart, AlphaEnd, BlinkTime / 2.0f, (float x) =>
+        {
+            mat.color = new Color(c.r, c.g, c.b, x);
+        }).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InCubic);
 	}
 
 	void OnDestroy() {

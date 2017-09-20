@@ -7,7 +7,10 @@ public sealed class G
 {
     private static volatile G _instance;
 
+    public static readonly string Version = "Indev 3";
+
 	public Tilemap tilemap = new Tilemap();
+    AmplitudeManager amplitudeManager = new AmplitudeManager();
     public int levelIndex = 0;
 	private List<Traveler> travelers = new List<Traveler> ();
     private List<Traveler> falseTravelers = new List<Traveler>();
@@ -196,6 +199,8 @@ public sealed class G
 		agents.Clear ();
 		cleaners.Clear ();
 		metros.Clear ();
+        if(disposablesCount != null)
+            disposablesCount.Clear();
 	}
 
 	public void AddDisposable(TileID id) {

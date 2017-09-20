@@ -21,6 +21,7 @@ public class ElevatorTile : ATile
     private Dictionary<int, Pair<Transform, Transform>> doors = new Dictionary<int, Pair<Transform, Transform>>();
 	private int peopleInElevator;
     private List<Pair<GameObject, int>> travelers = new List<Pair<GameObject, int>>();
+    public int peopleWaiting = 0;
 
 	protected override void Awake()
 	{
@@ -29,13 +30,24 @@ public class ElevatorTile : ATile
 		type = TileID.ELEVATOR;
 
 		FloorsToVisit = new List<int> ();
-		Floors = new int[tf.childCount];
+
+        List<Transform> validFloors = new List<Transform>();
+        for (int i = 0; i < tf.childCount; i++)
+        {
+			var fTf = tf.GetChild(i);
+			if (!fTf.gameObject.name.StartsWith("Floor", StringComparison.Ordinal))
+				continue;
+            validFloors.Add(fTf);
+        }
+
+		Floors = new int[validFloors.Count()];
 		WaitZones = new Dictionary<int, Vector3> ();
 
-		for (int i = 0; i < tf.childCount; i++) {
-			var fTf = tf.GetChild (i);
+        for (int i = 0; i < validFloors.Count(); i++)
+        {
+            var fTf = validFloors[i];
 
-			Floors [i] = Mathf.RoundToInt (fTf.position.y);
+            Floors [i] = Mathf.RoundToInt (fTf.position.y);
 
             var fDir = Orienter.orientationToDir3(Orienter.angleToOrientation(fTf.rotation.eulerAngles.y+90)) * 1.5f;
 			WaitZones.Add (Floors [i], fTf.position - fDir);
@@ -52,6 +64,7 @@ public class ElevatorTile : ATile
 			G.Sys.tilemap.addSpecialTile (TileID.ELEVATOR, pos + dir + new Vector3 (0, f, 0));
 			G.Sys.tilemap.addSpecialTile (TileID.ELEVATOR, pos + new Vector3 (0, f, 0));
 		}
+        G.Sys.tilemap.RegisterElevator(this);
 
         CurrentFloor = WaitZones.First().Key;
 
@@ -72,6 +85,8 @@ public class ElevatorTile : ATile
 			G.Sys.tilemap.delSpecialTile (TileID.ELEVATOR, pos + dir + new Vector3 (0, f, 0));
 			G.Sys.tilemap.delSpecialTile (TileID.ELEVATOR, pos + new Vector3 (0, f, 0));
 		}
+
+        G.Sys.tilemap.UnregisterElevator(this);
 
 		StopAllCoroutines ();
 	}
@@ -106,7 +121,10 @@ public class ElevatorTile : ATile
 	IEnumerator ElevatorRoutine() {
 		while (true) {
 			if (FloorsToVisit.Count == 0) {
-				yield return new WaitForEndOfFrame ();
+                if (travelers.Count() == 0)
+                    yield return new WaitForEndOfFrame();
+                else FloorsToVisit.Add(travelers[0].Second);
+
 			} else {
                 closeDoors(CurrentFloor);
 				float time = G.Sys.constants.ElevatorComeTime * Mathf.Abs (CurrentFloor - FloorsToVisit [0]) / 2f;

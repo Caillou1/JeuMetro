@@ -7,8 +7,8 @@ using DG.Tweening;
 
 public class DragAndDropInfoPanel : DragAndDrop {
 
-	private GameObject WalledObject;
-	private GameObject NotWalledObject;
+	//private GameObject WalledObject;
+	//private GameObject NotWalledObject;
 
 	protected override void OnAwake ()
 	{
@@ -54,12 +54,14 @@ public class DragAndDropInfoPanel : DragAndDrop {
 		}
 	}
 
-	protected override void SendEvent() {
+	protected override void SendEvent(bool wasBought) {
 		var list = new List<Vector3> ();
 
 		list.Add (tf.position);
 
-		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+		var tile = tf.GetComponent<ATile>();
+		if (tile != null)
+            Event<ObjectPlacedEvent>.Broadcast(new ObjectPlacedEvent(list, tile.type, wasBought));
 	}
 
 	protected override void OnBuy ()

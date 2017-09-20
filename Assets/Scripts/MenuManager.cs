@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-using AmplitudeNS;
+using System;
 
 public enum Menu {
 	Main,
@@ -37,10 +37,9 @@ public class MenuManager : MonoBehaviour {
     public float FireAlertUiOffset = 100;
     public float FireAlertUIMoveTime = 1;
     public float FireAlertUIWaitTime = 2;
+    public int levelsCount = 2;
 
-	private Vector3 cameraOrigin;
-
-	private int CurrentZoomLevel;
+    private float CurrentZoomLevel;
 
 	private Menu LastMenu = Menu.NONE;
 
@@ -73,6 +72,8 @@ public class MenuManager : MonoBehaviour {
 	private Transform tf;
 
 	private GameObject[] ShopButtons;
+    private GameObject WarningSaturation;
+    bool warningSaturationActive = false;
 
 	private Transform cameraTransform;
 
@@ -82,8 +83,12 @@ public class MenuManager : MonoBehaviour {
 
     private SubscriberList subscriberList = new SubscriberList();
 
+    private int scoreIndex = 1;
+
+    private bool noMoneyBlinking = false;
+
 	void Awake() {
-		/*Amplitude amp = Amplitude.Instance;
+        /*Amplitude amp = Amplitude.Instance;
 		amp.logging = true;
 		amp.init ("c91e37a9a64907dcd158927243246732");
 
@@ -97,7 +102,6 @@ public class MenuManager : MonoBehaviour {
 		G.Sys.menuManager = this;
 
 		cameraTransform = G.Sys.MainCamera.transform;
-		cameraOrigin = cameraTransform.position;
 
 		tf = transform;
 		FadeUI = tf.Find ("FadeUI").gameObject;
@@ -122,13 +126,18 @@ public class MenuManager : MonoBehaviour {
 		for (int i = 0; i < LevelSelectionUI.transform.childCount; i++) {
 			var c = LevelSelectionUI.transform.GetChild (i);
 			if (c.name.ToLower ().Contains ("level")) {
-				if (c.name.Remove (0, 5) != "1") {
-					bool isUnlocked = PlayerPrefs.GetInt (c.name + "Unlocked", 0) == 1;
-					c.GetComponent<Button> ().interactable = isUnlocked;
-					if(!isUnlocked)
-						c.Find ("Text").GetComponent<Image> ().color = new Color (100f / 255f, 100f / 255f, 100f / 255f);
-					c.Find ("Lock").GetComponent<Image> ().enabled = !isUnlocked;
-				}
+                int value;
+                bool ok = int.TryParse(c.name.Remove(0, 5), out value);
+                if (!ok)
+                    continue;
+                
+                bool isUnlocked = ScoreManager.IsLevelunlocked(value) && value <= levelsCount;
+				c.GetComponent<Button> ().interactable = isUnlocked;
+				if(!isUnlocked)
+					c.Find ("Text").GetComponent<Image> ().color = new Color (100f / 255f, 100f / 255f, 100f / 255f);
+				c.Find ("Lock").GetComponent<Image> ().enabled = !isUnlocked;
+
+                SetMedals(value, c.Find("Gold").gameObject, c.Find("Silver").gameObject, c.Find("Bronze").gameObject);
 			}
 		}
 
@@ -141,6 +150,9 @@ public class MenuManager : MonoBehaviour {
 		TravelerNumber = menuTf.Find ("Middle").Find ("Travelers").Find ("Text").GetComponent<Text> ();
 		Money = menuTf.Find ("Middle").Find ("Money").Find ("Text").GetComponent<Text> ();
 		MoneyAdded = menuTf.Find ("Middle").Find("Money").Find ("MoneyAdded").GetComponent<Text> ();
+
+        WarningSaturation = GameUI.transform.Find("WarningSaturation").gameObject;
+        WarningSaturation.SetActive(false);
 
 		SGPUI = tf.Find ("SGPUI").gameObject;
 
@@ -179,22 +191,43 @@ public class MenuManager : MonoBehaviour {
 		ShopButtons [8] = ShopUI.transform.Find ("Cleaner").gameObject;
 		ShopButtons [9] = ShopUI.transform.Find ("Agent").gameObject;
 
+        MainUI.transform.Find("Version").GetComponent<Text>().text = G.Version;
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            var quitButton = MainUI.transform.Find("QuitButton");
+            quitButton.gameObject.SetActive(false);
+            MainUI.transform.Find("CreditsButton").position = quitButton.position;
+        }
+
 		UpdateShopUI ();
 	}
 
+    void SetMedals(int level, GameObject gold, GameObject silver, GameObject bronze)
+	{
+		gold.SetActive(false);
+        silver.SetActive(false);
+        bronze.SetActive(false);
+
+        if (!ScoreManager.IsLevelunlocked(level))
+            return;
+        
+        var medals = ScoreManager.GetMedals(level);
+        int count = (medals.haveGoldAverageTime ? 1 : 0) + (medals.haveGoldMoneyLeft ? 1 : 0) + (medals.haveGoldSurface ? 1 : 0);
+
+        if (count == 1)
+            bronze.SetActive(true);
+        if (count == 2)
+            silver.SetActive(true);
+        if (count == 3)
+            gold.SetActive(true);
+    }
+
 	void Start() {
-		
-
+        
 		ParametersUI.transform.Find("MusicSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("musicVolume", 1f);
-		ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat ("soundVolume", 1f);
+        ParametersUI.transform.Find("SoundSlider").GetComponent<Slider>().value = PlayerPrefs.GetFloat("soundVolume", 1f);
 
-		for (int i = 0; i < ZoomLevels.Length-1; i++) {
-			Zoom ();
-		}
-	}
-
-	public void LoadScene(string sceneName) {
-		SceneManager.LoadScene (sceneName);
+        Event<SceneLoadedEvent>.Broadcast(new SceneLoadedEvent(CurrentMenu));
 	}
 
 	public void Lose() {
@@ -217,6 +250,10 @@ public class MenuManager : MonoBehaviour {
         FireAlertUI.transform.DOLocalMoveY(FireAlertUI.transform.localPosition.y - FireAlertUiOffset, FireAlertUIMoveTime)
                    .OnComplete(() => DOVirtual.DelayedCall(FireAlertUIWaitTime, () => FireAlertUI.transform.DOLocalMoveY(FireAlertUI.transform.localPosition.y + FireAlertUiOffset, FireAlertUIMoveTime)
                                                            .OnComplete(() =>  FireAlertUI.SetActive(false))));
+
+        var tbell = FireAlertUI.transform.Find("Bell");
+        tbell.rotation = Quaternion.Euler(0, 0, -10);
+        tbell.transform.DORotate(new Vector3(0, 0, 10), 0.25f).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo);
 	}
 
 	void BlinkVignette() {
@@ -261,11 +298,26 @@ public class MenuManager : MonoBehaviour {
 		}
 	}
 
-	public void ShowObjectives(List<Objectif> objectives) {
-		ObjectivesText.text = "";
+    public void ShowObjectives(List<Objectif> objectives) {
+		string text = "";
+        foreach (var o in objectives)
+        {
+            bool finished = ObjectifChecker.Check(o);
+            if (finished)
+                text += "<color=#00ff00>";
+            text += o.ToString();
+            if (o.CurrentAmount > 0 && o.Amount > 1)
+                text += " (" + Mathf.Min(o.CurrentAmount, o.Amount) + "/" + o.Amount + ")";
+            if (finished)
+                text += "</color>";
+            text += "\n";
+        }
+        ObjectivesText.text = text;
+
+		/*ObjectivesText.text = "";
 		foreach (var o in objectives) {
 			ObjectivesText.text += o.ToString () + "\n";
-		}
+		}*/
 	}
 
 	public void HideObjectives() {
@@ -321,12 +373,88 @@ public class MenuManager : MonoBehaviour {
 	public void SetTravelerNumber(int traveler, int maxTraveler) {
 		if(TravelerNumber != null)
 			TravelerNumber.text = traveler + "/" + maxTraveler;
+
+        if (traveler > maxTraveler * G.Sys.constants.WarningSaturationTrigger)
+        {
+            if (!warningSaturationActive)
+            {
+                showWarningSaturation();
+                StartCoroutine(blinkTravelerCoroutine((int)(maxTraveler * G.Sys.constants.WarningSaturationTrigger)));
+                warningSaturationActive = true;
+            }
+        }
+        else warningSaturationActive = false;
+	}
+
+	void showWarningSaturation()
+	{
+        const float shakeTime = 1.5f;
+        const float waitTime = 0.5f;
+        const float rot = 10;
+
+        WarningSaturation.SetActive(true);
+        WarningSaturation.transform.rotation = Quaternion.Euler(0, 0, rot);
+
+        WarningSaturation.transform.DORotate(new Vector3(0, 0, 0), shakeTime).SetEase(Ease.OutElastic).OnComplete(() =>
+        {
+            DOVirtual.DelayedCall(waitTime, () =>
+            {
+                WarningSaturation.transform.rotation = Quaternion.Euler(0, 0, rot);
+                WarningSaturation.transform.DORotate(new Vector3(0, 0, 0), shakeTime).SetEase(Ease.OutElastic).OnComplete(() => { WarningSaturation.SetActive(false); });
+            });
+        });
+	}
+
+	IEnumerator blinkTravelerCoroutine(int minTravelers)
+	{
+		Color white = Color.white;
+		Color red = Color.red;
+		const float speed = 5f;
+
+		while (G.Sys.travelerCount() > minTravelers)
+		{
+			yield return new WaitForEndOfFrame();
+			var tNorm = (Mathf.Sin(Time.time * speed) + 1) / 2.0f;
+			TravelerNumber.color = Color.Lerp(white, red, tNorm);
+		}
+
+		TravelerNumber.color = white;
 	}
 
 	public void SetMoneyNumber(int money) {
 		if(Money != null)
 			Money.text = money + "";
 	}
+
+    public void MakeMoneyBlink()
+    {
+        if (noMoneyBlinking)
+            return;
+        noMoneyBlinking = true;
+
+        StartCoroutine(blinkCoroutine());
+    }
+
+    public void StopMoneyBlink()
+    {
+        noMoneyBlinking = false;
+    }
+
+    IEnumerator blinkCoroutine()
+    {
+        Color white = Color.white;
+        Color red = Color.red;
+        const float speed = 5f;
+
+        while(noMoneyBlinking)
+        {
+            yield return new WaitForEndOfFrame();
+            var tNorm = (Mathf.Sin(Time.time * speed) + 1) / 2.0f;
+            Money.color = Color.Lerp(white, red, tNorm);
+        }
+
+        Money.color = white;
+    }
 
 	public void SetPieTime(float timePercentage, int secondTime) {
 		TimePie.fillAmount = timePercentage;
@@ -395,28 +523,30 @@ public class MenuManager : MonoBehaviour {
 		UpdateShopUI ();
 	}
 
-	public void Zoom() {
-		CurrentZoomLevel = (CurrentZoomLevel + 1) % ZoomLevels.Length;
-		cameraTransform.position = cameraOrigin - cameraTransform.forward * ZoomLevels[CurrentZoomLevel];
+	public void Zoom()
+	{
+		CurrentZoomLevel = (Mathf.RoundToInt(CurrentZoomLevel) + 1) % ZoomLevels.Length;
+        applyCurrentZoom();
 	}
 
-	public void Zoom(float ZoomPower) {
-		bool done = false;
-		int iter = 0;
-		while (!done && iter < 3) {
-			Vector3 pos = cameraTransform.position + cameraTransform.forward * ZoomPower;
-			if (pos.y >= cameraOrigin.y && pos.y <= (cameraOrigin - cameraTransform.forward * ZoomLevels [ZoomLevels.Length - 1]).y) {
-				cameraTransform.position = pos;
-				done = true;
-			}
+    void applyCurrentZoom()
+    {
+        float normalizedOffset = CurrentZoomLevel % 1.0f;
+        int z = Mathf.Clamp(Mathf.FloorToInt(CurrentZoomLevel), 0, ZoomLevels.Length - 1);
+        int z1 = Mathf.Clamp(Mathf.CeilToInt(CurrentZoomLevel), 0, ZoomLevels.Length - 1);
+        float level = 0;
+        if (z == z1)
+            level = ZoomLevels[z];
+        else level = Mathf.Lerp(ZoomLevels[z], ZoomLevels[z1], normalizedOffset);
 
-			ZoomPower /= 2;
-			iter++;
-		}
-	}
+        cameraTransform.position = -(cameraTransform.forward * level);
+        if (cameraTransform.parent != null)
+            cameraTransform.position += cameraTransform.parent.position;
+    }
 
-	public float GetZoomRatio() {
-		return (cameraTransform.position.y - cameraOrigin.y) / (cameraOrigin - cameraTransform.forward * ZoomLevels [ZoomLevels.Length - 1]).y + .1f;
+    public void Zoom(float ZoomPower) {
+        CurrentZoomLevel = Mathf.Clamp(CurrentZoomLevel + ZoomPower, 0, ZoomLevels.Length - 1);
+        applyCurrentZoom();
 	}
 
 	public void LevelSelection() {
@@ -434,32 +564,92 @@ public class MenuManager : MonoBehaviour {
 		} else {
 			G.Sys.audioManager.PlayLevelSelected ();
 			G.Sys.tilemap.clear ();
-			SceneManager.LoadScene ("Level" + i);
+            string sceneName = "Level" + i;
+            if (i > levelsCount)
+                MainMenu();
+			else 
+            {
+                SceneManager.LoadScene(sceneName);
+                Event<StartLevelEvent>.Broadcast(new StartLevelEvent(i));
+            }
 		}
 	}
 
+    public void Tutorial()
+    {
+        SceneManager.LoadScene("Tutorial01");
+    }
+
 	public void MainMenu() {
+        if (SceneManager.GetActiveScene().name.Contains("Level"))
+            Event<QuitLevelEvent>.Broadcast(new QuitLevelEvent(false));
+        else Event<QuitTutorialEvent>.Broadcast(new QuitTutorialEvent(false));
 		G.Sys.tilemap.clear ();
 		SceneManager.LoadScene("MainMenu");
 	}
 
 	public void Score() {
-		ScoreUI.SetActive (true);
-		GetCorrespondantUI (CurrentMenu).SetActive (false);
+		ScoreUI.SetActive(true);
+		FadeUI.SetActive(true);
+		if (SceneManager.GetActiveScene().name != "MainMenu")
+			GetCorrespondantUI(CurrentMenu).SetActive(false);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.Score;
+        scoreIndex = 1;
+        OpenNextPage(0);
 	}
+
+    public void OpenNextPage(int offset)
+    {
+        scoreIndex += offset;
+
+        var t = ScoreUI.transform;
+
+        var leftArrow = t.Find("LeftButton").gameObject;
+        var rightArrow = t.Find("RightButton").gameObject;
+        var levelText = t.Find("Levelname").GetComponent<Text>();
+        var medalTime = t.Find("MedalTime").gameObject;
+        var medalSurface = t.Find("MedalSurface").gameObject;
+        var medalMoney = t.Find("MedalMoney").gameObject;
+
+        var value1 = t.Find("Value1").GetComponent<Text>();
+        var value2 = t.Find("Value2").GetComponent<Text>();
+        var value3 = t.Find("Value3").GetComponent<Text>();
+
+        leftArrow.SetActive(scoreIndex > 1);
+        rightArrow.SetActive(ScoreManager.IsLevelunlocked(scoreIndex+1) && scoreIndex < levelsCount);
+
+        levelText.text = "Level " + scoreIndex;
+
+        var medals = ScoreManager.GetMedals(scoreIndex);
+        medalTime.SetActive(medals.haveGoldAverageTime);
+        medalMoney.SetActive(medals.haveGoldMoneyLeft);
+        medalSurface.SetActive(medals.haveGoldSurface);
+
+        var scores = ScoreManager.GetAllScore(scoreIndex);
+        for (int i = 0; i < 3; i++)
+        {
+            var value = i == 0 ? value1 : i == 1 ? value2 : value3;
+            if(scores.Count <= i)
+                value.text = "----";
+            else
+                value.text = scores[i].score.ToString();
+        }
+    }
 
 	public void Options() {
 		ParametersUI.SetActive (true);
-		GetCorrespondantUI (CurrentMenu).SetActive (false);
+		FadeUI.SetActive (true);
+		if(SceneManager.GetActiveScene().name != "MainMenu")
+			GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.Parameters;
 	}
 
 	public void Credits() {
 		CreditsUI.SetActive (true);
-		GetCorrespondantUI (CurrentMenu).SetActive (false);
+		FadeUI.SetActive (true);
+		//GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.Credits;
 	}
@@ -478,10 +668,16 @@ public class MenuManager : MonoBehaviour {
 
 	public void SGP() {
 		SGPUI.SetActive (true);
-		GetCorrespondantUI (CurrentMenu).SetActive (false);
+		FadeUI.SetActive (true);
+		//GetCorrespondantUI (CurrentMenu).SetActive (false);
 		LastMenu = CurrentMenu;
 		CurrentMenu = Menu.SGP;
 	}
+
+    public void OpenSGPUrl()
+    {
+        Application.OpenURL("https://www.societedugrandparis.fr/");
+    }
 
 	public void Pause () {
 		FadeUI.SetActive (true);
@@ -500,13 +696,16 @@ public class MenuManager : MonoBehaviour {
 	}
 
 	public void Replay() {
+		if (SceneManager.GetActiveScene().name.Contains("Level"))
+			Event<QuitLevelEvent>.Broadcast(new QuitLevelEvent(true));
+        else Event<QuitTutorialEvent>.Broadcast(new QuitTutorialEvent(true));
 		Time.timeScale = 1f;
 		G.Sys.tilemap.clear ();
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
 
 	public void Back() {
-		if (CurrentMenu == Menu.LevelSelection) {
+        if (CurrentMenu == Menu.LevelSelection || CurrentMenu == Menu.Score || CurrentMenu == Menu.SGP || CurrentMenu == Menu.Credits || (CurrentMenu == Menu.Parameters && SceneManager.GetActiveScene().name == "MainMenu")) {
 			FadeUI.SetActive (false);
 		}
 		var tmp = LastMenu;
@@ -529,7 +728,8 @@ public class MenuManager : MonoBehaviour {
 	}
 
     void onWinGameEvent(WinGameEvent e)
-    {
+	{
+		ScoreManager.AddScore(new ScoreManager.ScoreData(e.score.ScoreValue, e.score.HaveTimeMedal, e.score.HaveMoneyMedal, e.score.HaveSurfaceMedal), G.Sys.levelIndex);
         FadeUI.SetActive(true);
         WinEndGameUI.SetActive(true);
         winMenuDatas.set(e.score);
@@ -568,7 +768,7 @@ public class MenuManager : MonoBehaviour {
             medalSurface = parent.transform.Find("GoldSurface").gameObject;
 
             bubble = parent.transform.Find("Bubble").gameObject;
-            bubble.SetActive(false);
+            //bubble.SetActive(false);
             var timeObj = bubble.transform.Find("Time");
             var moneyObj = bubble.transform.Find("Money");
             var surfaceObj = bubble.transform.Find("Surface");
@@ -603,13 +803,7 @@ public class MenuManager : MonoBehaviour {
             targetSurface.text = s.GoldSurface.ToString();
 
             score.text = s.ScoreValue.ToString();
-            int best = PlayerPrefs.GetInt("Level" + G.Sys.levelIndex, 0);
-            if(best < s.ScoreValue)
-            {
-                best = s.ScoreValue;
-                PlayerPrefs.SetInt("Level" + G.Sys.levelIndex, best);
-                PlayerPrefs.Save();
-            }
+            int best = ScoreManager.GetBestScore(G.Sys.levelIndex).score;
             bestScore.text = best.ToString();
 
 			fireAlert.text = (s.WonFireAlert) ? "Réussie" : "Échec";

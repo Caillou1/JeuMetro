@@ -148,6 +148,7 @@ public class WaveManager : MonoBehaviour {
 		{
 			currentWave++;
             G.Sys.menuManager.SetWaveNumber(Mathf.Min(currentWave + 1, waveCounts), waveCounts);
+            Event<FinishWaveEvent>.Broadcast(new FinishWaveEvent(currentWave));
 			if (currentWave >= waveCounts + 1)
 			{
 				ended = true;

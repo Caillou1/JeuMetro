@@ -92,6 +92,13 @@ public class DragAndDropEntity : MonoBehaviour{
 	}
 
 	void Update() {
+		if (!IsBought && (Dragging || IsSelected))
+		{
+			if (G.Sys.gameManager.GetMoney() < Price)
+				G.Sys.menuManager.MakeMoneyBlink();
+			else G.Sys.menuManager.StopBlinkMoney();
+		}
+
 		if (Dragging && CanDrag && !IsBought) {
 			Ray ray = G.Sys.MainCamera.ScreenPointToRay (Input.mousePosition);
 			RaycastHit[] hits;
@@ -154,7 +161,15 @@ public class DragAndDropEntity : MonoBehaviour{
 		}
 	}
 
-	public void DeleteObject() {
+	public void DeleteObject()
+	{
+        if (!IsBought)
+        {
+            if (GetComponent<Agent>() != null)
+                Event<AbortDragAgentEvent>.Broadcast(new AbortDragAgentEvent(AgentType.AGENT));
+            else Event<AbortDragAgentEvent>.Broadcast(new AbortDragAgentEvent(AgentType.CLEANER));
+        }
+
 		Destroy (gameObject);
 	}
 
@@ -167,6 +182,9 @@ public class DragAndDropEntity : MonoBehaviour{
 			if (!IsBought) {
 				G.Sys.gameManager.AddMoney (-Price);
 				IsBought = true;
+				if (GetComponent<Agent>() != null)
+                    Event<AgentPlacedEvent>.Broadcast(new AgentPlacedEvent(transform.position, AgentType.AGENT));
+				else Event<AgentPlacedEvent>.Broadcast(new AgentPlacedEvent(transform.position, AgentType.CLEANER));
 			}
 			CanDrag = false;
 			var e = GetComponent<AEntity> ();

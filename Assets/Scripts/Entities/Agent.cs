@@ -33,7 +33,7 @@ public class Agent : AEntity
 		GetComponent<DragAndDropEntity> ().ToggleOutline (false);
 		Invoke ("EnableAgent", 1f);
 
-        GetComponentInChildren<SkinnedMeshRenderer>().material.color = G.Sys.constants.GetRandomColor(G.Sys.constants.agentSaturation);
+        GetComponentInChildren<SkinnedMeshRenderer>().material.color = G.Sys.constants.GetRandomColor(G.Sys.constants.AgentSaturation);
 	}
 
 	protected override void OnUpdate ()

@@ -34,10 +34,25 @@ public abstract class ATile : MonoBehaviour
 	public void Unregister()
 	{
 		OnDestroy (); 
+        OnUnregister();
 	}
 
-	public void Register() { Awake (); }
+    protected virtual void OnUnregister()
+    {
+        
+    }
 
+
+	public void Register() 
+    {
+        OnRegister();
+        Awake (); 
+    }
+
+	protected virtual void OnRegister()
+	{
+
+	}
 
 	public TileID type { get; protected set; }
 }

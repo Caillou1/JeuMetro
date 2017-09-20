@@ -101,17 +101,25 @@ public class EntityPath
 	{
 		if (action.priority < 0)
 			_actions.Add (action);
-		else {
-			if (action.priority > currentAction.priority && !onAction) {
-				_actions.Insert (0, currentAction);
+		else 
+        {
+            if ((currentAction == null || action.priority > currentAction.priority) && !onAction) 
+            {
+                if(currentAction != null)
+				    _actions.Insert (0, currentAction);
                 onAction = true;
+                currentAction = action;
                 NavMeshPath p = new NavMeshPath();
                 _agent.CalculatePath(currentAction.pos, p);
                 _agent.SetPath(p);
-			} else {
+			} 
+            else 
+            {
 				bool inserted = false;
-				for (int i = 0; i < _actions.Count; i++) {
-					if (_actions [i].priority < action.priority) {
+				for (int i = 0; i < _actions.Count; i++) 
+                {
+					if (_actions [i].priority < action.priority) 
+                    {
 						_actions.Insert (i, action);
 						inserted = true;
 						break;
@@ -342,7 +350,7 @@ public class EntityPath
 
 	void checkAction()
 	{
-        if (!_agent.isOnNavMesh || framsFromLastLink < framsFromLastLinkTrigger)
+        if (!_agent.isOnNavMesh || framsFromLastLink < framsFromLastLinkTrigger || _actions.Count() == 0)
 			return;
 		if ((_agent.transform.position - _agent.destination).sqrMagnitude > (_agent.transform.position - _actions [0].pos).sqrMagnitude) {
 			_points.Insert (0, _agent.destination);

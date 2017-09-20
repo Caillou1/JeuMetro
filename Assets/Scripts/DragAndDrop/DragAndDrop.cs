@@ -14,6 +14,7 @@ public class DragAndDrop : MonoBehaviour{
 
 	protected bool isSelected;
 	public bool IsSelected {
+        get { return isSelected; }
 		set {
 			isSelected = value;
 		}
@@ -114,7 +115,15 @@ public class DragAndDrop : MonoBehaviour{
 	}
 
 	void Update() {
-		if (Dragging && CanDrag && !IsBought) {
+        if (!IsBought && (Dragging || IsSelected))
+        {
+            if (G.Sys.gameManager.GetMoney() < Price)
+                G.Sys.menuManager.MakeMoneyBlink();
+            else G.Sys.menuManager.StopBlinkMoney();
+        }
+        else G.Sys.menuManager.StopMoneyBlink();
+
+        if (Dragging && CanDrag && !IsBought) {
 			Ray ray = G.Sys.MainCamera.ScreenPointToRay (Input.mousePosition);
 			RaycastHit[] hits;
 			hits = Physics.RaycastAll (ray);
@@ -134,7 +143,10 @@ public class DragAndDrop : MonoBehaviour{
 			CheckCanPlace ();
 
 			if (canPlace && !G.Sys.cameraController.IsOnUI ()) {
-				cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
+				if (G.Sys.gameManager.GetMoney() < Price)
+					cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
+				else
+					cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
 			} else {
 				cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
 			}
@@ -148,7 +160,10 @@ public class DragAndDrop : MonoBehaviour{
 			CheckCanPlace ();
 
 			if (canPlace) {
-				cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
+                if(G.Sys.gameManager.GetMoney() < Price)
+                    cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
+				else 
+                    cakeslice.OutlineEffect.Instance.lineColor0 = Color.green;
 			} else {
 				cakeslice.OutlineEffect.Instance.lineColor0 = Color.red;
 			}
@@ -179,16 +194,20 @@ public class DragAndDrop : MonoBehaviour{
 
 	public void DeleteObject() {
 		Event<BakeNavMeshEvent>.Broadcast (new BakeNavMeshEvent ());
+        if(!IsBought)
+		    Event<AbortDragObjectEvent>.Broadcast(new AbortDragObjectEvent(GetComponent<ATile>().type));
         G.Sys.tilemap.addSpaceUsed(-Space);
 		Destroy (gameObject);
 	}
 
-	protected virtual void SendEvent() {
+	protected virtual void SendEvent(bool wasBought) {
 		var list = new List<Vector3> ();
 
 		list.Add (tf.position);
 
-		Event<ObjectPlacedEvent>.Broadcast (new ObjectPlacedEvent (list));
+		var tile = tf.GetComponent<ATile>();
+		if (tile != null)
+            Event<ObjectPlacedEvent>.Broadcast(new ObjectPlacedEvent(list, tile.type, wasBought));
 	}
 
 	public bool ValidateObject() {
@@ -201,6 +220,7 @@ public class DragAndDrop : MonoBehaviour{
 
 		if ((canPlace && !IsBought && G.Sys.gameManager.HaveEnoughMoney(Price)) || IsBought && canPlace) {
 			G.Sys.cameraController.IsSelecting = false;
+            bool wasBought = IsBought;
 			if (!IsBought) {
                 G.Sys.tilemap.addSpaceUsed(Space);
 				G.Sys.gameManager.AddMoney (-Price);
@@ -211,7 +231,7 @@ public class DragAndDrop : MonoBehaviour{
 			}
 			G.Sys.selectionManager.Hide (true);
 			CanDrag = false;
-			SendEvent ();
+            SendEvent (wasBought);
 			DeletePossibleEmptyWalls ();
 			StartCoroutine (eventCoroutine ());
 			G.Sys.audioManager.PlayConstruct ();

@@ -6,12 +6,25 @@ using UnityEngine;
 
 public class BinTile : ATile
 {
+    GameObject emptyBin;
+    GameObject fullBin;
+
 	bool targetted = false;
 	private float wasteValue = 0f;
 	public float waste {
 		get { return wasteValue; }
-		set{ wasteValue = value; }
+		set
+        { 
+            wasteValue = value;
+            updateVisual();
+        }
 	}
+
+    void updateVisual()
+    {
+        emptyBin.SetActive(!isFull());
+        fullBin.SetActive(isFull());
+    }
 
 	public bool Targetted {
 		get {
@@ -49,6 +62,10 @@ public class BinTile : ATile
 		G.Sys.tilemap.addTile (transform.position, this, Tilemap.BIN_PRIORITY);
 
 		G.Sys.tilemap.addSpecialTile (type, transform.position);
+
+        emptyBin = transform.Find("Vide").gameObject;
+        fullBin = transform.Find("Pleine").gameObject;
+        updateVisual();
     }
 
 	protected override void OnDestroy()
