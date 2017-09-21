@@ -114,7 +114,7 @@ public class AmplitudeManager
         var time = (DateTime.Now - _levelStartTime).TotalSeconds;
 
         var data = new QuitTutorialData();
-        data.Levelindex = _levelIndex;
+        data.LevelIndex = _levelIndex;
         data.Time = (float)time;
         data.Restart = e.restarted;
         _amplitude.SendEvent(QuitTutorialStr, data);
@@ -242,7 +242,7 @@ public class AmplitudeManager
     [Serializable]
     class QuitTutorialData
     {
-        public int Levelindex;
+        public int LevelIndex;
         public float Time;
         public bool Restart;
     }
