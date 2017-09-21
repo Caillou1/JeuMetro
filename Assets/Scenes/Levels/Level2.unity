@@ -729,6 +729,11 @@ Prefab:
       propertyPath: m_Name
       value: ControleLine (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 114265715655062818, guid: b9cc9cd551f434668b7d5d49d3c224b8,
+        type: 2}
+      propertyPath: canPassWithoutTicket
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b9cc9cd551f434668b7d5d49d3c224b8, type: 2}
   m_IsPrefabParent: 0
@@ -3404,6 +3409,11 @@ Prefab:
     - target: {fileID: 1628493978892228, guid: b9cc9cd551f434668b7d5d49d3c224b8, type: 2}
       propertyPath: m_Name
       value: ControleLine (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114265715655062818, guid: b9cc9cd551f434668b7d5d49d3c224b8,
+        type: 2}
+      propertyPath: canPassWithoutTicket
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b9cc9cd551f434668b7d5d49d3c224b8, type: 2}
@@ -12255,6 +12265,11 @@ Prefab:
     - target: {fileID: 4528898232137912, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
       propertyPath: m_LocalPosition.y
       value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114628152271382826, guid: 83f4ffb02d74445c7b88da1dadc01600,
+        type: 2}
+      propertyPath: peopleWaiting
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 83f4ffb02d74445c7b88da1dadc01600, type: 2}
@@ -21304,7 +21319,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4923826175585558, guid: 3eba3ada29d4d455f9b53aff0bda3be1, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4923826175585558, guid: 3eba3ada29d4d455f9b53aff0bda3be1, type: 2}
       propertyPath: m_LocalPosition.z

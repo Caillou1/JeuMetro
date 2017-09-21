@@ -4274,6 +4274,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 180.00002
       objectReference: {fileID: 0}
+    - target: {fileID: 114265715655062818, guid: b9cc9cd551f434668b7d5d49d3c224b8,
+        type: 2}
+      propertyPath: canPassWithoutTicket
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b9cc9cd551f434668b7d5d49d3c224b8, type: 2}
   m_IsPrefabParent: 0
@@ -23010,6 +23015,11 @@ Prefab:
     - target: {fileID: 1628493978892228, guid: b9cc9cd551f434668b7d5d49d3c224b8, type: 2}
       propertyPath: m_Name
       value: ControleLine (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114265715655062818, guid: b9cc9cd551f434668b7d5d49d3c224b8,
+        type: 2}
+      propertyPath: canPassWithoutTicket
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b9cc9cd551f434668b7d5d49d3c224b8, type: 2}
